@@ -7,19 +7,39 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "Attach to Remote",
-      "address": "127.0.0.1",
+      "name": "Attach",
       "port": 9229,
-      "localRoot": "${workspaceFolder}",
-      "remoteRoot": "${workspaceFolder}"
+      "skipFiles": ["<node_internals>/**"]
     },
     {
       "name": "Run All Tests",
       "type": "node",
       "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "runtimeExecutable": "yarn",
-      "runtimeArgs": ["test"],
+      "protocol": "inspector",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": ["--inspect", "--no-timeouts", "--colors", "test/**/*.test.ts"],
+      "env": {
+        "NODE_ENV": "development",
+        "SFDX_ENV": "development"
+      },
+      "sourceMaps": true,
+      "smartStep": true,
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "Compile"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Current Test",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": ["--inspect", "--no-timeouts", "--colors", "${file}"],
+      "env": {
+        "NODE_ENV": "development",
+        "SFDX_ENV": "development"
+      },
+      "sourceMaps": true,
+      "smartStep": true,
+      "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "Compile"
     }
   ]
