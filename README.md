@@ -1,15 +1,11 @@
 # Salesforce Apex Plugin
 
-[![CircleCI](https://circleci.com/gh/forcedotcom/salesforcedx-apex.svg?style=svg&circle-token=5869ea795e44e1b737f2f2a86fd51cdc2ac08629)](https://circleci.com/gh/forcedotcom/salesforcedx-apex)
 ![npm (scoped)](https://img.shields.io/npm/v/@salesforce/plugin-apex)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Introduction
 This is an oclif plugin that supports the Salesforce Apex commands. The plugin is bundled with the [salesforcedx plugin](https://www.npmjs.com/package/salesforcedx).
-
-Note: This plugin is in beta and has been released early so we can collect feedback. It may contain bugs, undergo major changes, or be discontinued.
-
 
 ### Building the Plugin
 
