@@ -75,7 +75,7 @@ $ NODE_OPTIONS=--inspect-brk bin/run force:apex:log:list -u myOrg@example.com
 5. Click the green play button on the left of the debugger view. The debugger should now be suspended on the first line of the program.
 6. Click the green play button in the mini toolbar to continue running the program. 
 <br /><br />
-<img src="../../.images/vscodeScreenshot.png" width="480" height="278">
+<img src="./.images/vscodeScreenshot.png" width="480" height="278">
 
 <br />
 Happy debugging!
