@@ -103,7 +103,8 @@
     "version": "oclif readme && git add README.md",
     "test:deprecation-policy": "./bin/run snapshot:compare",
     "test:command-reference": "./bin/run commandreference:generate -p apex --erroronwarnings",
-    "package": "npm pack"
+    "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
+    "package": "yarn pack"
   },
   "husky": {
     "hooks": {
