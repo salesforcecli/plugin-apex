@@ -96,6 +96,7 @@
   "repository": "forcedotcom/salesforcedx-apex",
   "scripts": {
     "build": "shx rm -rf lib && tsc -b",
+    "compile": "yarn build",
     "format": "npx prettier --config ./.prettierrc.json --write './{src,test,scripts}/**/*.{ts,js,json}'",
     "lint": "eslint -c .eslintrc.json --ext .ts ./src ./test",
     "manifest:generate": "yarn build && oclif manifest",
