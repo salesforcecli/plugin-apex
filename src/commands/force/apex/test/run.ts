@@ -324,7 +324,7 @@ export default class Run extends SfdxCommand {
   }
 
   private formatReportHint(result: TestResult): string {
-    let reportArgs = `-i ${result.summary.testRunId}`;
+    let reportArgs = `-i ${result.summary?.testRunId}`;
     if (this.flags.targetusername) {
       reportArgs += ` -u ${this.flags.targetusername}`;
     }
