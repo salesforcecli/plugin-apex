@@ -12,8 +12,7 @@ import { createSandbox, SinonSandbox } from 'sinon';
 import { Connection, Org } from '@salesforce/core';
 
 describe('force:apex:execute', () => {
-  const log =
-    '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
+  const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
   const successJsonResult = {
     column: -1,
     line: -1,
@@ -89,8 +88,7 @@ describe('force:apex:execute', () => {
   };
 
   const successfulResponse = `Compiled successfully.\nExecuted successfully.\n\n${log}\n`;
-  const compileResponse =
-    'Error: Line: 11, Column: 1\nError: problem compiling\n\n';
+  const compileResponse = 'Error: Line: 11, Column: 1\nError: problem compiling\n\n';
   const runtimeResponse = `Compiled successfully.\nError: problem at runtime\nError: Issue in mock file\n\n${log}\n`;
   const TEST_USERNAME = 'test@org.com';
 
@@ -100,9 +98,7 @@ describe('force:apex:execute', () => {
     sandboxStub = createSandbox();
 
     sandboxStub.stub(Org, 'create').resolves(Org.prototype);
-    sandboxStub
-      .stub(Org.prototype, 'getConnection')
-      .returns(Connection.prototype);
+    sandboxStub.stub(Org.prototype, 'getConnection').returns(Connection.prototype);
     sandboxStub.stub(Org.prototype, 'getUsername').returns(TEST_USERNAME);
     sandboxStub.stub(Org.prototype, 'getOrgId').returns('abc123');
   });
@@ -116,21 +112,12 @@ describe('force:apex:execute', () => {
     .withConnectionRequest(() => {
       return Promise.resolve(soapResponse);
     })
-    .stub(
-      ExecuteService.prototype,
-      'readApexFile',
-      () => 'System.assert(true);'
-    )
+    .stub(ExecuteService.prototype, 'readApexFile', () => 'System.assert(true);')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
-    .command([
-      'force:apex:execute',
-      '--apexcodefile',
-      path.join('Users', 'test', 'path', 'to', 'file'),
-      '--json'
-    ])
+    .command(['force:apex:execute', '--apexcodefile', path.join('Users', 'test', 'path', 'to', 'file'), '--json'])
     .it('runs command with filepath flag and successful result', ctx => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
@@ -146,21 +133,12 @@ describe('force:apex:execute', () => {
     .withConnectionRequest(() => {
       return Promise.resolve(soapResponse);
     })
-    .stub(
-      ExecuteService.prototype,
-      'getUserInput',
-      () => 'System.assert(true);'
-    )
+    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true);')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
-    .command([
-      'force:apex:execute',
-      '--targetusername',
-      'test@org.com',
-      '--json'
-    ])
+    .command(['force:apex:execute', '--targetusername', 'test@org.com', '--json'])
     .it('runs default command with json flag and successful result', ctx => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
@@ -181,12 +159,7 @@ describe('force:apex:execute', () => {
       'fakeData';
     })
     .stdout()
-    .command([
-      'force:apex:execute',
-      '--targetusername',
-      'test@org.com',
-      '--json'
-    ])
+    .command(['force:apex:execute', '--targetusername', 'test@org.com', '--json'])
     .it('runs default command with json flag and compile problem', ctx => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
@@ -200,10 +173,10 @@ describe('force:apex:execute', () => {
     .withConnectionRequest(() => {
       return Promise.resolve(soapResponse);
     })
-    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
-    .stub(ExecuteService.prototype, 'buildExecRequest', () => {
-      'fakeData';
-    })
+    // .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
+    // .stub(ExecuteService.prototype, 'buildExecRequest', () => {
+    //   'fakeData';
+    // })
     .stdout()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
     .it('runs default command successfully with human readable output', ctx => {
@@ -223,14 +196,11 @@ describe('force:apex:execute', () => {
     })
     .stdout()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
-    .it(
-      'runs default command with compile issue in human readable output',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        expect(result).to.eql(compileResponse);
-      }
-    );
+    .it('runs default command with compile issue in human readable output', ctx => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      expect(result).to.eql(compileResponse);
+    });
 
   test
     .withOrg({ username: 'test@org.com' }, true)
@@ -243,12 +213,9 @@ describe('force:apex:execute', () => {
     })
     .stdout()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
-    .it(
-      'runs default command with runtime issue in human readable output',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        expect(result).to.eql(runtimeResponse);
-      }
-    );
+    .it('runs default command with runtime issue in human readable output', ctx => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      expect(result).to.eql(runtimeResponse);
+    });
 });

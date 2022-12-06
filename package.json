@@ -4,7 +4,7 @@
   "version": "1.3.0",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/salesforcedx-apex/issues",
-  "main": "lib/index.js",
+  "main": "lib/src/index.js",
   "dependencies": {
     "@oclif/core": "^1.16.4",
     "@salesforce/apex-node": "1.3.0",
@@ -60,7 +60,7 @@
   ],
   "license": "BSD-3-Clause",
   "oclif": {
-    "commands": "./lib/commands",
+    "commands": "./lib/src/commands",
     "topics": {
       "force": {
         "external": true,
@@ -93,7 +93,7 @@
       "@salesforce/plugin-command-reference"
     ]
   },
-  "repository": "forcedotcom/salesforcedx-apex",
+  "repository": "salesforcecli/plugin-apex",
   "scripts": {
     "build": "shx rm -rf lib && tsc -b",
     "compile": "yarn build",
