@@ -10,8 +10,7 @@ import { createSandbox, SinonSandbox } from 'sinon';
 import { Connection, Org } from '@salesforce/core';
 
 const logString = {
-  log:
-    '52.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG'
+  log: '52.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG'
 };
 const streamingClient = {
   handshake: async (): Promise<void> => Promise.resolve(),
@@ -21,14 +20,13 @@ const TEST_USERNAME = 'test@username.com';
 
 describe('force:apex:log:tail', () => {
   let sandboxStub: SinonSandbox;
+  const DUMMY_USERNAME: string = 'test@username.com';
 
   beforeEach(() => {
     sandboxStub = createSandbox();
 
     sandboxStub.stub(Org, 'create').resolves(Org.prototype);
-    sandboxStub
-      .stub(Org.prototype, 'getConnection')
-      .returns(Connection.prototype);
+    sandboxStub.stub(Org.prototype, 'getConnection').returns(Connection.prototype);
     sandboxStub.stub(Org.prototype, 'getUsername').returns(TEST_USERNAME);
     sandboxStub.stub(Org.prototype, 'getOrgId').returns('abc123');
   });
@@ -37,17 +35,15 @@ describe('force:apex:log:tail', () => {
     sandboxStub.restore();
   });
   test
-    .withOrg({ username: 'test@username.com' }, true)
+    .withOrg({ username: DUMMY_USERNAME }, true)
     .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
     .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function(
-      this: LogService
-    ) {
+    .stub(LogService.prototype, 'createStreamingClient', async function(this: LogService) {
       await this.logCallback({ sobject: { Id: 'xxxxxx' } });
       return streamingClient;
     })
     .stdout()
-    .command(['force:apex:log:tail'])
+    .command(['force:apex:log:tail', '-u', DUMMY_USERNAME])
     .it('should print the log with the default command', ctx => {
       expect(ctx.stdout).to.contain(logString.log);
     });
@@ -59,7 +55,7 @@ describe('force:apex:log:tail', () => {
       return streamingClient;
     })
     .stdout()
-    .command(['force:apex:log:tail'])
+    .command(['force:apex:log:tail', '-u', DUMMY_USERNAME])
     .it('should print nothing if no log is returned', ctx => {
       expect(ctx.stdout).to.contain('');
     });
@@ -67,25 +63,14 @@ describe('force:apex:log:tail', () => {
     .withOrg({ username: 'test@username.com' }, true)
     .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
     .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function(
-      this: LogService
-    ) {
+    .stub(LogService.prototype, 'createStreamingClient', async function(this: LogService) {
       await this.logCallback({ sobject: { Id: 'xxxxxx' } });
       return streamingClient;
     })
     .stdout()
-    .command([
-      'force:apex:log:tail',
-      '--targetusername',
-      'test@username.com',
-      '--json'
-    ])
+    .command(['force:apex:log:tail', '--targetusername', 'test@username.com', '--json'])
     .it('should print the log in json', ctx => {
-      const logResult = JSON.stringify(
-        { status: 0, result: logString.log },
-        null,
-        2
-      );
+      const logResult = JSON.stringify({ status: 0, result: logString.log }, null, 2);
       expect(ctx.stdout).to.contain(logResult);
     });
   test
@@ -96,12 +81,7 @@ describe('force:apex:log:tail', () => {
       return streamingClient;
     })
     .stdout()
-    .command([
-      'force:apex:log:tail',
-      '--targetusername',
-      'test@username.com',
-      '--json'
-    ])
+    .command(['force:apex:log:tail', '--targetusername', 'test@username.com', '--json'])
     .it('should return json output if no logs were found', ctx => {
       const emptyResult = JSON.stringify({ status: 0 }, null, 2);
       expect(ctx.stdout).to.equal(`${emptyResult}\n`);
@@ -110,28 +90,24 @@ describe('force:apex:log:tail', () => {
     .withOrg({ username: 'test@username.com' }, true)
     .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
     .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function(
-      this: LogService
-    ) {
+    .stub(LogService.prototype, 'createStreamingClient', async function(this: LogService) {
       await this.logCallback({ sobject: { Id: 'xxxxxx' } });
       return streamingClient;
     })
     .stdout()
-    .command(['force:apex:log:tail', '-c'])
+    .command(['force:apex:log:tail', '-c', '-u', DUMMY_USERNAME])
     .it('should pass through colorization of the logs', ctx => {
       expect(ctx.stdout).to.contain(logString.log);
     });
   test
     .withOrg({ username: 'test@username.com' }, true)
     .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function(
-      this: LogService
-    ) {
+    .stub(LogService.prototype, 'createStreamingClient', async function(this: LogService) {
       await this.logCallback({ sobject: { Id: 'xxxxxx' } });
       return streamingClient;
     })
     .stdout()
-    .command(['force:apex:log:tail', '-s'])
+    .command(['force:apex:log:tail', '-s', '-u', DUMMY_USERNAME])
     .it('should skip the trace flag creation', ctx => {
       expect(ctx.stdout).to.contain(logString.log);
     });
@@ -139,14 +115,12 @@ describe('force:apex:log:tail', () => {
     .withOrg({ username: 'test@username.com' }, true)
     .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
     .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function(
-      this: LogService
-    ) {
+    .stub(LogService.prototype, 'createStreamingClient', async function(this: LogService) {
       await this.logCallback({ sobject: { Id: 'xxxxxx' } });
       return streamingClient;
     })
     .stdout()
-    .command(['force:apex:log:tail', '-d', ''])
+    .command(['force:apex:log:tail', '-d', '', '-u', DUMMY_USERNAME])
     .it('should accept a debug level parameter', ctx => {
       expect(ctx.stdout).to.contain(logString.log);
     });
