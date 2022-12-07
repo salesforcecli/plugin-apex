@@ -17,5 +17,5 @@
     // from the tslib dependency, making our code more efficient
     "importHelpers": true
   },
-  "include": ["./src/**/*","./test/*.test.ts","./test/**/*.test.ts"]
+  "include": ["./src/**/*"]
 }
