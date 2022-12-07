@@ -35,7 +35,7 @@ $ sfdx force:apex:log:list -u myOrg@example.com
 Alternatively, you can also run the command from the `plugin-apex` package directory without linking the plugin:
 
 ```
-$ NODE_OPTIONS=--inspect-brk bin/run force:apex:log:list -u myOrg@example.com
+$ NODE_OPTIONS=--inspect-brk bin/dev force:apex:log:list -u myOrg@example.com
 ```
 <br />
 ### Running the Test Suite
@@ -59,10 +59,10 @@ We recommend using the Visual Studio Code (VS Code) IDE for your plugin developm
 $ sfdx force:apex:log:list -u myOrg@example.com --dev-suspend
 ```
 
-Alternatively, replace `sfdx` with `NODE_OPTIONS=--inspect-brk bin/run` and run your command:
+Alternatively, replace `sfdx` with `NODE_OPTIONS=--inspect-brk bin/dev` and run your command:
 
 ```
-$ NODE_OPTIONS=--inspect-brk bin/run force:apex:log:list -u myOrg@example.com
+$ NODE_OPTIONS=--inspect-brk bin/dev force:apex:log:list -u myOrg@example.com
 ```
 
 2. Set some breakpoints in your code.

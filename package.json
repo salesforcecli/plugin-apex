@@ -14,7 +14,7 @@
     "tslib": "^1"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^3",
+    "@oclif/plugin-command-snapshot": "^3.2.11",
     "@oclif/plugin-help": "^5",
     "@oclif/test": "^2.2.2",
     "@salesforce/dev-config": "3.0.1",
@@ -30,7 +30,7 @@
     "globby": "^8",
     "mocha": "^5",
     "nyc": "^14.1.1",
-    "oclif": "^2.6.3",
+    "oclif": "^3.2.28",
     "shx": "^0.3.4",
     "sinon": "^7.3.1",
     "ts-node": "^8.7.0",
@@ -101,8 +101,8 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "test": "cross-env FORCE_COLOR=true mocha --recursive \"./test/**/*.test.ts\" --full-trace",
     "version": "oclif readme && git add README.md",
-    "test:deprecation-policy": "./bin/run snapshot:compare",
-    "test:command-reference": "./bin/run commandreference:generate -p apex --erroronwarnings",
+    "test:deprecation-policy": "./bin/dev snapshot:compare",
+    "test:command-reference": "./bin/dev commandreference:generate -p apex --erroronwarnings",
     "package": "npm pack"
   },
   "husky": {
