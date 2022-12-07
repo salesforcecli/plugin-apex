@@ -1,17 +1,5 @@
 [
     {
-        "command": "commandreference:generate",
-        "plugin": "@salesforce/plugin-command-reference",
-        "flags": [
-            "erroronwarnings",
-            "hidden",
-            "json",
-            "loglevel",
-            "outputdir",
-            "plugins"
-        ]
-    },
-    {
         "command": "force:apex:execute",
         "plugin": "@salesforce/plugin-apex",
         "flags": [
@@ -20,7 +8,8 @@
             "json",
             "loglevel",
             "targetusername"
-        ]
+        ],
+        "alias": []
     },
     {
         "command": "force:apex:log:get",
@@ -33,7 +22,8 @@
             "number",
             "outputdir",
             "targetusername"
-        ]
+        ],
+        "alias": []
     },
     {
         "command": "force:apex:log:list",
@@ -43,7 +33,8 @@
             "json",
             "loglevel",
             "targetusername"
-        ]
+        ],
+        "alias": []
     },
     {
         "command": "force:apex:log:tail",
@@ -54,8 +45,10 @@
             "debuglevel",
             "json",
             "loglevel",
-            "skiptraceflag"
-        ]
+            "skiptraceflag",
+            "targetusername"
+        ],
+        "alias": []
     },
     {
         "command": "force:apex:test:report",
@@ -71,7 +64,8 @@
             "testrunid",
             "verbose",
             "wait"
-        ]
+        ],
+        "alias": []
     },
     {
         "command": "force:apex:test:run",
@@ -92,27 +86,7 @@
             "tests",
             "verbose",
             "wait"
-        ]
-    },
-    {
-        "command": "help",
-        "plugin": "@oclif/plugin-help",
-        "flags": [
-            "all"
-        ]
-    },
-    {
-        "command": "snapshot:compare",
-        "plugin": "@oclif/plugin-command-snapshot",
-        "flags": [
-            "filepath"
-        ]
-    },
-    {
-        "command": "snapshot:generate",
-        "plugin": "@oclif/plugin-command-snapshot",
-        "flags": [
-            "filepath"
-        ]
+        ],
+        "alias": []
     }
 ]
