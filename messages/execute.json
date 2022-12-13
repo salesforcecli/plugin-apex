@@ -5,5 +5,7 @@
     "logLevelDescription": "logging level for this command invocation",
     "logLevelLongDescription": "The logging level for this command invocation. Logs are stored in $HOME/.sfdx/sfdx.log.",
     "executeCompileSuccess": "Compiled successfully.",
-    "executeRuntimeSuccess": "Executed successfully."
+    "executeCompileFailure": "Compilation failed.",
+    "executeRuntimeSuccess": "Executed successfully.",
+    "executeRuntimeFailure": "Execution failed."
 }
