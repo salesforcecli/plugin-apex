@@ -6,7 +6,7 @@
  */
 import { ApexExecuteOptions, ExecuteService, ExecuteAnonymousResponse } from '@salesforce/apex-node';
 import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { buildDescription, colorSuccess, colorError, logLevels } from '../../../utils';
 
@@ -15,7 +15,9 @@ const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
   'apexCodeFileDescription',
   'commandDescription',
   'executeCompileSuccess',
+  'executeCompileFailure',
   'executeRuntimeSuccess',
+  'executeRuntimeFailure',
   'logLevelDescription',
   'logLevelLongDescription',
   'longDescription',
@@ -63,8 +65,19 @@ export default class Execute extends SfdxCommand {
       };
 
       const result = await exec.executeAnonymous(execAnonOptions);
+      const formattedResult = this.formatJson(result);
       this.ux.log(this.formatDefault(result));
-      return this.formatJson(result);
+      if (!result.compiled || !result.success) {
+        let err: SfError;
+        if (!result.compiled) {
+          err = new SfError(messages.getMessage('executeCompileFailure'), 'executeCompileFailure');
+        } else {
+          err = new SfError(messages.getMessage('executeRuntimeFailure'), 'executeRuntimeFailure');
+        }
+        err.setData(formattedResult);
+        throw err;
+      }
+      return formattedResult;
     } catch (e) {
       return Promise.reject(e);
     }
