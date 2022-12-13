@@ -136,7 +136,7 @@ EXAMPLES
   $ sfdx force:apex:log:get -d Users/Desktop/logs -n 2
 ```
 
-_See code: [force/apex/log/get.ts](https://github.com/forcedotcom/salesforcedx-apex/blob/develop/packages/plugin-apex/src/commands/force/apex/log/get.ts)_
+_See code: [force/apex/log/get.ts](https://github.com/salesforcecli/plugin-apex/blob/main/src/commands/force/apex/log/get.ts)_
 <br /><br />
 
 ### `sfdx force:apex:log:list`
@@ -172,7 +172,7 @@ EXAMPLES
   $ sfdx force:apex:log:list -u me@my.org
 ```
 
-_See code: [force/apex/log/list.ts](https://github.com/forcedotcom/salesforcedx-apex/blob/develop/packages/plugin-apex/src/commands/force/apex/log/list.ts)_
+_See code: [force/apex/log/list.ts](https://github.com/salesforcecli/plugin-apex/blob/main/src/commands/force/apex/log/list.ts)_
 <br /><br />
 
 ### `sfdx force:apex:log:tail`
@@ -216,7 +216,7 @@ EXAMPLES
   $ sfdx force:apex:log:tail -c -s
 ```
 
-_See code: [force/apex/log/tail.ts](https://github.com/forcedotcom/salesforcedx-apex/blob/develop/packages/plugin-apex/src/commands/force/apex/log/tail.ts)_
+_See code: [force/apex/log/tail.ts](https://github.com/salesforcecli/plugin-apex/blob/main/src/commands/force/apex/log/tail.ts)_
 <br /><br />
 
 ### `sfdx force:apex:execute`
@@ -262,7 +262,7 @@ EXAMPLES
   finished.
 ```
 
-_See code: [force/apex/execute.ts](https://github.com/forcedotcom/salesforcedx-apex/blob/develop/packages/plugin-apex/src/commands/force/apex/execute.ts)_
+_See code: [force/apex/execute.ts](https://github.com/salesforcecli/plugin-apex/blob/main/src/commands/force/apex/execute.ts)_
 <br /><br />
 
 ### `sfdx force:apex:test:run`
@@ -355,7 +355,7 @@ EXAMPLES
   $ sfdx force:apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org
 ```
 
-_See code: [force/apex/test/run.ts](https://github.com/forcedotcom/salesforcedx-apex/blob/develop/packages/plugin-apex/src/commands/force/apex/test/run.ts)_
+_See code: [force/apex/test/run.ts](https://github.com/salesforcecli/plugin-apex/blob/main/src/commands/force/apex/test/run.ts)_
 <br /><br />
 
 ### `sfdx force:apex:test:report`
@@ -414,6 +414,6 @@ EXAMPLES
   $ sfdx force:apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg
 ```
 
-_See code: [force/apex/test/report.ts](https://github.com/forcedotcom/salesforcedx-apex/blob/develop/packages/plugin-apex/src/commands/force/apex/test/report.ts)_
+_See code: [force/apex/test/report.ts](https://github.com/salesforcecli/plugin-apex/blob/main/src/commands/force/apex/test/report.ts)_
 
 <!-- commandsstop -->
