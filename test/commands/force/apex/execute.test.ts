@@ -12,8 +12,7 @@ import { createSandbox, SinonSandbox } from 'sinon';
 import { Connection, Org } from '@salesforce/core';
 
 describe('force:apex:execute', () => {
-  const log =
-    '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
+  const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
   const successJsonResult = {
     column: -1,
     line: -1,
@@ -21,15 +20,15 @@ describe('force:apex:execute', () => {
     compileProblem: '',
     exceptionMessage: '',
     exceptionStackTrace: '',
-    success: 'true'
+    success: 'true',
   };
   const soapResponse = {
     'soapenv:Envelope': {
       'soapenv:Header': { DebuggingInfo: { debugLog: log } },
       'soapenv:Body': {
-        executeAnonymousResponse: { result: successJsonResult }
-      }
-    }
+        executeAnonymousResponse: { result: successJsonResult },
+      },
+    },
   };
   const expectedSuccessResult = {
     column: -1,
@@ -39,7 +38,7 @@ describe('force:apex:execute', () => {
     exceptionMessage: '',
     exceptionStackTrace: '',
     success: true,
-    logs: log
+    logs: log,
   };
 
   const compileProblem = {
@@ -49,15 +48,15 @@ describe('force:apex:execute', () => {
     compileProblem: 'problem compiling',
     exceptionMessage: '',
     exceptionStackTrace: '',
-    success: 'false'
+    success: 'false',
   };
   const soapCompileProblem = {
     'soapenv:Envelope': {
       'soapenv:Header': { DebuggingInfo: { debugLog: log } },
       'soapenv:Body': {
-        executeAnonymousResponse: { result: compileProblem }
-      }
-    }
+        executeAnonymousResponse: { result: compileProblem },
+      },
+    },
   };
   const expectedCompileProblem = {
     column: 1,
@@ -67,7 +66,7 @@ describe('force:apex:execute', () => {
     exceptionMessage: '',
     exceptionStackTrace: '',
     success: false,
-    logs: log
+    logs: log,
   };
 
   const runtimeProblem = {
@@ -77,20 +76,19 @@ describe('force:apex:execute', () => {
     compileProblem: '',
     exceptionMessage: 'problem at runtime',
     exceptionStackTrace: 'Issue in mock file',
-    success: 'false'
+    success: 'false',
   };
   const soapRuntimeProblem = {
     'soapenv:Envelope': {
       'soapenv:Header': { DebuggingInfo: { debugLog: log } },
       'soapenv:Body': {
-        executeAnonymousResponse: { result: runtimeProblem }
-      }
-    }
+        executeAnonymousResponse: { result: runtimeProblem },
+      },
+    },
   };
 
   const successfulResponse = `Compiled successfully.\nExecuted successfully.\n\n${log}\n`;
-  const compileResponse =
-    'Error: Line: 11, Column: 1\nError: problem compiling\n\n';
+  const compileResponse = 'Error: Line: 11, Column: 1\nError: problem compiling\n\n';
   const runtimeResponse = `Compiled successfully.\nError: problem at runtime\nError: Issue in mock file\n\n${log}\n`;
   const TEST_USERNAME = 'test@org.com';
 
@@ -100,9 +98,7 @@ describe('force:apex:execute', () => {
     sandboxStub = createSandbox();
 
     sandboxStub.stub(Org, 'create').resolves(Org.prototype);
-    sandboxStub
-      .stub(Org.prototype, 'getConnection')
-      .returns(Connection.prototype);
+    sandboxStub.stub(Org.prototype, 'getConnection').returns(Connection.prototype);
     sandboxStub.stub(Org.prototype, 'getUsername').returns(TEST_USERNAME);
     sandboxStub.stub(Org.prototype, 'getOrgId').returns('abc123');
   });
@@ -113,25 +109,14 @@ describe('force:apex:execute', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .withConnectionRequest(() => {
-      return Promise.resolve(soapResponse);
-    })
-    .stub(
-      ExecuteService.prototype,
-      'readApexFile',
-      () => 'System.assert(true);'
-    )
+    .withConnectionRequest(() => Promise.resolve(soapResponse))
+    .stub(ExecuteService.prototype, 'readApexFile', () => 'System.assert(true);')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
-    .command([
-      'force:apex:execute',
-      '--apexcodefile',
-      path.join('Users', 'test', 'path', 'to', 'file'),
-      '--json'
-    ])
-    .it('runs command with filepath flag and successful result', ctx => {
+    .command(['force:apex:execute', '--apexcodefile', path.join('Users', 'test', 'path', 'to', 'file'), '--json'])
+    .it('runs command with filepath flag and successful result', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       const resultJSON = JSON.parse(result);
@@ -143,25 +128,14 @@ describe('force:apex:execute', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .withConnectionRequest(() => {
-      return Promise.resolve(soapResponse);
-    })
-    .stub(
-      ExecuteService.prototype,
-      'getUserInput',
-      () => 'System.assert(true);'
-    )
+    .withConnectionRequest(() => Promise.resolve(soapResponse))
+    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true);')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
-    .command([
-      'force:apex:execute',
-      '--targetusername',
-      'test@org.com',
-      '--json'
-    ])
-    .it('runs default command with json flag and successful result', ctx => {
+    .command(['force:apex:execute', '--targetusername', 'test@org.com', '--json'])
+    .it('runs default command with json flag and successful result', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       const resultJSON = JSON.parse(result);
@@ -173,21 +147,14 @@ describe('force:apex:execute', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .withConnectionRequest(() => {
-      return Promise.resolve(soapCompileProblem);
-    })
+    .withConnectionRequest(() => Promise.resolve(soapCompileProblem))
     .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
-    .command([
-      'force:apex:execute',
-      '--targetusername',
-      'test@org.com',
-      '--json'
-    ])
-    .it('runs default command with json flag and compile problem', ctx => {
+    .command(['force:apex:execute', '--targetusername', 'test@org.com', '--json'])
+    .it('runs default command with json flag and compile problem', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       const resultJSON = JSON.parse(result);
@@ -197,16 +164,14 @@ describe('force:apex:execute', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .withConnectionRequest(() => {
-      return Promise.resolve(soapResponse);
-    })
+    .withConnectionRequest(() => Promise.resolve(soapResponse))
     .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
-    .it('runs default command successfully with human readable output', ctx => {
+    .it('runs default command successfully with human readable output', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       expect(result).to.eql(successfulResponse);
@@ -214,41 +179,31 @@ describe('force:apex:execute', () => {
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .withConnectionRequest(() => {
-      return Promise.resolve(soapCompileProblem);
-    })
+    .withConnectionRequest(() => Promise.resolve(soapCompileProblem))
     .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
-    .it(
-      'runs default command with compile issue in human readable output',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        expect(result).to.eql(compileResponse);
-      }
-    );
+    .it('runs default command with compile issue in human readable output', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      expect(result).to.eql(compileResponse);
+    });
 
   test
     .withOrg({ username: 'test@org.com' }, true)
-    .withConnectionRequest(() => {
-      return Promise.resolve(soapRuntimeProblem);
-    })
+    .withConnectionRequest(() => Promise.resolve(soapRuntimeProblem))
     .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
-    .it(
-      'runs default command with runtime issue in human readable output',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        expect(result).to.eql(runtimeResponse);
-      }
-    );
+    .it('runs default command with runtime issue in human readable output', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      expect(result).to.eql(runtimeResponse);
+    });
 });

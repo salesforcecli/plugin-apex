@@ -4,11 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {
-  ApexTestResultData,
-  ApexTestResultOutcome,
-  TestResult
-} from '@salesforce/apex-node';
+import { ApexTestResultData, ApexTestResultOutcome, TestResult } from '@salesforce/apex-node';
 
 export type CliJsonFormat = {
   summary: object;
@@ -65,16 +61,10 @@ type CliCoverageResult = {
 };
 
 const skippedProperties = ['skipRate', 'coveredLines', 'totalLines'];
-const timeProperties = [
-  'testExecutionTimeInMs',
-  'testTotalTimeInMs',
-  'commandTimeInMs'
-];
+const timeProperties = ['testExecutionTimeInMs', 'testTotalTimeInMs', 'commandTimeInMs'];
 
 export class JsonReporter {
-  public format(
-    result: TestResult
-  ): {
+  public format(result: TestResult): {
     summary: object;
     tests: CliTestResult[];
     coverage?: CliCoverageResult;
@@ -84,9 +74,9 @@ export class JsonReporter {
       tests: this.formatTestResults(result.tests),
       ...(result.codecoverage
         ? {
-            coverage: this.formatCoverage(result)
+            coverage: this.formatCoverage(result),
           }
-        : {})
+        : {}),
     };
   }
 
@@ -109,27 +99,23 @@ export class JsonReporter {
     return summary;
   }
 
-  private formatTestResults(
-    testResults: ApexTestResultData[]
-  ): CliTestResult[] {
-    return testResults.map(test => {
-      return {
-        Id: test.id,
-        QueueItemId: test.queueItemId,
-        StackTrace: test.stackTrace,
-        Message: test.message,
-        AsyncApexJobId: test.asyncApexJobId,
-        MethodName: test.methodName,
-        Outcome: test.outcome,
-        ApexClass: {
-          Id: test.apexClass.id,
-          Name: test.apexClass.name,
-          NamespacePrefix: test.apexClass.namespacePrefix
-        },
-        RunTime: test.runTime,
-        FullName: test.fullName
-      };
-    }) as CliTestResult[];
+  private formatTestResults(testResults: ApexTestResultData[]): CliTestResult[] {
+    return testResults.map((test) => ({
+      Id: test.id,
+      QueueItemId: test.queueItemId,
+      StackTrace: test.stackTrace,
+      Message: test.message,
+      AsyncApexJobId: test.asyncApexJobId,
+      MethodName: test.methodName,
+      Outcome: test.outcome,
+      ApexClass: {
+        Id: test.apexClass.id,
+        Name: test.apexClass.name,
+        NamespacePrefix: test.apexClass.namespacePrefix,
+      },
+      RunTime: test.runTime,
+      FullName: test.fullName,
+    })) as CliTestResult[];
   }
 
   private formatCoverage(testResult: TestResult): CliCoverageResult {
@@ -140,15 +126,15 @@ export class JsonReporter {
         totalLines: testResult.summary.totalLines,
         coveredLines: testResult.summary.coveredLines,
         orgWideCoverage: testResult.summary.orgWideCoverage,
-        testRunCoverage: testResult.summary.testRunCoverage
-      }
+        testRunCoverage: testResult.summary.testRunCoverage,
+      },
     } as CliCoverageResult;
 
     if (testResult.codecoverage) {
-      formattedCov.coverage = testResult.codecoverage.map(cov => {
+      formattedCov.coverage = testResult.codecoverage.map((cov) => {
         const lines: { [key: number]: number } = {};
-        cov.coveredLines.forEach(covLine => (lines[covLine] = 1));
-        cov.uncoveredLines.forEach(uncovLine => (lines[uncovLine] = 0));
+        cov.coveredLines.forEach((covLine) => (lines[covLine] = 1));
+        cov.uncoveredLines.forEach((uncovLine) => (lines[uncovLine] = 0));
 
         return {
           id: cov.apexId,
@@ -156,25 +142,23 @@ export class JsonReporter {
           totalLines: cov.numLinesCovered + cov.numLinesUncovered,
           lines,
           totalCovered: cov.numLinesCovered,
-          coveredPercent: parseInt(cov.percentage)
+          coveredPercent: parseInt(cov.percentage),
         } as ClassCoverage;
       });
 
-      testResult.tests.forEach(test => {
+      testResult.tests.forEach((test) => {
         if (test.perClassCoverage) {
-          test.perClassCoverage.forEach(perClassCov => {
+          test.perClassCoverage.forEach((perClassCov) => {
             formattedCov.records.push({
               ApexTestClass: { Id: test.id, Name: test.apexClass.name },
-              ...(perClassCov.coverage
-                ? { Coverage: perClassCov.coverage }
-                : {}),
+              ...(perClassCov.coverage ? { Coverage: perClassCov.coverage } : {}),
               TestMethodName: test.methodName,
               NumLinesCovered: perClassCov.numLinesCovered,
               ApexClassOrTrigger: {
                 Id: perClassCov.apexClassOrTriggerId,
-                Name: perClassCov.apexClassOrTriggerName
+                Name: perClassCov.apexClassOrTriggerName,
               },
-              NumLinesUncovered: perClassCov.numLinesUncovered
+              NumLinesUncovered: perClassCov.numLinesUncovered,
             } as PerClassCoverage);
           });
         }

@@ -27,7 +27,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'list', [
   'sizeColHeader',
   'statusColHeader',
   'timeColHeader',
-  'userColHeader'
+  'userColHeader',
 ]);
 
 export default class List extends SfdxCommand {
@@ -39,22 +39,19 @@ export default class List extends SfdxCommand {
   );
 
   public static longDescription = messages.getMessage('longDescription');
-  public static examples = [
-    `$ sfdx force:apex:log:list`,
-    `$ sfdx force:apex:log:list -u me@my.org`
-  ];
+  public static examples = ['$ sfdx force:apex:log:list', '$ sfdx force:apex:log:list -u me@my.org'];
 
   public static readonly flagsConfig = {
     json: flags.boolean({
-      description: messages.getMessage('jsonDescription')
+      description: messages.getMessage('jsonDescription'),
     }),
     loglevel: flags.enum({
       description: messages.getMessage('logLevelDescription'),
       longDescription: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
-      options: logLevels
+      options: logLevels,
     }),
-    apiversion: flags.builtin()
+    apiversion: flags.builtin(),
   };
 
   public async run(): Promise<LogRecord[]> {
@@ -97,7 +94,7 @@ export default class List extends SfdxCommand {
         operation: logRecord.Operation,
         request: logRecord.Request,
         time: logRecord.StartTime,
-        status: logRecord.Status
+        status: logRecord.Status,
       };
       logRowArray.push(row);
     }
@@ -105,50 +102,50 @@ export default class List extends SfdxCommand {
     const tableResult = tb.createTable(logRowArray, [
       {
         key: 'app',
-        label: messages.getMessage('appColHeader')
+        label: messages.getMessage('appColHeader'),
       },
       {
         key: 'duration',
-        label: messages.getMessage('durationColHeader')
+        label: messages.getMessage('durationColHeader'),
       },
       {
         key: 'id',
-        label: messages.getMessage('idColHeader')
+        label: messages.getMessage('idColHeader'),
       },
       {
         key: 'location',
-        label: messages.getMessage('locationColHeader')
+        label: messages.getMessage('locationColHeader'),
       },
       {
         key: 'size',
-        label: messages.getMessage('sizeColHeader')
+        label: messages.getMessage('sizeColHeader'),
       },
       {
         key: 'user',
-        label: messages.getMessage('userColHeader')
+        label: messages.getMessage('userColHeader'),
       },
       {
         key: 'operation',
-        label: messages.getMessage('operationColHeader')
+        label: messages.getMessage('operationColHeader'),
       },
       {
         key: 'request',
-        label: messages.getMessage('requestColHeader')
+        label: messages.getMessage('requestColHeader'),
       },
       {
         key: 'time',
-        label: messages.getMessage('timeColHeader')
+        label: messages.getMessage('timeColHeader'),
       },
       {
         key: 'status',
-        label: messages.getMessage('statusColHeader')
-      }
+        label: messages.getMessage('statusColHeader'),
+      },
     ]);
     return tableResult;
   }
 
   private cleanRecords(logRecords: LogRecord[]): LogRecord[] {
-    return logRecords.map(record => {
+    return logRecords.map((record) => {
       record.StartTime = this.formatTime(record.StartTime);
       return record;
     });

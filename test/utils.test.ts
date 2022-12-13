@@ -4,8 +4,8 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { colorLogs } from '../src/utils';
 import { expect } from 'chai';
+import { colorLogs } from '../src/utils';
 
 describe('Colorize Logs', async () => {
   it('should color time/date format correctly', async () => {
@@ -28,9 +28,7 @@ describe('Colorize Logs', async () => {
   it('should color debug message correctly', async () => {
     const testData = 'SYSTEM,DEBUG;VALIDATION';
     const coloredData = colorLogs(testData);
-    expect(coloredData).to.eql(
-      'SYSTEM,\u001b[1m\u001b[36mDEBUG\u001b[39m\u001b[22m;VALIDATION'
-    );
+    expect(coloredData).to.eql('SYSTEM,\u001b[1m\u001b[36mDEBUG\u001b[39m\u001b[22m;VALIDATION');
   });
 
   it('should color basic strings correctly', async () => {
@@ -42,16 +40,12 @@ describe('Colorize Logs', async () => {
   it('should color info text correctly', async () => {
     const testData = 'APEX_PROFILING,INFO;';
     const coloredData = colorLogs(testData);
-    expect(coloredData).to.eql(
-      'APEX_PROFILING,\u001b[1m\u001b[32mINFO\u001b[39m\u001b[22m;'
-    );
+    expect(coloredData).to.eql('APEX_PROFILING,\u001b[1m\u001b[32mINFO\u001b[39m\u001b[22m;');
   });
 
   it('should color warn text correctly', async () => {
     const testData = 'APEX_PROFILING,WARN;';
     const coloredData = colorLogs(testData);
-    expect(coloredData).to.eql(
-      'APEX_PROFILING,\u001b[1m\u001b[33mWARN\u001b[39m\u001b[22m;'
-    );
+    expect(coloredData).to.eql('APEX_PROFILING,\u001b[1m\u001b[33mWARN\u001b[39m\u001b[22m;');
   });
 });

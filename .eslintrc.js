@@ -6,4 +6,21 @@
  */
 module.exports = {
   extends: ['eslint-config-salesforce-typescript', 'eslint-config-salesforce-license'],
+  rules: {
+    '@typescript-eslint/member-ordering': 'warn',
+    '@typescript-eslint/no-unsafe-assignment': 'warn',
+    '@typescript-eslint/restrict-template-expressions': 'warn',
+    '@typescript-eslint/no-misused-promises': 'warn',
+    '@typescript-eslint/no-unsafe-call': 'warn',
+    '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+    '@typescript-eslint/ban-types': 'warn',
+    'class-methods-use-this': 'warn',
+    'no-prototype-builtins': 'warn',
+    'no-case-declarations': 'warn',
+    radix: 'warn',
+    '@typescript-eslint/switch-exhaustiveness-check': 'warn',
+    '@typescript-eslint/no-unsafe-argument': 'warn',
+  },
 };
