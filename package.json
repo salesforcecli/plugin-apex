@@ -11,7 +11,7 @@
     "@salesforce/command": "^5.1.0",
     "@salesforce/core": "^3.23.3",
     "chalk": "^4.1.0",
-    "tslib": "^1"
+    "tslib": "^2"
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^3.2.11",
