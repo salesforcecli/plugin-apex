@@ -176,7 +176,7 @@ describe('force:apex:execute', () => {
     .withConnectionRequest(() => {
       return Promise.resolve(soapCompileProblem);
     })
-    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
+    .stub(ExecuteService.prototype, 'getUserInput', () => 'ThisStatementShouldntCompile')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
@@ -188,6 +188,7 @@ describe('force:apex:execute', () => {
       '--json'
     ])
     .it('runs default command with json flag and compile problem', ctx => {
+      expect(process.exitCode).to.eql(1);
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       const resultJSON = JSON.parse(result);
@@ -200,7 +201,7 @@ describe('force:apex:execute', () => {
     .withConnectionRequest(() => {
       return Promise.resolve(soapResponse);
     })
-    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
+    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true);')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
@@ -217,15 +218,18 @@ describe('force:apex:execute', () => {
     .withConnectionRequest(() => {
       return Promise.resolve(soapCompileProblem);
     })
-    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
+    .stub(ExecuteService.prototype, 'getUserInput', () => 'ThisStatementShouldntCompile')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
+    .stderr()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
     .it(
       'runs default command with compile issue in human readable output',
       ctx => {
+        expect(process.exitCode).to.eql(1);
+        expect(ctx.stderr).to.contain("Compilation failed.");
         const result = ctx.stdout;
         expect(result).to.not.be.empty;
         expect(result).to.eql(compileResponse);
@@ -237,15 +241,18 @@ describe('force:apex:execute', () => {
     .withConnectionRequest(() => {
       return Promise.resolve(soapRuntimeProblem);
     })
-    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(true)')
+    .stub(ExecuteService.prototype, 'getUserInput', () => 'System.assert(false);')
     .stub(ExecuteService.prototype, 'buildExecRequest', () => {
       'fakeData';
     })
     .stdout()
+    .stderr()
     .command(['force:apex:execute', '--targetusername', 'test@org.com'])
     .it(
       'runs default command with runtime issue in human readable output',
       ctx => {
+        expect(process.exitCode).to.eql(1);
+        expect(ctx.stderr).to.contain("Execution failed.");
         const result = ctx.stdout;
         expect(result).to.not.be.empty;
         expect(result).to.eql(runtimeResponse);
