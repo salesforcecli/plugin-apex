@@ -58,20 +58,25 @@
     "/lib",
     "/messages",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json",
-    "yarn.lock"
+    "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/forcedotcom/salesforcedx-apex",
+  "homepage": "https://github.com/salesforcecli/plugin-apex",
   "keywords": [
     "force",
     "salesforce",
     "sfdx",
     "sfdx-plugin",
-    "apex"
+    "sf-plugin",
+    "apex",
+    "sf"
   ],
   "license": "BSD-3-Clause",
   "oclif": {
     "commands": "./lib/commands",
+    "additionalHelpFlags": [
+      "-h"
+    ],
+    "bin": "sfdx",
     "topics": {
       "force": {
         "external": true,
@@ -85,19 +90,12 @@
               },
               "test": {
                 "description": "run Apex tests and retrieve test reports"
-              },
-              "class": {
-                "external": true
-              },
-              "trigger": {
-                "external": true
               }
             }
           }
         }
       }
     },
-    "bin": "sfdx",
     "devPlugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-command-snapshot",
