@@ -10,22 +10,13 @@ import {
   TapReporter,
   TestService,
   TestResult,
-  ApexTestRunResultStatus
+  ApexTestRunResultStatus,
 } from '@salesforce/apex-node';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
-import {
-  JsonReporter,
-  CliJsonFormat,
-  buildOutputDirConfig
-} from '../../../../reporters';
-import {
-  buildDescription,
-  logLevels,
-  resultFormat,
-  FAILURE_EXIT_CODE
-} from '../../../../utils';
+import { JsonReporter, CliJsonFormat, buildOutputDirConfig } from '../../../../reporters';
+import { buildDescription, logLevels, resultFormat, FAILURE_EXIT_CODE } from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
@@ -44,7 +35,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'report', [
   'testRunIdDescription',
   'verboseDescription',
   'waitDescription',
-  'warningMessage'
+  'warningMessage',
 ]);
 
 export default class Report extends SfdxCommand {
@@ -57,48 +48,48 @@ export default class Report extends SfdxCommand {
 
   public static longDescription = messages.getMessage('longDescription');
   public static examples = [
-    `$ sfdx force:apex:test:report -i <test run id>`,
-    `$ sfdx force:apex:test:report -i <test run id> -r junit`,
-    `$ sfdx force:apex:test:report -i <test run id> -c --json`,
-    `$ sfdx force:apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg`
+    '$ sfdx force:apex:test:report -i <test run id>',
+    '$ sfdx force:apex:test:report -i <test run id> -r junit',
+    '$ sfdx force:apex:test:report -i <test run id> -c --json',
+    '$ sfdx force:apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
   ];
 
   public static readonly flagsConfig = {
     testrunid: flags.string({
       char: 'i',
       description: messages.getMessage('testRunIdDescription'),
-      required: true
+      required: true,
     }),
     json: flags.boolean({
-      description: messages.getMessage('jsonDescription')
+      description: messages.getMessage('jsonDescription'),
     }),
     loglevel: flags.enum({
       description: messages.getMessage('logLevelDescription'),
       longDescription: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
-      options: logLevels
+      options: logLevels,
     }),
     apiversion: flags.builtin(),
     codecoverage: flags.boolean({
       char: 'c',
-      description: messages.getMessage('codeCoverageDescription')
+      description: messages.getMessage('codeCoverageDescription'),
     }),
     outputdir: flags.string({
       char: 'd',
-      description: messages.getMessage('outputDirectoryDescription')
+      description: messages.getMessage('outputDirectoryDescription'),
     }),
     resultformat: flags.enum({
       char: 'r',
       description: messages.getMessage('resultFormatLongDescription'),
-      options: resultFormat
+      options: resultFormat,
     }),
     wait: flags.string({
       char: 'w',
-      description: messages.getMessage('waitDescription')
+      description: messages.getMessage('waitDescription'),
     }),
     verbose: flags.builtin({
-      description: messages.getMessage('verboseDescription')
-    })
+      description: messages.getMessage('verboseDescription'),
+    }),
   };
 
   public async run(): Promise<AnyJson> {
@@ -107,10 +98,8 @@ export default class Report extends SfdxCommand {
     }
 
     // add listener for errors
-    process.on('uncaughtException', err => {
-      const formattedErr = this.formatError(
-        new SfError(messages.getMessage('apexLibErr', [err.message]))
-      );
+    process.on('uncaughtException', (err) => {
+      const formattedErr = this.formatError(new SfError(messages.getMessage('apexLibErr', [err.message])));
       this.ux.error(...formattedErr);
       process.exit();
     });
@@ -121,10 +110,7 @@ export default class Report extends SfdxCommand {
     // org is guaranteed by requiresUsername field
     const conn = this.org.getConnection();
     const testService = new TestService(conn);
-    const result = await testService.reportAsyncResults(
-      this.flags.testrunid,
-      this.flags.codecoverage
-    );
+    const result = await testService.reportAsyncResults(this.flags.testrunid, this.flags.codecoverage);
     const jsonOutput = this.formatResultInJson(result);
 
     if (this.flags.outputdir) {
@@ -136,11 +122,7 @@ export default class Report extends SfdxCommand {
         true
       );
 
-      await testService.writeResultFiles(
-        result,
-        outputDirConfig,
-        this.flags.codecoverage
-      );
+      await testService.writeResultFiles(result, outputDirConfig, this.flags.codecoverage);
     }
 
     try {
@@ -159,7 +141,7 @@ export default class Report extends SfdxCommand {
           if (!this.flags.json) {
             this.ux.logJson({
               status: process.exitCode,
-              result: jsonOutput
+              result: jsonOutput,
             });
           }
           break;
@@ -168,19 +150,13 @@ export default class Report extends SfdxCommand {
       }
     } catch (e) {
       this.ux.logJson(jsonOutput);
-      const msg = messages.getMessage('testResultProcessErr', [
-        (e as Error).message
-      ]);
+      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
       this.ux.error(msg);
     }
     return jsonOutput as AnyJson;
   }
 
-  private logHuman(
-    result: TestResult,
-    detailedCoverage: boolean,
-    outputDir: string
-  ): void {
+  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir: string): void {
     if (outputDir) {
       this.ux.log(messages.getMessage('outputDirHint', [outputDir]));
     }
@@ -206,9 +182,7 @@ export default class Report extends SfdxCommand {
       return reporter.format(result);
     } catch (e) {
       this.ux.logJson(result);
-      const msg = messages.getMessage('testResultProcessErr', [
-        (e as Error).message
-      ]);
+      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
       this.ux.error(msg);
       throw e;
     }
