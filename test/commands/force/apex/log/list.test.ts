@@ -18,12 +18,12 @@ const rawLogResult = {
       LogLength: 450,
       LogUser: {
         Name: 'Test User',
-        attributes: {}
+        attributes: {},
       },
       Operation: 'API',
       Request: 'API',
       StartTime: '2020-10-13T05:39:43.000+0000',
-      Status: 'Assertion Failed'
+      Status: 'Assertion Failed',
     },
     '1': {
       Id: '07L5tgg0005PGdTnFPL',
@@ -33,14 +33,14 @@ const rawLogResult = {
       LogLength: 450,
       LogUser: {
         Name: 'Test User2',
-        attributes: {}
+        attributes: {},
       },
       Operation: 'API',
       Request: 'API',
       StartTime: '2020-10-13T05:39:43.000+0000',
-      Status: 'Successful'
-    }
-  }
+      Status: 'Successful',
+    },
+  },
 };
 
 const cleanResult = {
@@ -54,12 +54,12 @@ const cleanResult = {
       LogLength: 450,
       LogUser: {
         Name: 'Test User',
-        attributes: {}
+        attributes: {},
       },
       Operation: 'API',
       Request: 'API',
       StartTime: '2020-10-13T05:39:43+0000',
-      Status: 'Assertion Failed'
+      Status: 'Assertion Failed',
     },
     {
       Id: '07L5tgg0005PGdTnFPL',
@@ -69,14 +69,14 @@ const cleanResult = {
       LogLength: 450,
       LogUser: {
         Name: 'Test User2',
-        attributes: {}
+        attributes: {},
       },
       Operation: 'API',
       Request: 'API',
       StartTime: '2020-10-13T05:39:43+0000',
-      Status: 'Successful'
-    }
-  ]
+      Status: 'Successful',
+    },
+  ],
 };
 
 const logRecords = [rawLogResult.result[0], rawLogResult.result[1]];
@@ -87,7 +87,7 @@ describe('force:apex:log:list', () => {
     .stub(LogService.prototype, 'getLogRecords', () => logRecords)
     .stdout()
     .command(['force:apex:log:list', '--targetusername', 'test@username.com'])
-    .it('runs default command with cleaned table output', ctx => {
+    .it('runs default command with cleaned table output', (ctx) => {
       let r =
         'APPLICATION  DURATION (MS)  ID                   LOCATION  SIZE (B)  LOG USER    OPERATION  REQUEST  START TIME                STATUS          ';
       r +=
@@ -103,31 +103,18 @@ describe('force:apex:log:list', () => {
     .withOrg({ username: 'test@username.com' }, true)
     .stub(LogService.prototype, 'getLogRecords', () => logRecords)
     .stdout()
-    .command([
-      'force:apex:log:list',
-      '--targetusername',
-      'test@username.com',
-      '--json'
-    ])
-    .it(
-      'should return cleaned log records with json parameter specified',
-      ctx => {
-        const expectedResult = JSON.stringify(cleanResult, null, 2);
-        expect(ctx.stdout).to.equal(`${expectedResult}\n`);
-      }
-    );
+    .command(['force:apex:log:list', '--targetusername', 'test@username.com', '--json'])
+    .it('should return cleaned log records with json parameter specified', (ctx) => {
+      const expectedResult = JSON.stringify(cleanResult, null, 2);
+      expect(ctx.stdout).to.equal(`${expectedResult}\n`);
+    });
 
   test
     .withOrg({ username: 'test@username.com' }, true)
     .stub(LogService.prototype, 'getLogRecords', () => [])
     .stdout()
-    .command([
-      'force:apex:log:list',
-      '--targetusername',
-      'test@username.com',
-      '--json'
-    ])
-    .it('should return json output if no logs were found', ctx => {
+    .command(['force:apex:log:list', '--targetusername', 'test@username.com', '--json'])
+    .it('should return json output if no logs were found', (ctx) => {
       const emptyResult = JSON.stringify({ status: 0, result: [] }, null, 2);
       expect(ctx.stdout).to.equal(`${emptyResult}\n`);
     });
@@ -137,7 +124,7 @@ describe('force:apex:log:list', () => {
     .stub(LogService.prototype, 'getLogRecords', () => [])
     .stdout()
     .command(['force:apex:log:list', '--targetusername', 'test@username.com'])
-    .it('should correct message if no logs were found', ctx => {
-      expect(ctx.stdout).to.equal(`No debug logs found in org\n`);
+    .it('should correct message if no logs were found', (ctx) => {
+      expect(ctx.stdout).to.equal('No debug logs found in org\n');
     });
 });

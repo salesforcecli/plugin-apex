@@ -25,13 +25,10 @@ export const logLevels = [
   'INFO',
   'WARN',
   'ERROR',
-  'FATAL'
+  'FATAL',
 ];
 
-export function buildDescription(
-  shortDescription: string,
-  longDescription: string
-): string {
+export function buildDescription(shortDescription: string, longDescription: string): string {
   return `${shortDescription}\n${longDescription}`;
 }
 
@@ -43,7 +40,7 @@ const colorMap = new Map([
   [new RegExp(/\b(ERROR|FAILURE|FAIL)\b/g), chalk.bold.red],
   [new RegExp(/\b([a-zA-Z.]*Exception)\b/g), chalk.bold.red],
   [new RegExp(/"[^"]*"/g), chalk.bold.red],
-  [new RegExp(/\b([0-9]+|true|false|null)\b/g), chalk.blueBright]
+  [new RegExp(/\b([0-9]+|true|false|null)\b/g), chalk.blueBright],
 ]);
 
 function replace(regex: RegExp, word: string): string {
@@ -51,9 +48,7 @@ function replace(regex: RegExp, word: string): string {
   if (!color) {
     throw new Error('Error retrieving colors');
   }
-  const result = word.replace(regex, match => {
-    return `${color(match)}`;
-  });
+  const result = word.replace(regex, (match) => `${color(match)}`);
   return result;
 }
 

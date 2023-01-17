@@ -22,7 +22,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'get', [
   'noResultsFound',
   'numberDescription',
   'outputDirDescription',
-  'outputDirLongDescription'
+  'outputDirLongDescription',
 ]);
 
 export default class Get extends SfdxCommand {
@@ -35,38 +35,38 @@ export default class Get extends SfdxCommand {
 
   public static longDescription = messages.getMessage('longDescription');
   public static examples = [
-    `$ sfdx force:apex:log:get -i <log id>`,
-    `$ sfdx force:apex:log:get -i <log id> -u me@my.org`,
-    `$ sfdx force:apex:log:get -n 2 -c`,
-    `$ sfdx force:apex:log:get -d Users/Desktop/logs -n 2`
+    '$ sfdx force:apex:log:get -i <log id>',
+    '$ sfdx force:apex:log:get -i <log id> -u me@my.org',
+    '$ sfdx force:apex:log:get -n 2 -c',
+    '$ sfdx force:apex:log:get -d Users/Desktop/logs -n 2',
   ];
 
   public static readonly flagsConfig = {
     json: flags.boolean({
-      description: messages.getMessage('jsonDescription')
+      description: messages.getMessage('jsonDescription'),
     }),
     loglevel: flags.enum({
       description: messages.getMessage('logLevelDescription'),
       longDescription: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
-      options: logLevels
+      options: logLevels,
     }),
     apiversion: flags.builtin(),
     logid: flags.id({
       char: 'i',
-      description: messages.getMessage('logIDDescription')
+      description: messages.getMessage('logIDDescription'),
     }),
     number: flags.number({
       char: 'n',
       min: 1,
       max: 25,
-      description: messages.getMessage('numberDescription')
+      description: messages.getMessage('numberDescription'),
     }),
     outputdir: flags.string({
       char: 'd',
       description: messages.getMessage('outputDirDescription'),
-      longDescription: messages.getMessage('outputDirLongDescription')
-    })
+      longDescription: messages.getMessage('outputDirLongDescription'),
+    }),
   };
 
   public async run(): Promise<AnyJson> {
@@ -84,7 +84,7 @@ export default class Get extends SfdxCommand {
       const logResults = await logService.getLogs({
         logId: this.flags.logid,
         numberOfLogs: this.flags.number,
-        outputDir: this.flags.outputdir
+        outputDir: this.flags.outputdir,
       });
 
       if (logResults.length === 0) {
@@ -94,9 +94,9 @@ export default class Get extends SfdxCommand {
 
       if (this.flags.outputdir) {
         this.ux.log(`Log files written to ${this.flags.outputdir}`);
-        return logResults.map(logResult => logResult.log);
+        return logResults.map((logResult) => logResult.log);
       }
-      const parsedLogs = logResults.map(logResult => {
+      const parsedLogs = logResults.map((logResult) => {
         const colored = colorLogs(logResult.log);
         this.ux.log(colored);
         return { log: logResult.log };

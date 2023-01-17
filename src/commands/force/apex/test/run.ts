@@ -13,22 +13,13 @@ import {
   TestResult,
   TestLevel,
   ApexTestRunResultStatus,
-  TestRunIdResult
+  TestRunIdResult,
 } from '@salesforce/apex-node';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { Messages, SfError } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
-import {
-  buildOutputDirConfig,
-  CliJsonFormat,
-  JsonReporter
-} from '../../../../reporters';
-import {
-  buildDescription,
-  logLevels,
-  resultFormat,
-  FAILURE_EXIT_CODE
-} from '../../../../utils';
+import { buildOutputDirConfig, CliJsonFormat, JsonReporter } from '../../../../reporters';
+import { buildDescription, logLevels, resultFormat, FAILURE_EXIT_CODE } from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
@@ -57,14 +48,10 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
   'testsDescription',
   'verboseDescription',
   'waitDescription',
-  'warningMessage'
+  'warningMessage',
 ]);
 
-export const TestLevelValues = [
-  'RunLocalTests',
-  'RunAllTestsInOrg',
-  'RunSpecifiedTests'
-];
+export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
 export default class Run extends SfdxCommand {
   protected static requiresUsername = true;
   protected cancellationTokenSource = new CancellationTokenSource();
@@ -76,70 +63,70 @@ export default class Run extends SfdxCommand {
 
   public static longDescription = messages.getMessage('longDescription');
   public static examples = [
-    `$ sfdx force:apex:test:run`,
-    `$ sfdx force:apex:test:run -n "MyClassTest,MyOtherClassTest" -r human`,
-    `$ sfdx force:apex:test:run -s "MySuite,MyOtherSuite" -c -v --json`,
-    `$ sfdx force:apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human`,
-    `$ sfdx force:apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org`
+    '$ sfdx force:apex:test:run',
+    '$ sfdx force:apex:test:run -n "MyClassTest,MyOtherClassTest" -r human',
+    '$ sfdx force:apex:test:run -s "MySuite,MyOtherSuite" -c -v --json',
+    '$ sfdx force:apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human',
+    '$ sfdx force:apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org',
   ];
 
   public static readonly flagsConfig = {
     json: flags.boolean({
-      description: messages.getMessage('jsonDescription')
+      description: messages.getMessage('jsonDescription'),
     }),
     loglevel: flags.enum({
       description: messages.getMessage('logLevelDescription'),
       longDescription: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
-      options: logLevels
+      options: logLevels,
     }),
     apiversion: flags.builtin(),
     codecoverage: flags.boolean({
       char: 'c',
-      description: messages.getMessage('codeCoverageDescription')
+      description: messages.getMessage('codeCoverageDescription'),
     }),
     outputdir: flags.string({
       char: 'd',
-      description: messages.getMessage('outputDirectoryDescription')
+      description: messages.getMessage('outputDirectoryDescription'),
     }),
     testlevel: flags.enum({
       char: 'l',
       description: messages.getMessage('testLevelDescription'),
-      options: TestLevelValues
+      options: TestLevelValues,
     }),
     classnames: flags.string({
       char: 'n',
-      description: messages.getMessage('classNamesDescription')
+      description: messages.getMessage('classNamesDescription'),
     }),
     resultformat: flags.enum({
       char: 'r',
       description: messages.getMessage('resultFormatLongDescription'),
-      options: resultFormat
+      options: resultFormat,
     }),
     suitenames: flags.string({
       char: 's',
-      description: messages.getMessage('suiteNamesDescription')
+      description: messages.getMessage('suiteNamesDescription'),
     }),
     tests: flags.string({
       char: 't',
-      description: messages.getMessage('testsDescription')
+      description: messages.getMessage('testsDescription'),
     }),
     wait: flags.string({
       char: 'w',
-      description: messages.getMessage('waitDescription')
+      description: messages.getMessage('waitDescription'),
     }),
     synchronous: flags.boolean({
       char: 'y',
-      description: messages.getMessage('synchronousDescription')
+      description: messages.getMessage('synchronousDescription'),
     }),
     verbose: flags.builtin({
-      description: messages.getMessage('verboseDescription')
+      description: messages.getMessage('verboseDescription'),
     }),
     detailedcoverage: flags.boolean({
       char: 'v',
       description: messages.getMessage('detailedCoverageDescription'),
-      dependsOn: ['codecoverage']
-    })
+      dependsOn: ['codecoverage'],
+    }),
   };
 
   public async run(): Promise<AnyJson> {
@@ -149,10 +136,8 @@ export default class Run extends SfdxCommand {
     }
 
     // add listener for errors
-    process.on('uncaughtException', err => {
-      const formattedErr = this.formatError(
-        new SfError(messages.getMessage('apexLibErr', [err.message]))
-      );
+    process.on('uncaughtException', (err) => {
+      const formattedErr = this.formatError(new SfError(messages.getMessage('apexLibErr', [err.message])));
       this.ux.error(...formattedErr);
       process.exit();
     });
@@ -178,11 +163,7 @@ export default class Run extends SfdxCommand {
     // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
     // Address with W-9163533
     if (this.flags.synchronous && testLevel === TestLevel.RunSpecifiedTests) {
-      const payload = await testService.buildSyncPayload(
-        testLevel,
-        this.flags.tests,
-        this.flags.classnames
-      );
+      const payload = await testService.buildSyncPayload(testLevel, this.flags.tests, this.flags.classnames);
       payload.skipCodeCoverage = this.flags.codecoverage ? false : true;
       result = (await testService.runTestSynchronous(
         payload,
@@ -223,28 +204,19 @@ export default class Run extends SfdxCommand {
         this.flags.synchronous
       );
 
-      await testService.writeResultFiles(
-        result,
-        outputDirConfig,
-        this.flags.codecoverage
-      );
+      await testService.writeResultFiles(result, outputDirConfig, this.flags.codecoverage);
     }
 
     try {
       if (
         result.hasOwnProperty('summary') &&
-        (result as TestResult).summary.outcome ===
-          ApexTestRunResultStatus.Failed
+        (result as TestResult).summary.outcome === ApexTestRunResultStatus.Failed
       ) {
         process.exitCode = FAILURE_EXIT_CODE;
       }
       switch (this.flags.resultformat) {
         case 'human':
-          this.logHuman(
-            result as TestResult,
-            this.flags.detailedcoverage,
-            this.flags.outputdir
-          );
+          this.logHuman(result as TestResult, this.flags.detailedcoverage, this.flags.outputdir);
           break;
         case 'tap':
           this.logTap(result as TestResult);
@@ -257,32 +229,21 @@ export default class Run extends SfdxCommand {
           if (!this.flags.json) {
             this.ux.logJson({
               status: process.exitCode,
-              result: this.formatResultInJson(result)
+              result: this.formatResultInJson(result),
             });
           }
           break;
         default:
           if (this.flags.synchronous || this.flags.wait) {
-            this.logHuman(
-              result as TestResult,
-              this.flags.detailedcoverage,
-              this.flags.outputdir
-            );
+            this.logHuman(result as TestResult, this.flags.detailedcoverage, this.flags.outputdir);
           } else {
             const id = (result as TestRunIdResult).testRunId;
-            this.ux.log(
-              messages.getMessage('runTestReportCommand', [
-                id,
-                this.org?.getUsername()
-              ])
-            );
+            this.ux.log(messages.getMessage('runTestReportCommand', [id, this.org?.getUsername()]));
           }
       }
     } catch (e) {
       this.ux.logJson(result);
-      const msg = messages.getMessage('testResultProcessErr', [
-        (e as Error).message
-      ]);
+      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
       this.ux.error(msg);
     }
 
@@ -291,24 +252,19 @@ export default class Run extends SfdxCommand {
 
   public async validateFlags(): Promise<void> {
     if (this.flags.codecoverage && !this.flags.resultformat) {
-      return Promise.reject(
-        new Error(messages.getMessage('missingReporterErr'))
-      );
+      return Promise.reject(new Error(messages.getMessage('missingReporterErr')));
     }
 
     if (
       (this.flags.classnames && (this.flags.suitenames || this.flags.tests)) ||
       (this.flags.suitenames && this.flags.tests)
     ) {
-      return Promise.reject(
-        new Error(messages.getMessage('classSuiteTestErr'))
-      );
+      return Promise.reject(new Error(messages.getMessage('classSuiteTestErr')));
     }
 
     if (
       this.flags.synchronous &&
-      (this.flags.suitenames ||
-        (this.flags.classnames && this.flags.classnames.split(',').length > 1))
+      (this.flags.suitenames || (this.flags.classnames && this.flags.classnames.split(',').length > 1))
     ) {
       return Promise.reject(new Error(messages.getMessage('syncClassErr')));
     }
@@ -326,11 +282,7 @@ export default class Run extends SfdxCommand {
     let testLevel: TestLevel;
     if (this.flags.testlevel) {
       testLevel = this.flags.testlevel;
-    } else if (
-      this.flags.classnames ||
-      this.flags.suitenames ||
-      this.flags.tests
-    ) {
+    } else if (this.flags.classnames || this.flags.suitenames || this.flags.tests) {
       testLevel = TestLevel.RunSpecifiedTests;
     } else {
       testLevel = TestLevel.RunLocalTests;
@@ -339,11 +291,7 @@ export default class Run extends SfdxCommand {
     return testLevel;
   }
 
-  private logHuman(
-    result: TestResult,
-    detailedCoverage: boolean,
-    outputDir: string
-  ): void {
+  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir: string): void {
     if (outputDir) {
       this.ux.log(messages.getMessage('outputDirHint', [outputDir]));
     }
@@ -363,19 +311,13 @@ export default class Run extends SfdxCommand {
     this.ux.log(reporter.format(result));
   }
 
-  private formatResultInJson(
-    result: TestResult | TestRunIdResult
-  ): CliJsonFormat | TestRunIdResult {
+  private formatResultInJson(result: TestResult | TestRunIdResult): CliJsonFormat | TestRunIdResult {
     try {
       const reporter = new JsonReporter();
-      return result.hasOwnProperty('summary')
-        ? reporter.format(result as TestResult)
-        : (result as TestRunIdResult);
+      return result.hasOwnProperty('summary') ? reporter.format(result as TestResult) : (result as TestRunIdResult);
     } catch (e) {
       this.ux.logJson(result);
-      const msg = messages.getMessage('testResultProcessErr', [
-        (e as Error).message
-      ]);
+      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
       this.ux.error(msg);
       throw e;
     }
@@ -404,7 +346,7 @@ export default class Run extends SfdxCommand {
       return false;
     }
 
-    //historical expectation to wait for results from a synchronous test run
+    // historical expectation to wait for results from a synchronous test run
     if (this.flags.synchronous && !this.flags.json) {
       return false;
     }

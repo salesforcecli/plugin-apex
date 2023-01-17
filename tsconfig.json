@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@salesforce/dev-config/tsconfig",
+  "extends": "@salesforce/dev-config/tsconfig",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
@@ -17,5 +17,5 @@
     // from the tslib dependency, making our code more efficient
     "importHelpers": true
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*.ts"]
 }

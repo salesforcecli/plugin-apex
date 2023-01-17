@@ -21,7 +21,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'tail', [
   'logLevelDescription',
   'logLevelLongDescription',
   'longDescription',
-  'skipTraceFlagDescription'
+  'skipTraceFlagDescription',
 ]);
 
 export default class Tail extends SfdxCommand {
@@ -34,34 +34,34 @@ export default class Tail extends SfdxCommand {
 
   public static longDescription = messages.getMessage('longDescription');
   public static examples = [
-    `$ sfdx force:apex:log:tail`,
-    `$ sfdx force:apex:log:tail --debuglevel MyDebugLevel`,
-    `$ sfdx force:apex:log:tail -c -s`
+    '$ sfdx force:apex:log:tail',
+    '$ sfdx force:apex:log:tail --debuglevel MyDebugLevel',
+    '$ sfdx force:apex:log:tail -c -s',
   ];
 
   public static readonly flagsConfig = {
     json: flags.boolean({
-      description: messages.getMessage('jsonDescription')
+      description: messages.getMessage('jsonDescription'),
     }),
     loglevel: flags.enum({
       description: messages.getMessage('logLevelDescription'),
       longDescription: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
-      options: logLevels
+      options: logLevels,
     }),
     apiversion: flags.builtin(),
     color: flags.boolean({
       char: 'c',
-      description: messages.getMessage('colorDescription')
+      description: messages.getMessage('colorDescription'),
     }),
     debuglevel: flags.string({
       char: 'd',
-      description: messages.getMessage('debugLevelDescription')
+      description: messages.getMessage('debugLevelDescription'),
     }),
     skiptraceflag: flags.boolean({
       char: 's',
-      description: messages.getMessage('skipTraceFlagDescription')
-    })
+      description: messages.getMessage('skipTraceFlagDescription'),
+    }),
   };
 
   public async run(): Promise<void> {
@@ -86,7 +86,7 @@ export default class Tail extends SfdxCommand {
       if (this.flags.json) {
         this.ux.logJson({
           status: process.exitCode,
-          result: fullLog
+          result: fullLog,
         });
       } else {
         const output = this.flags.color ? await colorizeLog(fullLog) : fullLog;

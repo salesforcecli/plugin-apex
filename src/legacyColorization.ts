@@ -15,7 +15,7 @@ const DEFAULT_COLOR_MAP = {
   METHOD_: 'blue',
   SOQL_: 'yellow',
   USER_: 'green',
-  VARIABLE_: 'darkcyan'
+  VARIABLE_: 'darkcyan',
 };
 
 /**
@@ -46,7 +46,7 @@ export async function colorizeLog(log: string): Promise<string> {
 
   return [
     line1,
-    ...(logLines.map(logLine => {
+    ...logLines.map((logLine) => {
       for (const [key, color] of Object.entries(colorMap)) {
         if (logLine.includes(`|${key}`)) {
           const colorFn = chalk.keyword(color);
@@ -61,12 +61,10 @@ export async function colorizeLog(log: string): Promise<string> {
             return colorFn(logLine);
           }
           const first = logLine.indexOf('|', logLine.indexOf('|') + 1);
-          return `${colorFn(
-            logLine.substring(0, first)
-          ) as string}${logLine.substring(first)}`;
+          return `${colorFn(logLine.substring(0, first))}${logLine.substring(first)}`;
         }
       }
       return logLine;
-    }) as string[])
+    }),
   ].join('\n');
 }

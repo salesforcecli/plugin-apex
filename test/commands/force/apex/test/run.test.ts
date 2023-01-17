@@ -5,19 +5,14 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {
-  HumanReporter,
-  JUnitReporter,
-  ResultFormat,
-  TestLevel,
-  TestService
-} from '@salesforce/apex-node';
-import { expect, test } from '@salesforce/command/lib/test';
-import { Connection, Messages, Org, SfProject } from '@salesforce/core';
 import * as fs from 'fs';
 import * as path from 'path';
-import { createSandbox, SinonSandbox, SinonSpy, SinonStub } from 'sinon';
 import * as stream from 'stream';
+import { tmpdir } from 'os';
+import { HumanReporter, JUnitReporter, ResultFormat, TestLevel, TestService } from '@salesforce/apex-node';
+import { expect, test } from '@salesforce/command/lib/test';
+import { Connection, Messages, Org, SfProject } from '@salesforce/core';
+import { createSandbox, SinonSandbox, SinonSpy, SinonStub } from 'sinon';
 import {
   cliJsonResult,
   cliWithCoverage,
@@ -26,8 +21,10 @@ import {
   rawSyncResult,
   runWithCoverage,
   runWithFailures,
-  testRunSimple
+  testRunSimple,
 } from './testData';
+
+const outDir = tmpdir();
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
@@ -56,7 +53,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
   'testsDescription',
   'verboseDescription',
   'waitDescription',
-  'warningMessage'
+  'warningMessage',
 ]);
 
 const SFDX_PROJECT_PATH = 'test-sfdx-project';
@@ -66,7 +63,7 @@ const sfdxProjectJson = {
   packageDirectories: [{ path: 'force-app', default: true }],
   namespace: '',
   sfdcLoginUrl: 'https://login.salesforce.com',
-  sourceApiVersion: '49.0'
+  sourceApiVersion: '49.0',
 };
 
 describe('force:apex:test:run', () => {
@@ -75,15 +72,13 @@ describe('force:apex:test:run', () => {
   beforeEach(async () => {
     sandboxStub = createSandbox();
     sandboxStub.stub(SfProject, 'resolve').returns(
-      Promise.resolve(({
+      Promise.resolve({
         getPath: () => projectPath,
-        resolveProjectConfig: () => sfdxProjectJson
-      } as unknown) as SfProject)
+        resolveProjectConfig: () => sfdxProjectJson,
+      } as unknown as SfProject)
     );
     sandboxStub.stub(Org, 'create').resolves(Org.prototype);
-    sandboxStub
-      .stub(Org.prototype, 'getConnection')
-      .returns(Connection.prototype);
+    sandboxStub.stub(Org.prototype, 'getConnection').returns(Connection.prototype);
     sandboxStub.stub(Org.prototype, 'getUsername').returns(TEST_USERNAME);
     sandboxStub.stub(Org.prototype, 'getOrgId').returns('abc123');
   });
@@ -95,19 +90,13 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--resultformat',
-      'human'
-    ])
-    .it('should return a success human format message with async run', ctx => {
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--resultformat', 'human'])
+    .it('should return a success human format message with async run', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       expect(result).to.contain('Test Summary');
@@ -118,19 +107,13 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--resultformat',
-      'tap'
-    ])
-    .it('should return a success tap format message with async run', ctx => {
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--resultformat', 'tap'])
+    .it('should return a success tap format message with async run', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       expect(result).to.contain('1..1');
@@ -142,49 +125,33 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => ({ tests: [] }))
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--resultformat',
-      'tap'
-    ])
-    .it('should handle a tap format parsing error', ctx => {
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--resultformat', 'tap'])
+    .it('should handle a tap format parsing error', (ctx) => {
       expect(ctx.stdout).to.contain('{\n  "tests": []\n}\n');
-      expect(ctx.stderr).to.contain(
-        messages.getMessage('testResultProcessErr', [''])
-      );
+      expect(ctx.stderr).to.contain(messages.getMessage('testResultProcessErr', ['']));
       expect(ctx.stderr).to.contain('testRunId');
     });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--resultformat',
-      'junit'
-    ])
-    .it('should return a success junit format message with async run', ctx => {
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--resultformat', 'junit'])
+    .it('should return a success junit format message with async run', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      expect(result).to.contain(
-        '<testcase name="testConfig" classname="MyApexTests" time="0.05">'
-      );
-      expect(result).to.contain(`<property name="testsRan" value="1"/>`);
+      expect(result).to.contain('<testcase name="testConfig" classname="MyApexTests" time="0.05">');
+      expect(result).to.contain('<property name="testsRan" value="1"/>');
       expect(result).to.not.contain('# Run "sfdx force:apex:test:report');
       expect(result).to.not.contain('Apex Code Coverage by Class');
     });
@@ -192,44 +159,29 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => ({ tests: [] }))
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--resultformat',
-      'junit'
-    ])
-    .it('should handle a junit format parsing error', ctx => {
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--resultformat', 'junit'])
+    .it('should handle a junit format parsing error', (ctx) => {
       expect(ctx.stdout).to.contain('{\n  "tests": []\n}\n');
-      expect(ctx.stderr).to.contain(
-        messages.getMessage('testResultProcessErr', [''])
-      );
+      expect(ctx.stderr).to.contain(messages.getMessage('testResultProcessErr', ['']));
       expect(ctx.stderr).to.contain('testStartTime');
     });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--resultformat',
-      'human',
-      '--synchronous'
-    ])
-    .it('should return a success human format message with sync run', ctx => {
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--resultformat', 'human', '--synchronous'])
+    .it('should return a success human format message with sync run', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       expect(result).to.contain('Test Summary');
@@ -240,20 +192,13 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--resultformat',
-      'tap',
-      '--synchronous'
-    ])
-    .it('should return a success tap format message with sync run', ctx => {
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--resultformat', 'tap', '--synchronous'])
+    .it('should return a success tap format message with sync run', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       expect(result).to.contain('1..1');
@@ -265,7 +210,7 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
@@ -276,15 +221,13 @@ describe('force:apex:test:run', () => {
       'MyApexTests.testInsertRecord',
       '--resultformat',
       'junit',
-      '--synchronous'
+      '--synchronous',
     ])
-    .it('should return a success junit format message with sync run', ctx => {
+    .it('should return a success junit format message with sync run', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      expect(result).to.contain(
-        '<testcase name="testConfig" classname="MyApexTests" time="0.05">'
-      );
-      expect(result).to.contain(`<property name="testsRan" value="1"/>`);
+      expect(result).to.contain('<testcase name="testConfig" classname="MyApexTests" time="0.05">');
+      expect(result).to.contain('<property name="testsRan" value="1"/>');
       expect(result).to.not.contain('# Run "sfdx force:apex:test:report');
       expect(result).to.not.contain('Apex Code Coverage by Class');
     });
@@ -292,58 +235,39 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests.testInsertRecord',
-      '--resultformat',
-      'json'
-    ])
-    .it(
-      'should return a json result with json result format specified',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        const resultJSON = JSON.parse(result);
-        expect(resultJSON).to.deep.equal(cliJsonResult);
-      }
-    );
+    .command(['force:apex:test:run', '--tests', 'MyApexTests.testInsertRecord', '--resultformat', 'json'])
+    .it('should return a json result with json result format specified', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      const resultJSON = JSON.parse(result);
+      expect(resultJSON).to.deep.equal(cliJsonResult);
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests.testInsertRecord',
-      '--resultformat',
-      'json',
-      '--json'
-    ])
-    .it(
-      'should return a CLI json result when both json flag and json result flag are specified',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        const resultJSON = JSON.parse(result);
-        expect(resultJSON).to.deep.equal(cliJsonResult);
-      }
-    );
+    .command(['force:apex:test:run', '--tests', 'MyApexTests.testInsertRecord', '--resultformat', 'json', '--json'])
+    .it('should return a CLI json result when both json flag and json result flag are specified', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      const resultJSON = JSON.parse(result);
+      expect(resultJSON).to.deep.equal(cliJsonResult);
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
@@ -355,9 +279,9 @@ describe('force:apex:test:run', () => {
       '--json',
       '--resultformat',
       'junit',
-      '--synchronous'
+      '--synchronous',
     ])
-    .it('should return a success json result with sync run', ctx => {
+    .it('should return a success json result with sync run', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
       const resultJSON = JSON.parse(result);
@@ -367,7 +291,7 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => runWithCoverage)
@@ -379,135 +303,94 @@ describe('force:apex:test:run', () => {
       '--json',
       '--resultformat',
       'junit',
-      '-c'
+      '-c',
     ])
-    .it(
-      'should return a success json result with async run and code coverage',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        const resultJSON = JSON.parse(result);
-        expect(resultJSON).to.deep.equal(cliWithCoverage);
-      }
-    );
+    .it('should return a success json result with async run and code coverage', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      const resultJSON = JSON.parse(result);
+      expect(resultJSON).to.deep.equal(cliWithCoverage);
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
-    .do(ctx => {
-      ctx.myStub = sandboxStub.stub(
-        TestService.prototype,
-        'runTestSynchronous'
-      );
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'runTestSynchronous');
     })
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--classnames',
-      'MyApexTests',
-      '--synchronous',
-      '--resultformat',
-      'json',
-      '-c'
-    ])
-    .it(
-      'should format request with correct properties for sync code coverage run with class name',
-      ctx => {
-        expect(
-          (ctx.myStub as SinonStub).calledWith({
-            tests: [{ className: 'MyApexTests' }],
-            testLevel: 'RunSpecifiedTests',
-            skipCodeCoverage: false
-          })
-        ).to.be.true;
-      }
-    );
+    .command(['force:apex:test:run', '--classnames', 'MyApexTests', '--synchronous', '--resultformat', 'json', '-c'])
+    .it('should format request with correct properties for sync code coverage run with class name', (ctx) => {
+      expect(
+        (ctx.myStub as SinonStub).calledWith({
+          tests: [{ className: 'MyApexTests' }],
+          testLevel: 'RunSpecifiedTests',
+          skipCodeCoverage: false,
+        })
+      ).to.be.true;
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
-    .do(ctx => {
-      ctx.myStub = sandboxStub.stub(
-        TestService.prototype,
-        'runTestSynchronous'
-      );
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'runTestSynchronous');
     })
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--classnames',
-      '01p45678x123456',
-      '--synchronous'
-    ])
-    .it(
-      'should format request with correct properties for sync run with class id',
-      ctx => {
-        expect(
-          (ctx.myStub as SinonStub).calledWith({
-            tests: [{ classId: '01p45678x123456' }],
-            testLevel: 'RunSpecifiedTests',
-            skipCodeCoverage: true
-          })
-        ).to.be.true;
-      }
-    );
+    .command(['force:apex:test:run', '--classnames', '01p45678x123456', '--synchronous'])
+    .it('should format request with correct properties for sync run with class id', (ctx) => {
+      expect(
+        (ctx.myStub as SinonStub).calledWith({
+          tests: [{ classId: '01p45678x123456' }],
+          testLevel: 'RunSpecifiedTests',
+          skipCodeCoverage: true,
+        })
+      ).to.be.true;
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
-    .do(ctx => {
-      ctx.myStub = sandboxStub.stub(
-        TestService.prototype,
-        'runTestSynchronous'
-      );
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'runTestSynchronous');
     })
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests.testMethodOne',
-      '--synchronous'
-    ])
-    .it(
-      'should format request with correct properties for sync run with tests',
-      ctx => {
-        expect(
-          (ctx.myStub as SinonStub).calledWith({
-            tests: [
-              {
-                className: 'MyApexTests',
-                testMethods: ['testMethodOne']
-              }
-            ],
-            testLevel: 'RunSpecifiedTests',
-            skipCodeCoverage: true
-          })
-        ).to.be.true;
-      }
-    );
+    .command(['force:apex:test:run', '--tests', 'MyApexTests.testMethodOne', '--synchronous'])
+    .it('should format request with correct properties for sync run with tests', (ctx) => {
+      expect(
+        (ctx.myStub as SinonStub).calledWith({
+          tests: [
+            {
+              className: 'MyApexTests',
+              testMethods: ['testMethodOne'],
+            },
+          ],
+          testLevel: 'RunSpecifiedTests',
+          skipCodeCoverage: true,
+        })
+      ).to.be.true;
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
-    .do(ctx => {
-      ctx.myStub = sandboxStub
-        .stub(TestService.prototype, 'runTestAsynchronous')
-        .resolves(testRunSimple);
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
       ctx.mySpy = sandboxStub.spy(TestService.prototype, 'buildAsyncPayload');
     })
     .stdout()
@@ -515,68 +398,55 @@ describe('force:apex:test:run', () => {
     .command(['force:apex:test:run', '--synchronous'])
     .it(
       'should format request with correct properties for sync run with no tests or classname parameters specified',
-      ctx => {
+      (ctx) => {
         expect(
           (ctx.myStub as SinonSpy).calledWith({
             suiteNames: undefined,
             testLevel: TestLevel.RunLocalTests,
-            skipCodeCoverage: true
+            skipCodeCoverage: true,
           })
         ).to.be.true;
         expect(ctx.stdout).to.not.be.empty;
-        expect(ctx.stdout).to.contain(
-          new HumanReporter().format(testRunSimple, false)
-        );
+        expect(ctx.stdout).to.contain(new HumanReporter().format(testRunSimple, false));
       }
     );
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
-    .do(ctx => {
-      ctx.myStub = sandboxStub
-        .stub(TestService.prototype, 'runTestAsynchronous')
-        .resolves(testRunSimple);
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
       ctx.mySpy = sandboxStub.spy(TestService.prototype, 'buildAsyncPayload');
     })
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--synchronous',
-      '--testlevel',
-      'RunAllTestsInOrg'
-    ])
+    .command(['force:apex:test:run', '--synchronous', '--testlevel', 'RunAllTestsInOrg'])
     .it(
       'should format request with correct properties for sync run with RunAllTestsInOrg test level specified',
-      ctx => {
+      (ctx) => {
         expect(
           (ctx.myStub as SinonSpy).calledWith({
             suiteNames: undefined,
             testLevel: TestLevel.RunAllTestsInOrg,
-            skipCodeCoverage: true
+            skipCodeCoverage: true,
           })
         ).to.be.true;
         expect(ctx.stdout).to.not.be.empty;
-        expect(ctx.stdout).to.contain(
-          new HumanReporter().format(testRunSimple, false)
-        );
+        expect(ctx.stdout).to.contain(new HumanReporter().format(testRunSimple, false));
       }
     );
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
-    .do(ctx => {
-      ctx.myStub = sandboxStub
-        .stub(TestService.prototype, 'runTestAsynchronous')
-        .resolves(testRunSimple);
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
       ctx.mySpy = sandboxStub.spy(TestService.prototype, 'buildAsyncPayload');
     })
     .stdout()
@@ -584,12 +454,12 @@ describe('force:apex:test:run', () => {
     .command(['force:apex:test:run'])
     .it(
       'should format request with correct properties and display correct info for async run with no tests or classname parameters specified',
-      ctx => {
+      (ctx) => {
         expect(
           (ctx.myStub as SinonSpy).calledWith({
             suiteNames: undefined,
             testLevel: TestLevel.RunLocalTests,
-            skipCodeCoverage: true
+            skipCodeCoverage: true,
           })
         ).to.be.true;
         expect(ctx.stdout).to.not.be.empty;
@@ -600,7 +470,7 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
@@ -618,21 +488,16 @@ describe('force:apex:test:run', () => {
       '-d',
       'path/to/dir',
       '--resultformat',
-      'human'
+      'human',
     ])
-    .it(
-      'should output correct message when output directory is specified with human result format',
-      ctx => {
-        expect(ctx.stdout).to.contain(
-          messages.getMessage('outputDirHint', ['path/to/dir'])
-        );
-      }
-    );
+    .it('should output correct message when output directory is specified with human result format', (ctx) => {
+      expect(ctx.stdout).to.contain(messages.getMessage('outputDirHint', ['path/to/dir']));
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestSynchronous', () => rawSyncResult)
@@ -643,31 +508,19 @@ describe('force:apex:test:run', () => {
     .stub(fs, 'closeSync', () => true)
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests.testMethodOne',
-      '-d',
-      'path/to/dir',
-      '-y'
-    ])
-    .it(
-      'should output human-readable result for synchronous test run with no result format specified',
-      ctx => {
-        expect(ctx.stdout).to.contain(
-          messages.getMessage('outputDirHint', ['path/to/dir'])
-        );
-        expect(ctx.stdout).to.contain(
-          // @ts-ignore
-          new HumanReporter().format(rawSyncResult, false)
-        );
-      }
-    );
+    .command(['force:apex:test:run', '--tests', 'MyApexTests.testMethodOne', '-d', 'path/to/dir', '-y'])
+    .it('should output human-readable result for synchronous test run with no result format specified', (ctx) => {
+      expect(ctx.stdout).to.contain(messages.getMessage('outputDirHint', ['path/to/dir']));
+      expect(ctx.stdout).to.contain(
+        // @ts-ignore
+        new HumanReporter().format(rawSyncResult, false)
+      );
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
@@ -679,25 +532,22 @@ describe('force:apex:test:run', () => {
     .stdout()
     .stderr()
     .command(['force:apex:test:run', '-y'])
-    .it(
-      'should output human-readable result for synchronous test run with no tests specified',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        expect(result).to.contain('Test Summary');
-        expect(result).to.contain('Test Results');
-        expect(result).to.not.contain('to retrieve test results');
-      }
-    );
+    .it('should output human-readable result for synchronous test run with no tests specified', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      expect(result).to.contain('Test Summary');
+      expect(result).to.contain('Test Results');
+      expect(result).to.not.contain('to retrieve test results');
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => runWithCoverage)
-    .do(ctx => {
+    .do((ctx) => {
       ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
     })
     .stdout()
@@ -710,120 +560,98 @@ describe('force:apex:test:run', () => {
       'path/to/dir',
       '--resultformat',
       'json',
-      '-c'
+      '-c',
     ])
-    .it(
-      'should create test-run-codecoverage file with correct content when code cov is specified',
-      ctx => {
-        expect((ctx.myStub as SinonStub).args).to.deep.equal([
-          [
-            runWithCoverage,
-            {
-              dirPath: 'path/to/dir',
-              fileInfos: [
-                {
-                  filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
-                  content: jsonWithCoverage
-                },
-                {
-                  filename: `test-result-codecoverage.json`,
-                  content: jsonWithCoverage.coverage.coverage
-                }
-              ],
-              resultFormats: [ResultFormat.junit]
-            },
-            true
-          ]
-        ]);
-      }
-    );
-
-  test
-    .withOrg({ username: TEST_USERNAME }, true)
-    .loadConfig({
-      root: __dirname
-    })
-    .stub(process, 'cwd', () => projectPath)
-    .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
-    .do(ctx => {
-      ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
-    })
-    .stdout()
-    .stderr()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests.testMethodOne',
-      '-d',
-      'path/to/dir'
-    ])
-    .it(
-      'should create no extra files when result format is not specified with asynchronous run',
-      ctx => {
-        expect((ctx.myStub as SinonStub).args[0]).to.deep.equal([
-          testRunSimple,
-          {
-            dirPath: 'path/to/dir'
-          },
-          undefined
-        ]);
-      }
-    );
-
-  test
-    .withOrg({ username: TEST_USERNAME }, true)
-    .loadConfig({
-      root: __dirname
-    })
-    .stub(process, 'cwd', () => projectPath)
-    .stub(TestService.prototype, 'runTestSynchronous', () => rawSyncResult)
-    .do(ctx => {
-      ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
-    })
-    .stdout()
-    .stderr()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests.testMethodOne',
-      '-d',
-      'path/to/dir',
-      '-y'
-    ])
-    .it(
-      'should create default files when result format is not specified with synchronous run',
-      ctx => {
-        // @ts-ignore
-        const result = new HumanReporter().format(rawSyncResult);
-        expect((ctx.myStub as SinonStub).args[0]).to.deep.equal([
-          rawSyncResult,
+    .it('should create test-run-codecoverage file with correct content when code cov is specified', (ctx) => {
+      expect((ctx.myStub as SinonStub).args).to.deep.equal([
+        [
+          runWithCoverage,
           {
             dirPath: 'path/to/dir',
             fileInfos: [
               {
-                filename: 'test-result.json',
-                content: jsonSyncResult
+                filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
+                content: jsonWithCoverage,
               },
               {
-                filename: `test-result.txt`,
-                content: result
-              }
+                filename: 'test-result-codecoverage.json',
+                content: jsonWithCoverage.coverage.coverage,
+              },
             ],
-            resultFormats: [ResultFormat.junit]
+            resultFormats: [ResultFormat.junit],
           },
-          undefined
-        ]);
-      }
-    );
+          true,
+        ],
+      ]);
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
+    })
+    .stub(process, 'cwd', () => projectPath)
+    .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
+    })
+    .stdout()
+    .stderr()
+    .command(['force:apex:test:run', '--tests', 'MyApexTests.testMethodOne', '-d', 'path/to/dir'])
+    .it('should create no extra files when result format is not specified with asynchronous run', (ctx) => {
+      expect((ctx.myStub as SinonStub).args[0]).to.deep.equal([
+        testRunSimple,
+        {
+          dirPath: 'path/to/dir',
+        },
+        undefined,
+      ]);
+    });
+
+  test
+    .withOrg({ username: TEST_USERNAME }, true)
+    .loadConfig({
+      root: __dirname,
+    })
+    .stub(process, 'cwd', () => projectPath)
+    .stub(TestService.prototype, 'runTestSynchronous', () => rawSyncResult)
+    .do((ctx) => {
+      ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
+    })
+    .stdout()
+    .stderr()
+    .command(['force:apex:test:run', '--tests', 'MyApexTests.testMethodOne', '-d', 'path/to/dir', '-y'])
+    .it('should create default files when result format is not specified with synchronous run', (ctx) => {
+      // @ts-ignore
+      const result = new HumanReporter().format(rawSyncResult);
+      expect((ctx.myStub as SinonStub).args[0]).to.deep.equal([
+        rawSyncResult,
+        {
+          dirPath: 'path/to/dir',
+          fileInfos: [
+            {
+              filename: 'test-result.json',
+              content: jsonSyncResult,
+            },
+            {
+              filename: 'test-result.txt',
+              content: result,
+            },
+          ],
+          resultFormats: [ResultFormat.junit],
+        },
+        undefined,
+      ]);
+    });
+
+  test
+    .withOrg({ username: TEST_USERNAME }, true)
+    .loadConfig({
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => runWithCoverage)
-    .do(ctx => {
+    .do((ctx) => {
       ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
     })
     .stdout()
@@ -836,46 +664,43 @@ describe('force:apex:test:run', () => {
       'path/to/dir',
       '--resultformat',
       'tap',
-      '-c'
+      '-c',
     ])
-    .it(
-      'should create tap file with correct content when tap format is specified',
-      ctx => {
-        expect((ctx.myStub as SinonStub).args).to.deep.equal([
-          [
-            runWithCoverage,
-            {
-              dirPath: 'path/to/dir',
-              fileInfos: [
-                {
-                  filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
-                  content: jsonWithCoverage
-                },
-                {
-                  filename: `test-result-codecoverage.json`,
-                  content: jsonWithCoverage.coverage.coverage
-                },
-                {
-                  content: `1..1\nok 1 MyApexTests.testConfig\n`,
-                  filename: `test-result.txt`
-                }
-              ],
-              resultFormats: [ResultFormat.junit, ResultFormat.tap]
-            },
-            true
-          ]
-        ]);
-      }
-    );
+    .it('should create tap file with correct content when tap format is specified', (ctx) => {
+      expect((ctx.myStub as SinonStub).args).to.deep.equal([
+        [
+          runWithCoverage,
+          {
+            dirPath: 'path/to/dir',
+            fileInfos: [
+              {
+                filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
+                content: jsonWithCoverage,
+              },
+              {
+                filename: 'test-result-codecoverage.json',
+                content: jsonWithCoverage.coverage.coverage,
+              },
+              {
+                content: '1..1\nok 1 MyApexTests.testConfig\n',
+                filename: 'test-result.txt',
+              },
+            ],
+            resultFormats: [ResultFormat.junit, ResultFormat.tap],
+          },
+          true,
+        ],
+      ]);
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => runWithCoverage)
-    .do(ctx => {
+    .do((ctx) => {
       ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
     })
     .stdout()
@@ -888,48 +713,45 @@ describe('force:apex:test:run', () => {
       'path/to/dir',
       '--resultformat',
       'junit',
-      '-c'
+      '-c',
     ])
-    .it(
-      'should create junit file with correct content when junit format is specified',
-      ctx => {
-        // @ts-ignore
-        const result = new JUnitReporter().format(runWithCoverage);
-        expect((ctx.myStub as SinonStub).args).to.deep.equal([
-          [
-            runWithCoverage,
-            {
-              dirPath: 'path/to/dir',
-              fileInfos: [
-                {
-                  filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
-                  content: jsonWithCoverage
-                },
-                {
-                  filename: `test-result-codecoverage.json`,
-                  content: jsonWithCoverage.coverage.coverage
-                },
-                {
-                  filename: `test-result.xml`,
-                  content: result
-                }
-              ],
-              resultFormats: [ResultFormat.junit]
-            },
-            true
-          ]
-        ]);
-      }
-    );
+    .it('should create junit file with correct content when junit format is specified', (ctx) => {
+      // @ts-ignore
+      const result = new JUnitReporter().format(runWithCoverage);
+      expect((ctx.myStub as SinonStub).args).to.deep.equal([
+        [
+          runWithCoverage,
+          {
+            dirPath: 'path/to/dir',
+            fileInfos: [
+              {
+                filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
+                content: jsonWithCoverage,
+              },
+              {
+                filename: 'test-result-codecoverage.json',
+                content: jsonWithCoverage.coverage.coverage,
+              },
+              {
+                filename: 'test-result.xml',
+                content: result,
+              },
+            ],
+            resultFormats: [ResultFormat.junit],
+          },
+          true,
+        ],
+      ]);
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => runWithCoverage)
-    .do(ctx => {
+    .do((ctx) => {
       ctx.myStub = sandboxStub.stub(TestService.prototype, 'writeResultFiles');
     })
     .stdout()
@@ -942,45 +764,42 @@ describe('force:apex:test:run', () => {
       'path/to/dir',
       '--resultformat',
       'human',
-      '-c'
+      '-c',
     ])
-    .it(
-      'should create human-readable file with correct content when human-readable format is specified',
-      ctx => {
-        // @ts-ignore
-        const result = new HumanReporter().format(runWithCoverage);
-        expect((ctx.myStub as SinonStub).args).to.deep.equal([
-          [
-            runWithCoverage,
-            {
-              dirPath: 'path/to/dir',
-              fileInfos: [
-                {
-                  filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
-                  content: jsonWithCoverage
-                },
-                {
-                  filename: `test-result-codecoverage.json`,
-                  content: jsonWithCoverage.coverage.coverage
-                },
-                {
-                  filename: `test-result.txt`,
-                  content: result
-                }
-              ],
-              resultFormats: [ResultFormat.junit]
-            },
-            true
-          ]
-        ]);
-      }
-    );
+    .it('should create human-readable file with correct content when human-readable format is specified', (ctx) => {
+      // @ts-ignore
+      const result = new HumanReporter().format(runWithCoverage);
+      expect((ctx.myStub as SinonStub).args).to.deep.equal([
+        [
+          runWithCoverage,
+          {
+            dirPath: 'path/to/dir',
+            fileInfos: [
+              {
+                filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
+                content: jsonWithCoverage,
+              },
+              {
+                filename: 'test-result-codecoverage.json',
+                content: jsonWithCoverage.coverage.coverage,
+              },
+              {
+                filename: 'test-result.txt',
+                content: result,
+              },
+            ],
+            resultFormats: [ResultFormat.junit],
+          },
+          true,
+        ],
+      ]);
+    });
 
   describe('Error checking', async () => {
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
@@ -993,21 +812,16 @@ describe('force:apex:test:run', () => {
         '--classnames',
         'MyApexTests',
         '--resultformat',
-        'human'
+        'human',
       ])
-      .it(
-        'should throw an error if classnames and tests are specified',
-        ctx => {
-          expect(ctx.stderr).to.contain(
-            messages.getMessage('classSuiteTestErr')
-          );
-        }
-      );
+      .it('should throw an error if classnames and tests are specified', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('classSuiteTestErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
@@ -1020,21 +834,16 @@ describe('force:apex:test:run', () => {
         '--suitenames',
         'MyApexSuite',
         '--resultformat',
-        'human'
+        'human',
       ])
-      .it(
-        'should throw an error if suitenames and tests are specified',
-        ctx => {
-          expect(ctx.stderr).to.contain(
-            messages.getMessage('classSuiteTestErr')
-          );
-        }
-      );
+      .it('should throw an error if suitenames and tests are specified', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('classSuiteTestErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
@@ -1047,112 +856,72 @@ describe('force:apex:test:run', () => {
         '--suitenames',
         'MyApexSuite',
         '--resultformat',
-        'human'
+        'human',
       ])
-      .it(
-        'should throw an error if suitenames and classnames are specified',
-        ctx => {
-          expect(ctx.stderr).to.contain(
-            messages.getMessage('classSuiteTestErr')
-          );
-        }
-      );
+      .it('should throw an error if suitenames and classnames are specified', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('classSuiteTestErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
       .stdout()
       .stderr()
-      .command([
-        'force:apex:test:run',
-        '--tests',
-        'MyApexTests.testMethodOne',
-        '-c'
-      ])
-      .it(
-        'should throw an error if code coverage is specified but reporter is missing',
-        ctx => {
-          expect(ctx.stderr).to.contain(
-            messages.getMessage('missingReporterErr')
-          );
-        }
-      );
+      .command(['force:apex:test:run', '--tests', 'MyApexTests.testMethodOne', '-c'])
+      .it('should throw an error if code coverage is specified but reporter is missing', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('missingReporterErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
       .stdout()
       .stderr()
-      .command([
-        'force:apex:test:run',
-        '--suitenames',
-        'MyApexSuite',
-        '--synchronous'
-      ])
-      .it(
-        'should throw an error if suitenames is specifed with sync run',
-        ctx => {
-          expect(ctx.stderr).to.contain(messages.getMessage('syncClassErr'));
-        }
-      );
+      .command(['force:apex:test:run', '--suitenames', 'MyApexSuite', '--synchronous'])
+      .it('should throw an error if suitenames is specifed with sync run', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('syncClassErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
       .stdout()
       .stderr()
-      .command([
-        'force:apex:test:run',
-        '--classnames',
-        'MyApexClass,MySecondClass',
-        '--synchronous'
-      ])
-      .it(
-        'should throw an error if multiple classnames are specifed with sync run',
-        ctx => {
-          expect(ctx.stderr).to.contain(messages.getMessage('syncClassErr'));
-        }
-      );
+      .command(['force:apex:test:run', '--classnames', 'MyApexClass,MySecondClass', '--synchronous'])
+      .it('should throw an error if multiple classnames are specifed with sync run', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('syncClassErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
       .stdout()
       .stderr()
-      .command([
-        'force:apex:test:run',
-        '--suitenames',
-        'MyApexSuite',
-        '--testlevel',
-        'RunLocalTests'
-      ])
-      .it(
-        'should throw an error if test level is not "Run Specified Tests" for run with suites',
-        ctx => {
-          expect(ctx.stderr).to.contain(messages.getMessage('testLevelErr'));
-        }
-      );
+      .command(['force:apex:test:run', '--suitenames', 'MyApexSuite', '--testlevel', 'RunLocalTests'])
+      .it('should throw an error if test level is not "Run Specified Tests" for run with suites', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('testLevelErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
@@ -1164,19 +933,16 @@ describe('force:apex:test:run', () => {
         'MyApexClass',
         '--synchronous',
         '--testlevel',
-        'RunAllTestsInOrg'
+        'RunAllTestsInOrg',
       ])
-      .it(
-        'should throw an error if test level is not "Run Specified Tests" for run with classnames',
-        ctx => {
-          expect(ctx.stderr).to.contain(messages.getMessage('testLevelErr'));
-        }
-      );
+      .it('should throw an error if test level is not "Run Specified Tests" for run with classnames', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('testLevelErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
@@ -1188,19 +954,16 @@ describe('force:apex:test:run', () => {
         'MyApexClass.testInsertTrigger',
         '--synchronous',
         '--testlevel',
-        'RunAllTestsInOrg'
+        'RunAllTestsInOrg',
       ])
-      .it(
-        'should throw an error if test level is not "Run Specified Tests" for run with tests',
-        ctx => {
-          expect(ctx.stderr).to.contain(messages.getMessage('testLevelErr'));
-        }
-      );
+      .it('should throw an error if test level is not "Run Specified Tests" for run with tests', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('testLevelErr'));
+      });
 
     test
       .withOrg({ username: TEST_USERNAME }, true)
       .loadConfig({
-        root: __dirname
+        root: __dirname,
       })
       .stub(process, 'cwd', () => projectPath)
       .stub(TestService.prototype, 'runTestSynchronous', () => testRunSimple)
@@ -1210,58 +973,36 @@ describe('force:apex:test:run', () => {
         'force:apex:test:run',
         '--tests',
         'MyApexClass.testInsertTrigger,MySecondClass.testAfterTrigger',
-        '--synchronous'
+        '--synchronous',
       ])
-      .it(
-        'should throw an error if test level is not "Run Specified Tests" for run with tests',
-        ctx => {
-          expect(ctx.stderr).to.contain(messages.getMessage('syncClassErr'));
-        }
-      );
+      .it('should throw an error if test level is not "Run Specified Tests" for run with tests', (ctx) => {
+        expect(ctx.stderr).to.contain(messages.getMessage('syncClassErr'));
+      });
   });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexClass.testInsertTrigger',
-      '--outputdir',
-      'my/path/to/dir',
-      '-r',
-      'human'
-    ])
-    .it(
-      'should display warning message when output directory flag is specifed',
-      ctx => {
-        expect(ctx.stderr).to.include(messages.getMessage('warningMessage'));
-      }
-    );
+    .command(['force:apex:test:run', '--tests', 'MyApexClass.testInsertTrigger', '--outputdir', outDir, '-r', 'human'])
+    .it('should display warning message when output directory flag is specifed', (ctx) => {
+      expect(ctx.stderr).to.include(messages.getMessage('warningMessage'));
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => runWithFailures)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexClass.testInsertTrigger',
-      '--outputdir',
-      'my/path/to/dir',
-      '-r',
-      'human'
-    ])
+    .command(['force:apex:test:run', '--tests', 'MyApexClass.testInsertTrigger', '--outputdir', outDir, '-r', 'human'])
     .it('should set exit code as 100 for run with failures', () => {
       expect(process.exitCode).to.eql(100);
     });
@@ -1269,20 +1010,12 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexClass.testInsertTrigger',
-      '--outputdir',
-      'my/path/to/dir',
-      '-r',
-      'human'
-    ])
+    .command(['force:apex:test:run', '--tests', 'MyApexClass.testInsertTrigger', '--outputdir', outDir, '-r', 'human'])
     .it('should set exit code as 0 for passing run', () => {
       expect(process.exitCode).to.eql(0);
     });
@@ -1290,71 +1023,50 @@ describe('force:apex:test:run', () => {
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
     .command(['force:apex:test:run', '--tests', 'MyApexTests', '--wait', '20'])
-    .it(
-      'should return human-readable results when the wait argument is passed',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        expect(result).to.contain('Test Summary');
-        expect(result).to.contain('Test Results');
-        expect(result).to.not.contain('to retrieve test results');
-      }
-    );
+    .it('should return human-readable results when the wait argument is passed', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      expect(result).to.contain('Test Summary');
+      expect(result).to.contain('Test Results');
+      expect(result).to.not.contain('to retrieve test results');
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--wait',
-      '20',
-      '--resultformat',
-      'json'
-    ])
-    .it(
-      'should return JSON result when the wait argument is passed and the resultformat is JSON',
-      ctx => {
-        const result = ctx.stdout;
-        expect(result).to.not.be.empty;
-        expect(result).to.not.contain('to retrieve test results');
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--wait', '20', '--resultformat', 'json'])
+    .it('should return JSON result when the wait argument is passed and the resultformat is JSON', (ctx) => {
+      const result = ctx.stdout;
+      expect(result).to.not.be.empty;
+      expect(result).to.not.contain('to retrieve test results');
 
-        const obj = JSON.parse(result);
-        expect(obj).to.exist;
-      }
-    );
+      const obj = JSON.parse(result);
+      expect(obj).to.exist;
+    });
 
   test
     .withOrg({ username: TEST_USERNAME }, true)
     .loadConfig({
-      root: __dirname
+      root: __dirname,
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'runTestAsynchronous', () => testRunSimple)
     .stdout()
-    .command([
-      'force:apex:test:run',
-      '--tests',
-      'MyApexTests',
-      '--wait',
-      '20',
-      '--json'
-    ])
+    .command(['force:apex:test:run', '--tests', 'MyApexTests', '--wait', '20', '--json'])
     .it(
       'should return successful JSON result when the wait argument is passed and the output format is set to JSON',
-      ctx => {
+      (ctx) => {
         const result = ctx.stdout;
         expect(result).to.not.be.empty;
         expect(result).to.not.contain('to retrieve test results');
