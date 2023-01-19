@@ -1,3 +1,12 @@
+## [1.4.2](https://github.com/salesforcecli/plugin-apex/compare/1.4.1...1.4.2) (2023-01-19)
+
+
+### Bug Fixes
+
+* **deps:** bump json5 from 1.0.1 to 1.0.2 ([a53662f](https://github.com/salesforcecli/plugin-apex/commit/a53662f0c93751396a3b8fccec124674c80348d8))
+
+
+
 ## [1.4.1](https://github.com/salesforcecli/plugin-apex/compare/1.4.0...1.4.1) (2023-01-18)
 
 
