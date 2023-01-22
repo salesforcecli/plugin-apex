@@ -1,3 +1,12 @@
+## [1.4.3](https://github.com/salesforcecli/plugin-apex/compare/1.4.2...1.4.3) (2023-01-22)
+
+
+### Bug Fixes
+
+* **deps:** bump @oclif/core from 1.21.0 to 1.25.0 ([2984d75](https://github.com/salesforcecli/plugin-apex/commit/2984d75fd89456c83a26dda9d9d51267448cf99a))
+
+
+
 ## [1.4.2](https://github.com/salesforcecli/plugin-apex/compare/1.4.1...1.4.2) (2023-01-19)
 
 
