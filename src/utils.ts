@@ -48,8 +48,7 @@ function replace(regex: RegExp, word: string): string {
   if (!color) {
     throw new Error('Error retrieving colors');
   }
-  const result = word.replace(regex, (match) => `${color(match)}`);
-  return result;
+  return word.replace(regex, (match) => `${color(match)}`);
 }
 
 export function colorLogs(log: string): string {

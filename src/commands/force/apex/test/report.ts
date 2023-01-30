@@ -5,18 +5,24 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {
-  JUnitReporter,
-  HumanReporter,
-  TapReporter,
-  TestService,
-  TestResult,
   ApexTestRunResultStatus,
+  HumanReporter,
+  JUnitReporter,
+  ResultFormat,
+  TapReporter,
+  TestResult,
+  TestService,
 } from '@salesforce/apex-node';
-import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfError } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
-import { JsonReporter, CliJsonFormat, buildOutputDirConfig } from '../../../../reporters';
-import { buildDescription, logLevels, resultFormat, FAILURE_EXIT_CODE } from '../../../../utils';
+import {
+  Flags,
+  orgApiVersionFlagWithDeprecations,
+  requiredOrgFlagWithDeprecations,
+  SfCommand
+} from '@salesforce/sf-plugins-core';
+import {Messages} from '@salesforce/core';
+import {AnyJson} from '@salesforce/ts-types';
+import {buildOutputDirConfig, RunResult, JsonReporter} from '../../../../reporters';
+import {buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat} from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
@@ -37,163 +43,157 @@ const messages = Messages.load('@salesforce/plugin-apex', 'report', [
   'waitDescription',
   'warningMessage',
 ]);
-
-export default class Report extends SfdxCommand {
-  protected static requiresUsername = true;
-
-  public static description = buildDescription(
+export default class Report extends SfCommand<RunResult> {
+  public static readonly summary = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
   );
-
+  public static readonly description = buildDescription(
+    messages.getMessage('commandDescription'),
+    messages.getMessage('longDescription')
+  );
   public static longDescription = messages.getMessage('longDescription');
-  public static examples = [
+  public static readonly examples = [
     '$ sfdx force:apex:test:report -i <test run id>',
     '$ sfdx force:apex:test:report -i <test run id> -r junit',
     '$ sfdx force:apex:test:report -i <test run id> -c --json',
     '$ sfdx force:apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
   ];
-
-  public static readonly flagsConfig = {
-    testrunid: flags.string({
+  public static readonly flags = {
+    'target-org': requiredOrgFlagWithDeprecations,
+    'api-version': orgApiVersionFlagWithDeprecations,
+    testrunid: Flags.string({
       char: 'i',
-      description: messages.getMessage('testRunIdDescription'),
+      summary: messages.getMessage('testRunIdDescription'),
       required: true,
     }),
-    json: flags.boolean({
-      description: messages.getMessage('jsonDescription'),
-    }),
-    loglevel: flags.enum({
-      description: messages.getMessage('logLevelDescription'),
-      longDescription: messages.getMessage('logLevelLongDescription'),
+    loglevel: Flags.enum({
+      summary: messages.getMessage('logLevelDescription'),
+      description: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
       options: logLevels,
     }),
-    apiversion: flags.builtin(),
-    codecoverage: flags.boolean({
+    codecoverage: Flags.boolean({
       char: 'c',
-      description: messages.getMessage('codeCoverageDescription'),
+      summary: messages.getMessage('codeCoverageDescription'),
     }),
-    outputdir: flags.string({
+    outputdir: Flags.string({
       char: 'd',
-      description: messages.getMessage('outputDirectoryDescription'),
+      summary: messages.getMessage('outputDirectoryDescription'),
     }),
-    resultformat: flags.enum({
+    resultformat: Flags.enum({
       char: 'r',
-      description: messages.getMessage('resultFormatLongDescription'),
+      summary: messages.getMessage('resultFormatLongDescription'),
       options: resultFormat,
     }),
-    wait: flags.string({
+    wait: Flags.string({
       char: 'w',
-      description: messages.getMessage('waitDescription'),
+      summary: messages.getMessage('waitDescription'),
     }),
-    verbose: flags.builtin({
-      description: messages.getMessage('verboseDescription'),
+    verbose: Flags.boolean({
+      summary: messages.getMessage('verboseDescription'),
     }),
   };
 
-  public async run(): Promise<AnyJson> {
-    if (this.flags.outputdir) {
-      this.ux.warn(messages.getMessage('warningMessage'));
+  public async run(): Promise<RunResult> {
+    const {flags} = await this.parse(Report);if (flags.outputdir) {
+      this.warn(messages.getMessage('warningMessage'));
     }
 
     // add listener for errors
     process.on('uncaughtException', (err) => {
-      const formattedErr = this.formatError(new SfError(messages.getMessage('apexLibErr', [err.message])));
-      this.ux.error(...formattedErr);
-      process.exit();
+      throw messages.createError('apexLibErr', [err.message]);
     });
 
-    if (!this.org) {
-      throw Error('Unable to get connection from Org.');
-    }
     // org is guaranteed by requiresUsername field
-    const conn = this.org.getConnection();
+    const conn = flags['target-org'].getConnection(flags['api-version']);
+
     const testService = new TestService(conn);
-    const result = await testService.reportAsyncResults(this.flags.testrunid, this.flags.codecoverage);
+    const result = await testService.reportAsyncResults(flags.testrunid, flags.codecoverage);
     const jsonOutput = this.formatResultInJson(result);
 
-    if (this.flags.outputdir) {
+    if (flags.outputdir) {
       const outputDirConfig = buildOutputDirConfig(
         result,
         jsonOutput,
-        this.flags.outputdir,
-        this.flags.resultformat,
+        flags.outputdir,
+        flags.resultformat as ResultFormat,
         true
       );
 
-      await testService.writeResultFiles(result, outputDirConfig, this.flags.codecoverage);
+      await testService.writeResultFiles(result, outputDirConfig, flags.codecoverage);
     }
 
     try {
       if (result.summary.outcome === ApexTestRunResultStatus.Failed) {
         process.exitCode = FAILURE_EXIT_CODE;
       }
-      switch (this.flags.resultformat) {
+      switch (flags.resultformat) {
         case 'tap':
-          this.logTap(result);
+          this.logTap(result, flags['target-org'].getUsername() as string);
           break;
         case 'junit':
           this.logJUnit(result);
           break;
         case 'json':
           // when --json flag is specified, we should log CLI json format
-          if (!this.flags.json) {
-            this.ux.logJson({
+          if (!flags.json) {
+            this.styledJSON({
               status: process.exitCode,
               result: jsonOutput,
-            });
+            } as AnyJson);
           }
           break;
         default:
-          this.logHuman(result, true, this.flags.outputdir);
+          this.logHuman(result, true, flags.outputdir);
       }
     } catch (e) {
-      this.ux.logJson(jsonOutput);
+      this.styledJSON(jsonOutput as AnyJson);
       const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.ux.error(msg);
+      this.error(msg);
     }
-    return jsonOutput as AnyJson;
+    return jsonOutput;
   }
 
-  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir: string): void {
+  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir?: string): void {
     if (outputDir) {
-      this.ux.log(messages.getMessage('outputDirHint', [outputDir]));
+      this.log(messages.getMessage('outputDirHint', [outputDir]));
     }
     const humanReporter = new HumanReporter();
     const output = humanReporter.format(result, detailedCoverage);
-    this.ux.log(output);
+    this.log(output);
   }
 
-  private logTap(result: TestResult): void {
+  private logTap(result: TestResult, username: string): void {
     const reporter = new TapReporter();
-    const hint = this.formatReportHint(result);
-    this.ux.log(reporter.format(result, [hint]));
+    const hint = this.formatReportHint(result, username);
+    this.log(reporter.format(result, [hint]));
   }
 
   private logJUnit(result: TestResult): void {
     const reporter = new JUnitReporter();
-    this.ux.log(reporter.format(result));
+    this.log(reporter.format(result));
   }
 
-  private formatResultInJson(result: TestResult): CliJsonFormat {
+  private formatResultInJson(result: TestResult): RunResult {
     try {
       const reporter = new JsonReporter();
       return reporter.format(result);
     } catch (e) {
-      this.ux.logJson(result);
+      this.styledJSON(result);
       const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.ux.error(msg);
+      this.error(msg);
       throw e;
     }
   }
 
-  private formatReportHint(result: TestResult): string {
+  // eslint-disable-next-line class-methods-use-this
+  private formatReportHint(result: TestResult, username: string): string {
     let reportArgs = `-i ${result.summary.testRunId}`;
-    if (this.flags.targetusername) {
-      reportArgs += ` -u ${this.flags.targetusername}`;
+
+    if (username) {
+      reportArgs += ` -o ${username}`;
     }
-    const hint = messages.getMessage('apexTestReportFormatHint', [reportArgs]);
-    return hint;
+    return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
   }
 }

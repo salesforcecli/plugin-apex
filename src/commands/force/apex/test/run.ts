@@ -5,21 +5,26 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {
-  CancellationTokenSource,
-  TapReporter,
-  TestService,
-  JUnitReporter,
-  HumanReporter,
-  TestResult,
-  TestLevel,
   ApexTestRunResultStatus,
+  CancellationTokenSource,
+  HumanReporter,
+  JUnitReporter, ResultFormat,
+  TapReporter,
+  TestLevel,
+  TestResult,
   TestRunIdResult,
+  TestService,
 } from '@salesforce/apex-node';
-import { flags, SfdxCommand } from '@salesforce/command';
-import { Messages, SfError } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
-import { buildOutputDirConfig, CliJsonFormat, JsonReporter } from '../../../../reporters';
-import { buildDescription, logLevels, resultFormat, FAILURE_EXIT_CODE } from '../../../../utils';
+import {
+  Flags,
+  orgApiVersionFlagWithDeprecations,
+  requiredOrgFlagWithDeprecations,
+  SfCommand
+} from '@salesforce/sf-plugins-core';
+import {Messages, Org, SfError} from '@salesforce/core';
+import {AnyJson, Optional} from '@salesforce/ts-types';
+import {buildOutputDirConfig, RunResult, JsonReporter} from '../../../../reporters';
+import {buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat} from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
@@ -52,17 +57,18 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
 ]);
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
-export default class Run extends SfdxCommand {
-  protected static requiresUsername = true;
-  protected cancellationTokenSource = new CancellationTokenSource();
-
-  public static description = buildDescription(
+export default class Run extends SfCommand<RunResult|TestRunIdResult> {
+  public static readonly summary = buildDescription(
+    messages.getMessage('commandDescription'),
+    messages.getMessage('longDescription')
+  );
+  public static readonly description = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
   );
 
   public static longDescription = messages.getMessage('longDescription');
-  public static examples = [
+  public static readonly examples = [
     '$ sfdx force:apex:test:run',
     '$ sfdx force:apex:test:run -n "MyClassTest,MyOtherClassTest" -r human',
     '$ sfdx force:apex:test:run -s "MySuite,MyOtherSuite" -c -v --json',
@@ -70,76 +76,96 @@ export default class Run extends SfdxCommand {
     '$ sfdx force:apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org',
   ];
 
-  public static readonly flagsConfig = {
-    json: flags.boolean({
-      description: messages.getMessage('jsonDescription'),
-    }),
-    loglevel: flags.enum({
-      description: messages.getMessage('logLevelDescription'),
-      longDescription: messages.getMessage('logLevelLongDescription'),
+  public static readonly flags = {
+    'target-org': requiredOrgFlagWithDeprecations,
+    loglevel: Flags.enum({
+      summary: messages.getMessage('logLevelDescription'),
+      description: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
       options: logLevels,
     }),
-    apiversion: flags.builtin(),
-    codecoverage: flags.boolean({
+    'api-version': orgApiVersionFlagWithDeprecations,
+    codecoverage: Flags.boolean({
       char: 'c',
-      description: messages.getMessage('codeCoverageDescription'),
+      summary: messages.getMessage('codeCoverageDescription'),
     }),
-    outputdir: flags.string({
+    outputdir: Flags.string({
       char: 'd',
-      description: messages.getMessage('outputDirectoryDescription'),
+      summary: messages.getMessage('outputDirectoryDescription'),
     }),
-    testlevel: flags.enum({
+    testlevel: Flags.enum({
       char: 'l',
-      description: messages.getMessage('testLevelDescription'),
+      summary: messages.getMessage('testLevelDescription'),
       options: TestLevelValues,
     }),
-    classnames: flags.string({
+    classnames: Flags.string({
       char: 'n',
-      description: messages.getMessage('classNamesDescription'),
+      summary: messages.getMessage('classNamesDescription'),
     }),
-    resultformat: flags.enum({
+    resultformat: Flags.enum({
       char: 'r',
-      description: messages.getMessage('resultFormatLongDescription'),
+      summary: messages.getMessage('resultFormatLongDescription'),
       options: resultFormat,
     }),
-    suitenames: flags.string({
+    suitenames: Flags.string({
       char: 's',
-      description: messages.getMessage('suiteNamesDescription'),
+      summary: messages.getMessage('suiteNamesDescription'),
     }),
-    tests: flags.string({
+    tests: Flags.string({
       char: 't',
-      description: messages.getMessage('testsDescription'),
+      summary: messages.getMessage('testsDescription'),
     }),
-    wait: flags.string({
+    wait: Flags.string({
       char: 'w',
-      description: messages.getMessage('waitDescription'),
+      summary: messages.getMessage('waitDescription'),
     }),
-    synchronous: flags.boolean({
+    synchronous: Flags.boolean({
       char: 'y',
-      description: messages.getMessage('synchronousDescription'),
+      summary: messages.getMessage('synchronousDescription'),
     }),
-    verbose: flags.builtin({
-      description: messages.getMessage('verboseDescription'),
+    verbose: Flags.boolean({
+      summary: messages.getMessage('verboseDescription'),
     }),
-    detailedcoverage: flags.boolean({
+    detailedcoverage: Flags.boolean({
       char: 'v',
-      description: messages.getMessage('detailedCoverageDescription'),
+      summary: messages.getMessage('detailedCoverageDescription'),
       dependsOn: ['codecoverage'],
     }),
   };
 
-  public async run(): Promise<AnyJson> {
+  protected cancellationTokenSource = new CancellationTokenSource();
+  private flags: {
+    'target-org': Org;
+    loglevel: string;
+    'api-version': string | undefined;
+    codecoverage: boolean;
+    outputdir: string | undefined;
+    testlevel: string | undefined;
+    classnames: string | undefined;
+    resultformat: string | undefined;
+    suitenames: string | undefined;
+    tests: string | undefined;
+    wait: string | undefined;
+    synchronous: boolean;
+    verbose: boolean;
+    detailedcoverage: boolean;
+  }
+    & { json: boolean | undefined };
+
+
+  public async run(): Promise<RunResult|TestRunIdResult> {
+    const {flags} = await this.parse(Run);
+    this.flags = flags;
+
     await this.validateFlags();
-    if (this.flags.outputdir) {
-      this.ux.warn(messages.getMessage('warningMessage'));
+
+    if (flags.outputdir) {
+      this.warn(messages.getMessage('warningMessage'));
     }
 
     // add listener for errors
     process.on('uncaughtException', (err) => {
-      const formattedErr = this.formatError(new SfError(messages.getMessage('apexLibErr', [err.message])));
-      this.ux.error(...formattedErr);
-      process.exit();
+      throw messages.createError('apexLibErr', [err.message]);
     });
 
     // graceful shutdown
@@ -148,41 +174,41 @@ export default class Run extends SfdxCommand {
       process.exit();
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     process.on('SIGINT', exitHandler);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     process.on('SIGTERM', exitHandler);
 
     const testLevel = this.getTestLevelfromFlags();
 
-    // org is guaranteed by requiresUsername field
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const conn = this.org!.getConnection();
+    const conn = flags['target-org'].getConnection(flags['api-version']);
     const testService = new TestService(conn);
     let result: TestResult | TestRunIdResult;
 
     // NOTE: This is a *bug*. Synchronous test runs should throw an error when multiple test classes are specified
     // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
     // Address with W-9163533
-    if (this.flags.synchronous && testLevel === TestLevel.RunSpecifiedTests) {
-      const payload = await testService.buildSyncPayload(testLevel, this.flags.tests, this.flags.classnames);
-      payload.skipCodeCoverage = this.flags.codecoverage ? false : true;
+    if (flags.synchronous && testLevel === TestLevel.RunSpecifiedTests) {
+      const payload = await testService.buildSyncPayload(testLevel, flags.tests, flags.classnames);
+      payload.skipCodeCoverage = !flags.codecoverage;
       result = (await testService.runTestSynchronous(
         payload,
-        this.flags.codecoverage,
+        flags.codecoverage,
         this.cancellationTokenSource.token
       )) as TestResult;
     } else {
       const payload = await testService.buildAsyncPayload(
         testLevel,
-        this.flags.tests,
-        this.flags.classnames,
-        this.flags.suitenames
+        flags.tests,
+        flags.classnames,
+        flags.suitenames
       );
 
-      payload.skipCodeCoverage = this.flags.codecoverage ? false : true;
+      payload.skipCodeCoverage = !flags.codecoverage;
       const reporter = undefined;
       result = await testService.runTestAsynchronous(
         payload,
-        this.flags.codecoverage,
+        flags.codecoverage,
         this.shouldImmediatelyReturn(),
         reporter,
         this.cancellationTokenSource.token
@@ -190,33 +216,34 @@ export default class Run extends SfdxCommand {
     }
 
     if (this.cancellationTokenSource.token.isCancellationRequested) {
-      return null;
+     // return null;
+      throw new SfError('Cancelled');
     }
 
-    if (this.flags.outputdir) {
+    if (flags.outputdir) {
       const jsonOutput = this.formatResultInJson(result);
       const outputDirConfig = buildOutputDirConfig(
         result,
         jsonOutput,
-        this.flags.outputdir,
-        this.flags.resultformat,
-        this.flags.detailedcoverage,
-        this.flags.synchronous
+        flags.outputdir,
+        flags.resultformat as Optional<ResultFormat>,
+        flags.detailedcoverage,
+        flags.synchronous
       );
 
-      await testService.writeResultFiles(result, outputDirConfig, this.flags.codecoverage);
+      await testService.writeResultFiles(result, outputDirConfig, flags.codecoverage);
     }
 
     try {
       if (
-        result.hasOwnProperty('summary') &&
+        (result as TestResult).summary &&
         (result as TestResult).summary.outcome === ApexTestRunResultStatus.Failed
       ) {
         process.exitCode = FAILURE_EXIT_CODE;
       }
-      switch (this.flags.resultformat) {
+      switch (flags.resultformat) {
         case 'human':
-          this.logHuman(result as TestResult, this.flags.detailedcoverage, this.flags.outputdir);
+          this.logHuman(result as TestResult, flags.detailedcoverage, flags.outputdir);
           break;
         case 'tap':
           this.logTap(result as TestResult);
@@ -226,28 +253,28 @@ export default class Run extends SfdxCommand {
           break;
         case 'json':
           // when --json flag is specified, we should log CLI json format
-          if (!this.flags.json) {
-            this.ux.logJson({
+          if (!flags.json) {
+            this.styledJSON({
               status: process.exitCode,
               result: this.formatResultInJson(result),
-            });
+            }  as AnyJson);
           }
           break;
         default:
-          if (this.flags.synchronous || this.flags.wait) {
-            this.logHuman(result as TestResult, this.flags.detailedcoverage, this.flags.outputdir);
+          if (flags.synchronous || flags.wait) {
+            this.logHuman(result as TestResult, flags.detailedcoverage, flags.outputdir);
           } else {
             const id = (result as TestRunIdResult).testRunId;
-            this.ux.log(messages.getMessage('runTestReportCommand', [id, this.org?.getUsername()]));
+            this.log(messages.getMessage('runTestReportCommand', [id, this.flags['target-org'].getUsername()]));
           }
       }
     } catch (e) {
-      this.ux.logJson(result);
+      this.styledJSON(result);
       const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.ux.error(msg);
+      this.error(msg);
     }
 
-    return this.formatResultInJson(result) as AnyJson;
+    return this.formatResultInJson(result);
   }
 
   public async validateFlags(): Promise<void> {
@@ -281,7 +308,7 @@ export default class Run extends SfdxCommand {
   private getTestLevelfromFlags(): TestLevel {
     let testLevel: TestLevel;
     if (this.flags.testlevel) {
-      testLevel = this.flags.testlevel;
+      testLevel = this.flags.testlevel as TestLevel;
     } else if (this.flags.classnames || this.flags.suitenames || this.flags.tests) {
       testLevel = TestLevel.RunSpecifiedTests;
     } else {
@@ -291,45 +318,44 @@ export default class Run extends SfdxCommand {
     return testLevel;
   }
 
-  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir: string): void {
+  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir?: string): void {
     if (outputDir) {
-      this.ux.log(messages.getMessage('outputDirHint', [outputDir]));
+      this.log(messages.getMessage('outputDirHint', [outputDir]));
     }
     const humanReporter = new HumanReporter();
     const output = humanReporter.format(result, detailedCoverage);
-    this.ux.log(output);
+    this.log(output);
   }
 
   private logTap(result: TestResult): void {
     const reporter = new TapReporter();
     const hint = this.formatReportHint(result);
-    this.ux.log(reporter.format(result, [hint]));
+    this.log(reporter.format(result, [hint]));
   }
 
   private logJUnit(result: TestResult): void {
     const reporter = new JUnitReporter();
-    this.ux.log(reporter.format(result));
+    this.log(reporter.format(result));
   }
 
-  private formatResultInJson(result: TestResult | TestRunIdResult): CliJsonFormat | TestRunIdResult {
+  private formatResultInJson(result: TestResult | TestRunIdResult): RunResult | TestRunIdResult {
     try {
       const reporter = new JsonReporter();
-      return result.hasOwnProperty('summary') ? reporter.format(result as TestResult) : (result as TestRunIdResult);
+      return (result as TestResult).summary ? reporter.format(result as TestResult) : (result as TestRunIdResult);
     } catch (e) {
-      this.ux.logJson(result);
+      this.styledJSON(result);
       const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.ux.error(msg);
+      this.error(msg);
       throw e;
     }
   }
 
   private formatReportHint(result: TestResult): string {
     let reportArgs = `-i ${result.summary.testRunId}`;
-    if (this.flags.targetusername) {
-      reportArgs += ` -u ${this.flags.targetusername}`;
+    if (this.flags['target-org']) {
+      reportArgs += ` -o ${this.flags['target-org'].getUsername()as string}`;
     }
-    const hint = messages.getMessage('apexTestReportFormatHint', [reportArgs]);
-    return hint;
+    return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
   }
 
   /**
@@ -347,9 +373,6 @@ export default class Run extends SfdxCommand {
     }
 
     // historical expectation to wait for results from a synchronous test run
-    if (this.flags.synchronous && !this.flags.json) {
-      return false;
-    }
-    return true;
+    return !(this.flags.synchronous && !this.flags.json);
   }
 }

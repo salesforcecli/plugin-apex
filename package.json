@@ -8,8 +8,8 @@
   "dependencies": {
     "@oclif/core": "^1.25.0",
     "@salesforce/apex-node": "1.6.0",
-    "@salesforce/command": "^5.1.0",
     "@salesforce/core": "^3.32.13",
+    "@salesforce/sf-plugins-core": "^1.22.3",
     "chalk": "^4.1.0",
     "tslib": "^2"
   },
@@ -37,6 +37,7 @@
     "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsdoc": "^39.3.6",
+    "eslint-plugin-sf-plugin": "^1.7.0",
     "globby": "^8",
     "husky": "^7.0.4",
     "mocha": "^9.1.3",

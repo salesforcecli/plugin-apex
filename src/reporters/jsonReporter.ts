@@ -5,12 +5,34 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { ApexTestResultData, ApexTestResultOutcome, TestResult } from '@salesforce/apex-node';
+import {ApexTestRunResultStatus} from '@salesforce/apex-node/lib/src/tests/types';
 
-export type CliJsonFormat = {
-  summary: object;
+export type RunResult = {
+  summary: Summary;
   tests: CliTestResult[];
   coverage?: CliCoverageResult;
 };
+
+type Summary = {
+  outcome: ApexTestRunResultStatus;
+  testsRan: number;
+  passing: number;
+  failing: number;
+  skipped: number;
+  passRate: string;
+  failRate: string;
+  testStartTime: string;
+  testExecutionTime: string;
+  testTotalTime: string;
+  commandTime: string;
+  hostname: string;
+  orgId: string;
+  username: string;
+  testRunId: string;
+  userId: string;
+  orgWideCoverage?: string;
+  testRunCoverage?: string;
+}
 
 type CliTestResult = {
   Id: string;
@@ -29,7 +51,7 @@ type ClassCoverage = {
   id: string;
   name: string;
   totalLines: number;
-  lines: {};
+  lines: Record<string,number>;
   totalCovered: number;
   coveredPercent: number;
 };
@@ -53,10 +75,10 @@ type CliCoverageResult = {
   coverage: ClassCoverage[];
   records: PerClassCoverage[];
   summary: {
-    totalLines: number;
-    coveredLines: number;
-    testRunCoverage: string;
-    orgWideCoverage: string;
+    totalLines?: number;
+    coveredLines?: number;
+    testRunCoverage?: string;
+    orgWideCoverage?: string;
   };
 };
 
@@ -64,11 +86,7 @@ const skippedProperties = ['skipRate', 'coveredLines', 'totalLines'];
 const timeProperties = ['testExecutionTimeInMs', 'testTotalTimeInMs', 'commandTimeInMs'];
 
 export class JsonReporter {
-  public format(result: TestResult): {
-    summary: object;
-    tests: CliTestResult[];
-    coverage?: CliCoverageResult;
-  } {
+  public format(result: TestResult): RunResult {
     return {
       summary: this.formatSummary(result),
       tests: this.formatTestResults(result.tests),
@@ -80,7 +98,8 @@ export class JsonReporter {
     };
   }
 
-  private formatSummary(testResult: TestResult): object {
+  // eslint-disable-next-line class-methods-use-this
+  private formatSummary(testResult: TestResult): Summary {
     const summary = {};
 
     Object.entries(testResult.summary).forEach(([key, value]) => {
@@ -93,12 +112,13 @@ export class JsonReporter {
         value = `${value} ms`;
       }
 
-      Object.assign(summary, { [key]: value });
+     return Object.assign(summary, { [key]: value });
     });
 
-    return summary;
+    return summary as Summary;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private formatTestResults(testResults: ApexTestResultData[]): CliTestResult[] {
     return testResults.map((test) => ({
       Id: test.id,
@@ -118,8 +138,9 @@ export class JsonReporter {
     })) as CliTestResult[];
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private formatCoverage(testResult: TestResult): CliCoverageResult {
-    const formattedCov = {
+    const formattedCov: CliCoverageResult = {
       coverage: [],
       records: [],
       summary: {
@@ -128,7 +149,7 @@ export class JsonReporter {
         orgWideCoverage: testResult.summary.orgWideCoverage,
         testRunCoverage: testResult.summary.testRunCoverage,
       },
-    } as CliCoverageResult;
+    };
 
     if (testResult.codecoverage) {
       formattedCov.coverage = testResult.codecoverage.map((cov) => {
@@ -142,7 +163,7 @@ export class JsonReporter {
           totalLines: cov.numLinesCovered + cov.numLinesUncovered,
           lines,
           totalCovered: cov.numLinesCovered,
-          coveredPercent: parseInt(cov.percentage),
+          coveredPercent: parseInt(cov.percentage, 10),
         } as ClassCoverage;
       });
 

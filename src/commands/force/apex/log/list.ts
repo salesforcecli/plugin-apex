@@ -5,8 +5,13 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { LogRecord, LogService, Table, Row } from '@salesforce/apex-node';
-import { flags, SfdxCommand } from '@salesforce/command';
+import {LogRecord, LogService} from '@salesforce/apex-node';
+import {
+  Flags,
+  SfCommand,
+  requiredOrgFlagWithDeprecations,
+  orgApiVersionFlagWithDeprecations,
+} from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { buildDescription, logLevels } from '../../../../utils';
 
@@ -30,127 +35,76 @@ const messages = Messages.load('@salesforce/plugin-apex', 'list', [
   'userColHeader',
 ]);
 
-export default class List extends SfdxCommand {
-  protected static requiresUsername = true;
+export type LogListResult = LogRecord[]
 
-  public static description = buildDescription(
+export default class List extends SfCommand<LogListResult> {
+  public static readonly summary = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
   );
-
+  public static readonly description = buildDescription(
+    messages.getMessage('commandDescription'),
+    messages.getMessage('longDescription')
+  );
   public static longDescription = messages.getMessage('longDescription');
-  public static examples = ['$ sfdx force:apex:log:list', '$ sfdx force:apex:log:list -u me@my.org'];
-
-  public static readonly flagsConfig = {
-    json: flags.boolean({
-      description: messages.getMessage('jsonDescription'),
-    }),
-    loglevel: flags.enum({
-      description: messages.getMessage('logLevelDescription'),
-      longDescription: messages.getMessage('logLevelLongDescription'),
+  public static readonly examples = ['$ sfdx force:apex:log:list', '$ sfdx force:apex:log:list -u me@my.org'];
+  public static readonly flags = {
+    'target-org': requiredOrgFlagWithDeprecations,
+    loglevel: Flags.enum({
+      summary: messages.getMessage('logLevelDescription'),
+      description: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
       options: logLevels,
     }),
-    apiversion: flags.builtin(),
+    'api-version': orgApiVersionFlagWithDeprecations,
   };
 
-  public async run(): Promise<LogRecord[]> {
-    try {
-      if (!this.org) {
-        throw Error('Unable to get connection from Org.');
-      }
-      // org is guaranteed by requiresUsername field
-      const conn = this.org.getConnection();
+  public async run(): Promise<LogListResult> {
+    const {flags} = await this.parse(List);
+
+      const conn = flags['target-org'].getConnection(flags['api-version']);
       const logService = new LogService(conn);
       const logRecords = await logService.getLogRecords();
 
       if (logRecords.length === 0) {
-        this.ux.log(messages.getMessage('noDebugLogsFound'));
+        this.log(messages.getMessage('noDebugLogsFound'));
         return [];
       }
 
-      const cleanLogs = this.cleanRecords(logRecords);
-      const table = this.formatTable(cleanLogs);
-      this.ux.log(table);
+      const cleanLogs = logRecords.map((logRecord) =>({
+      app: logRecord.Application,
+      duration: String(logRecord.DurationMilliseconds),
+      id: logRecord.Id,
+      location: logRecord.Location,
+      size: String(logRecord.LogLength),
+      user: logRecord.LogUser.Name,
+      operation: logRecord.Operation,
+      request: logRecord.Request,
+      time: this.formatTime(logRecord.StartTime),
+      status: logRecord.Status,
+    }));
 
-      return logRecords;
-    } catch (e) {
-      return Promise.reject(e);
-    }
+      this.table(cleanLogs, {
+        app: {header:messages.getMessage('appColHeader')},
+        duration: {header:messages.getMessage('durationColHeader')},
+        id: {header:messages.getMessage('idColHeader')},
+        location: {header:messages.getMessage('locationColHeader')},
+        size: {header:messages.getMessage('sizeColHeader')},
+        user: {header:messages.getMessage('userColHeader')},
+        operation: {header:messages.getMessage('operationColHeader')},
+        request: {header:messages.getMessage('requestColHeader')},
+        time: {header:messages.getMessage('timeColHeader')},
+        status: {header:messages.getMessage('statusColHeader')},
+      })
+return logRecords;
+
+
+
+
   }
 
-  public formatTable(logRecords: LogRecord[]): string {
-    const tb = new Table();
-    const logRowArray: Row[] = [];
 
-    for (const logRecord of logRecords) {
-      const row: Row = {
-        app: logRecord.Application,
-        duration: String(logRecord.DurationMilliseconds),
-        id: logRecord.Id,
-        location: logRecord.Location,
-        size: String(logRecord.LogLength),
-        user: logRecord.LogUser.Name,
-        operation: logRecord.Operation,
-        request: logRecord.Request,
-        time: logRecord.StartTime,
-        status: logRecord.Status,
-      };
-      logRowArray.push(row);
-    }
-
-    const tableResult = tb.createTable(logRowArray, [
-      {
-        key: 'app',
-        label: messages.getMessage('appColHeader'),
-      },
-      {
-        key: 'duration',
-        label: messages.getMessage('durationColHeader'),
-      },
-      {
-        key: 'id',
-        label: messages.getMessage('idColHeader'),
-      },
-      {
-        key: 'location',
-        label: messages.getMessage('locationColHeader'),
-      },
-      {
-        key: 'size',
-        label: messages.getMessage('sizeColHeader'),
-      },
-      {
-        key: 'user',
-        label: messages.getMessage('userColHeader'),
-      },
-      {
-        key: 'operation',
-        label: messages.getMessage('operationColHeader'),
-      },
-      {
-        key: 'request',
-        label: messages.getMessage('requestColHeader'),
-      },
-      {
-        key: 'time',
-        label: messages.getMessage('timeColHeader'),
-      },
-      {
-        key: 'status',
-        label: messages.getMessage('statusColHeader'),
-      },
-    ]);
-    return tableResult;
-  }
-
-  private cleanRecords(logRecords: LogRecord[]): LogRecord[] {
-    return logRecords.map((record) => {
-      record.StartTime = this.formatTime(record.StartTime);
-      return record;
-    });
-  }
-
+  // eslint-disable-next-line class-methods-use-this
   private formatTime(time: string): string {
     const milliIndex = time.indexOf('.');
     if (milliIndex !== -1) {

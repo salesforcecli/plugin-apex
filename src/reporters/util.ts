@@ -5,15 +5,15 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {
-  TestResult,
-  TestRunIdResult,
-  OutputDirConfig,
-  ResultFormat,
   HumanReporter,
   JUnitReporter,
+  OutputDirConfig,
+  ResultFormat,
   TapReporter,
+  TestResult,
+  TestRunIdResult,
 } from '@salesforce/apex-node';
-import { CliJsonFormat } from './jsonReporter';
+import {RunResult} from './jsonReporter';
 
 /**
  * Builds output directory configuration with CLI format result files
@@ -28,7 +28,7 @@ import { CliJsonFormat } from './jsonReporter';
  */
 export function buildOutputDirConfig(
   result: TestResult | TestRunIdResult,
-  jsonOutput: CliJsonFormat | TestRunIdResult,
+  jsonOutput: RunResult | TestRunIdResult,
   outputDir: string,
   resultFormat: ResultFormat | undefined,
   detailedCoverage: boolean,
@@ -38,9 +38,9 @@ export function buildOutputDirConfig(
     dirPath: outputDir,
   };
 
-  if (result.hasOwnProperty('summary')) {
+  if ((result as TestResult).summary) {
     result = result as TestResult;
-    jsonOutput = jsonOutput as CliJsonFormat;
+    jsonOutput = jsonOutput as RunResult;
 
     if (typeof resultFormat !== 'undefined' || synchronous) {
       outputDirConfig.fileInfos = [
@@ -65,27 +65,32 @@ export function buildOutputDirConfig(
     }
 
     switch (resultFormat) {
-      case 'tap':
-        const tapResult = new TapReporter().format(result);
+      case ResultFormat.tap:
         outputDirConfig.fileInfos?.push({
           filename: 'test-result.txt',
-          content: tapResult,
+          content: new TapReporter().format(result),
         });
         outputDirConfig.resultFormats?.push(ResultFormat.tap);
         break;
-      case 'junit':
-        const junitResult = new JUnitReporter().format(result);
+      case ResultFormat.junit:
         outputDirConfig.fileInfos?.push({
           filename: 'test-result.xml',
-          content: junitResult,
+          content: new JUnitReporter().format(result),
         });
         break;
-      case 'human':
-        const humanResult = new HumanReporter().format(result, detailedCoverage);
+      case ResultFormat.human:
         outputDirConfig.fileInfos?.push({
           filename: 'test-result.txt',
-          content: humanResult,
+          content: new HumanReporter().format(result, detailedCoverage),
         });
+        break;
+      case ResultFormat.json:
+        outputDirConfig.fileInfos?.push({
+          filename: 'test-result.json',
+          content: result,
+        });
+        break;
+      default:
         break;
     }
   }

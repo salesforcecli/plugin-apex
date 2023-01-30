@@ -8,7 +8,9 @@
 import * as chalk from 'chalk';
 import { Logger } from '@salesforce/core';
 
-const DEFAULT_COLOR_MAP = {
+type ColorMap = Record<'CONSTRUCTOR_' | 'EXCEPTION_' | 'FATAL_' | 'METHOD_' | 'SOQL_' | 'USER_' | 'VARIABLE_', string>;
+
+const DEFAULT_COLOR_MAP: ColorMap  = {
   CONSTRUCTOR_: 'magenta',
   EXCEPTION_: 'red',
   FATAL_: 'red',
@@ -30,7 +32,8 @@ export async function colorizeLog(log: string): Promise<string> {
   const localColorMapFile = process.env.SFDX_APEX_LOG_COLOR_MAP;
   if (localColorMapFile) {
     try {
-      colorMap = require(localColorMapFile);
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      colorMap = require(localColorMapFile) as ColorMap;
     } catch (err) {
       logger.warn(`Color registry not found: ${localColorMapFile}`);
     }
@@ -56,7 +59,7 @@ export async function colorizeLog(log: string): Promise<string> {
             return logLine;
           }
 
-          const count = (logLine.match(/\|/g) || []).length;
+          const count = (logLine.match(/\|/g)?? []).length;
           if (count === 1) {
             return colorFn(logLine);
           }

@@ -6,7 +6,12 @@
  */
 
 import { LogService } from '@salesforce/apex-node';
-import { flags, SfdxCommand } from '@salesforce/command';
+import {
+  Flags,
+  SfCommand,
+  requiredOrgFlagWithDeprecations,
+  orgApiVersionFlagWithDeprecations
+} from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { buildDescription, logLevels } from '../../../../utils';
 import { colorizeLog } from '../../../../legacyColorization';
@@ -24,73 +29,72 @@ const messages = Messages.load('@salesforce/plugin-apex', 'tail', [
   'skipTraceFlagDescription',
 ]);
 
-export default class Tail extends SfdxCommand {
-  protected static requiresUsername = true;
-
-  public static description = buildDescription(
+export default class Tail extends SfCommand<void> {
+  public static readonly summary = buildDescription(
+    messages.getMessage('commandDescription'),
+    messages.getMessage('longDescription')
+  );public static readonly description = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
   );
-
   public static longDescription = messages.getMessage('longDescription');
-  public static examples = [
+  public static readonly examples = [
     '$ sfdx force:apex:log:tail',
     '$ sfdx force:apex:log:tail --debuglevel MyDebugLevel',
     '$ sfdx force:apex:log:tail -c -s',
   ];
-
-  public static readonly flagsConfig = {
-    json: flags.boolean({
-      description: messages.getMessage('jsonDescription'),
-    }),
-    loglevel: flags.enum({
-      description: messages.getMessage('logLevelDescription'),
-      longDescription: messages.getMessage('logLevelLongDescription'),
+  public static readonly flags = {
+    'target-org': requiredOrgFlagWithDeprecations,
+    'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel: Flags.enum({
+      summary: messages.getMessage('logLevelDescription'),
+      description: messages.getMessage('logLevelLongDescription'),
       default: 'warn',
       options: logLevels,
     }),
-    apiversion: flags.builtin(),
-    color: flags.boolean({
+    color: Flags.boolean({
       char: 'c',
-      description: messages.getMessage('colorDescription'),
+      summary: messages.getMessage('colorDescription'),
     }),
-    debuglevel: flags.string({
+    debuglevel: Flags.string({
       char: 'd',
-      description: messages.getMessage('debugLevelDescription'),
+      summary: messages.getMessage('debugLevelDescription'),
     }),
-    skiptraceflag: flags.boolean({
+    skiptraceflag: Flags.boolean({
       char: 's',
-      description: messages.getMessage('skipTraceFlagDescription'),
+      summary: messages.getMessage('skipTraceFlagDescription'),
     }),
   };
+  private json: boolean | undefined;
+  private color: boolean | undefined;
 
   public async run(): Promise<void> {
-    try {
-      if (this.org) {
-        const conn = this.org.getConnection();
-        const logService = new LogService(conn);
+    const {flags} = await this.parse(Tail);
+    this.json = flags.json;
+    this.color = flags.color;
 
-        if (!this.flags.skiptraceflag) {
-          await logService.prepareTraceFlag(this.flags.debuglevel);
-        }
-        await logService.tail(this.org, this.logTailer.bind(this));
-        this.ux.log(messages.getMessage('finishedTailing'));
-      }
-    } catch (e) {
-      return Promise.reject(e);
+    const conn = flags['target-org'].getConnection(flags['api-version']);
+    const logService = new LogService(conn);
+
+    if (!flags.skiptraceflag) {
+      await logService.prepareTraceFlag(flags.debuglevel??'');
     }
+    // TODO: come back and try to fix this
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    await logService.tail(flags['target-org'], this.logTailer.bind(this));
+    this.log(messages.getMessage('finishedTailing'));
   }
 
   public async logTailer(fullLog: string): Promise<void> {
     if (fullLog) {
-      if (this.flags.json) {
-        this.ux.logJson({
+      if (this.json) {
+        this.styledJSON({
           status: process.exitCode,
           result: fullLog,
         });
       } else {
-        const output = this.flags.color ? await colorizeLog(fullLog) : fullLog;
-        this.ux.log(output);
+        const output = this.color ? await colorizeLog(fullLog) : fullLog;
+        this.log(output);
       }
     }
   }
