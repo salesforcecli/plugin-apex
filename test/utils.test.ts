@@ -7,7 +7,7 @@
 import { expect } from 'chai';
 import { colorLogs } from '../src/utils';
 
-describe('Colorize Logs', async () => {
+describe('Colorize Logs', () => {
   it('should color time/date format correctly', async () => {
     const testData = '12:47:29.584';
     const coloredData = colorLogs(testData);

@@ -1,92 +1,65 @@
 [
-    {
-        "command": "force:apex:execute",
-        "plugin": "@salesforce/plugin-apex",
-        "flags": [
-            "apexcodefile",
-            "apiversion",
-            "json",
-            "loglevel",
-            "targetusername"
-        ],
-        "alias": []
-    },
-    {
-        "command": "force:apex:log:get",
-        "plugin": "@salesforce/plugin-apex",
-        "flags": [
-            "apiversion",
-            "json",
-            "logid",
-            "loglevel",
-            "number",
-            "outputdir",
-            "targetusername"
-        ],
-        "alias": []
-    },
-    {
-        "command": "force:apex:log:list",
-        "plugin": "@salesforce/plugin-apex",
-        "flags": [
-            "apiversion",
-            "json",
-            "loglevel",
-            "targetusername"
-        ],
-        "alias": []
-    },
-    {
-        "command": "force:apex:log:tail",
-        "plugin": "@salesforce/plugin-apex",
-        "flags": [
-            "apiversion",
-            "color",
-            "debuglevel",
-            "json",
-            "loglevel",
-            "skiptraceflag",
-            "targetusername"
-        ],
-        "alias": []
-    },
-    {
-        "command": "force:apex:test:report",
-        "plugin": "@salesforce/plugin-apex",
-        "flags": [
-            "apiversion",
-            "codecoverage",
-            "json",
-            "loglevel",
-            "outputdir",
-            "resultformat",
-            "targetusername",
-            "testrunid",
-            "verbose",
-            "wait"
-        ],
-        "alias": []
-    },
-    {
-        "command": "force:apex:test:run",
-        "plugin": "@salesforce/plugin-apex",
-        "flags": [
-            "apiversion",
-            "classnames",
-            "codecoverage",
-            "detailedcoverage",
-            "json",
-            "loglevel",
-            "outputdir",
-            "resultformat",
-            "suitenames",
-            "synchronous",
-            "targetusername",
-            "testlevel",
-            "tests",
-            "verbose",
-            "wait"
-        ],
-        "alias": []
-    }
+  {
+    "command": "force:apex:execute",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["apexcodefile", "api-version", "json", "loglevel", "target-org"],
+    "alias": []
+  },
+  {
+    "command": "force:apex:log:get",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["api-version", "json", "logid", "loglevel", "number", "outputdir", "target-org"],
+    "alias": []
+  },
+  {
+    "command": "force:apex:log:list",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["api-version", "json", "loglevel", "target-org"],
+    "alias": []
+  },
+  {
+    "command": "force:apex:log:tail",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["api-version", "color", "debuglevel", "json", "loglevel", "skiptraceflag", "target-org"],
+    "alias": []
+  },
+  {
+    "command": "force:apex:test:report",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": [
+      "api-version",
+      "codecoverage",
+      "json",
+      "loglevel",
+      "outputdir",
+      "resultformat",
+      "target-org",
+      "testrunid",
+      "verbose",
+      "wait"
+    ],
+    "alias": []
+  },
+  {
+    "command": "force:apex:test:run",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": [
+      "api-version",
+      "classnames",
+      "codecoverage",
+      "detailedcoverage",
+      "json",
+      "loglevel",
+      "outputdir",
+      "resultformat",
+      "suitenames",
+      "synchronous",
+      "target-org",
+      "testlevel",
+      "tests",
+      "verbose",
+      "wait"
+    ],
+    "alias": []
+  }
 ]

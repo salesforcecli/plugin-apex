@@ -17,12 +17,12 @@ import {
   Flags,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
-  SfCommand
+  SfCommand,
 } from '@salesforce/sf-plugins-core';
-import {Messages} from '@salesforce/core';
-import {AnyJson} from '@salesforce/ts-types';
-import {buildOutputDirConfig, RunResult, JsonReporter} from '../../../../reporters';
-import {buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat} from '../../../../utils';
+import { Messages } from '@salesforce/core';
+import { AnyJson } from '@salesforce/ts-types';
+import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../../reporters';
+import { buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat } from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
@@ -96,7 +96,9 @@ export default class Report extends SfCommand<RunResult> {
   };
 
   public async run(): Promise<RunResult> {
-    const {flags} = await this.parse(Report);if (flags.outputdir) {
+    const { flags } = await this.parse(Report);
+
+    if (flags.outputdir) {
       this.warn(messages.getMessage('warningMessage'));
     }
 
@@ -152,6 +154,7 @@ export default class Report extends SfCommand<RunResult> {
       const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
       this.error(msg);
     }
+    process.exitCode ??= 0;
     return jsonOutput;
   }
 

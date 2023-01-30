@@ -13,7 +13,7 @@ import {
   TestResult,
   TestRunIdResult,
 } from '@salesforce/apex-node';
-import {RunResult} from './jsonReporter';
+import { RunResult } from './jsonReporter';
 
 /**
  * Builds output directory configuration with CLI format result files
@@ -82,12 +82,6 @@ export function buildOutputDirConfig(
         outputDirConfig.fileInfos?.push({
           filename: 'test-result.txt',
           content: new HumanReporter().format(result, detailedCoverage),
-        });
-        break;
-      case ResultFormat.json:
-        outputDirConfig.fileInfos?.push({
-          filename: 'test-result.json',
-          content: result,
         });
         break;
       default:

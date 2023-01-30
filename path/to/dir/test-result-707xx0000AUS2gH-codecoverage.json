@@ -1,0 +1,17 @@
+[
+  [
+    {
+      "apexTestClassId": "01pxx00000NnP2KQAV",
+      "apexClassOrTriggerName": "ApexClassExample",
+      "apexClassOrTriggerId": "01pxx00000avcNeAAL",
+      "apexTestMethodName": "testAssignContains",
+      "numLinesCovered": 1,
+      "numLinesUncovered": 4,
+      "percentage": "20%",
+      "coverage": {
+        "coveredLines": [1],
+        "uncoveredLines": [2, 3, 4, 5]
+      }
+    }
+  ]
+]

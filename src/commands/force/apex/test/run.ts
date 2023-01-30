@@ -8,7 +8,8 @@ import {
   ApexTestRunResultStatus,
   CancellationTokenSource,
   HumanReporter,
-  JUnitReporter, ResultFormat,
+  JUnitReporter,
+  ResultFormat,
   TapReporter,
   TestLevel,
   TestResult,
@@ -19,12 +20,12 @@ import {
   Flags,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
-  SfCommand
+  SfCommand,
 } from '@salesforce/sf-plugins-core';
-import {Messages, Org, SfError} from '@salesforce/core';
-import {AnyJson, Optional} from '@salesforce/ts-types';
-import {buildOutputDirConfig, RunResult, JsonReporter} from '../../../../reporters';
-import {buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat} from '../../../../utils';
+import { Messages, Org, SfError } from '@salesforce/core';
+import { AnyJson, Optional } from '@salesforce/ts-types';
+import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../../reporters';
+import { buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat } from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
@@ -57,7 +58,8 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
 ]);
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
-export default class Run extends SfCommand<RunResult|TestRunIdResult> {
+export type RunCommandResult = RunResult | TestRunIdResult;
+export default class Run extends SfCommand<RunCommandResult> {
   public static readonly summary = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
@@ -149,12 +151,10 @@ export default class Run extends SfCommand<RunResult|TestRunIdResult> {
     synchronous: boolean;
     verbose: boolean;
     detailedcoverage: boolean;
-  }
-    & { json: boolean | undefined };
+  } & { json: boolean | undefined };
 
-
-  public async run(): Promise<RunResult|TestRunIdResult> {
-    const {flags} = await this.parse(Run);
+  public async run(): Promise<RunCommandResult> {
+    const { flags } = await this.parse(Run);
     this.flags = flags;
 
     await this.validateFlags();
@@ -197,12 +197,7 @@ export default class Run extends SfCommand<RunResult|TestRunIdResult> {
         this.cancellationTokenSource.token
       )) as TestResult;
     } else {
-      const payload = await testService.buildAsyncPayload(
-        testLevel,
-        flags.tests,
-        flags.classnames,
-        flags.suitenames
-      );
+      const payload = await testService.buildAsyncPayload(testLevel, flags.tests, flags.classnames, flags.suitenames);
 
       payload.skipCodeCoverage = !flags.codecoverage;
       const reporter = undefined;
@@ -216,7 +211,7 @@ export default class Run extends SfCommand<RunResult|TestRunIdResult> {
     }
 
     if (this.cancellationTokenSource.token.isCancellationRequested) {
-     // return null;
+      // return null;
       throw new SfError('Cancelled');
     }
 
@@ -235,10 +230,7 @@ export default class Run extends SfCommand<RunResult|TestRunIdResult> {
     }
 
     try {
-      if (
-        (result as TestResult).summary &&
-        (result as TestResult).summary.outcome === ApexTestRunResultStatus.Failed
-      ) {
+      if ((result as TestResult).summary && (result as TestResult).summary.outcome === ApexTestRunResultStatus.Failed) {
         process.exitCode = FAILURE_EXIT_CODE;
       }
       switch (flags.resultformat) {
@@ -257,7 +249,7 @@ export default class Run extends SfCommand<RunResult|TestRunIdResult> {
             this.styledJSON({
               status: process.exitCode,
               result: this.formatResultInJson(result),
-            }  as AnyJson);
+            } as AnyJson);
           }
           break;
         default:
@@ -353,7 +345,7 @@ export default class Run extends SfCommand<RunResult|TestRunIdResult> {
   private formatReportHint(result: TestResult): string {
     let reportArgs = `-i ${result.summary.testRunId}`;
     if (this.flags['target-org']) {
-      reportArgs += ` -o ${this.flags['target-org'].getUsername()as string}`;
+      reportArgs += ` -o ${this.flags['target-org'].getUsername() as string}`;
     }
     return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
   }

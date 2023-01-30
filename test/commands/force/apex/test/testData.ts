@@ -5,18 +5,14 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {
-  ApexTestResultOutcome,
-  ApexTestRunResultStatus,
-  TestResult
-} from '@salesforce/apex-node';
+import { ApexTestResultOutcome, ApexTestRunResultStatus, TestResult } from '@salesforce/apex-node';
 
-export const rawSyncResult = {
+export const ServerSyncResult: TestResult = {
   summary: {
     failRate: '0%',
     testsRan: 1,
     orgId: '00D4xx00000FH4IEAW',
-    outcome: 'Passed',
+    outcome: ApexTestRunResultStatus.Completed,
     passing: 10,
     failing: 0,
     skipped: 0,
@@ -29,7 +25,7 @@ export const rawSyncResult = {
     hostname: 'https://na139.salesforce.com',
     testRunId: '',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -39,19 +35,21 @@ export const rawSyncResult = {
       message: null,
       asyncApexJobId: '707xx0000AUS2gHQQT',
       methodName: 'testConfig',
-      outcome: 'Pass',
+      outcome: ApexTestResultOutcome.Pass,
       apexLogId: null,
       apexClass: {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         namespacePrefix: null,
-        fullName: 'MyApexTests'
+        fullName: 'MyApexTests',
       },
       runTime: 53,
       testTimestamp: '2020-08-25T00:48:02.000+0000',
-      fullName: 'MyApexTests.testConfig'
-    }
-  ]
+      fullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
 export const jsonSyncResult = {
@@ -59,7 +57,7 @@ export const jsonSyncResult = {
     failRate: '0%',
     testsRan: 1,
     orgId: '00D4xx00000FH4IEAW',
-    outcome: 'Passed',
+    outcome: ApexTestRunResultStatus.Completed,
     passing: 10,
     failing: 0,
     skipped: 0,
@@ -71,7 +69,7 @@ export const jsonSyncResult = {
     hostname: 'https://na139.salesforce.com',
     testRunId: '',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -85,12 +83,12 @@ export const jsonSyncResult = {
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
         Name: 'MyApexTests',
-        NamespacePrefix: null
+        NamespacePrefix: null,
       },
       RunTime: 53,
-      FullName: 'MyApexTests.testConfig'
-    }
-  ]
+      FullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
 export const testRunSimple: TestResult = {
@@ -111,7 +109,7 @@ export const testRunSimple: TestResult = {
     hostname: 'https://na139.salesforce.com',
     testRunId: '707xx0000AUS2gH',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -127,18 +125,20 @@ export const testRunSimple: TestResult = {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
         namespacePrefix: '',
-        fullName: 'MyApexTests'
+        fullName: 'MyApexTests',
       },
       runTime: 53,
       testTimestamp: '2020-08-25T00:48:02.000+0000',
-      fullName: 'MyApexTests.testConfig'
-    }
-  ]
+      fullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
-export const runWithCoverage = {
+export const runWithCoverage: TestResult = {
   summary: {
     failRate: '0%',
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     numTestsRan: 1,
     orgId: '00D4xx00000FH4IEAW',
     outcome: 'Passed',
@@ -158,7 +158,7 @@ export const runWithCoverage = {
     orgWideCoverage: '50%',
     testRunCoverage: '80%',
     coveredLines: 8,
-    totalLines: 10
+    totalLines: 10,
   },
   tests: [
     {
@@ -168,13 +168,15 @@ export const runWithCoverage = {
       message: null,
       asyncApexJobId: '707xx0000AUS2gHQQT',
       methodName: 'testConfig',
-      outcome: 'Pass',
+      outcome: ApexTestResultOutcome.Pass,
       apexLogId: null,
       apexClass: {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         namespacePrefix: null,
-        fullName: 'MyApexTests'
+        fullName: 'MyApexTests',
       },
       runTime: 53,
       testTimestamp: '2020-08-25T00:48:02.000+0000',
@@ -188,10 +190,10 @@ export const runWithCoverage = {
           numLinesCovered: 1,
           numLinesUncovered: 4,
           percentage: '20%',
-          coverage: { coveredLines: [1], uncoveredLines: [2, 3, 4, 5] }
-        }
-      ]
-    }
+          coverage: { coveredLines: [1], uncoveredLines: [2, 3, 4, 5] },
+        },
+      ],
+    },
   ],
   codecoverage: [
     {
@@ -202,12 +204,12 @@ export const runWithCoverage = {
       numLinesUncovered: 4,
       percentage: '20%',
       coveredLines: [1],
-      uncoveredLines: [2, 3, 4, 5]
-    }
-  ]
+      uncoveredLines: [2, 3, 4, 5],
+    },
+  ],
 };
 
-export const runWithFailures = {
+export const runWithFailures: TestResult = {
   summary: {
     failRate: '50%',
     testsRan: 2,
@@ -225,7 +227,7 @@ export const runWithFailures = {
     hostname: 'https://na139.salesforce.com',
     testRunId: '707xx0000AUS2gH',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -235,22 +237,24 @@ export const runWithFailures = {
       message: null,
       asyncApexJobId: '707xx0000AUS2gHQQT',
       methodName: 'testConfig',
-      outcome: 'Fail',
+      outcome: ApexTestResultOutcome.Fail,
       apexLogId: null,
       apexClass: {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         namespacePrefix: null,
-        fullName: 'MyApexTests'
+        fullName: 'MyApexTests',
       },
       runTime: 53,
       testTimestamp: '2020-08-25T00:48:02.000+0000',
-      fullName: 'MyApexTests.testConfig'
-    }
-  ]
+      fullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
-export const runWithMixed = {
+export const runWithMixed: TestResult = {
   summary: {
     failRate: '33%',
     testsRan: 3,
@@ -268,7 +272,7 @@ export const runWithMixed = {
     hostname: 'https://na139.salesforce.com',
     testRunId: '707xx0000AUS2gH',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -278,19 +282,23 @@ export const runWithMixed = {
       message: null,
       asyncApexJobId: '707xx0000AUS2gHQQT',
       methodName: 'testConfig',
-      outcome: 'Skip',
+      outcome: ApexTestResultOutcome.Skip,
       apexLogId: null,
       apexClass: {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         namespacePrefix: null,
-        fullName: 'MyApexTests'
+        fullName: 'MyApexTests',
       },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       runTime: null,
       testTimestamp: '2020-08-25T00:48:02.000+0000',
-      fullName: 'MyApexTests.testConfig'
-    }
-  ]
+      fullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
 export const mixedResult = {
@@ -310,7 +318,7 @@ export const mixedResult = {
     testExecutionTime: '53 ms',
     testRunId: '707xx0000AUS2gH',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -324,12 +332,12 @@ export const mixedResult = {
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
         Name: 'MyApexTests',
-        NamespacePrefix: null
+        NamespacePrefix: null,
       },
       RunTime: null,
-      FullName: 'MyApexTests.testConfig'
-    }
-  ]
+      FullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
 export const failureResult = {
@@ -349,7 +357,7 @@ export const failureResult = {
     testExecutionTime: '53 ms',
     testRunId: '707xx0000AUS2gH',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -363,12 +371,12 @@ export const failureResult = {
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
         Name: 'MyApexTests',
-        NamespacePrefix: null
+        NamespacePrefix: null,
       },
       RunTime: 53,
-      FullName: 'MyApexTests.testConfig'
-    }
-  ]
+      FullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
 export const jsonResult = {
@@ -388,7 +396,7 @@ export const jsonResult = {
     testExecutionTime: '53 ms',
     testRunId: '707xx0000AUS2gH',
     userId: '005xx000000uEgSAAU',
-    username: 'test@example.com'
+    username: 'test@example.com',
   },
   tests: [
     {
@@ -402,12 +410,12 @@ export const jsonResult = {
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
         Name: 'MyApexTests',
-        NamespacePrefix: ''
+        NamespacePrefix: '',
       },
       RunTime: 53,
-      FullName: 'MyApexTests.testConfig'
-    }
-  ]
+      FullName: 'MyApexTests.testConfig',
+    },
+  ],
 };
 
 export const jsonWithCoverage = {
@@ -421,38 +429,38 @@ export const jsonWithCoverage = {
           2: 0,
           3: 0,
           4: 0,
-          5: 0
+          5: 0,
         },
         name: 'testClass',
         totalCovered: 1,
-        totalLines: 5
-      }
+        totalLines: 5,
+      },
     ],
     records: [
       {
         ApexClassOrTrigger: {
           Id: '01pxx00000avcNeAAL',
-          Name: 'ApexClassExample'
+          Name: 'ApexClassExample',
         },
         ApexTestClass: {
           Id: '07Mxx00000ErgiHUAR',
-          Name: 'MyApexTests'
+          Name: 'MyApexTests',
         },
         Coverage: {
           coveredLines: [1],
-          uncoveredLines: [2, 3, 4, 5]
+          uncoveredLines: [2, 3, 4, 5],
         },
         NumLinesCovered: 1,
         NumLinesUncovered: 4,
-        TestMethodName: 'testConfig'
-      }
+        TestMethodName: 'testConfig',
+      },
     ],
     summary: {
       orgWideCoverage: '50%',
       totalLines: 10,
       coveredLines: 8,
-      testRunCoverage: '80%'
-    }
+      testRunCoverage: '80%',
+    },
   },
   summary: {
     commandTime: '60 ms',
@@ -472,14 +480,14 @@ export const jsonWithCoverage = {
     passing: 10,
     skipped: 0,
     testTotalTime: '53 ms',
-    testRunCoverage: '80%'
+    testRunCoverage: '80%',
   },
   tests: [
     {
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
         Name: 'MyApexTests',
-        NamespacePrefix: null
+        NamespacePrefix: null,
       },
       AsyncApexJobId: '707xx0000AUS2gHQQT',
       FullName: 'MyApexTests.testConfig',
@@ -489,17 +497,19 @@ export const jsonWithCoverage = {
       Outcome: 'Pass',
       QueueItemId: '709xx000001IlUMQA0',
       RunTime: 53,
-      StackTrace: null
-    }
-  ]
+      StackTrace: null,
+    },
+  ],
 };
 
 export const cliJsonResult = {
   status: 0,
-  result: jsonResult
+  warnings: [],
+  result: jsonResult,
 };
 
 export const cliWithCoverage = {
   result: jsonWithCoverage,
-  status: 0
+  warnings: [],
+  status: 0,
 };

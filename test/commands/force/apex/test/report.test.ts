@@ -4,13 +4,12 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as fs from 'fs';
 import * as path from 'path';
-import * as stream from 'stream';
 import { HumanReporter, JUnitReporter, ResultFormat, TapReporter, TestService } from '@salesforce/apex-node';
 import { expect, test } from '@salesforce/command/lib/test';
 import { Connection, Messages, Org, SfProject } from '@salesforce/core';
 import { createSandbox, SinonSandbox, SinonStub } from 'sinon';
+import { RunResult } from '../../../../../src/reporters';
 import {
   testRunSimple,
   cliJsonResult,
@@ -63,9 +62,11 @@ describe('force:apex:test:report', () => {
       } as unknown as SfProject)
     );
     sandboxStub.stub(Org, 'create').resolves(Org.prototype);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     sandboxStub.stub(Org.prototype, 'getConnection').returns(Connection.prototype);
     sandboxStub.stub(Org.prototype, 'getUsername').returns(TEST_USERNAME);
     sandboxStub.stub(Org.prototype, 'getOrgId').returns('abc123');
+    process.exitCode = 0;
   });
 
   afterEach(() => {
@@ -205,8 +206,7 @@ describe('force:apex:test:report', () => {
     .it('should return result in json format with json resultformat specified', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result);
-      expect(resultJSON).to.deep.equal(cliJsonResult);
+      expect(JSON.parse(result)).to.deep.equal(cliJsonResult);
     });
 
   test
@@ -221,8 +221,7 @@ describe('force:apex:test:report', () => {
     .it('should return a CLI json result when both json flag and json result flag are specified', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result);
-      expect(resultJSON).to.deep.equal(cliJsonResult);
+      expect(JSON.parse(result)).to.deep.equal(cliJsonResult);
     });
 
   test
@@ -237,8 +236,7 @@ describe('force:apex:test:report', () => {
     .it('should return a CLI json result with json result flag are specified', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result);
-      expect(resultJSON).to.deep.equal(cliJsonResult);
+      expect((JSON.parse(result) as { result: RunResult }).result).to.deep.equal(cliJsonResult.result);
     });
 
   test
@@ -253,8 +251,7 @@ describe('force:apex:test:report', () => {
     .it('should return result in json format with code coverage', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result);
-      expect(resultJSON).to.deep.equal(cliWithCoverage);
+      expect(JSON.parse(result)).to.deep.equal(cliWithCoverage);
     });
 
   test
@@ -290,11 +287,6 @@ describe('force:apex:test:report', () => {
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'reportAsyncResults', () => testRunSimple)
-    .stub(fs, 'existsSync', () => true)
-    .stub(fs, 'mkdirSync', () => true)
-    .stub(fs, 'createWriteStream', () => new stream.PassThrough())
-    .stub(fs, 'openSync', () => 10)
-    .stub(fs, 'closeSync', () => true)
     .stdout()
     .stderr()
     .command(['force:apex:test:report', '-i', '01pxx00000NWwb3', '-d', 'path/to/dir', '--resultformat', 'human'])
@@ -309,11 +301,6 @@ describe('force:apex:test:report', () => {
     })
     .stub(process, 'cwd', () => projectPath)
     .stub(TestService.prototype, 'reportAsyncResults', () => runWithCoverage)
-    .stub(fs, 'existsSync', () => true)
-    .stub(fs, 'mkdirSync', () => true)
-    .stub(fs, 'openSync', () => 10)
-    .stub(fs, 'closeSync', () => true)
-    .stub(fs, 'createWriteStream', () => new stream.PassThrough())
     .stdout()
     .stderr()
     .command(['force:apex:test:report', '-i', '707xx0000AUS2gH', '-d', 'path/to/dir', '--resultformat', 'human', '-c'])
@@ -411,7 +398,6 @@ describe('force:apex:test:report', () => {
     .stderr()
     .command(['force:apex:test:report', '-i', '707xx0000AUS2gH', '-d', 'path/to/dir', '--resultformat', 'junit', '-c'])
     .it('should create junit file with correct content when junit format is specified', (ctx) => {
-      // @ts-ignore
       const result = new JUnitReporter().format(runWithCoverage);
       expect((ctx.myStub as SinonStub).args).to.deep.equal([
         [
@@ -453,7 +439,6 @@ describe('force:apex:test:report', () => {
     .stderr()
     .command(['force:apex:test:report', '-i', '707xx0000AUS2gH', '-d', 'path/to/dir', '--resultformat', 'human', '-c'])
     .it('should create human-readable file with correct content when human-readable format is specified', (ctx) => {
-      // @ts-ignore
       const result = new HumanReporter().format(runWithCoverage, true);
       expect((ctx.myStub as SinonStub).args).to.deep.equal([
         [
@@ -493,17 +478,32 @@ describe('force:apex:test:report', () => {
     })
     .stdout()
     .stderr()
-    .command([
-      'force:apex:test:report',
-      '-i',
-      '707xx0000AUS2gH',
-      '--outputdir',
-      'path/to/dir',
-      '--resultformat',
-      'human',
-      '-c',
-    ])
-    .it('should display warning message when output directory flag is specifed', (ctx) => {
-      expect(ctx.stderr).to.include(messages.getMessage('warningMessage'));
+    .command(['force:apex:test:report', '-i', '707xx0000AUS2gH', '-d', 'path/to/dir', '--resultformat', 'human', '-c'])
+    .it('should create human-readable file with correct content when human-readable format is specified', (ctx) => {
+      const result = new HumanReporter().format(runWithCoverage, true);
+      expect((ctx.myStub as SinonStub).args).to.deep.equal([
+        [
+          runWithCoverage,
+          {
+            dirPath: 'path/to/dir',
+            fileInfos: [
+              {
+                filename: `test-result-${jsonWithCoverage.summary.testRunId}.json`,
+                content: jsonWithCoverage,
+              },
+              {
+                filename: 'test-result-codecoverage.json',
+                content: jsonWithCoverage.coverage.coverage,
+              },
+              {
+                filename: 'test-result.txt',
+                content: result,
+              },
+            ],
+            resultFormats: [ResultFormat.junit],
+          },
+          true,
+        ],
+      ]);
     });
 });

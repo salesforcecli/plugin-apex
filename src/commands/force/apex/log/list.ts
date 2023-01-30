@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {LogRecord, LogService} from '@salesforce/apex-node';
+import { LogRecord, LogService } from '@salesforce/apex-node';
 import {
   Flags,
   SfCommand,
@@ -35,7 +35,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'list', [
   'userColHeader',
 ]);
 
-export type LogListResult = LogRecord[]
+export type LogListResult = LogRecord[];
 
 export default class List extends SfCommand<LogListResult> {
   public static readonly summary = buildDescription(
@@ -60,49 +60,52 @@ export default class List extends SfCommand<LogListResult> {
   };
 
   public async run(): Promise<LogListResult> {
-    const {flags} = await this.parse(List);
+    const { flags } = await this.parse(List);
 
-      const conn = flags['target-org'].getConnection(flags['api-version']);
-      const logService = new LogService(conn);
-      const logRecords = await logService.getLogRecords();
+    const conn = flags['target-org'].getConnection(flags['api-version']);
+    const logService = new LogService(conn);
+    const logRecords = await logService.getLogRecords();
 
-      if (logRecords.length === 0) {
-        this.log(messages.getMessage('noDebugLogsFound'));
-        return [];
-      }
+    if (logRecords.length === 0) {
+      this.log(messages.getMessage('noDebugLogsFound'));
+      return [];
+    }
 
-      const cleanLogs = logRecords.map((logRecord) =>({
-      app: logRecord.Application,
-      duration: String(logRecord.DurationMilliseconds),
-      id: logRecord.Id,
-      location: logRecord.Location,
-      size: String(logRecord.LogLength),
-      user: logRecord.LogUser.Name,
-      operation: logRecord.Operation,
-      request: logRecord.Request,
-      time: this.formatTime(logRecord.StartTime),
-      status: logRecord.Status,
-    }));
+    logRecords.map((logRecord) => {
+      logRecord.StartTime = this.formatTime(logRecord.StartTime);
+    });
+
+    if (!flags.json) {
+      // while not required to prevent table output, save a few iterations if only printing json
+      const cleanLogs = logRecords.map((logRecord) => ({
+        app: logRecord.Application,
+        duration: String(logRecord.DurationMilliseconds),
+        id: logRecord.Id,
+        location: logRecord.Location,
+        size: String(logRecord.LogLength),
+        user: logRecord.LogUser.Name,
+        operation: logRecord.Operation,
+        request: logRecord.Request,
+        time: logRecord.StartTime,
+        status: logRecord.Status,
+      }));
 
       this.table(cleanLogs, {
-        app: {header:messages.getMessage('appColHeader')},
-        duration: {header:messages.getMessage('durationColHeader')},
-        id: {header:messages.getMessage('idColHeader')},
-        location: {header:messages.getMessage('locationColHeader')},
-        size: {header:messages.getMessage('sizeColHeader')},
-        user: {header:messages.getMessage('userColHeader')},
-        operation: {header:messages.getMessage('operationColHeader')},
-        request: {header:messages.getMessage('requestColHeader')},
-        time: {header:messages.getMessage('timeColHeader')},
-        status: {header:messages.getMessage('statusColHeader')},
-      })
-return logRecords;
+        app: { header: messages.getMessage('appColHeader') },
+        duration: { header: messages.getMessage('durationColHeader') },
+        id: { header: messages.getMessage('idColHeader') },
+        location: { header: messages.getMessage('locationColHeader') },
+        size: { header: messages.getMessage('sizeColHeader') },
+        user: { header: messages.getMessage('userColHeader') },
+        operation: { header: messages.getMessage('operationColHeader') },
+        request: { header: messages.getMessage('requestColHeader') },
+        time: { header: messages.getMessage('timeColHeader') },
+        status: { header: messages.getMessage('statusColHeader') },
+      });
+    }
 
-
-
-
+    return logRecords;
   }
-
 
   // eslint-disable-next-line class-methods-use-this
   private formatTime(time: string): string {

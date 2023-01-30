@@ -10,6 +10,7 @@ import { expect } from 'chai';
 import { ExecuteService } from '@salesforce/apex-node';
 import { createSandbox, SinonSandbox } from 'sinon';
 import { Connection, Org } from '@salesforce/core';
+import { ExecuteResult } from '../../../../src/commands/force/apex/execute';
 
 describe('force:apex:execute', () => {
   const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
@@ -98,6 +99,7 @@ describe('force:apex:execute', () => {
     sandboxStub = createSandbox();
 
     sandboxStub.stub(Org, 'create').resolves(Org.prototype);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     sandboxStub.stub(Org.prototype, 'getConnection').returns(Connection.prototype);
     sandboxStub.stub(Org.prototype, 'getUsername').returns(TEST_USERNAME);
     sandboxStub.stub(Org.prototype, 'getOrgId').returns('abc123');
@@ -119,7 +121,7 @@ describe('force:apex:execute', () => {
     .it('runs command with filepath flag and successful result', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result);
+      const resultJSON = JSON.parse(result) as { status: number; result: ExecuteResult };
       expect(resultJSON).to.ownProperty('status');
       expect(resultJSON.status).to.equal(0);
       expect(resultJSON).to.ownProperty('result');
@@ -134,11 +136,11 @@ describe('force:apex:execute', () => {
       'fakeData';
     })
     .stdout()
-    .command(['force:apex:execute', '--targetusername', 'test@org.com', '--json'])
+    .command(['force:apex:execute', '-o', 'test@org.com', '--json'])
     .it('runs default command with json flag and successful result', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result);
+      const resultJSON = JSON.parse(result) as { status: number; result: ExecuteResult };
       expect(resultJSON).to.ownProperty('status');
       expect(resultJSON.status).to.equal(0);
       expect(resultJSON).to.ownProperty('result');
@@ -153,11 +155,11 @@ describe('force:apex:execute', () => {
       'fakeData';
     })
     .stdout()
-    .command(['force:apex:execute', '--targetusername', 'test@org.com', '--json'])
+    .command(['force:apex:execute', '-o', 'test@org.com', '--json'])
     .it('runs default command with json flag and compile problem', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result);
+      const resultJSON = JSON.parse(result) as { status: number; result: ExecuteResult };
       expect(resultJSON).to.ownProperty('result');
       expect(resultJSON.result).to.deep.include(expectedCompileProblem);
     });
@@ -170,7 +172,7 @@ describe('force:apex:execute', () => {
       'fakeData';
     })
     .stdout()
-    .command(['force:apex:execute', '--targetusername', 'test@org.com'])
+    .command(['force:apex:execute', '-o', 'test@org.com'])
     .it('runs default command successfully with human readable output', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
@@ -185,7 +187,7 @@ describe('force:apex:execute', () => {
       'fakeData';
     })
     .stdout()
-    .command(['force:apex:execute', '--targetusername', 'test@org.com'])
+    .command(['force:apex:execute', '-o', 'test@org.com'])
     .it('runs default command with compile issue in human readable output', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;
@@ -200,7 +202,7 @@ describe('force:apex:execute', () => {
       'fakeData';
     })
     .stdout()
-    .command(['force:apex:execute', '--targetusername', 'test@org.com'])
+    .command(['force:apex:execute', '-o', 'test@org.com'])
     .it('runs default command with runtime issue in human readable output', (ctx) => {
       const result = ctx.stdout;
       expect(result).to.not.be.empty;

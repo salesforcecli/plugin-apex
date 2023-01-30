@@ -1,0 +1,16 @@
+[
+  {
+    "id": "01pxx00000NWwb3AAF",
+    "name": "testClass",
+    "totalLines": 5,
+    "lines": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "totalCovered": 1,
+    "coveredPercent": 20
+  }
+]
