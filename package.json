@@ -8,8 +8,7 @@
   "dependencies": {
     "@oclif/core": "^1.25.0",
     "@salesforce/apex-node": "1.6.0",
-    "@salesforce/core": "^3.32.13",
-    "@salesforce/command": "^5.2.43",
+    "@salesforce/core": "^3.33.1",
     "@salesforce/sf-plugins-core": "^1.22.3",
     "chalk": "^4.1.0",
     "tslib": "^2"
@@ -17,7 +16,6 @@
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^3.2.11",
     "@oclif/plugin-help": "^5",
-    "@oclif/test": "^2.2.2",
     "@salesforce/dev-config": "3.0.1",
     "@salesforce/dev-scripts": "^3.1.0",
     "@salesforce/plugin-command-reference": "^2.2.10",

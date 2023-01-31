@@ -5,15 +5,15 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {LogService} from '@salesforce/apex-node';
+import { LogService } from '@salesforce/apex-node';
 import {
   Flags,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
-  SfCommand
+  SfCommand,
 } from '@salesforce/sf-plugins-core';
-import {Messages} from '@salesforce/core';
-import {buildDescription, colorLogs, logLevels} from '../../../../utils';
+import { Messages } from '@salesforce/core';
+import { buildDescription, colorLogs, logLevels } from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'get', [
@@ -29,10 +29,9 @@ const messages = Messages.load('@salesforce/plugin-apex', 'get', [
   'outputDirLongDescription',
 ]);
 
-export type LogGetResult =Array<{log: string} | string>
+export type LogGetResult = Array<{ log: string } | string>;
 
 export default class Get extends SfCommand<LogGetResult> {
-
   public static readonly summary = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
@@ -66,7 +65,7 @@ export default class Get extends SfCommand<LogGetResult> {
     number: Flags.integer({
       char: 'n',
       min: 1,
-      default:1,
+      default: 1,
       max: 25,
       summary: messages.getMessage('numberDescription'),
     }),
@@ -77,30 +76,30 @@ export default class Get extends SfCommand<LogGetResult> {
     }),
   };
   public async run(): Promise<LogGetResult> {
-    const {flags} = await this.parse(Get);
-      const conn = flags['target-org'].getConnection(flags['api-version']);
-      const logService = new LogService(conn);
+    const { flags } = await this.parse(Get);
+    const conn = flags['target-org'].getConnection(flags['api-version']);
+    const logService = new LogService(conn);
 
-      const logResults = await logService.getLogs({
-        logId: flags.logid,
-        numberOfLogs: flags.number,
-        outputDir: flags.outputdir,
-      });
+    const logResults = await logService.getLogs({
+      logId: flags.logid,
+      numberOfLogs: flags.number,
+      outputDir: flags.outputdir,
+    });
 
-      if (logResults.length === 0) {
-        this.log(messages.getMessage('noResultsFound'));
-        return [];
-      }
+    if (logResults.length === 0) {
+      this.log(messages.getMessage('noResultsFound'));
+      return [];
+    }
 
-      if (flags.outputdir) {
-        this.log(`Log files written to ${flags.outputdir}`);
-        // TODO: look at this --outputdir will change what --json returns
-        return logResults.map((logResult) => logResult.log);
-      }
+    if (flags.outputdir) {
+      this.log(`Log files written to ${flags.outputdir}`);
+      // TODO: look at this --outputdir will change what --json returns
+      return logResults.map((logResult) => logResult.log);
+    }
 
-      return logResults.map((logResult) => {
-        this.log(colorLogs(logResult.log));
-        return {log: logResult.log};
-      });
+    return logResults.map((logResult) => {
+      this.log(colorLogs(logResult.log));
+      return { log: logResult.log };
+    });
   }
 }

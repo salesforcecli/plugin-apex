@@ -91,6 +91,84 @@ export const jsonSyncResult = {
   ],
 };
 
+export const testRunWithFailuresResult = {
+  summary: {
+    commandTime: '60 ms',
+    failRate: '50%',
+    failing: 1,
+    hostname: 'https://na139.salesforce.com',
+    orgId: '00D4xx00000FH4IEAW',
+    outcome: 'Failed',
+    passRate: '50%',
+    passing: 1,
+    skipped: 0,
+    testExecutionTime: '53 ms',
+    testRunId: '707xx0000AUS2gH',
+    testStartTime: '2020-08-25T00:48:02.000+0000',
+    testTotalTime: '53 ms',
+    testsRan: 2,
+    userId: '005xx000000uEgSAAU',
+    username: 'test@example.com',
+  },
+  tests: [
+    {
+      ApexClass: {
+        Id: '01pxx00000NWwb3AAD',
+        Name: 'MyApexTests',
+        NamespacePrefix: null,
+      },
+      AsyncApexJobId: '707xx0000AUS2gHQQT',
+      FullName: 'MyApexTests.testConfig',
+      Id: '07Mxx00000ErgiHUAR',
+      Message: null,
+      MethodName: 'testConfig',
+      Outcome: 'Fail',
+      QueueItemId: '709xx000001IlUMQA0',
+      RunTime: 53,
+      StackTrace: 'Error running test',
+    },
+  ],
+};
+
+export const testRunSimpleResult = {
+  summary: {
+    commandTime: '60 ms',
+    failRate: '0%',
+    failing: 0,
+    hostname: 'https://na139.salesforce.com',
+    orgId: '00D4xx00000FH4IEAW',
+    outcome: 'Passed',
+    passRate: '100%',
+    passing: 1,
+    skipped: 0,
+    testExecutionTime: '53 ms',
+    testRunId: '707xx0000AUS2gH',
+    testStartTime: '2020-08-25T00:48:02.000+0000',
+    testTotalTime: '53 ms',
+    testsRan: 1,
+    userId: '005xx000000uEgSAAU',
+    username: 'test@example.com',
+  },
+  tests: [
+    {
+      ApexClass: {
+        Id: '01pxx00000NWwb3AAD',
+        Name: 'MyApexTests',
+        NamespacePrefix: '',
+      },
+      AsyncApexJobId: '707xx0000AUS2gHQQT',
+      FullName: 'MyApexTests.testConfig',
+      Id: '07Mxx00000ErgiHUAR',
+      Message: '',
+      MethodName: 'testConfig',
+      Outcome: 'Pass',
+      QueueItemId: '709xx000001IlUMQA0',
+      RunTime: 53,
+      StackTrace: '',
+    },
+  ],
+};
+
 export const testRunSimple: TestResult = {
   summary: {
     failRate: '0%',

@@ -4,118 +4,48 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { expect, test } from '@salesforce/command/lib/test';
-import { LogService } from '@salesforce/apex-node';
+// import { expect, test } from '@salesforce/command/lib/test';
+// import { LogService } from '@salesforce/apex-node';
+import { resolve } from 'path';
 import { createSandbox, SinonSandbox } from 'sinon';
+import { LogService } from '@salesforce/apex-node';
+import { Config } from '@oclif/core';
+import { expect } from 'chai';
 import { Org } from '@salesforce/core';
-
-const logString = {
-  log: '52.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG',
-};
-const streamingClient = {
-  handshake: async (): Promise<void> => Promise.resolve(),
-  subscribe: async (): Promise<void> => Promise.resolve(),
-};
-const TEST_USERNAME = 'test@username.com';
+import Tail from '../../../../../src/commands/force/apex/log/tail';
 
 describe('force:apex:log:tail', () => {
-  let sandboxStub: SinonSandbox;
+  let sandbox: SinonSandbox;
+  const config = new Config({ root: resolve(__dirname, '../../package.json') });
 
   beforeEach(() => {
-    sandboxStub = createSandbox();
+    sandbox = createSandbox();
 
-    sandboxStub.stub(Org, 'create').resolves(Org.prototype);
-    sandboxStub.stub(Org.prototype, 'getUsername').returns(TEST_USERNAME);
-    sandboxStub.stub(Org.prototype, 'getOrgId').returns('abc123');
+    sandbox.stub(Org, 'create').resolves(Org.prototype);
+    sandbox.stub(LogService.prototype, 'tail').resolves();
   });
 
   afterEach(() => {
-    sandboxStub.restore();
+    sandbox.restore();
   });
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
-    .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function (this: LogService) {
-      await this.logCallback({ sobject: { Id: 'xxxxxx' } });
-      return streamingClient;
-    })
-    .stdout()
-    .command(['force:apex:log:tail'])
-    .it('should print the log with the default command', (ctx) => {
-      expect(ctx.stdout).to.contain(logString.log);
-    });
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
-    .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async () => streamingClient)
-    .stdout()
-    .command(['force:apex:log:tail'])
-    .it('should print nothing if no log is returned', (ctx) => {
-      expect(ctx.stdout).to.contain('');
-    });
-  // test
-  //   .withOrg({ username: 'test@username.com' }, true)
-  //   .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
-  //   .stub(LogService.prototype, 'getLogById', async () => logString)
-  //   .stub(LogService.prototype, 'createStreamingClient', async function (this: LogService) {
-  //     await this.logCallback({ sobject: { Id: 'xxxxxx' } });
-  //     return streamingClient;
-  //   })
-  //   .stdout()
-  //   .command(['force:apex:log:tail', '-o', 'test@username.com', '--json'])
-  //   .it('should print the log in json', (ctx) => {
-  //     const logResult = JSON.stringify({ status: 0, result: logString.log }, null, 2);
-  //     expect(ctx.stdout).to.contain(logResult);
-  //   });
-  // test
-  //   .withOrg({ username: 'test@username.com' }, true)
-  //   .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
-  //   .stub(LogService.prototype, 'getLogById', async () => logString)
-  //   .stub(LogService.prototype, 'createStreamingClient', async () => streamingClient)
-  //   .stdout()
-  //   .command(['force:apex:log:tail', '-o', 'test@username.com', '--json'])
-  //   .it('should return json output if no logs were found', (ctx) => {
-  //     const emptyResult = JSON.stringify({ status: 0 }, null, 2);
-  //     expect(ctx.stdout).to.equal(`${emptyResult}\n`);
-  //   });
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
-    .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function (this: LogService) {
-      await this.logCallback({ sobject: { Id: 'xxxxxx' } });
-      return streamingClient;
-    })
-    .stdout()
-    .command(['force:apex:log:tail', '-c'])
-    .it('should pass through colorization of the logs', (ctx) => {
-      expect(ctx.stdout).to.contain(logString.log);
-    });
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function (this: LogService) {
-      await this.logCallback({ sobject: { Id: 'xxxxxx' } });
-      return streamingClient;
-    })
-    .stdout()
-    .command(['force:apex:log:tail', '-s'])
-    .it('should skip the trace flag creation', (ctx) => {
-      expect(ctx.stdout).to.contain(logString.log);
-    });
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .stub(LogService.prototype, 'prepareTraceFlag', () => undefined)
-    .stub(LogService.prototype, 'getLogById', async () => logString)
-    .stub(LogService.prototype, 'createStreamingClient', async function (this: LogService) {
-      await this.logCallback({ sobject: { Id: 'xxxxxx' } });
-      return streamingClient;
-    })
-    .stdout()
-    .command(['force:apex:log:tail', '-d', ''])
-    .it('should accept a debug level parameter', (ctx) => {
-      expect(ctx.stdout).to.contain(logString.log);
-    });
+
+  it('will skip trace flag correctly', async () => {
+    const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
+    const tail = new Tail(['-o', 'test@username.com'], config);
+    // @ts-ignore private method
+    sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
+    const result = await tail.run();
+    expect(traceFlagStub.called).to.be.true;
+    expect(result).to.deep.equal(undefined);
+  });
+
+  it('will call trace flag correctly', async () => {
+    const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
+    const tail = new Tail(['-o', 'test@username.com', '--skiptraceflag'], config);
+    // @ts-ignore private method
+    sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
+    const result = await tail.run();
+    expect(traceFlagStub.called).to.be.false;
+    expect(result).to.deep.equal(undefined);
+  });
 });

@@ -64,6 +64,7 @@ export default class Report extends SfCommand<RunResult> {
     'api-version': orgApiVersionFlagWithDeprecations,
     testrunid: Flags.string({
       char: 'i',
+      // todo:validate flag
       summary: messages.getMessage('testRunIdDescription'),
       required: true,
     }),

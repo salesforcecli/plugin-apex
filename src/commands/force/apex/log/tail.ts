@@ -10,9 +10,9 @@ import {
   Flags,
   SfCommand,
   requiredOrgFlagWithDeprecations,
-  orgApiVersionFlagWithDeprecations
+  orgApiVersionFlagWithDeprecations,
 } from '@salesforce/sf-plugins-core';
-import { Messages } from '@salesforce/core';
+import { Connection, Messages } from '@salesforce/core';
 import { buildDescription, logLevels } from '../../../../utils';
 import { colorizeLog } from '../../../../legacyColorization';
 
@@ -33,7 +33,8 @@ export default class Tail extends SfCommand<void> {
   public static readonly summary = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
-  );public static readonly description = buildDescription(
+  );
+  public static readonly description = buildDescription(
     messages.getMessage('commandDescription'),
     messages.getMessage('longDescription')
   );
@@ -69,15 +70,15 @@ export default class Tail extends SfCommand<void> {
   private color: boolean | undefined;
 
   public async run(): Promise<void> {
-    const {flags} = await this.parse(Tail);
+    const { flags } = await this.parse(Tail);
     this.json = flags.json;
     this.color = flags.color;
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
-    const logService = new LogService(conn);
+    const logService = this.getLogService(conn);
 
     if (!flags.skiptraceflag) {
-      await logService.prepareTraceFlag(flags.debuglevel??'');
+      await logService.prepareTraceFlag(flags.debuglevel ?? '');
     }
     // TODO: come back and try to fix this
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -97,5 +98,16 @@ export default class Tail extends SfCommand<void> {
         this.log(output);
       }
     }
+  }
+
+  /**
+   * for UT purposes
+   *
+   * @param conn : Connection to the org
+   * @private
+   */
+  // eslint-disable-next-line class-methods-use-this
+  private getLogService(conn: Connection): LogService {
+    return new LogService(conn);
   }
 }

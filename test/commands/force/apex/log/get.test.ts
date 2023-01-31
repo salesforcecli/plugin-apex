@@ -4,93 +4,72 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as path from 'path';
-import { expect, test } from '@salesforce/command/lib/test';
-import { LogGetResult } from '../../../../../src/commands/force/apex/log/get';
+import { resolve } from 'path';
+import * as fs from 'fs';
+import { Config } from '@oclif/core';
+import { createSandbox } from 'sinon';
+import { LogService } from '@salesforce/apex-node';
+import { expect } from 'chai';
+import { SfCommand } from '@salesforce/sf-plugins-core';
+import { Org } from '@salesforce/core';
+import Get from '../../../../../src/commands/force/apex/log/get';
 
 describe('force:apex:log:get', () => {
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .withConnectionRequest((request) => {
-      if (!String(request).includes('ApexLog')) {
-        return Promise.resolve({ records: [{ Id: 'idnumber' }] });
-      }
-      return Promise.resolve('48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG');
-    })
-    .stdout()
-    .command(['force:apex:log:get', '-o', 'test@username.com'])
-    .it('runs default command with default output', (ctx) => {
-      expect(ctx.stdout).to.contain(
-        '48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG'
-      );
-    });
+  const config = new Config({ root: resolve(__dirname, '../../package.json') });
+  let sandbox: sinon.SinonSandbox;
+  let logStub: sinon.SinonStub;
 
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .withConnectionRequest((request) => {
-      if (!String(request).includes('ApexLog')) {
-        return Promise.resolve({ records: [{ Id: 'idnumber3' }] });
-      }
-      return Promise.resolve('48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG');
-    })
-    .stdout()
-    .command(['force:apex:log:get', '-o', 'test@username.com', '-n', '1'])
-    .it('should return one log with number parameter specified', (ctx) => {
-      expect(ctx.stdout).to.contain(
-        '48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG'
-      );
-    });
+  beforeEach(() => {
+    sandbox = createSandbox();
+    logStub = sandbox.stub(SfCommand.prototype, 'log');
+    sandbox.stub(Org, 'create').resolves(Org.prototype);
+  });
 
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .withConnectionRequest((request) => {
-      if (!String(request).includes('ApexLog')) {
-        return Promise.resolve({ records: [{ Id: 'idnumber4' }] });
-      }
-      return Promise.resolve('48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG');
-    })
-    .stdout()
-    .command(['force:apex:log:get', '-o', 'test@username.com', '-i', '07Lxx0000000000'])
-    .it('should return log with log Id parameter specified', (ctx) => {
-      expect(ctx.stdout).to.contain(
-        '48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG'
-      );
-    });
+  afterEach(() => {
+    sandbox.restore();
 
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .withConnectionRequest((request) => {
-      if (!String(request).includes('ApexLog')) {
-        return Promise.resolve({ records: [{ Id: 'idnumber5' }] });
-      }
-      return Promise.resolve('idnumber5.log');
-    })
-    .stdout()
-    .command(['force:apex:log:get', '-o', 'test@username.com', '-d', path.join('Users', 'smit.shah', 'Desktop')])
-    .it('should return log with outputdir parameter specified', (ctx) => {
-      const filepath = path.join('Users', 'smit.shah', 'Desktop');
-      expect(ctx.stdout).to.contain(`Log files written to ${filepath}\n`);
-    });
+    try {
+      // the library writes to a directory, so we need to clean it up :(
+      fs.rmSync('myDirectory', { recursive: true });
+    } catch (e) {
+      // do nothing
+    }
+  });
 
-  test
-    .withOrg({ username: 'test@username.com' }, true)
-    .withConnectionRequest((request) => {
-      if (!String(request).includes('ApexLog')) {
-        return Promise.resolve({ records: [{ Id: 'idnumber6' }] });
-      }
-      return Promise.resolve('48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG');
-    })
-    .stdout()
-    .command(['force:apex:log:get', '-o', 'test@username.com', '--json'])
-    .it('should return log with json parameter specified', (ctx) => {
-      const result = ctx.stdout;
-      expect(result).to.not.be.empty;
-      const resultJSON = JSON.parse(result) as { status: number; result: LogGetResult };
-      expect(resultJSON).to.ownProperty('status');
-      expect(resultJSON.status).to.equal(0);
-      expect(resultJSON).to.ownProperty('result');
-      expect(resultJSON.result[0]).to.deep.include({
-        log: '48.0 APEX_CODE,FINEST;APEX_PROFILING,INFO;CALLOUT,INFO;DB,INFO;NBA,INFO;SYSTEM,DEBUG',
-      });
-    });
+  it('0 logs to get', async () => {
+    sandbox.stub(LogService.prototype, 'getLogs').resolves([]);
+    const result = await new Get([], config).run();
+    expect(result).to.deep.equal([]);
+    expect(logStub.firstCall.args[0]).to.equal('No results found');
+  });
+
+  it('outputdir will write to fs', async () => {
+    sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }]);
+    const result = await new Get(['--outputdir', 'myDirectory'], config).run();
+    expect(result).to.deep.equal(['myLog']);
+    expect(logStub.firstCall.args[0]).to.equal('Log files written to myDirectory');
+  });
+
+  it('outputdir will write to fs --json', async () => {
+    sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }]);
+    const result = await new Get(['--outputdir', 'myDirectory', '--json'], config).run();
+    expect(result).to.deep.equal(['myLog']);
+    expect(logStub.firstCall.args[0]).to.equal('Log files written to myDirectory');
+  });
+
+  it('multiple results', async () => {
+    sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }, { log: 'myLog2' }]);
+    const result = await new Get([], config).run();
+    expect(result).to.deep.equal([{ log: 'myLog' }, { log: 'myLog2' }]);
+    expect(logStub.firstCall.args[0]).to.equal('myLog');
+    expect(logStub.secondCall.args[0]).to.equal('myLog2');
+  });
+
+  it('multiple results --json', async () => {
+    sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }, { log: 'myLog2' }]);
+    const result = await new Get(['--json'], config).run();
+    expect(result).to.deep.equal([{ log: 'myLog' }, { log: 'myLog2' }]);
+    expect(logStub.firstCall.args[0]).to.equal('myLog');
+    expect(logStub.secondCall.args[0]).to.equal('myLog2');
+  });
 });
