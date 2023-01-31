@@ -1,3 +1,12 @@
+# [1.5.0](https://github.com/salesforcecli/plugin-apex/compare/1.4.3...1.5.0) (2023-01-31)
+
+
+### Features
+
+* use latest oclif/core ([4b869cd](https://github.com/salesforcecli/plugin-apex/commit/4b869cd315a76ddae1725ba18871400c46a088cf))
+
+
+
 ## [1.4.3](https://github.com/salesforcecli/plugin-apex/compare/1.4.2...1.4.3) (2023-01-22)
 
 
