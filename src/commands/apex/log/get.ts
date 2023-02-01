@@ -13,7 +13,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { buildDescription, colorLogs } from '../../../utils';
+import { colorLogs } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'get', [
@@ -27,26 +27,17 @@ const messages = Messages.load('@salesforce/plugin-apex', 'get', [
   'numberDescription',
   'outputDirDescription',
   'outputDirLongDescription',
+  'summary',
+  'examples',
 ]);
 
 export type LogGetResult = Array<{ log: string } | string>;
 
 export default class Get extends SfCommand<LogGetResult> {
-  public static readonly summary = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static readonly description = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('summary');
   public static longDescription = messages.getMessage('longDescription');
-  public static readonly examples = [
-    '$ sfdx apex:log:get -i <log id>',
-    '$ sfdx apex:log:get -i <log id> -u me@my.org',
-    '$ sfdx apex:log:get -n 2 -c',
-    '$ sfdx apex:log:get -d Users/Desktop/logs -n 2',
-  ];
+  public static readonly examples = messages.getMessages('examples');
 
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:get'];

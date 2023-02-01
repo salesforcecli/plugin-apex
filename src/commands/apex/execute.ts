@@ -12,16 +12,17 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { buildDescription, colorError, colorSuccess } from '../../utils';
+import { colorError, colorSuccess } from '../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
   'apexCodeFileDescription',
-  'commandDescription',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
   'longDescription',
   'longSummary',
+  'examples',
+  'summary',
 ]);
 
 export type ExecuteResult = {
@@ -36,21 +37,10 @@ export type ExecuteResult = {
 };
 
 export default class Execute extends SfCommand<ExecuteResult> {
-  public static readonly summary = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static readonly description = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('summary');
   public static longDescription = messages.getMessage('longDescription');
-
-  public static readonly examples = [
-    '$ sfdx apex:execute -u testusername@salesforce.org -f ~/test.apex',
-    '$ sfdx apex:execute -f ~/test.apex',
-    '$ sfdx apex:execute \nStart typing Apex code. Press the Enter key after each line, then press CTRL+D when finished.',
-  ];
+  public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:execute'];
 

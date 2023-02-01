@@ -13,7 +13,6 @@ import {
   orgApiVersionFlagWithDeprecations,
 } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
-import { buildDescription } from '../../../utils';
 import { colorizeLog } from '../../../legacyColorization';
 
 Messages.importMessagesDirectory(__dirname);
@@ -27,23 +26,15 @@ const messages = Messages.load('@salesforce/plugin-apex', 'tail', [
   'logLevelLongDescription',
   'longDescription',
   'skipTraceFlagDescription',
+  'summary',
+  'examples',
 ]);
 
 export default class Tail extends SfCommand<void> {
-  public static readonly summary = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static readonly description = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('summary');
   public static longDescription = messages.getMessage('longDescription');
-  public static readonly examples = [
-    '$ sfdx apex:log:tail',
-    '$ sfdx apex:log:tail --debuglevel MyDebugLevel',
-    '$ sfdx apex:log:tail -c -s',
-  ];
+  public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:tail'];
 

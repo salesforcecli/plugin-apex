@@ -1,42 +1,27 @@
-# commandDescription
+# summary
 
 display test results for a specific asynchronous test run
+
+Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is displayed after running the "sfdx apex:test:run" command.
 
 # longDescription
 
 Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is displayed after running the "sfdx apex:test:run" command.
 
-# jsonDescription
+# examples
 
-format output as JSON
+- sfdx apex:test:report -i <test run id>
+- sfdx apex:test:report -i <test run id> -r junit
+- sfdx apex:test:report -i <test run id> -c --json
+- sfdx apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
 
 # testRunIdDescription
 
 the ID of the test run
 
-# logLevelDescription
-
-[default: warn] logging level for this command invocation; logs are stored in $HOME/.sfdx/sfdx.log
-
-# logLevelLongDescription
-
-Permissible values are: trace, debug, info, warn, error, fatal, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
-
-# resultFormatDescription
-
-format to use when displaying results. If you also specify the --json flag, --json overrides this parameter
-
 # resultFormatLongDescription
 
 Permissible values are: human, tap, junit, json
-
-# targetUsernameDescription
-
-a username or alias for the target org. Overrides the default target org
-
-# apiVersionDescription
-
-override the API version used for API requests made by this command
 
 # codeCoverageDescription
 
@@ -45,18 +30,6 @@ retrieves code coverage results
 # outputDirectoryDescription
 
 directory to store test result files
-
-# waitDescription
-
-sets the streaming client socket timeout in minutes; specify a longer wait time if timeouts occur frequently
-
-# waitLongDescription
-
-Sets the streaming client socket timeout, in minutes. If the streaming client socket has no contact from the server for a number of minutes, the client exits. Specify a longer wait time if timeouts occur frequently
-
-# verboseDescription
-
-display Apex test processing details; if JSON is specified, processing details aren't displayed
 
 # apexTestReportFormatHint
 

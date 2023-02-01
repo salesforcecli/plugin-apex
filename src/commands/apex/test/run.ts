@@ -27,7 +27,7 @@ import { AnyJson, Optional } from '@salesforce/ts-types';
 import { Duration } from '@salesforce/kit';
 
 import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../reporters';
-import { buildDescription, FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
+import { FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
@@ -56,28 +56,17 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
   'testsDescription',
   'verboseDescription',
   'waitDescription',
+  'summary',
+  'examples',
 ]);
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
 export type RunCommandResult = RunResult | TestRunIdResult;
 export default class Run extends SfCommand<RunCommandResult> {
-  public static readonly summary = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static readonly description = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('summary');
   public static longDescription = messages.getMessage('longDescription');
-  public static readonly examples = [
-    '$ sfdx apex:test:run',
-    '$ sfdx apex:test:run -n "MyClassTest,MyOtherClassTest" -r human',
-    '$ sfdx apex:test:run -s "MySuite,MyOtherSuite" -c -v --json',
-    '$ sfdx apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human',
-    '$ sfdx apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org',
-  ];
+  public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:test:run'];
 

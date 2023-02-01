@@ -28,10 +28,6 @@ export const logLevels = [
   'FATAL',
 ];
 
-export function buildDescription(shortDescription: string, longDescription: string): string {
-  return `${shortDescription}\n${longDescription}`;
-}
-
 const colorMap = new Map([
   [new RegExp(/\b([\w]+\.)+(\w)+\b/g), chalk.blueBright],
   [new RegExp(/\b(DEBUG)\b/g), chalk.bold.cyan],

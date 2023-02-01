@@ -1,23 +1,19 @@
-# commandDescription
-
-display a list of IDs and general information about debug logs
-
 # longDescription
 
 Run this command in a project to list the IDs and general information for all debug logs in your default org.
 To fetch a specific log from your org, obtain the ID from this command's output, then run the “sfdx apex:log:get” command.
 
-# jsonDescription
+# summary
 
-format output as JSON
+display a list of IDs and general information about debug logs
 
-# logLevelDescription
+Run this command in a project to list the IDs and general information for all debug logs in your default org.
+To fetch a specific log from your org, obtain the ID from this command's output, then run the “sfdx apex:log:get” command.
 
-logging level for this command invocation
+# examples
 
-# logLevelLongDescription
-
-The logging level for this command invocation. Logs are stored in $HOME/.sfdx/sfdx.log.
+- sfdx apex:log:list
+- sfdx apex:log:list -u me@my.org
 
 # noDebugLogsFound
 

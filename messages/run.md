@@ -1,7 +1,3 @@
-# commandDescription
-
-invoke Apex tests
-
 # longDescription
 
 Specify which tests to run by using the --classnames, --suites, or --tests parameters. Alternatively, use the --testlevel parameter to run all the tests in your org, local tests, or specified tests.
@@ -9,33 +5,26 @@ To see code coverage results, use the --codecoverage parameter with --resultform
 
 NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines from all the Apex classes evaluated by the tests in this run.
 
-# jsonDescription
+# summary
 
-format output as JSON
+invoke Apex tests
 
-# logLevelDescription
+Specify which tests to run by using the --classnames, --suites, or --tests parameters. Alternatively, use the --testlevel parameter to run all the tests in your org, local tests, or specified tests.
+To see code coverage results, use the --codecoverage parameter with --resultformat. The output displays a high-level summary of the test run and the code coverage values for classes in your org. If you specify human-readable result format, use the --detailedcoverage parameter to see detailed coverage results for each test method run.
 
-[default: warn] logging level for this command invocation; logs are stored in $HOME/.sfdx/sfdx.log
+NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines from all the Apex classes evaluated by the tests in this run.
 
-# logLevelLongDescription
+# examples
 
-Permissible values are: trace, debug, info, warn, error, fatal, TRACE, DEBUG, INFO, WARN, ERROR, FATAL
-
-# resultFormatDescription
-
-format to use when displaying results. If you also specify the --json flag, --json overrides this parameter
+- sfdx apex:test:run
+- sfdx apex:test:run -n "MyClassTest,MyOtherClassTest" -r human
+- sfdx apex:test:run -s "MySuite,MyOtherSuite" -c -v --json
+- sfdx apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human
+- sfdx apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org
 
 # resultFormatLongDescription
 
 Permissible values are: human, tap, junit, json
-
-# targetUsernameDescription
-
-a username or alias for the target org. Overrides the default target org
-
-# apiVersionDescription
-
-override the API version used for API requests made by this command
 
 # classNamesDescription
 
@@ -64,25 +53,13 @@ RunSpecifiedTests—Only the tests that you specify are run.
 RunLocalTests—All tests in your org are run, except the ones that originate from installed managed packages.
 RunAllTestsInOrg—All tests are in your org and in installed managed packages are run
 
-# testLevelLongDescription
-
-Permissible values are: RunLocalTests, RunAllTestsInOrg, RunSpecifiedTests
-
 # waitDescription
 
 sets the streaming client socket timeout in minutes; specify a longer wait time if timeouts occur frequently
 
-# waitLongDescription
-
-Sets the streaming client socket timeout, in minutes. If the streaming client socket has no contact from the server for a number of minutes, the client exits. Specify a longer wait time if timeouts occur frequently
-
 # synchronousDescription
 
 runs test methods from a single Apex class synchronously; if not specified, tests are run ansynchronously
-
-# verboseDescription
-
-display Apex test processing details; if JSON is specified, processing details aren't displayed
 
 # detailedCoverageDescription
 

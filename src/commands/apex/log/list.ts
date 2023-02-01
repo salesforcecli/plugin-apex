@@ -12,7 +12,6 @@ import {
   orgApiVersionFlagWithDeprecations,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { buildDescription } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'list', [
@@ -32,21 +31,17 @@ const messages = Messages.load('@salesforce/plugin-apex', 'list', [
   'statusColHeader',
   'timeColHeader',
   'userColHeader',
+  'summary',
+  'examples',
 ]);
 
 export type LogListResult = LogRecord[];
 
 export default class List extends SfCommand<LogListResult> {
-  public static readonly summary = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static readonly description = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('summary');
   public static longDescription = messages.getMessage('longDescription');
-  public static readonly examples = ['$ sfdx apex:log:list', '$ sfdx apex:log:list -u me@my.org'];
+  public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:list'];
 

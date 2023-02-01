@@ -1,26 +1,18 @@
-# commandDescription
+# summary
 
 Follows active log
+
+Activates debug logging and displays logs in the terminal. You can also pipe the logs to a file.
+
+# examples
+
+- sfdx apex:log:tail
+- sfdx apex:log:tail --debuglevel MyDebugLevel
+- sfdx apex:log:tail -c -s
 
 # longDescription
 
 Activates debug logging and displays logs in the terminal. You can also pipe the logs to a file.
-
-# jsonDescription
-
-Format output as JSON.
-
-# logLevelDescription
-
-Logging level for this command invocation
-
-# logLevelLongDescription
-
-The logging level for this command invocation. Logs are stored in $HOME/.sfdx/sfdx.log.
-
-# targetUsernameDescription
-
-A username or alias for the target org. Overrides the default target org.
 
 # colorDescription
 

@@ -22,7 +22,7 @@ import {
 import { Messages } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
 import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../reporters';
-import { buildDescription, FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
+import { FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
@@ -41,23 +41,14 @@ const messages = Messages.load('@salesforce/plugin-apex', 'report', [
   'testRunIdDescription',
   'verboseDescription',
   'waitDescription',
+  'summary',
+  'examples',
 ]);
 export default class Report extends SfCommand<RunResult> {
-  public static readonly summary = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static readonly description = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('summary');
   public static longDescription = messages.getMessage('longDescription');
-  public static readonly examples = [
-    '$ sfdx apex:test:report -i <test run id>',
-    '$ sfdx apex:test:report -i <test run id> -r junit',
-    '$ sfdx apex:test:report -i <test run id> -c --json',
-    '$ sfdx apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
-  ];
+  public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:test:report'];
 
