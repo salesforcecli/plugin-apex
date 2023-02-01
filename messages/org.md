@@ -1,0 +1,15 @@
+# commandDescription
+
+print a greeting and your org IDs
+
+# nameFlagDescription
+
+name to print
+
+# forceFlagDescription
+
+example boolean flag
+
+# errorNoOrgResults
+
+No results found for the org '%s'.

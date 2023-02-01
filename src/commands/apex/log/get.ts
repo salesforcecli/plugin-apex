@@ -42,10 +42,10 @@ export default class Get extends SfCommand<LogGetResult> {
   );
   public static longDescription = messages.getMessage('longDescription');
   public static readonly examples = [
-    '$ sfdx force:apex:log:get -i <log id>',
-    '$ sfdx force:apex:log:get -i <log id> -u me@my.org',
-    '$ sfdx force:apex:log:get -n 2 -c',
-    '$ sfdx force:apex:log:get -d Users/Desktop/logs -n 2',
+    '$ sfdx apex:log:get -i <log id>',
+    '$ sfdx apex:log:get -i <log id> -u me@my.org',
+    '$ sfdx apex:log:get -n 2 -c',
+    '$ sfdx apex:log:get -d Users/Desktop/logs -n 2',
   ];
 
   public static readonly deprecateAliases = true;

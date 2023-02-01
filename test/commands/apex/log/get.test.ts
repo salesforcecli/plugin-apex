@@ -14,7 +14,7 @@ import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import Get from '../../../../src/commands/apex/log/get';
 
-describe('force:apex:log:get', () => {
+describe('apex:log:get', () => {
   const config = new Config({ root: resolve(__dirname, '../../package.json') });
   let sandbox: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;

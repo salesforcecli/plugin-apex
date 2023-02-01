@@ -50,7 +50,7 @@ const runtimeProblem = {
   success: false,
 };
 
-describe('force:apex:execute', () => {
+describe('apex:execute', () => {
   let sandboxStub: SinonSandbox;
   let logStub: sinon.SinonStub;
   const config = new Config({ root: resolve(__dirname, '../../package.json') });

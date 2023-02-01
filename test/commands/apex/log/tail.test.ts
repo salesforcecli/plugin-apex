@@ -13,7 +13,7 @@ import { expect } from 'chai';
 import { Org } from '@salesforce/core';
 import Tail from '../../../../src/commands/apex/log/tail';
 
-describe('force:apex:log:tail', () => {
+describe('apex:log:tail', () => {
   let sandbox: SinonSandbox;
   const config = new Config({ root: resolve(__dirname, '../../package.json') });
 

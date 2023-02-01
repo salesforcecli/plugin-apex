@@ -46,7 +46,7 @@ export default class List extends SfCommand<LogListResult> {
     messages.getMessage('longDescription')
   );
   public static longDescription = messages.getMessage('longDescription');
-  public static readonly examples = ['$ sfdx force:apex:log:list', '$ sfdx force:apex:log:list -u me@my.org'];
+  public static readonly examples = ['$ sfdx apex:log:list', '$ sfdx apex:log:list -u me@my.org'];
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:list'];
 

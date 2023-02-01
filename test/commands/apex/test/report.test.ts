@@ -20,7 +20,7 @@ let warnStub: sinon.SinonStub;
 let styledJsonStub: sinon.SinonStub;
 // TODO: migrate reporter to class and test only once
 
-describe('force:apex:test:report', () => {
+describe('apex:test:report', () => {
   let sandbox: SinonSandbox;
   const config = new Config({ root: resolve(__dirname, '../../package.json') });
 
@@ -66,7 +66,7 @@ describe('force:apex:test:report', () => {
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
       expect(logStub.firstCall.args[0]).to.include('ok 1 MyApexTests.testConfig');
-      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx force:apex:test:report');
+      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex:test:report');
     });
 
     it('should return a success junit format message with async', async () => {
@@ -134,7 +134,7 @@ describe('force:apex:test:report', () => {
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
       expect(logStub.firstCall.args[0]).to.include('ok 1 MyApexTests.testConfig');
-      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx force:apex:test:report');
+      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex:test:report');
     });
 
     it('should return a success junit format message with async', async () => {

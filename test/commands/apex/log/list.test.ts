@@ -51,7 +51,7 @@ const rawLogResult = {
 
 const logRecords = [rawLogResult.result[0], rawLogResult.result[1]];
 
-describe('force:apex:log:list', () => {
+describe('apex:log:list', () => {
   const config = new Config({ root: resolve(__dirname, '../../package.json') });
   let sandbox: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;

@@ -20,9 +20,8 @@ const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
   'commandDescription',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
-  'logLevelDescription',
-  'logLevelLongDescription',
   'longDescription',
+  'longSummary',
 ]);
 
 export type ExecuteResult = {
@@ -48,9 +47,9 @@ export default class Execute extends SfCommand<ExecuteResult> {
   public static longDescription = messages.getMessage('longDescription');
 
   public static readonly examples = [
-    '$ sfdx force:apex:execute -u testusername@salesforce.org -f ~/test.apex',
-    '$ sfdx force:apex:execute -f ~/test.apex',
-    '$ sfdx force:apex:execute \nStart typing Apex code. Press the Enter key after each line, then press CTRL+D when finished.',
+    '$ sfdx apex:execute -u testusername@salesforce.org -f ~/test.apex',
+    '$ sfdx apex:execute -f ~/test.apex',
+    '$ sfdx apex:execute \nStart typing Apex code. Press the Enter key after each line, then press CTRL+D when finished.',
   ];
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:execute'];

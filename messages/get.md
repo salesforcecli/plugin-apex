@@ -1,0 +1,44 @@
+# commandDescription
+
+fetch debug logs
+
+# longDescription
+
+Fetches the specified log or given number of most recent logs from the scratch org.
+To get the IDs for your debug logs, run "sfdx apex:log:list".
+Use the --logid parameter to return a specific log.
+Use the --number parameter to return the specified number of recent logs.
+Use the --outputdir parameter to specify the directory to store the logs in.
+Executing this command without parameters returns the most recent log.
+
+# jsonDescription
+
+format output as JSON
+
+# logLevelDescription
+
+logging level for this command invocation
+
+# logLevelLongDescription
+
+The logging level for this command invocation. Logs are stored in $HOME/.sfdx/sfdx.log.
+
+# logIDDescription
+
+id of the log to display
+
+# numberDescription
+
+number of most recent logs to display
+
+# outputDirDescription
+
+directory for saving the log files
+
+# outputDirLongDescription
+
+The location can be an absolute path or relative to the current working directory. The default is the current directory.
+
+# noResultsFound
+
+No results found

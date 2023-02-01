@@ -56,7 +56,6 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
   'testsDescription',
   'verboseDescription',
   'waitDescription',
-  'warningMessage',
 ]);
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
@@ -73,11 +72,11 @@ export default class Run extends SfCommand<RunCommandResult> {
 
   public static longDescription = messages.getMessage('longDescription');
   public static readonly examples = [
-    '$ sfdx force:apex:test:run',
-    '$ sfdx force:apex:test:run -n "MyClassTest,MyOtherClassTest" -r human',
-    '$ sfdx force:apex:test:run -s "MySuite,MyOtherSuite" -c -v --json',
-    '$ sfdx force:apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human',
-    '$ sfdx force:apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org',
+    '$ sfdx apex:test:run',
+    '$ sfdx apex:test:run -n "MyClassTest,MyOtherClassTest" -r human',
+    '$ sfdx apex:test:run -s "MySuite,MyOtherSuite" -c -v --json',
+    '$ sfdx apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human',
+    '$ sfdx apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org',
   ];
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:test:run'];
@@ -159,10 +158,6 @@ export default class Run extends SfCommand<RunCommandResult> {
       flags.synchronous,
       flags['test-level'] as TestLevel
     );
-
-    if (flags['output-dir']) {
-      this.warn(messages.getMessage('warningMessage'));
-    }
 
     // add listener for errors
     process.on('uncaughtException', (err) => {

@@ -40,9 +40,9 @@ export default class Tail extends SfCommand<void> {
   );
   public static longDescription = messages.getMessage('longDescription');
   public static readonly examples = [
-    '$ sfdx force:apex:log:tail',
-    '$ sfdx force:apex:log:tail --debuglevel MyDebugLevel',
-    '$ sfdx force:apex:log:tail -c -s',
+    '$ sfdx apex:log:tail',
+    '$ sfdx apex:log:tail --debuglevel MyDebugLevel',
+    '$ sfdx apex:log:tail -c -s',
   ];
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:tail'];

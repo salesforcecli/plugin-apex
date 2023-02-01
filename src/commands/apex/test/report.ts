@@ -41,7 +41,6 @@ const messages = Messages.load('@salesforce/plugin-apex', 'report', [
   'testRunIdDescription',
   'verboseDescription',
   'waitDescription',
-  'warningMessage',
 ]);
 export default class Report extends SfCommand<RunResult> {
   public static readonly summary = buildDescription(
@@ -54,10 +53,10 @@ export default class Report extends SfCommand<RunResult> {
   );
   public static longDescription = messages.getMessage('longDescription');
   public static readonly examples = [
-    '$ sfdx force:apex:test:report -i <test run id>',
-    '$ sfdx force:apex:test:report -i <test run id> -r junit',
-    '$ sfdx force:apex:test:report -i <test run id> -c --json',
-    '$ sfdx force:apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
+    '$ sfdx apex:test:report -i <test run id>',
+    '$ sfdx apex:test:report -i <test run id> -r junit',
+    '$ sfdx apex:test:report -i <test run id> -c --json',
+    '$ sfdx apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
   ];
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:test:report'];
@@ -97,10 +96,6 @@ export default class Report extends SfCommand<RunResult> {
 
   public async run(): Promise<RunResult> {
     const { flags } = await this.parse(Report);
-
-    if (flags['output-dir']) {
-      this.warn(messages.getMessage('warningMessage'));
-    }
 
     // add listener for errors
     process.on('uncaughtException', (err) => {
