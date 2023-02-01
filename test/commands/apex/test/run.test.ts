@@ -12,7 +12,7 @@ import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
-import Run from '../../../../../src/commands/force/apex/test/run';
+import Run from '../../../../src/commands/apex/test/run';
 import {
   runWithCoverage,
   runWithFailures,
@@ -37,7 +37,6 @@ describe('force:apex:test:run', () => {
     logStub = sandbox.stub(SfCommand.prototype, 'log');
     warnStub = sandbox.stub(SfCommand.prototype, 'warn');
     styledJsonStub = sandbox.stub(SfCommand.prototype, 'styledJSON');
-
     sandbox.stub(Org, 'create').resolves(Org.prototype);
   });
 
@@ -67,7 +66,6 @@ describe('force:apex:test:run', () => {
 
     it('should return a success tap format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(runWithFailures);
-      sandbox.stub(Org.prototype, 'getUsername').returns('test@example.com');
 
       const result = await new Run(['--tests', 'MyApexTests', '--resultformat', 'tap'], config).run();
 
@@ -103,7 +101,7 @@ describe('force:apex:test:run', () => {
 
     it('should return a success --json format message with sync', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailures);
-      sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
+
       const result = await new Run(['--tests', 'MyApexTests', '--json', '--synchronous'], config).run();
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(styledJsonStub.notCalled).to.be.true;
@@ -123,8 +121,7 @@ describe('force:apex:test:run', () => {
         ['--outputdir', 'myDirectory', '--tests', 'MyApexTests', '--resultformat', 'human', '--synchronous'],
         config
       ).run();
-      expect(logStub.firstCall.args[0]).to.contain('Test result files written to myDirectory');
-      expect(warnStub.firstCall.args[0]).to.contain('WARNING: In the Summer ’21');
+      expect(warnStub.firstCall.args[0]).to.contain('The "--outputdir" flag has been');
     });
 
     it('will build the sync correct payload', async () => {
@@ -236,7 +233,6 @@ describe('force:apex:test:run', () => {
 
     it('should return a success tap format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
-      sandbox.stub(Org.prototype, 'getUsername').returns('test@example.com');
 
       const result = await new Run(['--tests', 'MyApexTests', '--resultformat', 'tap'], config).run();
 
@@ -272,7 +268,7 @@ describe('force:apex:test:run', () => {
 
     it('should return a success --json format message with sync', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(testRunSimple);
-      sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
+
       const result = await new Run(['--tests', 'MyApexTests', '--json', '--synchronous'], config).run();
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(styledJsonStub.notCalled).to.be.true;
@@ -293,7 +289,7 @@ describe('force:apex:test:run', () => {
         config
       ).run();
       expect(logStub.firstCall.args[0]).to.contain('Test result files written to myDirectory');
-      expect(warnStub.firstCall.args[0]).to.contain('WARNING: In the Summer ’21');
+      expect(warnStub.firstCall.args[0]).to.contain('The "--outputdir" flag has been deprecated');
     });
 
     it('will build the sync correct payload', async () => {

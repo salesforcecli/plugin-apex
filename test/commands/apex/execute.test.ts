@@ -13,7 +13,7 @@ import { createSandbox, SinonSandbox } from 'sinon';
 import { Org } from '@salesforce/core';
 import { Config } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import Execute from '../../../../src/commands/force/apex/execute';
+import Execute from '../../../src/commands/apex/execute';
 
 const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
 
@@ -82,11 +82,11 @@ describe('force:apex:execute', () => {
     const result = await new Execute(['--apexcodefile', file], config).run();
 
     expect(result).to.deep.equal(expectedSuccessResult);
-    expect(logStub.calledOnce).to.be.true;
+    expect(logStub.calledTwice).to.be.true;
 
-    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.firstCall.args[0]).to.include('Executed successfully.');
-    expect(logStub.firstCall.args[0]).to.include(log);
+    expect(logStub.secondCall.args[0]).to.include('Compiled successfully.');
+    expect(logStub.secondCall.args[0]).to.include('Executed successfully.');
+    expect(logStub.secondCall.args[0]).to.include(log);
     expect(executeServiceStub.args[0]).to.deep.equal([
       {
         apexFilePath: file,
@@ -103,10 +103,10 @@ describe('force:apex:execute', () => {
     const result = await new Execute(['--apexcodefile', file, '--json'], config).run();
 
     expect(result).to.deep.equal(expectedSuccessResult);
-    expect(logStub.calledOnce).to.be.true;
-    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.firstCall.args[0]).to.include('Executed successfully.');
-    expect(logStub.firstCall.args[0]).to.include(log);
+    expect(logStub.calledTwice).to.be.true;
+    expect(logStub.secondCall.args[0]).to.include('Compiled successfully.');
+    expect(logStub.secondCall.args[0]).to.include('Executed successfully.');
+    expect(logStub.secondCall.args[0]).to.include(log);
     expect(executeServiceStub.args[0]).to.deep.equal([
       {
         apexFilePath: file,

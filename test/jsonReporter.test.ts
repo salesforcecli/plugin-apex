@@ -15,7 +15,7 @@ import {
   failureResult,
   runWithMixed,
   mixedResult,
-} from './commands/force/apex/test/testData';
+} from './commands/apex/test/testData';
 
 describe('JSON Test Reporter', () => {
   it('should report successful test results without code coverage', () => {

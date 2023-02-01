@@ -7,13 +7,12 @@
 
 import { LogRecord, LogService } from '@salesforce/apex-node';
 import {
-  Flags,
   SfCommand,
   requiredOrgFlagWithDeprecations,
   orgApiVersionFlagWithDeprecations,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { buildDescription, logLevels } from '../../../../utils';
+import { buildDescription } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'list', [
@@ -50,12 +49,6 @@ export default class List extends SfCommand<LogListResult> {
   public static readonly examples = ['$ sfdx force:apex:log:list', '$ sfdx force:apex:log:list -u me@my.org'];
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
-    loglevel: Flags.enum({
-      summary: messages.getMessage('logLevelDescription'),
-      description: messages.getMessage('logLevelLongDescription'),
-      default: 'warn',
-      options: logLevels,
-    }),
     'api-version': orgApiVersionFlagWithDeprecations,
   };
 

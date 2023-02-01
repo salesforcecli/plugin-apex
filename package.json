@@ -78,20 +78,15 @@
     ],
     "bin": "sfdx",
     "topics": {
-      "force": {
-        "external": true,
+      "apex": {
+        "description": "work with Apex code",
+        "longDescription": "Use the apex commands to create Apex classes, execute anonymous blocks, view your logs, run Apex tests, and view Apex test results.",
         "subtopics": {
-          "apex": {
-            "description": "work with Apex code",
-            "longDescription": "Use the apex commands to create Apex classes, execute anonymous blocks, view your logs, run Apex tests, and view Apex test results.",
-            "subtopics": {
-              "log": {
-                "description": "generate and retrieve Apex logs"
-              },
-              "test": {
-                "description": "run Apex tests and retrieve test reports"
-              }
-            }
+          "log": {
+            "description": "generate and retrieve Apex logs"
+          },
+          "test": {
+            "description": "run Apex tests and retrieve test reports"
           }
         }
       }

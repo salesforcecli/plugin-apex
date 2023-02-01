@@ -1,63 +1,50 @@
 [
   {
-    "command": "force:apex:execute",
+    "command": "apex:execute",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["apexcodefile", "api-version", "json", "loglevel", "target-org"],
+    "flags": ["apex-code-file", "api-version", "json", "target-org"],
     "alias": []
   },
   {
-    "command": "force:apex:log:get",
+    "command": "apex:log:get",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "logid", "loglevel", "number", "outputdir", "target-org"],
+    "flags": ["api-version", "json", "log-id", "number", "output-dir", "target-org"],
+    "alias": ["force:apex:log:get"]
+  },
+  {
+    "command": "apex:log:list",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["api-version", "json", "target-org"],
     "alias": []
   },
   {
-    "command": "force:apex:log:list",
+    "command": "apex:log:tail",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "loglevel", "target-org"],
+    "flags": ["api-version", "color", "debug-level", "json", "skip-trace-flag", "target-org"],
     "alias": []
   },
   {
-    "command": "force:apex:log:tail",
+    "command": "apex:test:report",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "color", "debuglevel", "json", "loglevel", "skiptraceflag", "target-org"],
+    "flags": ["api-version", "code-coverage", "json", "output-dir", "result-format", "target-org", "test-run-id"],
     "alias": []
   },
   {
-    "command": "force:apex:test:report",
+    "command": "apex:test:run",
     "plugin": "@salesforce/plugin-apex",
     "flags": [
       "api-version",
-      "codecoverage",
+      "class-names",
+      "code-coverage",
+      "detailed-coverage",
       "json",
-      "loglevel",
-      "outputdir",
-      "resultformat",
-      "target-org",
-      "testrunid",
-      "verbose",
-      "wait"
-    ],
-    "alias": []
-  },
-  {
-    "command": "force:apex:test:run",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": [
-      "api-version",
-      "classnames",
-      "codecoverage",
-      "detailedcoverage",
-      "json",
-      "loglevel",
-      "outputdir",
-      "resultformat",
-      "suitenames",
+      "output-dir",
+      "result-format",
+      "suite-names",
       "synchronous",
       "target-org",
-      "testlevel",
+      "test-level",
       "tests",
-      "verbose",
       "wait"
     ],
     "alias": []

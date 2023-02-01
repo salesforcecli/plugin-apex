@@ -12,7 +12,7 @@ import { LogService } from '@salesforce/apex-node';
 import { expect } from 'chai';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
-import Get from '../../../../../src/commands/force/apex/log/get';
+import Get from '../../../../src/commands/apex/log/get';
 
 describe('force:apex:log:get', () => {
   const config = new Config({ root: resolve(__dirname, '../../package.json') });
@@ -47,14 +47,17 @@ describe('force:apex:log:get', () => {
     sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }]);
     const result = await new Get(['--outputdir', 'myDirectory'], config).run();
     expect(result).to.deep.equal(['myLog']);
-    expect(logStub.firstCall.args[0]).to.equal('Log files written to myDirectory');
+    expect(logStub.secondCall.args[0]).to.equal('Log files written to myDirectory');
   });
 
   it('outputdir will write to fs --json', async () => {
     sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }]);
     const result = await new Get(['--outputdir', 'myDirectory', '--json'], config).run();
     expect(result).to.deep.equal(['myLog']);
-    expect(logStub.firstCall.args[0]).to.equal('Log files written to myDirectory');
+    expect(logStub.firstCall.args[0]).to.include(
+      'The "--outputdir" flag has been deprecated. Use "--output-dir" instead.'
+    );
+    expect(logStub.secondCall.args[0]).to.equal('Log files written to myDirectory');
   });
 
   it('multiple results', async () => {

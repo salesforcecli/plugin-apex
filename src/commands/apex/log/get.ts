@@ -13,7 +13,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { buildDescription, colorLogs, logLevels } from '../../../../utils';
+import { buildDescription, colorLogs } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'get', [
@@ -48,19 +48,18 @@ export default class Get extends SfCommand<LogGetResult> {
     '$ sfdx force:apex:log:get -d Users/Desktop/logs -n 2',
   ];
 
+  public static readonly deprecateAliases = true;
+  public static readonly aliases = ['force:apex:log:get'];
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
-    loglevel: Flags.enum({
-      summary: messages.getMessage('logLevelDescription'),
-      description: messages.getMessage('logLevelLongDescription'),
-      default: 'warn',
-      options: logLevels,
-    }),
     'api-version': orgApiVersionFlagWithDeprecations,
-    logid: Flags.salesforceId({
+    'log-id': Flags.salesforceId({
+      deprecateAliases: true,
+      aliases: ['logid'],
       char: 'i',
       summary: messages.getMessage('logIDDescription'),
       startsWith: '07L',
+      length: 'both',
     }),
     number: Flags.integer({
       char: 'n',
@@ -69,21 +68,24 @@ export default class Get extends SfCommand<LogGetResult> {
       max: 25,
       summary: messages.getMessage('numberDescription'),
     }),
-    outputdir: Flags.string({
+    'output-dir': Flags.string({
+      aliases: ['outputdir', 'output-directory'],
+      deprecateAliases: true,
       char: 'd',
       summary: messages.getMessage('outputDirDescription'),
       description: messages.getMessage('outputDirLongDescription'),
     }),
   };
+
   public async run(): Promise<LogGetResult> {
     const { flags } = await this.parse(Get);
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const logService = new LogService(conn);
 
     const logResults = await logService.getLogs({
-      logId: flags.logid,
+      logId: flags['log-id'],
       numberOfLogs: flags.number,
-      outputDir: flags.outputdir,
+      outputDir: flags['output-dir'],
     });
 
     if (logResults.length === 0) {
@@ -91,8 +93,8 @@ export default class Get extends SfCommand<LogGetResult> {
       return [];
     }
 
-    if (flags.outputdir) {
-      this.log(`Log files written to ${flags.outputdir}`);
+    if (flags['output-dir']) {
+      this.log(`Log files written to ${flags['output-dir']}`);
       // TODO: look at this --outputdir will change what --json returns
       return logResults.map((logResult) => logResult.log);
     }

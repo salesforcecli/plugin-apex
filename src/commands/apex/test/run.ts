@@ -22,10 +22,12 @@ import {
   requiredOrgFlagWithDeprecations,
   SfCommand,
 } from '@salesforce/sf-plugins-core';
-import { Messages, Org, SfError } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import { AnyJson, Optional } from '@salesforce/ts-types';
-import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../../reporters';
-import { buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat } from '../../../../utils';
+import { Duration } from '@salesforce/kit';
+
+import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../reporters';
+import { buildDescription, FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
@@ -80,36 +82,42 @@ export default class Run extends SfCommand<RunCommandResult> {
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
-    loglevel: Flags.enum({
-      summary: messages.getMessage('logLevelDescription'),
-      description: messages.getMessage('logLevelLongDescription'),
-      default: 'warn',
-      options: logLevels,
-    }),
     'api-version': orgApiVersionFlagWithDeprecations,
-    codecoverage: Flags.boolean({
+    'code-coverage': Flags.boolean({
+      aliases: ['codecoverage'],
+      deprecateAliases: true,
       char: 'c',
       summary: messages.getMessage('codeCoverageDescription'),
     }),
-    outputdir: Flags.string({
+    'output-dir': Flags.string({
+      aliases: ['outputdir', 'output-directory'],
+      deprecateAliases: true,
       char: 'd',
       summary: messages.getMessage('outputDirectoryDescription'),
     }),
-    testlevel: Flags.enum({
+    'test-level': Flags.enum({
+      deprecateAliases: true,
+      aliases: ['testlevel'],
       char: 'l',
       summary: messages.getMessage('testLevelDescription'),
       options: TestLevelValues,
     }),
-    classnames: Flags.string({
+    'class-names': Flags.string({
+      deprecateAliases: true,
+      aliases: ['classnames'],
       char: 'n',
       summary: messages.getMessage('classNamesDescription'),
     }),
-    resultformat: Flags.enum({
+    'result-format': Flags.enum({
+      deprecateAliases: true,
+      aliases: ['resultformat'],
       char: 'r',
       summary: messages.getMessage('resultFormatLongDescription'),
       options: resultFormat,
     }),
-    suitenames: Flags.string({
+    'suite-names': Flags.string({
+      deprecateAliases: true,
+      aliases: ['suitenames'],
       char: 's',
       summary: messages.getMessage('suiteNamesDescription'),
     }),
@@ -117,7 +125,8 @@ export default class Run extends SfCommand<RunCommandResult> {
       char: 't',
       summary: messages.getMessage('testsDescription'),
     }),
-    wait: Flags.string({
+    wait: Flags.duration({
+      unit: 'minutes',
       char: 'w',
       summary: messages.getMessage('waitDescription'),
     }),
@@ -125,41 +134,31 @@ export default class Run extends SfCommand<RunCommandResult> {
       char: 'y',
       summary: messages.getMessage('synchronousDescription'),
     }),
-    verbose: Flags.boolean({
-      summary: messages.getMessage('verboseDescription'),
-    }),
-    detailedcoverage: Flags.boolean({
+    'detailed-coverage': Flags.boolean({
+      deprecateAliases: true,
+      aliases: ['detailedcoverage'],
       char: 'v',
       summary: messages.getMessage('detailedCoverageDescription'),
-      dependsOn: ['codecoverage'],
+      dependsOn: ['code-coverage'],
     }),
   };
 
   protected cancellationTokenSource = new CancellationTokenSource();
-  private flags: {
-    'target-org': Org;
-    loglevel: string;
-    'api-version': string | undefined;
-    codecoverage: boolean;
-    outputdir: string | undefined;
-    testlevel: string | undefined;
-    classnames: string | undefined;
-    resultformat: string | undefined;
-    suitenames: string | undefined;
-    tests: string | undefined;
-    wait: string | undefined;
-    synchronous: boolean;
-    verbose: boolean;
-    detailedcoverage: boolean;
-  } & { json: boolean | undefined };
 
   public async run(): Promise<RunCommandResult> {
     const { flags } = await this.parse(Run);
-    this.flags = flags;
 
-    await this.validateFlags();
+    await this.validateFlags(
+      flags['code-coverage'],
+      flags['result-format'],
+      flags['class-names'],
+      flags['suite-names'],
+      flags.tests,
+      flags.synchronous,
+      flags['test-level'] as TestLevel
+    );
 
-    if (flags.outputdir) {
+    if (flags['output-dir']) {
       this.warn(messages.getMessage('warningMessage'));
     }
 
@@ -179,7 +178,12 @@ export default class Run extends SfCommand<RunCommandResult> {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     process.on('SIGTERM', exitHandler);
 
-    const testLevel = this.getTestLevelfromFlags();
+    const testLevel = this.getTestLevelFromFlags(
+      flags['class-names'],
+      flags['suite-names'],
+      flags['tests'],
+      flags['test-level'] as TestLevel
+    );
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const testService = new TestService(conn);
@@ -189,22 +193,27 @@ export default class Run extends SfCommand<RunCommandResult> {
     // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
     // Address with W-9163533
     if (flags.synchronous && testLevel === TestLevel.RunSpecifiedTests) {
-      const payload = await testService.buildSyncPayload(testLevel, flags.tests, flags.classnames);
-      payload.skipCodeCoverage = !flags.codecoverage;
+      const payload = await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names']);
+      payload.skipCodeCoverage = !flags['code-coverage'];
       result = (await testService.runTestSynchronous(
         payload,
-        flags.codecoverage,
+        flags['code-coverage'],
         this.cancellationTokenSource.token
       )) as TestResult;
     } else {
-      const payload = await testService.buildAsyncPayload(testLevel, flags.tests, flags.classnames, flags.suitenames);
+      const payload = await testService.buildAsyncPayload(
+        testLevel,
+        flags.tests,
+        flags['class-names'],
+        flags['suite-names']
+      );
 
-      payload.skipCodeCoverage = !flags.codecoverage;
+      payload.skipCodeCoverage = !flags['code-coverage'];
       const reporter = undefined;
       result = await testService.runTestAsynchronous(
         payload,
-        flags.codecoverage,
-        this.shouldImmediatelyReturn(),
+        flags['code-coverage'],
+        this.shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
         reporter,
         this.cancellationTokenSource.token
       );
@@ -215,27 +224,27 @@ export default class Run extends SfCommand<RunCommandResult> {
       throw new SfError('Cancelled');
     }
 
-    if (flags.outputdir) {
+    if (flags['output-dir']) {
       const jsonOutput = this.formatResultInJson(result);
       const outputDirConfig = buildOutputDirConfig(
         result,
         jsonOutput,
-        flags.outputdir,
-        flags.resultformat as Optional<ResultFormat>,
-        flags.detailedcoverage,
+        flags['output-dir'],
+        flags['result-format'] as Optional<ResultFormat>,
+        flags['detailed-coverage'],
         flags.synchronous
       );
 
-      await testService.writeResultFiles(result, outputDirConfig, flags.codecoverage);
+      await testService.writeResultFiles(result, outputDirConfig, flags['code-coverage']);
     }
 
     try {
       if ((result as TestResult).summary && (result as TestResult).summary.outcome === ApexTestRunResultStatus.Failed) {
         process.exitCode = FAILURE_EXIT_CODE;
       }
-      switch (flags.resultformat) {
+      switch (flags['result-format']) {
         case 'human':
-          this.logHuman(result as TestResult, flags.detailedcoverage, flags.outputdir);
+          this.logHuman(result as TestResult, flags['detailed-coverage'], flags['output-dir']);
           break;
         case 'tap':
           this.logTap(result as TestResult);
@@ -254,10 +263,10 @@ export default class Run extends SfCommand<RunCommandResult> {
           break;
         default:
           if (flags.synchronous || flags.wait) {
-            this.logHuman(result as TestResult, flags.detailedcoverage, flags.outputdir);
+            this.logHuman(result as TestResult, flags['detailed-coverage'], flags['output-dir']);
           } else {
             const id = (result as TestRunIdResult).testRunId;
-            this.log(messages.getMessage('runTestReportCommand', [id, this.flags['target-org'].getUsername()]));
+            this.log(messages.getMessage('runTestReportCommand', [id, flags['target-org'].getUsername()]));
           }
       }
     } catch (e) {
@@ -269,39 +278,44 @@ export default class Run extends SfCommand<RunCommandResult> {
     return this.formatResultInJson(result);
   }
 
-  public async validateFlags(): Promise<void> {
-    if (this.flags.codecoverage && !this.flags.resultformat) {
+  // eslint-disable-next-line class-methods-use-this
+  public async validateFlags(
+    codeCoverage?: boolean,
+    resultFormatFlag?: string,
+    classNames?: string,
+    suiteNames?: string,
+    tests?: string,
+    synchronous?: boolean,
+    testLevel?: TestLevel
+  ): Promise<void> {
+    if (codeCoverage && !resultFormatFlag) {
       return Promise.reject(new Error(messages.getMessage('missingReporterErr')));
     }
 
-    if (
-      (this.flags.classnames && (this.flags.suitenames || this.flags.tests)) ||
-      (this.flags.suitenames && this.flags.tests)
-    ) {
+    if ((classNames && (suiteNames || tests)) || (suiteNames && tests)) {
       return Promise.reject(new Error(messages.getMessage('classSuiteTestErr')));
     }
 
-    if (
-      this.flags.synchronous &&
-      (this.flags.suitenames || (this.flags.classnames && this.flags.classnames.split(',').length > 1))
-    ) {
+    if (synchronous && (suiteNames || (classNames && classNames.split(',').length > 1))) {
       return Promise.reject(new Error(messages.getMessage('syncClassErr')));
     }
 
-    if (
-      (this.flags.tests || this.flags.classnames || this.flags.suitenames) &&
-      this.flags.testlevel &&
-      this.flags.testlevel !== 'RunSpecifiedTests'
-    ) {
+    if ((tests || classNames || suiteNames) && testLevel && testLevel !== 'RunSpecifiedTests') {
       return Promise.reject(new Error(messages.getMessage('testLevelErr')));
     }
   }
 
-  private getTestLevelfromFlags(): TestLevel {
+  // eslint-disable-next-line class-methods-use-this
+  private getTestLevelFromFlags(
+    classNames?: string,
+    suiteNames?: string,
+    tests?: string,
+    testLevelFlag?: TestLevel
+  ): TestLevel {
     let testLevel: TestLevel;
-    if (this.flags.testlevel) {
-      testLevel = this.flags.testlevel as TestLevel;
-    } else if (this.flags.classnames || this.flags.suitenames || this.flags.tests) {
+    if (testLevelFlag) {
+      testLevel = testLevelFlag;
+    } else if (classNames || suiteNames || tests) {
       testLevel = TestLevel.RunSpecifiedTests;
     } else {
       testLevel = TestLevel.RunLocalTests;
@@ -342,10 +356,11 @@ export default class Run extends SfCommand<RunCommandResult> {
     }
   }
 
-  private formatReportHint(result: TestResult): string {
+  // eslint-disable-next-line class-methods-use-this
+  private formatReportHint(result: TestResult, username?: string): string {
     let reportArgs = `-i ${result.summary.testRunId}`;
-    if (this.flags['target-org']) {
-      reportArgs += ` -o ${this.flags['target-org'].getUsername() as string}`;
+    if (username) {
+      reportArgs += ` -o ${username}`;
     }
     return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
   }
@@ -354,17 +369,23 @@ export default class Run extends SfCommand<RunCommandResult> {
    * Handles special exceptions where we don't want to return early
    * with the testRunId.
    **/
-  private shouldImmediatelyReturn(): boolean {
-    if (this.flags.resultformat !== undefined) {
+  // eslint-disable-next-line class-methods-use-this
+  private shouldImmediatelyReturn(
+    synchronous?: boolean,
+    resultFormatFlag?: string,
+    json?: boolean,
+    wait?: Duration
+  ): boolean {
+    if (resultFormatFlag !== undefined) {
       return false;
     }
 
     // when the user has explictly asked to wait for results, but didn't give a format
-    if (this.flags.wait) {
+    if (wait) {
       return false;
     }
 
     // historical expectation to wait for results from a synchronous test run
-    return !(this.flags.synchronous && !this.flags.json);
+    return !(synchronous && !json);
   }
 }

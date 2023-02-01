@@ -11,7 +11,7 @@ import { createSandbox } from 'sinon';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import { expect } from 'chai';
-import List from '../../../../../src/commands/force/apex/log/list';
+import List from '../../../../src/commands/apex/log/list';
 
 const rawLogResult = {
   status: 0,

@@ -12,7 +12,7 @@ import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
-import Report from '../../../../../src/commands/force/apex/test/report';
+import Report from '../../../../src/commands/apex/test/report';
 import { runWithFailures, testRunSimple, testRunSimpleResult, testRunWithFailuresResult } from './testData';
 
 let logStub: sinon.SinonStub;
@@ -48,7 +48,7 @@ describe('force:apex:test:report', () => {
     it('should return a success human format message with async', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
 
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'human'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'human'], config).run();
 
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('=== Test Summary');
@@ -61,7 +61,7 @@ describe('force:apex:test:report', () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
       sandbox.stub(Org.prototype, 'getUsername').returns('test@example.com');
 
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'tap'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'tap'], config).run();
 
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
@@ -71,7 +71,7 @@ describe('force:apex:test:report', () => {
 
     it('should return a success junit format message with async', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'junit'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'junit'], config).run();
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('<property name="failRate" value="50%"/>');
       expect(logStub.firstCall.args[0]).to.include('<property name="outcome" value="Failed"/>');
@@ -80,7 +80,7 @@ describe('force:apex:test:report', () => {
 
     it('should return a success json format message with async', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'json'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'json'], config).run();
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(styledJsonStub.firstCall.args[0]).to.deep.equal({ result: testRunWithFailuresResult, status: 100 });
     });
@@ -88,14 +88,14 @@ describe('force:apex:test:report', () => {
     it('should return a success --json format message with sync', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
       sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
-      const result = await new Report(['--testrunid', 'MyApexTests', '--json'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--json'], config).run();
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(styledJsonStub.notCalled).to.be.true;
     });
 
     it('should return a success human format with synchronous', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
-      await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'human'], config).run();
+      await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'human'], config).run();
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.contain('Test Results');
       expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
@@ -104,11 +104,11 @@ describe('force:apex:test:report', () => {
     it('should warn when using --outputdir', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
       await new Report(
-        ['--outputdir', 'myDirectory', '--testrunid', 'MyApexTests', '--resultformat', 'human'],
+        ['--outputdir', 'myDirectory', '--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'human'],
         config
       ).run();
       expect(logStub.firstCall.args[0]).to.contain('Test result files written to myDirectory');
-      expect(warnStub.firstCall.args[0]).to.contain('WARNING: In the Summer ’21');
+      expect(warnStub.firstCall.args[0]).to.contain('The "--outputdir" flag has been');
     });
   });
 
@@ -116,7 +116,7 @@ describe('force:apex:test:report', () => {
     it('should return a success human format message with async', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
 
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'human'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'human'], config).run();
 
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.include('=== Test Summary');
@@ -129,7 +129,7 @@ describe('force:apex:test:report', () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
       sandbox.stub(Org.prototype, 'getUsername').returns('test@example.com');
 
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'tap'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'tap'], config).run();
 
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
@@ -139,7 +139,7 @@ describe('force:apex:test:report', () => {
 
     it('should return a success junit format message with async', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'junit'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'junit'], config).run();
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.contain('<testcase name="testConfig" classname="MyApexTests" time="0.05">');
       expect(logStub.firstCall.args[0]).to.contain('<property name="testsRan" value="1"/>');
@@ -148,7 +148,7 @@ describe('force:apex:test:report', () => {
     it('should return a success json format message with async', async () => {
       process.exitCode = 0;
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
-      const result = await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'json'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'json'], config).run();
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(styledJsonStub.firstCall.args[0]).to.deep.equal({ result: testRunSimpleResult, status: 0 });
     });
@@ -156,14 +156,14 @@ describe('force:apex:test:report', () => {
     it('should return a success --json format message with sync', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
       sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
-      const result = await new Report(['--testrunid', 'MyApexTests', '--json'], config).run();
+      const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--json'], config).run();
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(styledJsonStub.notCalled).to.be.true;
     });
 
     it('should return a success human format with synchronous', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
-      await new Report(['--testrunid', 'MyApexTests', '--resultformat', 'human'], config).run();
+      await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'human'], config).run();
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.contain('Test Results');
       expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
@@ -172,11 +172,11 @@ describe('force:apex:test:report', () => {
     it('should warn when using --outputdir', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
       await new Report(
-        ['--outputdir', 'myDirectory', '--testrunid', 'MyApexTests', '--resultformat', 'human'],
+        ['--outputdir', 'myDirectory', '--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'human'],
         config
       ).run();
       expect(logStub.firstCall.args[0]).to.contain('Test result files written to myDirectory');
-      expect(warnStub.firstCall.args[0]).to.contain('WARNING: In the Summer ’21');
+      expect(warnStub.firstCall.args[0]).to.contain('The "--outputdir" flag has been deprecated');
     });
   });
 });

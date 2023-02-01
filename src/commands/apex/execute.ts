@@ -12,7 +12,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { buildDescription, colorError, colorSuccess, logLevels } from '../../../utils';
+import { buildDescription, colorError, colorSuccess } from '../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
@@ -56,15 +56,11 @@ export default class Execute extends SfCommand<ExecuteResult> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
-    apexcodefile: Flags.file({
+    'apex-code-file': Flags.file({
+      deprecateAliases: true,
+      aliases: ['apexcodefile'],
       char: 'f',
       summary: messages.getMessage('apexCodeFileDescription'),
-    }),
-    loglevel: Flags.enum({
-      summary: messages.getMessage('logLevelDescription'),
-      description: messages.getMessage('logLevelLongDescription'),
-      default: 'warn',
-      options: logLevels,
     }),
   };
 
@@ -74,7 +70,7 @@ export default class Execute extends SfCommand<ExecuteResult> {
     const exec = new ExecuteService(conn);
 
     const execAnonOptions: ApexExecuteOptions = {
-      ...(flags.apexcodefile ? { apexFilePath: flags.apexcodefile } : { userInput: true }),
+      ...(flags['apex-code-file'] ? { apexFilePath: flags['apex-code-file'] } : { userInput: true }),
     };
 
     const result = await exec.executeAnonymous(execAnonOptions);

@@ -21,8 +21,8 @@ import {
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { AnyJson } from '@salesforce/ts-types';
-import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../../reporters';
-import { buildDescription, FAILURE_EXIT_CODE, logLevels, resultFormat } from '../../../../utils';
+import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../reporters';
+import { buildDescription, FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
@@ -62,44 +62,40 @@ export default class Report extends SfCommand<RunResult> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
-    testrunid: Flags.string({
+    'test-run-id': Flags.salesforceId({
+      deprecateAliases: true,
+      aliases: ['testrunid'],
       char: 'i',
-      // todo:validate flag
       summary: messages.getMessage('testRunIdDescription'),
       required: true,
+      startsWith: '707',
+      length: 'both',
     }),
-    loglevel: Flags.enum({
-      summary: messages.getMessage('logLevelDescription'),
-      description: messages.getMessage('logLevelLongDescription'),
-      default: 'warn',
-      options: logLevels,
-    }),
-    codecoverage: Flags.boolean({
+    'code-coverage': Flags.boolean({
+      aliases: ['codecoverage'],
+      deprecateAliases: true,
       char: 'c',
       summary: messages.getMessage('codeCoverageDescription'),
     }),
-    outputdir: Flags.string({
+    'output-dir': Flags.string({
+      aliases: ['outputdir', 'output-directory'],
+      deprecateAliases: true,
       char: 'd',
       summary: messages.getMessage('outputDirectoryDescription'),
     }),
-    resultformat: Flags.enum({
+    'result-format': Flags.enum({
+      deprecateAliases: true,
+      aliases: ['resultformat'],
       char: 'r',
       summary: messages.getMessage('resultFormatLongDescription'),
       options: resultFormat,
-    }),
-    wait: Flags.string({
-      char: 'w',
-      summary: messages.getMessage('waitDescription'),
-    }),
-    verbose: Flags.boolean({
-      summary: messages.getMessage('verboseDescription'),
     }),
   };
 
   public async run(): Promise<RunResult> {
     const { flags } = await this.parse(Report);
 
-    if (flags.outputdir) {
+    if (flags['output-dir']) {
       this.warn(messages.getMessage('warningMessage'));
     }
 
@@ -112,26 +108,26 @@ export default class Report extends SfCommand<RunResult> {
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
     const testService = new TestService(conn);
-    const result = await testService.reportAsyncResults(flags.testrunid, flags.codecoverage);
+    const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
     const jsonOutput = this.formatResultInJson(result);
 
-    if (flags.outputdir) {
+    if (flags['output-dir']) {
       const outputDirConfig = buildOutputDirConfig(
         result,
         jsonOutput,
-        flags.outputdir,
-        flags.resultformat as ResultFormat,
+        flags['output-dir'],
+        flags['result-format'] as ResultFormat,
         true
       );
 
-      await testService.writeResultFiles(result, outputDirConfig, flags.codecoverage);
+      await testService.writeResultFiles(result, outputDirConfig, flags['code-coverage']);
     }
 
     try {
       if (result.summary.outcome === ApexTestRunResultStatus.Failed) {
         process.exitCode = FAILURE_EXIT_CODE;
       }
-      switch (flags.resultformat) {
+      switch (flags['result-format']) {
         case 'tap':
           this.logTap(result, flags['target-org'].getUsername() as string);
           break;
@@ -148,7 +144,7 @@ export default class Report extends SfCommand<RunResult> {
           }
           break;
         default:
-          this.logHuman(result, true, flags.outputdir);
+          this.logHuman(result, true, flags['output-dir']);
       }
     } catch (e) {
       this.styledJSON(jsonOutput as AnyJson);

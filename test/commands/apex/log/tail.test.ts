@@ -4,15 +4,14 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-// import { expect, test } from '@salesforce/command/lib/test';
-// import { LogService } from '@salesforce/apex-node';
+
 import { resolve } from 'path';
 import { createSandbox, SinonSandbox } from 'sinon';
 import { LogService } from '@salesforce/apex-node';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { Org } from '@salesforce/core';
-import Tail from '../../../../../src/commands/force/apex/log/tail';
+import Tail from '../../../../src/commands/apex/log/tail';
 
 describe('force:apex:log:tail', () => {
   let sandbox: SinonSandbox;
