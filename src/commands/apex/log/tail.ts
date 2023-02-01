@@ -18,12 +18,8 @@ import { colorizeLog } from '../../../legacyColorization';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'tail', [
   'colorDescription',
-  'commandDescription',
   'debugLevelDescription',
   'finishedTailing',
-  'jsonDescription',
-  'logLevelDescription',
-  'logLevelLongDescription',
   'longDescription',
   'skipTraceFlagDescription',
   'summary',

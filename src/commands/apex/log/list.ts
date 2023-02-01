@@ -16,13 +16,9 @@ import { Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'list', [
   'appColHeader',
-  'commandDescription',
   'durationColHeader',
   'idColHeader',
-  'jsonDescription',
   'locationColHeader',
-  'logLevelDescription',
-  'logLevelLongDescription',
   'longDescription',
   'noDebugLogsFound',
   'operationColHeader',

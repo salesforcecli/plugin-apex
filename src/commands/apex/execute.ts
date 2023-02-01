@@ -20,7 +20,6 @@ const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
   'executeCompileSuccess',
   'executeRuntimeSuccess',
   'longDescription',
-  'longSummary',
   'examples',
   'summary',
 ]);

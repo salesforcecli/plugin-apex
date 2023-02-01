@@ -17,11 +17,7 @@ import { colorLogs } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'get', [
-  'commandDescription',
-  'jsonDescription',
   'logIDDescription',
-  'logLevelDescription',
-  'logLevelLongDescription',
   'longDescription',
   'noResultsFound',
   'numberDescription',
