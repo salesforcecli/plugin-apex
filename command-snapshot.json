@@ -3,7 +3,7 @@
     "command": "apex:execute",
     "plugin": "@salesforce/plugin-apex",
     "flags": ["apex-code-file", "api-version", "json", "target-org"],
-    "alias": []
+    "alias": ["force:apex:execute"]
   },
   {
     "command": "apex:log:get",
@@ -15,19 +15,19 @@
     "command": "apex:log:list",
     "plugin": "@salesforce/plugin-apex",
     "flags": ["api-version", "json", "target-org"],
-    "alias": []
+    "alias": ["force:apex:log:list"]
   },
   {
     "command": "apex:log:tail",
     "plugin": "@salesforce/plugin-apex",
     "flags": ["api-version", "color", "debug-level", "json", "skip-trace-flag", "target-org"],
-    "alias": []
+    "alias": ["force:apex:log:tail"]
   },
   {
     "command": "apex:test:report",
     "plugin": "@salesforce/plugin-apex",
     "flags": ["api-version", "code-coverage", "json", "output-dir", "result-format", "target-org", "test-run-id"],
-    "alias": []
+    "alias": ["force:apex:test:report"]
   },
   {
     "command": "apex:test:run",
@@ -47,6 +47,6 @@
       "tests",
       "wait"
     ],
-    "alias": []
+    "alias": ["force:apex:test:run"]
   }
 ]

@@ -44,6 +44,9 @@ export default class Tail extends SfCommand<void> {
     '$ sfdx force:apex:log:tail --debuglevel MyDebugLevel',
     '$ sfdx force:apex:log:tail -c -s',
   ];
+  public static readonly deprecateAliases = true;
+  public static readonly aliases = ['force:apex:log:tail'];
+
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,

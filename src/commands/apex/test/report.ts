@@ -59,6 +59,9 @@ export default class Report extends SfCommand<RunResult> {
     '$ sfdx force:apex:test:report -i <test run id> -c --json',
     '$ sfdx force:apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
   ];
+  public static readonly deprecateAliases = true;
+  public static readonly aliases = ['force:apex:test:report'];
+
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,

@@ -52,6 +52,8 @@ export default class Execute extends SfCommand<ExecuteResult> {
     '$ sfdx force:apex:execute -f ~/test.apex',
     '$ sfdx force:apex:execute \nStart typing Apex code. Press the Enter key after each line, then press CTRL+D when finished.',
   ];
+  public static readonly deprecateAliases = true;
+  public static readonly aliases = ['force:apex:execute'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,

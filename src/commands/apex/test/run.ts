@@ -79,6 +79,8 @@ export default class Run extends SfCommand<RunCommandResult> {
     '$ sfdx force:apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human',
     '$ sfdx force:apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org',
   ];
+  public static readonly deprecateAliases = true;
+  public static readonly aliases = ['force:apex:test:run'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
