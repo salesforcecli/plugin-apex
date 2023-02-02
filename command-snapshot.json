@@ -1,11 +1,5 @@
 [
   {
-    "command": "apex:execute",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["apex-code-file", "api-version", "json", "target-org"],
-    "alias": ["force:apex:execute"]
-  },
-  {
     "command": "apex:log:get",
     "plugin": "@salesforce/plugin-apex",
     "flags": ["api-version", "json", "log-id", "number", "output-dir", "target-org"],
@@ -22,6 +16,18 @@
     "plugin": "@salesforce/plugin-apex",
     "flags": ["api-version", "color", "debug-level", "json", "skip-trace-flag", "target-org"],
     "alias": ["force:apex:log:tail"]
+  },
+  {
+    "command": "apex:run:file",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["apex-code-file", "api-version", "json", "target-org"],
+    "alias": []
+  },
+  {
+    "command": "apex:run:live",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["api-version", "json", "target-org"],
+    "alias": ["apex:run"]
   },
   {
     "command": "apex:test:report",
@@ -48,5 +54,11 @@
       "wait"
     ],
     "alias": ["force:apex:test:run"]
+  },
+  {
+    "command": "force:apex:execute",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["apex-code-file", "api-version", "json", "target-org"],
+    "alias": []
   }
 ]

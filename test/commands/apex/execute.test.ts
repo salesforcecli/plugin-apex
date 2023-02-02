@@ -13,7 +13,7 @@ import { createSandbox, SinonSandbox } from 'sinon';
 import { Org } from '@salesforce/core';
 import { Config } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import Execute from '../../../src/commands/apex/execute';
+import Execute from '../../../src/commands/force/apex/execute';
 
 const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
 

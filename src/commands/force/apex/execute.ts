@@ -12,7 +12,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { colorError, colorSuccess } from '../../utils';
+import { colorError, colorSuccess } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
@@ -34,14 +34,20 @@ export type ExecuteResult = {
   logs: string | undefined;
   exceptionMessage: string;
 };
-
+/**
+ * THE ORIGINAL SFDX COMMAND
+ *
+ * Should use
+ * ----- apex run file
+ * ----- apex run live
+ * ----- apex run
+ * as the replacement
+ */
 export default class Execute extends SfCommand<ExecuteResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('summary');
   public static longDescription = messages.getMessage('longDescription');
   public static readonly examples = messages.getMessages('examples');
-  public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:apex:execute'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
