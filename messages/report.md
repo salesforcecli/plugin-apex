@@ -1,39 +1,48 @@
 # summary
 
-display test results for a specific asynchronous test run
+Display test results for a specific asynchronous test run.
 
-Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is displayed after running the "sfdx apex:test:run" command.
+# description
 
-# longDescription
-
-Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is displayed after running the "sfdx apex:test:run" command.
+Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is displayed after running the "<%= config.bin %> apex test run" command.
 
 # examples
 
-- sfdx apex:test:report -i <test run id>
-- sfdx apex:test:report -i <test run id> -r junit
-- sfdx apex:test:report -i <test run id> -c --json
-- sfdx apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
+- Display test results for your default org using a test run ID:
 
-# testRunIdDescription
+  <%= config.bin %> <%= command.id %> --test-run-id <test run id>
 
-the ID of the test run
+- Similar to previous example, but output the result in JUnit format:
 
-# resultFormatLongDescription
+  <%= config.bin %> <%= command.id %> --test-run-id <test run id> --result-format junit
 
-Permissible values are: human, tap, junit, json
+- Also retrieve code coverage results and output in JSON format:
 
-# codeCoverageDescription
+  <%= config.bin %> <%= command.id %> --test-run-id <test run id> --code-coverage --json
 
-retrieves code coverage results
+- Specify a directory in which to save the test results from the org with the specified username (rather than your default org):
 
-# outputDirectoryDescription
+  <%= config.bin %> <%= command.id %> --test-run-id <test run id> --code-coverage --output-dir <path to outputdir> --target-org me@myorg',
 
-directory to store test result files
+# flags.test-run-id.summary
+
+ID of the test run.
+
+# flags.result-format.summary
+
+Format of the results.
+
+# flags.code-coverage.summary
+
+Retrieve code coverage results.
+
+# flags.output-dir.summary
+
+Directory in which to store test result files.
 
 # apexTestReportFormatHint
 
-Run "sfdx apex:test:report %s --resultformat <format>" to retrieve test results in a different format.
+Run "sfdx apex test report %s --result-format <format>" to retrieve test results in a different format.
 
 # outputDirHint
 

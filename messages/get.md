@@ -1,43 +1,42 @@
 # summary
 
-fetch debug logs
+Fetch the specified log or given number of most recent logs from the org.
 
-Fetches the specified log or given number of most recent logs from the scratch org.
-To get the IDs for your debug logs, run "sfdx apex:log:list".
-Use the --logid parameter to return a specific log.
-Use the --number parameter to return the specified number of recent logs.
-Use the --outputdir parameter to specify the directory to store the logs in.
-Executing this command without parameters returns the most recent log.
+# description
+
+To get the IDs for your debug logs, run "<%= config.bin %> apex log list". Executing this command without flags returns the most recent log.
 
 # examples
 
-- sfdx apex:log:get -i <log id>
-- sfdx apex:log:get -i <log id> -u me@my.org
-- sfdx apex:log:get -n 2 -c
-- sfdx apex:log:get -d Users/Desktop/logs -n 2
+- Fetch the log in your default org using an ID:
 
-# longDescription
+  <%= config.bin %> <%= command.id %> --log-id <log id>
 
-Fetches the specified log or given number of most recent logs from the scratch org.
-To get the IDs for your debug logs, run "sfdx apex:log:list".
-Use the --logid parameter to return a specific log.
-Use the --number parameter to return the specified number of recent logs.
-Use the --outputdir parameter to specify the directory to store the logs in.
-Executing this command without parameters returns the most recent log.
+- Fetch the log in the org with the specified username using an ID:
 
-# logIDDescription
+  <%= config.bin %> <%= command.id %> --log-id <log id> --target-org me@my.org
 
-id of the log to display
+- Fetch the two most recent logs in your default org:
 
-# numberDescription
+  <%= config.bin %> <%= command.id %> --number 2
 
-number of most recent logs to display
+- Similar to previous example, but save the two log files in the specified directory:
 
-# outputDirDescription
+  <%= config.bin %> <%= command.id %> --output-dir /Users/sfdxUser/logs --number 2
 
-directory for saving the log files
+# flags.log-id.summary
 
-# outputDirLongDescription
+ID of the specific log to display.
+
+# flags.number.summary
+
+Number of the most recent logs to display.
+
+# flags.output-dir.summary
+
+Directory for saving the log files.
+
+# flags.output-dir.description
 
 The location can be an absolute path or relative to the current working directory. The default is the current directory.
 
