@@ -4,14 +4,25 @@ Fetch the specified log or given number of most recent logs from the org.
 
 # description
 
-To get the IDs for your debug logs, run "sfdx apex log list". Executing this command without parameters returns the most recent log.
+To get the IDs for your debug logs, run "<%= config.bin %> apex log list". Executing this command without flags returns the most recent log.
 
 # examples
 
-- sfdx apex:log:get -i <log id>
-- sfdx apex:log:get -i <log id> -u me@my.org
-- sfdx apex:log:get -n 2 -c
-- sfdx apex:log:get -d Users/Desktop/logs -n 2
+- Fetch the log in your default org using an ID:
+
+  <%= config.bin %> <%= command.id %> --log-id <log id>
+
+- Fetch the log in the org with the specified username using an ID:
+
+  <%= config.bin %> <%= command.id %> --log-id <log id> --target-org me@my.org
+
+- Fetch the two most recent logs in your default org:
+
+  <%= config.bin %> <%= command.id %> --number 2
+
+- Similar to previous example, but save the two log files in the specified directory:
+
+  <%= config.bin %> <%= command.id %> --output-dir /Users/sfdxUser/logs --number 2
 
 # flags.log-id.summary
 

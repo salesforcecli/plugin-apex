@@ -8,9 +8,17 @@ You can also pipe the logs to a file.
 
 # examples
 
-- sfdx apex:log:tail
-- sfdx apex:log:tail --debuglevel MyDebugLevel
-- sfdx apex:log:tail -c -s
+- Activate debug logging:
+
+  <%= config.bin %> <%= command.id %>
+
+- Specify a debug level:
+
+  <%= config.bin %> <%= command.id %> --debug-level MyDebugLevel
+
+- Skip the trace flag setup and apply default colors:
+
+  <%= config.bin %> <%= command.id %> --color --skip-trace-flag
 
 # flags.color.summary
 
