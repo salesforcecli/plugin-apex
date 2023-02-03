@@ -42,7 +42,7 @@ Directory in which to store test result files.
 
 # apexTestReportFormatHint
 
-Run "<%= config.bin %> apex test report %s --result-format <format>" to retrieve test results in a different format.
+Run "sfdx apex test report %s --result-format <format>" to retrieve test results in a different format.
 
 # outputDirHint
 
