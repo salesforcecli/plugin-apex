@@ -1,22 +1,17 @@
-# longDescription
-
-Executes one or more lines of anonymous Apex code entered on the command line, or executes the code in a local file.
-If you don’t run this command from within a Salesforce DX project, —-targetusername is required.
-To execute your code interactively, run this command with no parameters. At the prompt, enter all your Apex code; press CTRL-D when you're finished. Your code is then executed in a single execute anonymous request.
-For more information, see "Anonymous Blocks" in the Apex Developer Guide.
-
 # summary
 
-executes anonymous Apex code
+Execute anonymous Apex code entered on the command line or from a local file.
 
-Executes one or more lines of anonymous Apex code entered on the command line, or executes the code in a local file.
-If you don’t run this command from within a Salesforce DX project, —-targetusername is required.
+# description
+
+If you don’t run this command from within a Salesforce DX project, you must specify the —-target-org flag.
+
 To execute your code interactively, run this command with no parameters. At the prompt, enter all your Apex code; press CTRL-D when you're finished. Your code is then executed in a single execute anonymous request.
 For more information, see "Anonymous Blocks" in the Apex Developer Guide.
 
-# apexCodeFileDescription
+# flags.apex-code-file.summary
 
-path to a local file that contains Apex code
+Path to a local file that contains Apex code.
 
 # examples
 

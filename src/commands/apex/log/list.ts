@@ -19,7 +19,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'list', [
   'durationColHeader',
   'idColHeader',
   'locationColHeader',
-  'longDescription',
+  'description',
   'noDebugLogsFound',
   'operationColHeader',
   'requestColHeader',
@@ -35,8 +35,7 @@ export type LogListResult = LogRecord[];
 
 export default class List extends SfCommand<LogListResult> {
   public static readonly summary = messages.getMessage('summary');
-  public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:list'];

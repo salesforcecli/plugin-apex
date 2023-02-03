@@ -1,11 +1,8 @@
-# longDescription
-
-Run this command in a project to list the IDs and general information for all debug logs in your default org.
-To fetch a specific log from your org, obtain the ID from this command's output, then run the “sfdx apex:log:get” command.
-
 # summary
 
-display a list of IDs and general information about debug logs
+Display a list of IDs and general information about debug logs.
+
+# description
 
 Run this command in a project to list the IDs and general information for all debug logs in your default org.
 To fetch a specific log from your org, obtain the ID from this command's output, then run the “sfdx apex:log:get” command.

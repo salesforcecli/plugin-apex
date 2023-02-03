@@ -1,8 +1,10 @@
 # summary
 
-Follows active log
+Activate debug logging and display logs in the terminal.
 
-Activates debug logging and displays logs in the terminal. You can also pipe the logs to a file.
+# description
+
+You can also pipe the logs to a file.
 
 # examples
 
@@ -10,21 +12,17 @@ Activates debug logging and displays logs in the terminal. You can also pipe the
 - sfdx apex:log:tail --debuglevel MyDebugLevel
 - sfdx apex:log:tail -c -s
 
-# longDescription
+# flags.color.summary
 
-Activates debug logging and displays logs in the terminal. You can also pipe the logs to a file.
+Apply default colors to noteworthy log lines.
 
-# colorDescription
-
-Applies default colors to noteworthy log lines.
-
-# debugLevelDescription
+# flags.debug-level.summary
 
 Debug level to set on the DEVELOPER_LOG trace flag for your user.
 
-# skipTraceFlagDescription
+# flags.skip-trace-flag.summary
 
-Skips trace flag setup. Assumes that a trace flag and debug level are fully set up.
+Skip trace flag setup. Assumes that a trace flag and debug level are fully set up.
 
 # finishedTailing
 

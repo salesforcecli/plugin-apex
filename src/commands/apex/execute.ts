@@ -16,11 +16,11 @@ import { colorError, colorSuccess } from '../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
-  'apexCodeFileDescription',
+  'flags.apex-code-file.summary',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
-  'longDescription',
   'examples',
+  'description',
   'summary',
 ]);
 
@@ -37,8 +37,7 @@ export type ExecuteResult = {
 
 export default class Execute extends SfCommand<ExecuteResult> {
   public static readonly summary = messages.getMessage('summary');
-  public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:execute'];
@@ -50,7 +49,7 @@ export default class Execute extends SfCommand<ExecuteResult> {
       deprecateAliases: true,
       aliases: ['apexcodefile'],
       char: 'f',
-      summary: messages.getMessage('apexCodeFileDescription'),
+      summary: messages.getMessage('flags.apex-code-file.summary'),
     }),
   };
 

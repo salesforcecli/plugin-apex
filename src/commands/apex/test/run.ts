@@ -33,24 +33,28 @@ Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
   'apexLibErr',
   'apexTestReportFormatHint',
-  'classNamesDescription',
+  'flags.class-names.summary',
+  'flags.class-names.description',
   'classSuiteTestErr',
-  'codeCoverageDescription',
-  'detailedCoverageDescription',
-  'longDescription',
+  'flags.code-coverage.summary',
+  'flags.detailed-coverage.summary',
+  'description',
   'missingReporterErr',
-  'outputDirectoryDescription',
+  'flags.output-dir.summary',
   'outputDirHint',
-  'resultFormatLongDescription',
+  'flags.result-format.summary',
   'runTestReportCommand',
-  'suiteNamesDescription',
+  'flags.suite-names.summary',
+  'flags.suite-names.description',
   'syncClassErr',
-  'synchronousDescription',
-  'testLevelDescription',
+  'flags.synchronous.summary',
+  'flags.test-level.summary',
+  'flags.test-level.description',
   'testLevelErr',
   'testResultProcessErr',
-  'testsDescription',
-  'waitDescription',
+  'flags.tests.summary',
+  'flags.tests.description',
+  'flags.wait.summary',
   'summary',
   'examples',
 ]);
@@ -59,8 +63,7 @@ export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifi
 export type RunCommandResult = RunResult | TestRunIdResult;
 export default class Run extends SfCommand<RunCommandResult> {
   public static readonly summary = messages.getMessage('summary');
-  public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:test:run'];
@@ -72,58 +75,62 @@ export default class Run extends SfCommand<RunCommandResult> {
       aliases: ['codecoverage'],
       deprecateAliases: true,
       char: 'c',
-      summary: messages.getMessage('codeCoverageDescription'),
+      summary: messages.getMessage('flags.code-coverage.summary'),
     }),
     'output-dir': Flags.string({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',
-      summary: messages.getMessage('outputDirectoryDescription'),
+      summary: messages.getMessage('flags.output-dir.summary'),
     }),
     'test-level': Flags.enum({
       deprecateAliases: true,
       aliases: ['testlevel'],
       char: 'l',
-      summary: messages.getMessage('testLevelDescription'),
+      summary: messages.getMessage('flags.test-level.summary'),
+      description: messages.getMessage('flags.test-level.description'),
       options: TestLevelValues,
     }),
     'class-names': Flags.string({
       deprecateAliases: true,
       aliases: ['classnames'],
       char: 'n',
-      summary: messages.getMessage('classNamesDescription'),
+      summary: messages.getMessage('flags.class-names.summary'),
+      description: messages.getMessage('flags.class-names.description'),
     }),
     'result-format': Flags.enum({
       deprecateAliases: true,
       aliases: ['resultformat'],
       char: 'r',
-      summary: messages.getMessage('resultFormatLongDescription'),
+      summary: messages.getMessage('flags.result-format.summary'),
       options: resultFormat,
     }),
     'suite-names': Flags.string({
       deprecateAliases: true,
       aliases: ['suitenames'],
       char: 's',
-      summary: messages.getMessage('suiteNamesDescription'),
+      summary: messages.getMessage('flags.suite-names.summary'),
+      description: messages.getMessage('flags.suite-names.description'),
     }),
     tests: Flags.string({
       char: 't',
-      summary: messages.getMessage('testsDescription'),
+      summary: messages.getMessage('flags.tests.summary'),
+      description: messages.getMessage('flags.tests.description'),
     }),
     wait: Flags.duration({
       unit: 'minutes',
       char: 'w',
-      summary: messages.getMessage('waitDescription'),
+      summary: messages.getMessage('flags.wait.summary'),
     }),
     synchronous: Flags.boolean({
       char: 'y',
-      summary: messages.getMessage('synchronousDescription'),
+      summary: messages.getMessage('flags.synchronous.summary'),
     }),
     'detailed-coverage': Flags.boolean({
       deprecateAliases: true,
       aliases: ['detailedcoverage'],
       char: 'v',
-      summary: messages.getMessage('detailedCoverageDescription'),
+      summary: messages.getMessage('flags.detailed-coverage.summary'),
       dependsOn: ['code-coverage'],
     }),
   };

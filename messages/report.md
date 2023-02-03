@@ -1,10 +1,8 @@
 # summary
 
-display test results for a specific asynchronous test run
+Display test results for a specific asynchronous test run.
 
-Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is displayed after running the "sfdx apex:test:run" command.
-
-# longDescription
+# description
 
 Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is displayed after running the "sfdx apex:test:run" command.
 
@@ -15,25 +13,25 @@ Provide a test run ID to display test results for an enqueued or completed async
 - sfdx apex:test:report -i <test run id> -c --json
 - sfdx apex:test:report -i <test run id> -c -d <path to outputdir> -u me@myorg',
 
-# testRunIdDescription
+# flags.test-run-id.summary
 
-the ID of the test run
+ID of the test run.
 
-# resultFormatLongDescription
+# flags.result-format.summary
 
-Permissible values are: human, tap, junit, json
+Format of the results.
 
-# codeCoverageDescription
+# flags.code-coverage.summary
 
-retrieves code coverage results
+Retrieve code coverage results.
 
-# outputDirectoryDescription
+# flags.output-dir.summary
 
-directory to store test result files
+Directory in which to store test result files.
 
 # apexTestReportFormatHint
 
-Run "sfdx apex:test:report %s --resultformat <format>" to retrieve test results in a different format.
+Run "sfdx apex test report %s --result-format <format>" to retrieve test results in a different format.
 
 # outputDirHint
 

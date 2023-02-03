@@ -17,19 +17,18 @@ import { colorizeLog } from '../../../legacyColorization';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'tail', [
-  'colorDescription',
-  'debugLevelDescription',
+  'flags.color.summary',
+  'flags.debug-level.summary',
   'finishedTailing',
-  'longDescription',
-  'skipTraceFlagDescription',
+  'description',
+  'flags.skip-trace-flag.summary',
   'summary',
   'examples',
 ]);
 
 export default class Tail extends SfCommand<void> {
   public static readonly summary = messages.getMessage('summary');
-  public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:tail'];
@@ -39,20 +38,20 @@ export default class Tail extends SfCommand<void> {
     'api-version': orgApiVersionFlagWithDeprecations,
     color: Flags.boolean({
       char: 'c',
-      summary: messages.getMessage('colorDescription'),
+      summary: messages.getMessage('flags.color.summary'),
     }),
     'debug-level': Flags.string({
       deprecateAliases: true,
       aliases: ['debuglevel'],
       char: 'd',
-      summary: messages.getMessage('debugLevelDescription'),
+      summary: messages.getMessage('flags.debug-level.summary'),
       exclusive: ['skip-trace-flag'],
     }),
     'skip-trace-flag': Flags.boolean({
       deprecateAliases: true,
       aliases: ['skiptraceflag'],
       char: 's',
-      summary: messages.getMessage('skipTraceFlagDescription'),
+      summary: messages.getMessage('flags.skip-trace-flag.summary'),
     }),
   };
   private color: boolean | undefined;
