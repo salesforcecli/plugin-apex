@@ -1,3 +1,12 @@
+## [1.5.1](https://github.com/salesforcecli/plugin-apex/compare/1.5.0...1.5.1) (2023-02-05)
+
+
+### Bug Fixes
+
+* **deps:** bump http-cache-semantics from 4.1.0 to 4.1.1 ([9fe704a](https://github.com/salesforcecli/plugin-apex/commit/9fe704adc6102e0d242130d87f70416a234e432d))
+
+
+
 # [1.5.0](https://github.com/salesforcecli/plugin-apex/compare/1.4.3...1.5.0) (2023-01-31)
 
 
