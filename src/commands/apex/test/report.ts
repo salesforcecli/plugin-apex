@@ -28,20 +28,19 @@ Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
   'apexLibErr',
   'apexTestReportFormatHint',
-  'codeCoverageDescription',
-  'longDescription',
-  'outputDirectoryDescription',
+  'flags.code-coverage.summary',
+  'flags.output-dir.summary',
   'outputDirHint',
-  'resultFormatLongDescription',
+  'flags.result-format.summary',
   'testResultProcessErr',
-  'testRunIdDescription',
+  'flags.test-run-id.summary',
+  'description',
   'summary',
   'examples',
 ]);
 export default class Report extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
-  public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:test:report'];
@@ -53,7 +52,7 @@ export default class Report extends SfCommand<RunResult> {
       deprecateAliases: true,
       aliases: ['testrunid'],
       char: 'i',
-      summary: messages.getMessage('testRunIdDescription'),
+      summary: messages.getMessage('flags.test-run-id.summary'),
       required: true,
       startsWith: '707',
       length: 'both',
@@ -62,19 +61,19 @@ export default class Report extends SfCommand<RunResult> {
       aliases: ['codecoverage'],
       deprecateAliases: true,
       char: 'c',
-      summary: messages.getMessage('codeCoverageDescription'),
+      summary: messages.getMessage('flags.code-coverage.summary'),
     }),
     'output-dir': Flags.string({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',
-      summary: messages.getMessage('outputDirectoryDescription'),
+      summary: messages.getMessage('flags.output-dir.summary'),
     }),
     'result-format': Flags.enum({
       deprecateAliases: true,
       aliases: ['resultformat'],
       char: 'r',
-      summary: messages.getMessage('resultFormatLongDescription'),
+      summary: messages.getMessage('flags.result-format.summary'),
       options: resultFormat,
     }),
   };

@@ -1,69 +1,95 @@
-# longDescription
-
-Specify which tests to run by using the --classnames, --suites, or --tests parameters. Alternatively, use the --testlevel parameter to run all the tests in your org, local tests, or specified tests.
-To see code coverage results, use the --codecoverage parameter with --resultformat. The output displays a high-level summary of the test run and the code coverage values for classes in your org. If you specify human-readable result format, use the --detailedcoverage parameter to see detailed coverage results for each test method run.
-
-NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines from all the Apex classes evaluated by the tests in this run.
-
 # summary
 
-invoke Apex tests
+Invoke Apex tests in an org.
 
-Specify which tests to run by using the --classnames, --suites, or --tests parameters. Alternatively, use the --testlevel parameter to run all the tests in your org, local tests, or specified tests.
-To see code coverage results, use the --codecoverage parameter with --resultformat. The output displays a high-level summary of the test run and the code coverage values for classes in your org. If you specify human-readable result format, use the --detailedcoverage parameter to see detailed coverage results for each test method run.
+# description
+
+Specify which tests to run by using the --class-names, --suite-names, or --tests flags. Alternatively, use the --test-level flag to run all the tests in your org, local tests, or specified tests.
+To see code coverage results, use the --code-coverage flag with --result-format. The output displays a high-level summary of the test run and the code coverage values for classes in your org. If you specify human-readable result format, use the --detailed-coverage flag to see detailed coverage results for each test method run.
 
 NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines from all the Apex classes evaluated by the tests in this run.
 
 # examples
 
-- sfdx apex:test:run
-- sfdx apex:test:run -n "MyClassTest,MyOtherClassTest" -r human
-- sfdx apex:test:run -s "MySuite,MyOtherSuite" -c -v --json
-- sfdx apex:test:run -t "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" -r human
-- sfdx apex:test:run -l RunLocalTests -d <path to outputdir> -u me@my.org
+- Run all Apex tests and suites in your default org:
 
-# resultFormatLongDescription
+  <%= config.bin %> <%= command.id %>
 
-Permissible values are: human, tap, junit, json
+- Run the specified Apex test classes in your default org and display results in human-readable form:
 
-# classNamesDescription
+  <%= config.bin %> <%= command.id %> --class-names "MyClassTest,MyOtherClassTest" --result-format human
 
-comma-separated list of Apex test class names to run; if you select --classnames, you can't specify --suitenames or --tests
+- Run the specified Apex test suites in your default org and include code coverage results and additional details:
 
-# suiteNamesDescription
+  <%= config.bin %> <%= command.id %> --suite-names "MySuite,MyOtherSuite" --code-coverage --detailed-coverage
 
-comma-separated list of Apex test suite names to run; if you select --suitenames, you can't specify --classnames or --tests
+- Run the specified Apex tests in your default org and display results in human-readable output:
 
-# testsDescription
+  <%= config.bin %> <%= command.id %> --tests "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" --result-format human
 
-comma-separated list of Apex test class names or IDs and, if applicable, test methods to run; if you specify --tests, you can't specify --classnames or --suitenames
+- Run all tests in the org with the specified username with the specified test level; save the output to the specified directory:
 
-# codeCoverageDescription
+  <%= config.bin %> <%= command.id %> --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
 
-retrieves code coverage results
+# flags.result-format.summary
 
-# outputDirectoryDescription
+Format of the test results.
 
-directory to store test run files
+# flags.class-names.summary
 
-# testLevelDescription
+Comma-separated list of Apex test class names to run; default is all classes.
 
-specifies which tests to run, using one of these TestLevel enum values:
-RunSpecifiedTests—Only the tests that you specify are run.
-RunLocalTests—All tests in your org are run, except the ones that originate from installed managed packages.
-RunAllTestsInOrg—All tests are in your org and in installed managed packages are run
+# flags.class-names.description
 
-# waitDescription
+If you select --class-names, you can't specify --suite-names or --tests.
 
-sets the streaming client socket timeout in minutes; specify a longer wait time if timeouts occur frequently
+# flags.suite-names.summary
 
-# synchronousDescription
+Comma-separated list of Apex test suite names to run; default is all suites.
 
-runs test methods from a single Apex class synchronously; if not specified, tests are run ansynchronously
+# flags.suite-names.description
 
-# detailedCoverageDescription
+If you select --suite-names, you can't specify --class-names or --tests.
 
-display detailed code coverage per test
+# flags.tests.summary
+
+Comma-separated list of Apex test class names or IDs and, if applicable, test methods to run; default is all tests.
+
+# flags.tests.description
+
+If you specify --tests, you can't specify --class-names or --suite-names
+
+# flags.code-coverage.summary
+
+Retrieve code coverage results.
+
+# flags.output-dir.summary
+
+Directory in which to store test run files.
+
+# flags.test-level.summary
+
+Level of tests to run; default is RunLocalTests.
+
+# flags.test-level.description
+
+Here's what the levels mean:
+
+- RunSpecifiedTests—Only the tests that you specify are run.
+- RunLocalTests—All tests in your org are run, except the ones that originate from installed managed packages.
+- RunAllTestsInOrg—All tests are in your org and in installed managed packages are run
+
+# flags.wait.summary
+
+Sets the streaming client socket timeout in minutes; specify a longer wait time if timeouts occur frequently.
+
+# flags.synchronous.summary
+
+Runs test methods from a single Apex class synchronously; if not specified, tests are run ansynchronously.
+
+# flags.detailed-coverage.summary
+
+Display detailed code coverage per test.
 
 # missingReporterErr
 
@@ -71,7 +97,7 @@ Select a result format when specifying code coverage
 
 # runTestReportCommand
 
-Run "sfdx apex:test:report -i %s -u %s" to retrieve test results
+Run "<%= config.bin %> apex test report -i %s -u %s" to retrieve test results
 
 # classSuiteTestErr
 
@@ -92,7 +118,7 @@ Encountered an error when processing test results
 
 # apexTestReportFormatHint
 
-Run "sfdx apex:test:report %s --resultformat <format>" to retrieve test results in a different format.
+Run "sfdx apex test report %s --result-format <format>" to retrieve test results in a different format.
 
 # outputDirHint
 

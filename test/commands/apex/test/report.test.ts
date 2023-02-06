@@ -66,7 +66,7 @@ describe('apex:test:report', () => {
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
       expect(logStub.firstCall.args[0]).to.include('ok 1 MyApexTests.testConfig');
-      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex:test:report');
+      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex test report');
     });
 
     it('should return a success junit format message with async', async () => {
@@ -134,7 +134,7 @@ describe('apex:test:report', () => {
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
       expect(logStub.firstCall.args[0]).to.include('ok 1 MyApexTests.testConfig');
-      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex:test:report');
+      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex test report');
     });
 
     it('should return a success junit format message with async', async () => {

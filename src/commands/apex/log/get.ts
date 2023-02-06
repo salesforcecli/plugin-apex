@@ -17,13 +17,13 @@ import { colorLogs } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'get', [
-  'logIDDescription',
-  'longDescription',
+  'flags.log-id.summary',
   'noResultsFound',
-  'numberDescription',
-  'outputDirDescription',
-  'outputDirLongDescription',
+  'flags.number.summary',
+  'flags.output-dir.summary',
+  'flags.output-dir.description',
   'summary',
+  'description',
   'examples',
 ]);
 
@@ -31,8 +31,7 @@ export type LogGetResult = Array<{ log: string } | string>;
 
 export default class Get extends SfCommand<LogGetResult> {
   public static readonly summary = messages.getMessage('summary');
-  public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
 
   public static readonly deprecateAliases = true;
@@ -44,7 +43,7 @@ export default class Get extends SfCommand<LogGetResult> {
       deprecateAliases: true,
       aliases: ['logid'],
       char: 'i',
-      summary: messages.getMessage('logIDDescription'),
+      summary: messages.getMessage('flags.log-id.summary'),
       startsWith: '07L',
       length: 'both',
     }),
@@ -53,14 +52,14 @@ export default class Get extends SfCommand<LogGetResult> {
       min: 1,
       default: 1,
       max: 25,
-      summary: messages.getMessage('numberDescription'),
+      summary: messages.getMessage('flags.number.summary'),
     }),
     'output-dir': Flags.string({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',
-      summary: messages.getMessage('outputDirDescription'),
-      description: messages.getMessage('outputDirLongDescription'),
+      summary: messages.getMessage('flags.output-dir.summary'),
+      description: messages.getMessage('flags.output-dir.description'),
     }),
   };
 
