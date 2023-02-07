@@ -94,6 +94,9 @@
           },
           "test": {
             "description": "Run Apex tests and retrieve test reports."
+          },
+          "run": {
+            "description": "work with Apex code."
           }
         }
       }

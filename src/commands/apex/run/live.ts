@@ -15,7 +15,6 @@ import RunReporter from '../../../reporters/runReporter';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
-  'apexCodeFileDescription',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
   'description',

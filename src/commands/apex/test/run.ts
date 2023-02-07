@@ -15,9 +15,8 @@ import {
 import { Messages, SfError } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
 
-import { RunResult } from '../../../reporters';
+import { RunResult, TestReporter } from '../../../reporters';
 import { resultFormat } from '../../../utils';
-import { TestReporter } from '../../../reporters/testReporter';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [

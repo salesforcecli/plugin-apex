@@ -11,10 +11,8 @@ import { ExecuteResult } from '../commands/apex/run/live';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
-  'apexCodeFileDescription',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
-  'longDescription',
   'examples',
   'summary',
 ]);
