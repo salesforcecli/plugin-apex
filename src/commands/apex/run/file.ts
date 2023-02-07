@@ -19,9 +19,10 @@ const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
   'apexCodeFileDescription',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
-  'longDescription',
+  'description',
   'examples',
   'summary',
+  'flags.apex-code-file.summary',
 ]);
 
 export type ExecuteResult = {
@@ -38,7 +39,7 @@ export type ExecuteResult = {
 export default class Execute extends SfCommand<ExecuteResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static longDescription = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
 
   public static readonly flags = {
@@ -47,7 +48,7 @@ export default class Execute extends SfCommand<ExecuteResult> {
     'apex-code-file': Flags.file({
       char: 'f',
       required: true,
-      summary: messages.getMessage('apexCodeFileDescription'),
+      summary: messages.getMessage('flags.apex-code-file.summary'),
     }),
   };
 

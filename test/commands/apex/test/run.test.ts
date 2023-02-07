@@ -8,7 +8,7 @@ import { resolve } from 'path';
 import * as fs from 'fs';
 import { Messages, Org } from '@salesforce/core';
 import { createSandbox, SinonSandbox } from 'sinon';
-import { SfCommand } from '@salesforce/sf-plugins-core';
+import { SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
@@ -34,9 +34,9 @@ describe('apex:test:run', () => {
 
   beforeEach(async () => {
     sandbox = createSandbox();
-    logStub = sandbox.stub(SfCommand.prototype, 'log');
+    logStub = sandbox.stub(Ux.prototype, 'log');
     warnStub = sandbox.stub(SfCommand.prototype, 'warn');
-    styledJsonStub = sandbox.stub(SfCommand.prototype, 'styledJSON');
+    styledJsonStub = sandbox.stub(Ux.prototype, 'styledJSON');
     sandbox.stub(Org, 'create').resolves(Org.prototype);
   });
 

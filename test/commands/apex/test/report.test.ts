@@ -6,9 +6,9 @@
  */
 import { resolve } from 'path';
 import * as fs from 'fs';
-import { Org } from '@salesforce/core';
+import { Connection, Org } from '@salesforce/core';
 import { createSandbox, SinonSandbox } from 'sinon';
-import { SfCommand } from '@salesforce/sf-plugins-core';
+import { SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
@@ -26,9 +26,10 @@ describe('apex:test:report', () => {
 
   beforeEach(async () => {
     sandbox = createSandbox();
-    logStub = sandbox.stub(SfCommand.prototype, 'log');
+    logStub = sandbox.stub(Ux.prototype, 'log');
     warnStub = sandbox.stub(SfCommand.prototype, 'warn');
-    styledJsonStub = sandbox.stub(SfCommand.prototype, 'styledJSON');
+    styledJsonStub = sandbox.stub(Ux.prototype, 'styledJSON');
+    sandbox.stub(Connection.prototype, 'getUsername').returns('test@example.com');
 
     sandbox.stub(Org, 'create').resolves(Org.prototype);
   });
@@ -59,7 +60,6 @@ describe('apex:test:report', () => {
 
     it('should return a success tap format message with async', async () => {
       sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailures);
-      sandbox.stub(Org.prototype, 'getUsername').returns('test@example.com');
 
       const result = await new Report(['--testrunid', '707xxxxxxxxxxxx', '--resultformat', 'tap'], config).run();
 

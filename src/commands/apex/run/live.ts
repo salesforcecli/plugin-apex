@@ -18,7 +18,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
   'apexCodeFileDescription',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
-  'longDescription',
+  'description',
   'examples',
   'summary',
 ]);
@@ -37,7 +37,7 @@ export type ExecuteResult = {
 export default class Execute extends SfCommand<ExecuteResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('longDescription');
+  public static longDescription = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static aliases = ['apex:run'];
 

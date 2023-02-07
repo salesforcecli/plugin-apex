@@ -4,30 +4,20 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {
-  ApexTestRunResultStatus,
-  CancellationTokenSource,
-  HumanReporter,
-  JUnitReporter,
-  ResultFormat,
-  TapReporter,
-  TestLevel,
-  TestResult,
-  TestRunIdResult,
-  TestService,
-} from '@salesforce/apex-node';
+import { CancellationTokenSource, TestLevel, TestResult, TestRunIdResult, TestService } from '@salesforce/apex-node';
 import {
   Flags,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
+  Ux,
 } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
-import { AnyJson, Optional } from '@salesforce/ts-types';
 import { Duration } from '@salesforce/kit';
 
-import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../reporters';
-import { FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
+import { RunResult } from '../../../reporters';
+import { resultFormat } from '../../../utils';
+import { TestReporter } from '../../../reporters/testReporter';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'run', [
@@ -197,12 +187,11 @@ export default class Run extends SfCommand<RunCommandResult> {
       );
 
       payload.skipCodeCoverage = !flags['code-coverage'];
-      const reporter = undefined;
       result = await testService.runTestAsynchronous(
         payload,
         flags['code-coverage'],
         this.shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
-        reporter,
+        undefined,
         this.cancellationTokenSource.token
       );
     }
@@ -212,58 +201,22 @@ export default class Run extends SfCommand<RunCommandResult> {
       throw new SfError('Cancelled');
     }
 
-    if (flags['output-dir']) {
-      const jsonOutput = this.formatResultInJson(result);
-      const outputDirConfig = buildOutputDirConfig(
-        result,
-        jsonOutput,
-        flags['output-dir'],
-        flags['result-format'] as Optional<ResultFormat>,
-        flags['detailed-coverage'],
-        flags.synchronous
-      );
+    // check to make sure we have a TestResult
+    if ((result as TestResult).summary) {
+      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
 
-      await testService.writeResultFiles(result, outputDirConfig, flags['code-coverage']);
+      return testReporter.report(result as TestResult, {
+        wait: flags.wait,
+        'output-dir': flags['output-dir'],
+        'result-format': flags['result-format'],
+        'detailed-coverage': flags['detailed-coverage'],
+        synchronous: flags.synchronous,
+        json: flags.json,
+        codeCoverage: flags['code-coverage'],
+      });
+    } else {
+      return result as TestRunIdResult;
     }
-
-    try {
-      if ((result as TestResult).summary && (result as TestResult).summary.outcome === ApexTestRunResultStatus.Failed) {
-        process.exitCode = FAILURE_EXIT_CODE;
-      }
-      switch (flags['result-format']) {
-        case 'human':
-          this.logHuman(result as TestResult, flags['detailed-coverage'], flags['output-dir']);
-          break;
-        case 'tap':
-          this.logTap(result as TestResult);
-          break;
-        case 'junit':
-          this.logJUnit(result as TestResult);
-          break;
-        case 'json':
-          // when --json flag is specified, we should log CLI json format
-          if (!flags.json) {
-            this.styledJSON({
-              status: process.exitCode,
-              result: this.formatResultInJson(result),
-            } as AnyJson);
-          }
-          break;
-        default:
-          if (flags.synchronous || flags.wait) {
-            this.logHuman(result as TestResult, flags['detailed-coverage'], flags['output-dir']);
-          } else {
-            const id = (result as TestRunIdResult).testRunId;
-            this.log(messages.getMessage('runTestReportCommand', [id, flags['target-org'].getUsername()]));
-          }
-      }
-    } catch (e) {
-      this.styledJSON(result);
-      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.error(msg);
-    }
-
-    return this.formatResultInJson(result);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -310,47 +263,6 @@ export default class Run extends SfCommand<RunCommandResult> {
     }
 
     return testLevel;
-  }
-
-  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir?: string): void {
-    if (outputDir) {
-      this.log(messages.getMessage('outputDirHint', [outputDir]));
-    }
-    const humanReporter = new HumanReporter();
-    const output = humanReporter.format(result, detailedCoverage);
-    this.log(output);
-  }
-
-  private logTap(result: TestResult): void {
-    const reporter = new TapReporter();
-    const hint = this.formatReportHint(result);
-    this.log(reporter.format(result, [hint]));
-  }
-
-  private logJUnit(result: TestResult): void {
-    const reporter = new JUnitReporter();
-    this.log(reporter.format(result));
-  }
-
-  private formatResultInJson(result: TestResult | TestRunIdResult): RunResult | TestRunIdResult {
-    try {
-      const reporter = new JsonReporter();
-      return (result as TestResult).summary ? reporter.format(result as TestResult) : (result as TestRunIdResult);
-    } catch (e) {
-      this.styledJSON(result);
-      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.error(msg);
-      throw e;
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  private formatReportHint(result: TestResult, username?: string): string {
-    let reportArgs = `-i ${result.summary.testRunId}`;
-    if (username) {
-      reportArgs += ` -o ${username}`;
-    }
-    return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
   }
 
   /**

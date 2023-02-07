@@ -4,25 +4,18 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {
-  ApexTestRunResultStatus,
-  HumanReporter,
-  JUnitReporter,
-  ResultFormat,
-  TapReporter,
-  TestResult,
-  TestService,
-} from '@salesforce/apex-node';
+import { TestService } from '@salesforce/apex-node';
 import {
   Flags,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
+  Ux,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { AnyJson } from '@salesforce/ts-types';
-import { buildOutputDirConfig, RunResult, JsonReporter } from '../../../reporters';
-import { FAILURE_EXIT_CODE, resultFormat } from '../../../utils';
+import { RunResult } from '../../../reporters';
+import { resultFormat } from '../../../utils';
+import { TestReporter } from '../../../reporters/testReporter';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
@@ -91,91 +84,14 @@ export default class Report extends SfCommand<RunResult> {
 
     const testService = new TestService(conn);
     const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
-    const jsonOutput = this.formatResultInJson(result);
 
-    if (flags['output-dir']) {
-      const outputDirConfig = buildOutputDirConfig(
-        result,
-        jsonOutput,
-        flags['output-dir'],
-        flags['result-format'] as ResultFormat,
-        true
-      );
+    const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
 
-      await testService.writeResultFiles(result, outputDirConfig, flags['code-coverage']);
-    }
-
-    try {
-      if (result.summary.outcome === ApexTestRunResultStatus.Failed) {
-        process.exitCode = FAILURE_EXIT_CODE;
-      }
-      switch (flags['result-format']) {
-        case 'tap':
-          this.logTap(result, flags['target-org'].getUsername() as string);
-          break;
-        case 'junit':
-          this.logJUnit(result);
-          break;
-        case 'json':
-          // when --json flag is specified, we should log CLI json format
-          if (!flags.json) {
-            this.styledJSON({
-              status: process.exitCode,
-              result: jsonOutput,
-            } as AnyJson);
-          }
-          break;
-        default:
-          this.logHuman(result, true, flags['output-dir']);
-      }
-    } catch (e) {
-      this.styledJSON(jsonOutput as AnyJson);
-      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.error(msg);
-    }
-    process.exitCode ??= 0;
-    return jsonOutput;
-  }
-
-  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir?: string): void {
-    if (outputDir) {
-      this.log(messages.getMessage('outputDirHint', [outputDir]));
-    }
-    const humanReporter = new HumanReporter();
-    const output = humanReporter.format(result, detailedCoverage);
-    this.log(output);
-  }
-
-  private logTap(result: TestResult, username: string): void {
-    const reporter = new TapReporter();
-    const hint = this.formatReportHint(result, username);
-    this.log(reporter.format(result, [hint]));
-  }
-
-  private logJUnit(result: TestResult): void {
-    const reporter = new JUnitReporter();
-    this.log(reporter.format(result));
-  }
-
-  private formatResultInJson(result: TestResult): RunResult {
-    try {
-      const reporter = new JsonReporter();
-      return reporter.format(result);
-    } catch (e) {
-      this.styledJSON(result);
-      const msg = messages.getMessage('testResultProcessErr', [(e as Error).message]);
-      this.error(msg);
-      throw e;
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  private formatReportHint(result: TestResult, username: string): string {
-    let reportArgs = `-i ${result.summary.testRunId}`;
-
-    if (username) {
-      reportArgs += ` -o ${username}`;
-    }
-    return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
+    return testReporter.report(result, {
+      'output-dir': flags['output-dir'],
+      'result-format': flags['result-format'],
+      json: flags.json,
+      codeCoverage: flags['code-coverage'],
+    });
   }
 }
