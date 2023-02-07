@@ -29,7 +29,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'get', [
 
 export type LogGetResult = Array<{ log: string } | string>;
 
-export default class Get extends SfCommand<LogGetResult> {
+export default class Log extends SfCommand<LogGetResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -64,7 +64,7 @@ export default class Get extends SfCommand<LogGetResult> {
   };
 
   public async run(): Promise<LogGetResult> {
-    const { flags } = await this.parse(Get);
+    const { flags } = await this.parse(Log);
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const logService = new LogService(conn);
 

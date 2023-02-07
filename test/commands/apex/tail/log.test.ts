@@ -11,7 +11,7 @@ import { LogService } from '@salesforce/apex-node';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { Org } from '@salesforce/core';
-import Tail from '../../../../src/commands/apex/log/tail';
+import Log from '../../../../src/commands/apex/tail/log';
 
 describe('apex:log:tail', () => {
   let sandbox: SinonSandbox;
@@ -30,7 +30,7 @@ describe('apex:log:tail', () => {
 
   it('will skip trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    const tail = new Tail(['-o', 'test@username.com'], config);
+    const tail = new Log(['-o', 'test@username.com'], config);
     // @ts-ignore private method
     sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
     const result = await tail.run();
@@ -40,7 +40,7 @@ describe('apex:log:tail', () => {
 
   it('will call trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    const tail = new Tail(['-o', 'test@username.com', '--skiptraceflag'], config);
+    const tail = new Log(['-o', 'test@username.com', '--skiptraceflag'], config);
     // @ts-ignore private method
     sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
     const result = await tail.run();

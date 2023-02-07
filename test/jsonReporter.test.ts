@@ -15,7 +15,7 @@ import {
   failureResult,
   runWithMixed,
   mixedResult,
-} from './commands/apex/test/testData';
+} from './testData';
 
 describe('JSON Test Reporter', () => {
   it('should report successful test results without code coverage', () => {

@@ -9,7 +9,7 @@ If you don’t run this command from within a Salesforce DX project, you must sp
 To execute your code interactively, run this command with no flags. At the prompt, enter all your Apex code; press CTRL-D when you're finished. Your code is then executed in a single execute anonymous request.
 For more information, see "Anonymous Blocks" in the Apex Developer Guide.
 
-# flags.apex-code-file.summary
+# flags.file
 
 Path to a local file that contains Apex code.
 

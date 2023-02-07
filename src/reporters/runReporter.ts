@@ -7,7 +7,7 @@
 import { ExecuteAnonymousResponse } from '@salesforce/apex-node';
 import { Messages } from '@salesforce/core';
 import { colorError, colorSuccess } from '../utils';
-import { ExecuteResult } from '../commands/apex/run/live';
+import { ExecuteResult } from '../commands/apex/run';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [

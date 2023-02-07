@@ -11,7 +11,7 @@ import { createSandbox } from 'sinon';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import { expect } from 'chai';
-import List from '../../../../src/commands/apex/log/list';
+import Log from '../../../../src/commands/apex/list/log';
 
 const rawLogResult = {
   status: 0,
@@ -70,21 +70,21 @@ describe('apex:log:list', () => {
 
   it('will list 0 logs', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves([]);
-    const result = await new List([], config).run();
+    const result = await new Log([], config).run();
     expect(result).to.deep.equal([]);
     expect(logStub.firstCall.args[0]).to.equal('No debug logs found in org');
   });
 
   it('will list 0 logs --json', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves([]);
-    const result = await new List(['--json'], config).run();
+    const result = await new Log(['--json'], config).run();
     expect(result).to.deep.equal([]);
     expect(logStub.firstCall.args[0]).to.equal('No debug logs found in org');
   });
 
   it('will list multiple logs', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves(logRecords);
-    const result = await new List([], config).run();
+    const result = await new Log([], config).run();
     expect(result).to.deep.equal(logRecords);
     expect(tableStub.firstCall.args[0]).to.deep.equal([
       {
@@ -116,7 +116,7 @@ describe('apex:log:list', () => {
 
   it('will list multiple logs --json', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves(logRecords);
-    const result = await new List([], config).run();
+    const result = await new Log([], config).run();
     expect(result).to.deep.equal(logRecords);
     expect(tableStub.firstCall.args[0]).to.deep.equal([
       {

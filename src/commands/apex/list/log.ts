@@ -33,7 +33,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'list', [
 
 export type LogListResult = LogRecord[];
 
-export default class List extends SfCommand<LogListResult> {
+export default class Log extends SfCommand<LogListResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -46,7 +46,7 @@ export default class List extends SfCommand<LogListResult> {
   };
 
   public async run(): Promise<LogListResult> {
-    const { flags } = await this.parse(List);
+    const { flags } = await this.parse(Log);
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const logService = new LogService(conn);
@@ -76,18 +76,22 @@ export default class List extends SfCommand<LogListResult> {
         status: logRecord.Status,
       }));
 
-      this.table(cleanLogs, {
-        app: { header: messages.getMessage('appColHeader') },
-        duration: { header: messages.getMessage('durationColHeader') },
-        id: { header: messages.getMessage('idColHeader') },
-        location: { header: messages.getMessage('locationColHeader') },
-        size: { header: messages.getMessage('sizeColHeader') },
-        user: { header: messages.getMessage('userColHeader') },
-        operation: { header: messages.getMessage('operationColHeader') },
-        request: { header: messages.getMessage('requestColHeader') },
-        time: { header: messages.getMessage('timeColHeader') },
-        status: { header: messages.getMessage('statusColHeader') },
-      });
+      this.table(
+        cleanLogs,
+        {
+          app: { header: messages.getMessage('appColHeader') },
+          duration: { header: messages.getMessage('durationColHeader') },
+          id: { header: messages.getMessage('idColHeader') },
+          location: { header: messages.getMessage('locationColHeader') },
+          size: { header: messages.getMessage('sizeColHeader') },
+          user: { header: messages.getMessage('userColHeader') },
+          operation: { header: messages.getMessage('operationColHeader') },
+          request: { header: messages.getMessage('requestColHeader') },
+          time: { header: messages.getMessage('timeColHeader') },
+          status: { header: messages.getMessage('statusColHeader') },
+        },
+        { 'no-truncate': true }
+      );
     }
 
     return logRecords;

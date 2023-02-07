@@ -50,7 +50,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
 export type RunCommandResult = RunResult | TestRunIdResult;
-export default class Run extends SfCommand<RunCommandResult> {
+export default class Test extends SfCommand<RunCommandResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -127,7 +127,7 @@ export default class Run extends SfCommand<RunCommandResult> {
   protected cancellationTokenSource = new CancellationTokenSource();
 
   public async run(): Promise<RunCommandResult> {
-    const { flags } = await this.parse(Run);
+    const { flags } = await this.parse(Test);
 
     await this.validateFlags(
       flags['code-coverage'],
@@ -202,9 +202,10 @@ export default class Run extends SfCommand<RunCommandResult> {
 
     // check to make sure we have a TestResult
     if ((result as TestResult).summary) {
+      result = result as TestResult;
       const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
 
-      return testReporter.report(result as TestResult, {
+      return testReporter.report(result, {
         wait: flags.wait,
         'output-dir': flags['output-dir'],
         'result-format': flags['result-format'],
@@ -214,7 +215,10 @@ export default class Run extends SfCommand<RunCommandResult> {
         codeCoverage: flags['code-coverage'],
       });
     } else {
-      return result as TestRunIdResult;
+      // async test run
+      result = result as TestRunIdResult;
+      this.log(messages.getMessage('runTestReportCommand', [result.testRunId, conn.getUsername()]));
+      return result;
     }
   }
 

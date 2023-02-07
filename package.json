@@ -78,25 +78,20 @@
     ],
     "bin": "sfdx",
     "topics": {
-      "force": {
-        "description": "work with Salesforce CLI",
-        "subtopics": {
-          "apex": {
-            "description": "work with Apex code"
-          }
-        }
-      },
       "apex": {
         "description": "Use the apex commands to create Apex classes, execute anonymous blocks, view your logs, run Apex tests, and view Apex test results.",
         "subtopics": {
-          "log": {
-            "description": "Generate and retrieve Apex logs."
+          "get": {
+            "description": "Get debug logs or test results."
           },
-          "test": {
-            "description": "Run Apex tests and retrieve test reports."
+          "list": {
+            "description": "List debug logs."
           },
           "run": {
-            "description": "work with Apex code."
+            "description": "Run Apex tests."
+          },
+          "tail": {
+            "description": "Tail debug logs."
           }
         }
       }

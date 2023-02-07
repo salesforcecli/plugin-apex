@@ -31,7 +31,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'report', [
   'summary',
   'examples',
 ]);
-export default class Report extends SfCommand<RunResult> {
+export default class Test extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -72,7 +72,7 @@ export default class Report extends SfCommand<RunResult> {
   };
 
   public async run(): Promise<RunResult> {
-    const { flags } = await this.parse(Report);
+    const { flags } = await this.parse(Test);
 
     // add listener for errors
     process.on('uncaughtException', (err) => {

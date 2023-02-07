@@ -1,42 +1,30 @@
 [
   {
-    "command": "apex:log:get",
+    "command": "apex:get:log",
     "plugin": "@salesforce/plugin-apex",
     "flags": ["api-version", "json", "log-id", "number", "output-dir", "target-org"],
     "alias": ["force:apex:log:get"]
   },
   {
-    "command": "apex:log:list",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "target-org"],
-    "alias": ["force:apex:log:list"]
-  },
-  {
-    "command": "apex:log:tail",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "color", "debug-level", "json", "skip-trace-flag", "target-org"],
-    "alias": ["force:apex:log:tail"]
-  },
-  {
-    "command": "apex:run:file",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["apex-code-file", "api-version", "json", "target-org"],
-    "alias": []
-  },
-  {
-    "command": "apex:run:live",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "target-org"],
-    "alias": ["apex:run"]
-  },
-  {
-    "command": "apex:test:report",
+    "command": "apex:get:test",
     "plugin": "@salesforce/plugin-apex",
     "flags": ["api-version", "code-coverage", "json", "output-dir", "result-format", "target-org", "test-run-id"],
     "alias": ["force:apex:test:report"]
   },
   {
-    "command": "apex:test:run",
+    "command": "apex:list:log",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["api-version", "json", "target-org"],
+    "alias": ["force:apex:log:list"]
+  },
+  {
+    "command": "apex:run",
+    "plugin": "@salesforce/plugin-apex",
+    "flags": ["api-version", "file", "json", "target-org"],
+    "alias": ["force:apex:execute"]
+  },
+  {
+    "command": "apex:run:test",
     "plugin": "@salesforce/plugin-apex",
     "flags": [
       "api-version",
@@ -56,9 +44,9 @@
     "alias": ["force:apex:test:run"]
   },
   {
-    "command": "force:apex:execute",
+    "command": "apex:tail:log",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["apex-code-file", "api-version", "json", "target-org"],
-    "alias": []
+    "flags": ["api-version", "color", "debug-level", "json", "skip-trace-flag", "target-org"],
+    "alias": ["force:apex:log:tail"]
   }
 ]

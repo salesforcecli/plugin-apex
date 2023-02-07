@@ -13,7 +13,7 @@ import { createSandbox, SinonSandbox } from 'sinon';
 import { Org } from '@salesforce/core';
 import { Config } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import Execute from '../../../src/commands/force/apex/execute';
+import Run from '../../../src/commands/apex/run';
 
 const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
 
@@ -79,7 +79,7 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Execute(['--apexcodefile', file], config).run();
+    const result = await new Run(['--apexcodefile', file], config).run();
 
     expect(result).to.deep.equal(expectedSuccessResult);
     expect(logStub.calledTwice).to.be.true;
@@ -100,7 +100,7 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Execute(['--apexcodefile', file, '--json'], config).run();
+    const result = await new Run(['--apexcodefile', file, '--json'], config).run();
 
     expect(result).to.deep.equal(expectedSuccessResult);
     expect(logStub.calledTwice).to.be.true;
@@ -119,7 +119,7 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Execute(['--json'], config).run();
+    const result = await new Run(['--json'], config).run();
 
     expect(result).to.deep.equal(expectedSuccessResult);
     expect(logStub.calledOnce).to.be.true;
@@ -138,7 +138,7 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Execute([], config).run();
+    const result = await new Run([], config).run();
 
     expect(result).to.deep.equal(expectedSuccessResult);
     expect(logStub.calledOnce).to.be.true;
@@ -168,7 +168,7 @@ describe('apex:execute', () => {
       ],
     });
 
-    const result = await new Execute(['--json'], config).run();
+    const result = await new Run(['--json'], config).run();
 
     expect(result).to.deep.equal(compileProblem);
     expect(logStub.calledOnce).to.be.true;
@@ -197,7 +197,7 @@ describe('apex:execute', () => {
       ],
     });
 
-    const result = await new Execute([], config).run();
+    const result = await new Run([], config).run();
 
     expect(result).to.deep.equal(compileProblem);
     expect(logStub.calledOnce).to.be.true;
@@ -227,7 +227,7 @@ describe('apex:execute', () => {
       ],
     });
 
-    const result = await new Execute([], config).run();
+    const result = await new Run([], config).run();
 
     expect(result).to.deep.equal(runtimeProblem);
     expect(logStub.calledOnce).to.be.true;

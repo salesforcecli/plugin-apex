@@ -12,16 +12,17 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import RunReporter from '../../../reporters/runReporter';
+import RunReporter from '../../reporters/runReporter';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
+  'flags.file',
   'executeCompileSuccess',
   'executeRuntimeSuccess',
-  'description',
   'examples',
+  'description',
   'summary',
-  'flags.apex-code-file.summary',
+  'flags.file',
 ]);
 
 export type ExecuteResult = {
@@ -35,29 +36,31 @@ export type ExecuteResult = {
   exceptionMessage: string;
 };
 
-export default class Execute extends SfCommand<ExecuteResult> {
+export default class Run extends SfCommand<ExecuteResult> {
   public static readonly summary = messages.getMessage('summary');
-  public static readonly description = messages.getMessage('summary');
-  public static longDescription = messages.getMessage('description');
+  public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
+  public static aliases = ['force:apex:execute'];
+  public static deprecateAliases = true;
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
-    'apex-code-file': Flags.file({
+    file: Flags.file({
+      deprecateAliases: true,
+      aliases: ['apexcodefile'],
       char: 'f',
-      required: true,
-      summary: messages.getMessage('flags.apex-code-file.summary'),
+      summary: messages.getMessage('flags.file'),
     }),
   };
 
   public async run(): Promise<ExecuteResult> {
-    const { flags } = await this.parse(Execute);
+    const { flags } = await this.parse(Run);
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const exec = new ExecuteService(conn);
 
     const execAnonOptions: ApexExecuteOptions = {
-      ...{ apexFilePath: flags['apex-code-file'] },
+      ...(flags.file ? { apexFilePath: flags.file } : { userInput: true }),
     };
 
     const result = await exec.executeAnonymous(execAnonOptions);

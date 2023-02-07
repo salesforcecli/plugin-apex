@@ -26,7 +26,7 @@ const messages = Messages.load('@salesforce/plugin-apex', 'tail', [
   'examples',
 ]);
 
-export default class Tail extends SfCommand<void> {
+export default class Log extends SfCommand<void> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -57,7 +57,7 @@ export default class Tail extends SfCommand<void> {
   private color: boolean | undefined;
 
   public async run(): Promise<void> {
-    const { flags } = await this.parse(Tail);
+    const { flags } = await this.parse(Log);
     this.color = flags.color;
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
