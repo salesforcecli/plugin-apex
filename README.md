@@ -375,7 +375,7 @@ OPTIONS
   -d, --outputdir=outputdir
       directory to store test result files
 
-  -i, --testrunid=testrunid
+  -i, --test-run-id=testrunid
       (required) the ID of the test run
 
   -r, --resultformat=(human|tap|junit|json)

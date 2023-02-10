@@ -54,7 +54,7 @@ export default class Log extends SfCommand<LogGetResult> {
       max: 25,
       summary: messages.getMessage('flags.number.summary'),
     }),
-    'output-dir': Flags.string({
+    'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',

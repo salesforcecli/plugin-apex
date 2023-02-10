@@ -13,14 +13,12 @@ import {
   Ux,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { RunResult } from '../../../reporters';
+import { RunResult, TestReporter } from '../../../reporters';
 import { resultFormat } from '../../../utils';
-import { TestReporter } from '../../../reporters/testReporter';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-apex', 'report', [
   'apexLibErr',
-  'apexTestReportFormatHint',
   'flags.code-coverage.summary',
   'flags.output-dir.summary',
   'outputDirHint',
@@ -56,13 +54,13 @@ export default class Test extends SfCommand<RunResult> {
       char: 'c',
       summary: messages.getMessage('flags.code-coverage.summary'),
     }),
-    'output-dir': Flags.string({
+    'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',
       summary: messages.getMessage('flags.output-dir.summary'),
     }),
-    'result-format': Flags.enum({
+    'result-format': Flags.string({
       deprecateAliases: true,
       aliases: ['resultformat'],
       char: 'r',
@@ -85,7 +83,7 @@ export default class Test extends SfCommand<RunResult> {
     const testService = new TestService(conn);
     const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
 
-    const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
+    const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
 
     return testReporter.report(result, {
       'output-dir': flags['output-dir'],

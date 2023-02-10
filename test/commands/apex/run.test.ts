@@ -58,8 +58,7 @@ describe('apex:execute', () => {
   beforeEach(() => {
     sandboxStub = createSandbox();
     logStub = sandboxStub.stub(SfCommand.prototype, 'log');
-
-    sandboxStub.stub(Org, 'create').resolves(Org.prototype);
+    sandboxStub.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
   });
 
   afterEach(() => {
@@ -79,14 +78,14 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Run(['--apexcodefile', file], config).run();
+    const result = await new Run(['--file', file], config).run();
 
     expect(result).to.deep.equal(expectedSuccessResult);
-    expect(logStub.calledTwice).to.be.true;
+    expect(logStub.calledOnce).to.be.true;
 
-    expect(logStub.secondCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.secondCall.args[0]).to.include('Executed successfully.');
-    expect(logStub.secondCall.args[0]).to.include(log);
+    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
+    expect(logStub.firstCall.args[0]).to.include('Executed successfully.');
+    expect(logStub.firstCall.args[0]).to.include(log);
     expect(executeServiceStub.args[0]).to.deep.equal([
       {
         apexFilePath: file,

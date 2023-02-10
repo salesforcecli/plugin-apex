@@ -61,7 +61,7 @@ describe('apex:log:list', () => {
     sandbox = createSandbox();
     logStub = sandbox.stub(SfCommand.prototype, 'log');
     tableStub = sandbox.stub(SfCommand.prototype, 'table');
-    sandbox.stub(Org, 'create').resolves(Org.prototype);
+    sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
   });
 
   afterEach(() => {

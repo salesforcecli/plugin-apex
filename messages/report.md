@@ -40,10 +40,6 @@ Retrieve code coverage results.
 
 Directory in which to store test result files.
 
-# apexTestReportFormatHint
-
-Run "sfdx apex test report %s --result-format <format>" to retrieve test results in a different format.
-
 # outputDirHint
 
 Test result files written to %s

@@ -22,7 +22,7 @@ describe('apex:log:get', () => {
   beforeEach(() => {
     sandbox = createSandbox();
     logStub = sandbox.stub(SfCommand.prototype, 'log');
-    sandbox.stub(Org, 'create').resolves(Org.prototype);
+    sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
   });
 
   afterEach(() => {
@@ -45,9 +45,9 @@ describe('apex:log:get', () => {
 
   it('outputdir will write to fs', async () => {
     sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }]);
-    const result = await new Log(['--outputdir', 'myDirectory'], config).run();
+    const result = await new Log(['--output-dir', 'myDirectory'], config).run();
     expect(result).to.deep.equal(['myLog']);
-    expect(logStub.secondCall.args[0]).to.equal('Log files written to myDirectory');
+    expect(logStub.firstCall.args[0]).to.equal('Log files written to myDirectory');
   });
 
   it('outputdir will write to fs --json', async () => {

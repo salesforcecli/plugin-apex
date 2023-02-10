@@ -75,9 +75,9 @@ Level of tests to run; default is RunLocalTests.
 
 Here's what the levels mean:
 
-- RunSpecifiedTests—Only the tests that you specify are run.
-- RunLocalTests—All tests in your org are run, except the ones that originate from installed managed packages.
-- RunAllTestsInOrg—All tests are in your org and in installed managed packages are run
+- RunSpecifiedTests — Only the tests that you specify are run.
+- RunLocalTests — All tests in your org are run, except the ones that originate from installed managed packages.
+- RunAllTestsInOrg — All tests are in your org and in installed managed packages are run
 
 # flags.wait.summary
 
@@ -85,7 +85,7 @@ Sets the streaming client socket timeout in minutes; specify a longer wait time 
 
 # flags.synchronous.summary
 
-Runs test methods from a single Apex class synchronously; if not specified, tests are run ansynchronously.
+Runs test methods from a single Apex class synchronously; if not specified, tests are run asynchronously.
 
 # flags.detailed-coverage.summary
 
@@ -97,7 +97,7 @@ Select a result format when specifying code coverage
 
 # runTestReportCommand
 
-Run "<%= config.bin %> apex test report -i %s -u %s" to retrieve test results
+Run "%s apex get test -i %s -o %s" to retrieve test results
 
 # classSuiteTestErr
 
@@ -118,7 +118,7 @@ Encountered an error when processing test results
 
 # apexTestReportFormatHint
 
-Run "sfdx apex test report %s --result-format <format>" to retrieve test results in a different format.
+Run "%s apex get test %s --result-format <format>" to retrieve test results in a different format.
 
 # outputDirHint
 

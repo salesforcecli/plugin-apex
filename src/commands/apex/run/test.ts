@@ -19,9 +19,8 @@ import { RunResult, TestReporter } from '../../../reporters';
 import { resultFormat } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'run', [
+const messages = Messages.load('@salesforce/plugin-apex', 'runtest', [
   'apexLibErr',
-  'apexTestReportFormatHint',
   'flags.class-names.summary',
   'flags.class-names.description',
   'classSuiteTestErr',
@@ -66,13 +65,13 @@ export default class Test extends SfCommand<RunCommandResult> {
       char: 'c',
       summary: messages.getMessage('flags.code-coverage.summary'),
     }),
-    'output-dir': Flags.string({
+    'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',
       summary: messages.getMessage('flags.output-dir.summary'),
     }),
-    'test-level': Flags.enum({
+    'test-level': Flags.string({
       deprecateAliases: true,
       aliases: ['testlevel'],
       char: 'l',
@@ -87,7 +86,7 @@ export default class Test extends SfCommand<RunCommandResult> {
       summary: messages.getMessage('flags.class-names.summary'),
       description: messages.getMessage('flags.class-names.description'),
     }),
-    'result-format': Flags.enum({
+    'result-format': Flags.string({
       deprecateAliases: true,
       aliases: ['resultformat'],
       char: 'r',
@@ -129,7 +128,7 @@ export default class Test extends SfCommand<RunCommandResult> {
   public async run(): Promise<RunCommandResult> {
     const { flags } = await this.parse(Test);
 
-    await this.validateFlags(
+    const testLevel = await this.validateFlags(
       flags['code-coverage'],
       flags['result-format'],
       flags['class-names'],
@@ -155,13 +154,6 @@ export default class Test extends SfCommand<RunCommandResult> {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     process.on('SIGTERM', exitHandler);
 
-    const testLevel = this.getTestLevelFromFlags(
-      flags['class-names'],
-      flags['suite-names'],
-      flags['tests'],
-      flags['test-level'] as TestLevel
-    );
-
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const testService = new TestService(conn);
     let result: TestResult | TestRunIdResult;
@@ -170,40 +162,19 @@ export default class Test extends SfCommand<RunCommandResult> {
     // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
     // Address with W-9163533
     if (flags.synchronous && testLevel === TestLevel.RunSpecifiedTests) {
-      const payload = await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names']);
-      payload.skipCodeCoverage = !flags['code-coverage'];
-      result = (await testService.runTestSynchronous(
-        payload,
-        flags['code-coverage'],
-        this.cancellationTokenSource.token
-      )) as TestResult;
+      result = await this.runTest(testService, flags, testLevel);
     } else {
-      const payload = await testService.buildAsyncPayload(
-        testLevel,
-        flags.tests,
-        flags['class-names'],
-        flags['suite-names']
-      );
-
-      payload.skipCodeCoverage = !flags['code-coverage'];
-      result = await testService.runTestAsynchronous(
-        payload,
-        flags['code-coverage'],
-        this.shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
-        undefined,
-        this.cancellationTokenSource.token
-      );
+      result = await this.runTestAsynchronous(testService, flags, testLevel);
     }
 
     if (this.cancellationTokenSource.token.isCancellationRequested) {
-      // return null;
       throw new SfError('Cancelled');
     }
 
     // check to make sure we have a TestResult
     if ((result as TestResult).summary) {
       result = result as TestResult;
-      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
+      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
 
       return testReporter.report(result, {
         wait: flags.wait,
@@ -217,12 +188,12 @@ export default class Test extends SfCommand<RunCommandResult> {
     } else {
       // async test run
       result = result as TestRunIdResult;
-      this.log(messages.getMessage('runTestReportCommand', [result.testRunId, conn.getUsername()]));
+      this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
       return result;
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  // eslint-disable-next-line class-methods-use-this,complexity
   public async validateFlags(
     codeCoverage?: boolean,
     resultFormatFlag?: string,
@@ -231,7 +202,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     tests?: string,
     synchronous?: boolean,
     testLevel?: TestLevel
-  ): Promise<void> {
+  ): Promise<TestLevel> {
     if (codeCoverage && !resultFormatFlag) {
       return Promise.reject(new Error(messages.getMessage('missingReporterErr')));
     }
@@ -247,25 +218,66 @@ export default class Test extends SfCommand<RunCommandResult> {
     if ((tests || classNames || suiteNames) && testLevel && testLevel !== 'RunSpecifiedTests') {
       return Promise.reject(new Error(messages.getMessage('testLevelErr')));
     }
-  }
 
-  // eslint-disable-next-line class-methods-use-this
-  private getTestLevelFromFlags(
-    classNames?: string,
-    suiteNames?: string,
-    tests?: string,
-    testLevelFlag?: TestLevel
-  ): TestLevel {
-    let testLevel: TestLevel;
-    if (testLevelFlag) {
-      testLevel = testLevelFlag;
+    let test: TestLevel;
+    if (testLevel) {
+      test = testLevel;
     } else if (classNames || suiteNames || tests) {
-      testLevel = TestLevel.RunSpecifiedTests;
+      test = TestLevel.RunSpecifiedTests;
     } else {
-      testLevel = TestLevel.RunLocalTests;
+      test = TestLevel.RunLocalTests;
     }
 
-    return testLevel;
+    return test;
+  }
+
+  private async runTest(
+    testService: TestService,
+    flags: {
+      tests?: string;
+      'class-names'?: string;
+      'code-coverage'?: boolean;
+    },
+    testLevel: TestLevel
+  ): Promise<TestResult> {
+    const payload = await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names']);
+    payload.skipCodeCoverage = !flags['code-coverage'];
+    return (await testService.runTestSynchronous(
+      payload,
+      flags['code-coverage'],
+      this.cancellationTokenSource.token
+    )) as TestResult;
+  }
+
+  private async runTestAsynchronous(
+    testService: TestService,
+    flags: {
+      tests?: string;
+      'class-names'?: string;
+      'suite-names'?: string;
+      'code-coverage'?: boolean;
+      synchronous?: boolean;
+      'result-format'?: string;
+      json?: boolean;
+      wait?: Duration;
+    },
+    testLevel: TestLevel
+  ): Promise<TestRunIdResult> {
+    const payload = await testService.buildAsyncPayload(
+      testLevel,
+      flags.tests,
+      flags['class-names'],
+      flags['suite-names']
+    );
+
+    payload.skipCodeCoverage = !flags['code-coverage'];
+    return testService.runTestAsynchronous(
+      payload,
+      flags['code-coverage'],
+      this.shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
+      undefined,
+      this.cancellationTokenSource.token
+    ) as Promise<TestRunIdResult>;
   }
 
   /**

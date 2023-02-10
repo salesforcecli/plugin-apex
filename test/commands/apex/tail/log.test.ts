@@ -20,7 +20,7 @@ describe('apex:log:tail', () => {
   beforeEach(() => {
     sandbox = createSandbox();
 
-    sandbox.stub(Org, 'create').resolves(Org.prototype);
+    sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
     sandbox.stub(LogService.prototype, 'tail').resolves();
   });
 
@@ -40,7 +40,7 @@ describe('apex:log:tail', () => {
 
   it('will call trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    const tail = new Log(['-o', 'test@username.com', '--skiptraceflag'], config);
+    const tail = new Log(['-o', 'test@username.com', '--skip-trace-flag'], config);
     // @ts-ignore private method
     sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
     const result = await tail.run();

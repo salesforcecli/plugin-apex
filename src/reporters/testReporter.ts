@@ -23,7 +23,7 @@ import { FAILURE_EXIT_CODE } from '../utils';
 import { JsonReporter, RunResult } from './jsonReporter';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'run', [
+const messages = Messages.load('@salesforce/plugin-apex', 'runtest', [
   'apexLibErr',
   'apexTestReportFormatHint',
   'flags.class-names.summary',
@@ -36,7 +36,6 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
   'flags.output-dir.summary',
   'outputDirHint',
   'flags.result-format.summary',
-  'runTestReportCommand',
   'flags.suite-names.summary',
   'flags.suite-names.description',
   'syncClassErr',
@@ -53,7 +52,14 @@ const messages = Messages.load('@salesforce/plugin-apex', 'run', [
 ]);
 
 export class TestReporter {
-  public constructor(private readonly ux: Ux, private readonly connection: Connection) {}
+  /**
+   * Create a TestReporter that will format test results
+   *
+   * @param ux a new Ux instance based on if the command is in json mode
+   * @param connection a connection to the org the tests are being run against - used for getting username for hints
+   * @param bin the bin of the cli, used for providing suggestions in the users cli
+   */
+  public constructor(private readonly ux: Ux, private readonly connection: Connection, private readonly bin: string) {}
 
   public async report(
     result: TestResult,
@@ -229,6 +235,6 @@ export class TestReporter {
     if (username) {
       reportArgs += ` -o ${username}`;
     }
-    return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
+    return messages.getMessage('apexTestReportFormatHint', [this.bin, reportArgs]);
   }
 }
