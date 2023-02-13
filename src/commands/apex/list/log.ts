@@ -10,6 +10,7 @@ import {
   SfCommand,
   requiredOrgFlagWithDeprecations,
   orgApiVersionFlagWithDeprecations,
+  loglevel,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 
@@ -43,6 +44,7 @@ export default class Log extends SfCommand<LogListResult> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
   };
 
   public async run(): Promise<LogListResult> {

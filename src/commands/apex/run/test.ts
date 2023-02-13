@@ -7,6 +7,7 @@
 import { CancellationTokenSource, TestLevel, TestResult, TestRunIdResult, TestService } from '@salesforce/apex-node';
 import {
   Flags,
+  loglevel,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
@@ -59,6 +60,7 @@ export default class Test extends SfCommand<RunCommandResult> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
     'code-coverage': Flags.boolean({
       aliases: ['codecoverage'],
       deprecateAliases: true,

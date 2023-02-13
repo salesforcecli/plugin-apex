@@ -8,6 +8,7 @@
 import { LogService } from '@salesforce/apex-node';
 import {
   Flags,
+  loglevel,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
@@ -39,6 +40,7 @@ export default class Log extends SfCommand<LogGetResult> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
     'log-id': Flags.salesforceId({
       deprecateAliases: true,
       aliases: ['logid'],

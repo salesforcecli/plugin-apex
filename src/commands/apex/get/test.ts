@@ -7,6 +7,7 @@
 import { TestService } from '@salesforce/apex-node';
 import {
   Flags,
+  loglevel,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
@@ -39,6 +40,7 @@ export default class Test extends SfCommand<RunResult> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
     'test-run-id': Flags.salesforceId({
       deprecateAliases: true,
       aliases: ['testrunid'],

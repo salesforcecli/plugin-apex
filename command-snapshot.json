@@ -2,25 +2,34 @@
   {
     "command": "apex:get:log",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "log-id", "number", "output-dir", "target-org"],
+    "flags": ["api-version", "json", "log-id", "loglevel", "number", "output-dir", "target-org"],
     "alias": ["force:apex:log:get"]
   },
   {
     "command": "apex:get:test",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "code-coverage", "json", "output-dir", "result-format", "target-org", "test-run-id"],
+    "flags": [
+      "api-version",
+      "code-coverage",
+      "json",
+      "loglevel",
+      "output-dir",
+      "result-format",
+      "target-org",
+      "test-run-id"
+    ],
     "alias": ["force:apex:test:report"]
   },
   {
     "command": "apex:list:log",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "target-org"],
+    "flags": ["api-version", "json", "loglevel", "target-org"],
     "alias": ["force:apex:log:list"]
   },
   {
     "command": "apex:run",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "file", "json", "target-org"],
+    "flags": ["api-version", "file", "json", "loglevel", "target-org"],
     "alias": ["force:apex:execute"]
   },
   {
@@ -32,6 +41,7 @@
       "code-coverage",
       "detailed-coverage",
       "json",
+      "loglevel",
       "output-dir",
       "result-format",
       "suite-names",
@@ -46,7 +56,7 @@
   {
     "command": "apex:tail:log",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "color", "debug-level", "json", "skip-trace-flag", "target-org"],
+    "flags": ["api-version", "color", "debug-level", "json", "loglevel", "skip-trace-flag", "target-org"],
     "alias": ["force:apex:log:tail"]
   }
 ]

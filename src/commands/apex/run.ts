@@ -7,6 +7,7 @@
 import { ApexExecuteOptions, ExecuteService } from '@salesforce/apex-node';
 import {
   Flags,
+  loglevel,
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
@@ -46,6 +47,7 @@ export default class Run extends SfCommand<ExecuteResult> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
     file: Flags.file({
       deprecateAliases: true,
       aliases: ['apexcodefile'],

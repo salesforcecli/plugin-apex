@@ -11,6 +11,7 @@ import {
   SfCommand,
   requiredOrgFlagWithDeprecations,
   orgApiVersionFlagWithDeprecations,
+  loglevel,
 } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
 import { colorizeLog } from '../../../legacyColorization';
@@ -36,6 +37,7 @@ export default class Log extends SfCommand<void> {
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
     color: Flags.boolean({
       char: 'c',
       summary: messages.getMessage('flags.color.summary'),
