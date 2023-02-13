@@ -17,16 +17,7 @@ import { Messages } from '@salesforce/core';
 import { colorLogs } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'get', [
-  'flags.log-id.summary',
-  'noResultsFound',
-  'flags.number.summary',
-  'flags.output-dir.summary',
-  'flags.output-dir.description',
-  'summary',
-  'description',
-  'examples',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'get');
 
 export type LogGetResult = Array<{ log: string } | string>;
 

@@ -16,15 +16,7 @@ import { Messages } from '@salesforce/core';
 import RunReporter from '../../reporters/runReporter';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
-  'flags.file',
-  'executeCompileSuccess',
-  'executeRuntimeSuccess',
-  'examples',
-  'description',
-  'summary',
-  'flags.file',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'execute');
 
 export type ExecuteResult = {
   compiled: boolean;

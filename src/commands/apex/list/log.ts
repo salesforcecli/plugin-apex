@@ -15,22 +15,7 @@ import {
 import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'list', [
-  'appColHeader',
-  'durationColHeader',
-  'idColHeader',
-  'locationColHeader',
-  'description',
-  'noDebugLogsFound',
-  'operationColHeader',
-  'requestColHeader',
-  'sizeColHeader',
-  'statusColHeader',
-  'timeColHeader',
-  'userColHeader',
-  'summary',
-  'examples',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'list');
 
 export type LogListResult = LogRecord[];
 

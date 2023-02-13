@@ -17,15 +17,7 @@ import { Connection, Messages } from '@salesforce/core';
 import { colorizeLog } from '../../../legacyColorization';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'tail', [
-  'flags.color.summary',
-  'flags.debug-level.summary',
-  'finishedTailing',
-  'description',
-  'flags.skip-trace-flag.summary',
-  'summary',
-  'examples',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'tail');
 
 export default class Log extends SfCommand<void> {
   public static readonly summary = messages.getMessage('summary');

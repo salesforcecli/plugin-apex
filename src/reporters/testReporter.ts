@@ -23,33 +23,7 @@ import { FAILURE_EXIT_CODE } from '../utils';
 import { JsonReporter, RunResult } from './jsonReporter';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'runtest', [
-  'apexLibErr',
-  'apexTestReportFormatHint',
-  'flags.class-names.summary',
-  'flags.class-names.description',
-  'classSuiteTestErr',
-  'flags.code-coverage.summary',
-  'flags.detailed-coverage.summary',
-  'description',
-  'missingReporterErr',
-  'flags.output-dir.summary',
-  'outputDirHint',
-  'flags.result-format.summary',
-  'flags.suite-names.summary',
-  'flags.suite-names.description',
-  'syncClassErr',
-  'flags.synchronous.summary',
-  'flags.test-level.summary',
-  'flags.test-level.description',
-  'testLevelErr',
-  'testResultProcessErr',
-  'flags.tests.summary',
-  'flags.tests.description',
-  'flags.wait.summary',
-  'summary',
-  'examples',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
 
 export class TestReporter {
   /**
@@ -146,8 +120,7 @@ export class TestReporter {
       dirPath: outputDir,
     };
 
-    if ((result as TestResult).summary) {
-      result = result as TestResult;
+    if ('summary' in result) {
       jsonOutput = jsonOutput as RunResult;
 
       if (typeof resultFormat !== 'undefined' || synchronous) {

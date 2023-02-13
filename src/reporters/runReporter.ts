@@ -11,12 +11,7 @@ import { colorError, colorSuccess } from '../utils';
 import { ExecuteResult } from '../commands/apex/run';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'execute', [
-  'executeCompileSuccess',
-  'executeRuntimeSuccess',
-  'examples',
-  'summary',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'execute');
 
 export default class RunReporter {
   public static formatDefault(response: ExecuteAnonymousResponse): string {

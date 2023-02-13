@@ -20,33 +20,7 @@ import { RunResult, TestReporter } from '../../../reporters';
 import { resultFormat } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'runtest', [
-  'apexLibErr',
-  'flags.class-names.summary',
-  'flags.class-names.description',
-  'classSuiteTestErr',
-  'flags.code-coverage.summary',
-  'flags.detailed-coverage.summary',
-  'description',
-  'missingReporterErr',
-  'flags.output-dir.summary',
-  'outputDirHint',
-  'flags.result-format.summary',
-  'runTestReportCommand',
-  'flags.suite-names.summary',
-  'flags.suite-names.description',
-  'syncClassErr',
-  'flags.synchronous.summary',
-  'flags.test-level.summary',
-  'flags.test-level.description',
-  'testLevelErr',
-  'testResultProcessErr',
-  'flags.tests.summary',
-  'flags.tests.description',
-  'flags.wait.summary',
-  'summary',
-  'examples',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
 export type RunCommandResult = RunResult | TestRunIdResult;
@@ -158,24 +132,20 @@ export default class Test extends SfCommand<RunCommandResult> {
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const testService = new TestService(conn);
-    let result: TestResult | TestRunIdResult;
 
     // NOTE: This is a *bug*. Synchronous test runs should throw an error when multiple test classes are specified
     // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
     // Address with W-9163533
-    if (flags.synchronous && testLevel === TestLevel.RunSpecifiedTests) {
-      result = await this.runTest(testService, flags, testLevel);
-    } else {
-      result = await this.runTestAsynchronous(testService, flags, testLevel);
-    }
+    const result =
+      flags.synchronous && testLevel === TestLevel.RunSpecifiedTests
+        ? await this.runTest(testService, flags, testLevel)
+        : await this.runTestAsynchronous(testService, flags, testLevel);
 
     if (this.cancellationTokenSource.token.isCancellationRequested) {
       throw new SfError('Cancelled');
     }
 
-    // check to make sure we have a TestResult
-    if ((result as TestResult).summary) {
-      result = result as TestResult;
+    if ('summary' in result) {
       const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
 
       return testReporter.report(result, {
@@ -189,7 +159,6 @@ export default class Test extends SfCommand<RunCommandResult> {
       });
     } else {
       // async test run
-      result = result as TestRunIdResult;
       this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
       return result;
     }
@@ -242,8 +211,10 @@ export default class Test extends SfCommand<RunCommandResult> {
     },
     testLevel: TestLevel
   ): Promise<TestResult> {
-    const payload = await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names']);
-    payload.skipCodeCoverage = !flags['code-coverage'];
+    const payload = {
+      ...(await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names'])),
+      skipCodeCoverage: !flags['code-coverage'],
+    };
     return (await testService.runTestSynchronous(
       payload,
       flags['code-coverage'],
@@ -265,44 +236,40 @@ export default class Test extends SfCommand<RunCommandResult> {
     },
     testLevel: TestLevel
   ): Promise<TestRunIdResult> {
-    const payload = await testService.buildAsyncPayload(
-      testLevel,
-      flags.tests,
-      flags['class-names'],
-      flags['suite-names']
-    );
+    const payload = {
+      ...(await testService.buildAsyncPayload(testLevel, flags.tests, flags['class-names'], flags['suite-names'])),
+      skipCodeCoverage: !flags['code-coverage'],
+    };
 
-    payload.skipCodeCoverage = !flags['code-coverage'];
-    return testService.runTestAsynchronous(
+    // cast as TestRunIdResult because we're building an async payload which will return an async result
+    return (await testService.runTestAsynchronous(
       payload,
       flags['code-coverage'],
-      this.shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
+      shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
       undefined,
       this.cancellationTokenSource.token
-    ) as Promise<TestRunIdResult>;
-  }
-
-  /**
-   * Handles special exceptions where we don't want to return early
-   * with the testRunId.
-   **/
-  // eslint-disable-next-line class-methods-use-this
-  private shouldImmediatelyReturn(
-    synchronous?: boolean,
-    resultFormatFlag?: string,
-    json?: boolean,
-    wait?: Duration
-  ): boolean {
-    if (resultFormatFlag !== undefined) {
-      return false;
-    }
-
-    // when the user has explictly asked to wait for results, but didn't give a format
-    if (wait) {
-      return false;
-    }
-
-    // historical expectation to wait for results from a synchronous test run
-    return !(synchronous && !json);
+    )) as TestRunIdResult;
   }
 }
+/**
+ * Handles special exceptions where we don't want to return early
+ * with the testRunId.
+ **/
+const shouldImmediatelyReturn = (
+  synchronous?: boolean,
+  resultFormatFlag?: string,
+  json?: boolean,
+  wait?: Duration
+): boolean => {
+  if (resultFormatFlag !== undefined) {
+    return false;
+  }
+
+  // when the user has explictly asked to wait for results, but didn't give a format
+  if (wait) {
+    return false;
+  }
+
+  // historical expectation to wait for results from a synchronous test run
+  return !(synchronous && !json);
+};

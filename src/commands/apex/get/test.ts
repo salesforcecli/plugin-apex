@@ -18,18 +18,7 @@ import { RunResult, TestReporter } from '../../../reporters';
 import { resultFormat } from '../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'report', [
-  'apexLibErr',
-  'flags.code-coverage.summary',
-  'flags.output-dir.summary',
-  'outputDirHint',
-  'flags.result-format.summary',
-  'testResultProcessErr',
-  'flags.test-run-id.summary',
-  'description',
-  'summary',
-  'examples',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'report');
 export default class Test extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
@@ -79,7 +68,6 @@ export default class Test extends SfCommand<RunResult> {
       throw messages.createError('apexLibErr', [err.message]);
     });
 
-    // org is guaranteed by requiresUsername field
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
     const testService = new TestService(conn);
