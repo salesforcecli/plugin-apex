@@ -6,21 +6,19 @@
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "main": "lib/index.js",
   "dependencies": {
-    "@oclif/core": "^2.0.7",
-    "@salesforce/apex-node": "1.6.0",
-    "@salesforce/core": "^3.32.13",
-    "@salesforce/command": "^5.2.43",
-    "@salesforce/sf-plugins-core": "^1.22.3",
+    "@oclif/core": "^2.0.11",
+    "@salesforce/apex-node": "^1.6.0",
+    "@salesforce/core": "^3.33.1",
+    "@salesforce/sf-plugins-core": "^2.1.0",
     "chalk": "^4.1.0",
     "tslib": "^2"
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^3.3.2",
     "@oclif/plugin-help": "^5",
-    "@oclif/test": "^2.3.4",
-    "@salesforce/dev-config": "3.1.0",
+    "@salesforce/dev-config": "3.0.1",
     "@salesforce/dev-scripts": "^3.1.0",
-    "@salesforce/plugin-command-reference": "^2.2.10",
+    "@salesforce/plugin-command-reference": "^2.3.1",
     "@salesforce/prettier-config": "^0.0.2",
     "@salesforce/ts-sinon": "^1.4.4",
     "@salesforce/ts-types": "1.7.2",
@@ -38,7 +36,7 @@
     "eslint-plugin-header": "^3.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsdoc": "^39.3.6",
-    "eslint-plugin-sf-plugin": "^1.7.0",
+    "eslint-plugin-sf-plugin": "^1.8.1",
     "globby": "^8",
     "husky": "^7.0.4",
     "mocha": "^9.1.3",
@@ -80,20 +78,20 @@
     ],
     "bin": "sfdx",
     "topics": {
-      "force": {
-        "external": true,
+      "apex": {
+        "description": "Use the apex commands to create Apex classes, execute anonymous blocks, view your logs, run Apex tests, and view Apex test results.",
         "subtopics": {
-          "apex": {
-            "description": "work with Apex code",
-            "longDescription": "Use the apex commands to create Apex classes, execute anonymous blocks, view your logs, run Apex tests, and view Apex test results.",
-            "subtopics": {
-              "log": {
-                "description": "generate and retrieve Apex logs"
-              },
-              "test": {
-                "description": "run Apex tests and retrieve test reports"
-              }
-            }
+          "get": {
+            "description": "Get debug logs or test results."
+          },
+          "list": {
+            "description": "List debug logs."
+          },
+          "run": {
+            "description": "Run Apex tests."
+          },
+          "tail": {
+            "description": "Tail debug logs."
           }
         }
       }

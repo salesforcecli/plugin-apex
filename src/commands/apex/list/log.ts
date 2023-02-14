@@ -7,60 +7,33 @@
 
 import { LogRecord, LogService } from '@salesforce/apex-node';
 import {
-  Flags,
   SfCommand,
   requiredOrgFlagWithDeprecations,
   orgApiVersionFlagWithDeprecations,
+  loglevel,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { buildDescription, logLevels } from '../../../../utils';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-apex', 'list', [
-  'appColHeader',
-  'commandDescription',
-  'durationColHeader',
-  'idColHeader',
-  'jsonDescription',
-  'locationColHeader',
-  'logLevelDescription',
-  'logLevelLongDescription',
-  'longDescription',
-  'noDebugLogsFound',
-  'operationColHeader',
-  'requestColHeader',
-  'sizeColHeader',
-  'statusColHeader',
-  'timeColHeader',
-  'userColHeader',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'list');
 
 export type LogListResult = LogRecord[];
 
-export default class List extends SfCommand<LogListResult> {
-  public static readonly summary = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static readonly description = buildDescription(
-    messages.getMessage('commandDescription'),
-    messages.getMessage('longDescription')
-  );
-  public static longDescription = messages.getMessage('longDescription');
-  public static readonly examples = ['$ sfdx force:apex:log:list', '$ sfdx force:apex:log:list -u me@my.org'];
+export default class Log extends SfCommand<LogListResult> {
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly description = messages.getMessage('description');
+  public static readonly examples = messages.getMessages('examples');
+  public static readonly deprecateAliases = true;
+  public static readonly aliases = ['force:apex:log:list'];
+
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
-    loglevel: Flags.enum({
-      summary: messages.getMessage('logLevelDescription'),
-      description: messages.getMessage('logLevelLongDescription'),
-      default: 'warn',
-      options: logLevels,
-    }),
     'api-version': orgApiVersionFlagWithDeprecations,
+    loglevel,
   };
 
   public async run(): Promise<LogListResult> {
-    const { flags } = await this.parse(List);
+    const { flags } = await this.parse(Log);
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const logService = new LogService(conn);
@@ -90,18 +63,22 @@ export default class List extends SfCommand<LogListResult> {
         status: logRecord.Status,
       }));
 
-      this.table(cleanLogs, {
-        app: { header: messages.getMessage('appColHeader') },
-        duration: { header: messages.getMessage('durationColHeader') },
-        id: { header: messages.getMessage('idColHeader') },
-        location: { header: messages.getMessage('locationColHeader') },
-        size: { header: messages.getMessage('sizeColHeader') },
-        user: { header: messages.getMessage('userColHeader') },
-        operation: { header: messages.getMessage('operationColHeader') },
-        request: { header: messages.getMessage('requestColHeader') },
-        time: { header: messages.getMessage('timeColHeader') },
-        status: { header: messages.getMessage('statusColHeader') },
-      });
+      this.table(
+        cleanLogs,
+        {
+          app: { header: messages.getMessage('appColHeader') },
+          duration: { header: messages.getMessage('durationColHeader') },
+          id: { header: messages.getMessage('idColHeader') },
+          location: { header: messages.getMessage('locationColHeader') },
+          size: { header: messages.getMessage('sizeColHeader') },
+          user: { header: messages.getMessage('userColHeader') },
+          operation: { header: messages.getMessage('operationColHeader') },
+          request: { header: messages.getMessage('requestColHeader') },
+          time: { header: messages.getMessage('timeColHeader') },
+          status: { header: messages.getMessage('statusColHeader') },
+        },
+        { 'no-truncate': true }
+      );
     }
 
     return logRecords;

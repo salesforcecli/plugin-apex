@@ -17,7 +17,7 @@ For each PR that is going to be merged to main, make sure that the following is 
 
 ## Publishing to NPM for major and patch version upgrades
 
-To publish the changes to npm, we run the task `Publish Packages`. This task calls the script `publish-workflow.sh` and prompts the user for the required information. 
+To publish the changes to npm, we run the task `Publish Packages`. This task calls the script `publish-workflow.sh` and prompts the user for the required information.
 The publish-workflow script _TBD_
 
 ### Prerequisites
@@ -29,6 +29,6 @@ The publish-workflow script _TBD_
 ### Steps
 
 1. Open the Command Palette (press Ctrl+Shift+P on Windows or Linux, or Cmd+Shift+P on macOS).
-1. Search for `Tasks: Run Task`.
+1. Search for `Tasks: Test Task`.
 1. Select `Publish Packages`.
 1. _TBD_
