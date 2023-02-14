@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/salesforcecli/plugin-apex/compare/1.5.1...2.0.0) (2023-02-14)
+
+
+### Bug Fixes
+
+* exit with error code when anyonmous apex failed to compile or run ([4ee3093](https://github.com/salesforcecli/plugin-apex/commit/4ee3093e34a64c5defda8b1e708d31eb041f3665))
+
+
+### BREAKING CHANGES
+
+* force:apex:execute now returns an error exit code (1)
+when the compilation or execution of the Anonymous Apex failed.
+
+
+
 ## [1.5.1](https://github.com/salesforcecli/plugin-apex/compare/1.5.0...1.5.1) (2023-02-05)
 
 
