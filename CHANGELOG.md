@@ -1,3 +1,26 @@
+# [2.0.0](https://github.com/salesforcecli/plugin-apex/compare/1.5.1...2.0.0) (2023-02-14)
+
+### Bug Fixes
+
+- exit with error code when anyonmous apex failed to compile or run ([4ee3093](https://github.com/salesforcecli/plugin-apex/commit/4ee3093e34a64c5defda8b1e708d31eb041f3665))
+
+### BREAKING CHANGES
+
+- force:apex:execute now returns an error exit code (1)
+  when the compilation or execution of the Anonymous Apex failed.
+
+## [1.5.1](https://github.com/salesforcecli/plugin-apex/compare/1.5.0...1.5.1) (2023-02-05)
+
+### Bug Fixes
+
+- **deps:** bump http-cache-semantics from 4.1.0 to 4.1.1 ([9fe704a](https://github.com/salesforcecli/plugin-apex/commit/9fe704adc6102e0d242130d87f70416a234e432d))
+
+# [1.5.0](https://github.com/salesforcecli/plugin-apex/compare/1.4.3...1.5.0) (2023-01-31)
+
+### Features
+
+- use latest oclif/core ([4b869cd](https://github.com/salesforcecli/plugin-apex/commit/4b869cd315a76ddae1725ba18871400c46a088cf))
+
 ## [1.4.3](https://github.com/salesforcecli/plugin-apex/compare/1.4.2...1.4.3) (2023-01-22)
 
 ### Bug Fixes
@@ -20,7 +43,7 @@
 
 ### Bug Fixes
 
-- `--json` flag should override `-r json` flag in `testLevelapex:test:run` and `testLevelapex:test:report` ([#177](https://github.com/salesforcecli/plugin-apex/issues/177)) ([#178](https://github.com/salesforcecli/plugin-apex/issues/178)) ([965e1c1](https://github.com/salesforcecli/plugin-apex/commit/965e1c11c016d5f5fd93f87d5ad1650481e14795))
+- `--json` flag should override `-r json` flag in `force:apex:test:run` and `force:apex:test:report` ([#177](https://github.com/salesforcecli/plugin-apex/issues/177)) ([#178](https://github.com/salesforcecli/plugin-apex/issues/178)) ([965e1c1](https://github.com/salesforcecli/plugin-apex/commit/965e1c11c016d5f5fd93f87d5ad1650481e14795))
 - add caret to command and fix tests ([#292](https://github.com/salesforcecli/plugin-apex/issues/292)) ([e1640df](https://github.com/salesforcecli/plugin-apex/commit/e1640dff7cd935e4463b2f1eaae7fa8e1dea9ffe))
 - add complete result info for getLogs ([#146](https://github.com/salesforcecli/plugin-apex/issues/146)) ([317b129](https://github.com/salesforcecli/plugin-apex/commit/317b129c41d0cc36a40568b1984694f1f200ce43))
 - apex code coverage flag ([#268](https://github.com/salesforcecli/plugin-apex/issues/268)) ([226f1af](https://github.com/salesforcecli/plugin-apex/commit/226f1afa29532122125ea3e13f2dcf6860f931fe))

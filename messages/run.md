@@ -34,3 +34,15 @@ Compiled successfully.
 # executeRuntimeSuccess
 
 Executed successfully.
+
+# executeRuntimeFailure
+
+Execution failed.
+
+# executeCompileFailure
+
+Compilation failed.
+
+# executeRuntimeSuccess
+
+Executed successfully.

@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import { expect } from 'chai';
 import { ExecuteService } from '@salesforce/apex-node';
 import { createSandbox, SinonSandbox } from 'sinon';
-import { Org } from '@salesforce/core';
+import { Org, SfError } from '@salesforce/core';
 import { Config } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import Run from '../../../src/commands/apex/run';
@@ -26,28 +26,6 @@ const expectedSuccessResult = {
   exceptionStackTrace: '',
   success: true,
   logs: log,
-};
-
-const compileProblem = {
-  column: 1,
-  line: 11,
-  compiled: false,
-  compileProblem: 'problem compiling',
-  exceptionMessage: 'exception',
-  exceptionStackTrace: 'exception stack',
-  success: false,
-  logs: undefined,
-};
-
-const runtimeProblem = {
-  logs: undefined,
-  column: 1,
-  line: 11,
-  compiled: true,
-  compileProblem: '',
-  exceptionMessage: 'problem at runtime',
-  exceptionStackTrace: 'Issue in mock file',
-  success: false,
 };
 
 describe('apex:execute', () => {
@@ -150,8 +128,8 @@ describe('apex:execute', () => {
     ]);
   });
 
-  it('runs default command with json and compile problem', async () => {
-    const executeServiceStub = sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({
+  it('throws an error when it fails to compile', async () => {
+    sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({
       compiled: false,
       success: false,
       diagnostic: [
@@ -165,77 +143,54 @@ describe('apex:execute', () => {
         },
       ],
     });
-
-    const result = await new Run(['--json'], config).run();
-
-    expect(result).to.deep.equal(compileProblem);
-    expect(logStub.calledOnce).to.be.true;
-    expect(logStub.firstCall.args[0]).to.include('Error: Line');
-    expect(logStub.firstCall.args[0]).to.include('Error: problem compiling');
-    expect(executeServiceStub.args[0]).to.deep.equal([
-      {
-        userInput: true,
-      },
-    ]);
+    try {
+      await new Run(['--json'], config).run();
+    } catch (e) {
+      const err = e as SfError;
+      expect(err.name).to.equal('executeCompileFailure');
+      expect(err.data).to.deep.equal({
+        success: false,
+        compiled: false,
+        compileProblem: 'problem compiling',
+        exceptionMessage: 'exception',
+        exceptionStackTrace: 'exception stack',
+        line: 11,
+        logs: undefined,
+        column: 1,
+      });
+    }
   });
 
-  it('runs default command with a compile problem', async () => {
-    const executeServiceStub = sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({
-      compiled: false,
-      success: false,
-      diagnostic: [
-        {
-          lineNumber: 11,
-          columnNumber: 1,
-          compileProblem: 'problem compiling',
-          exceptionMessage: 'exception',
-          exceptionStackTrace: 'exception stack',
-          className: 'testClass',
-        },
-      ],
-    });
-
-    const result = await new Run([], config).run();
-
-    expect(result).to.deep.equal(compileProblem);
-    expect(logStub.calledOnce).to.be.true;
-    expect(logStub.firstCall.args[0]).to.include('Error: Line: 11, Column: 1');
-    expect(logStub.firstCall.args[0]).to.include('Error: problem compiling');
-    expect(executeServiceStub.args[0]).to.deep.equal([
-      {
-        userInput: true,
-      },
-    ]);
-  });
-
-  it('runs default command with a runtime problem', async () => {
-    const executeServiceStub = sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({
+  it('throws an error when it has a runtime error', async () => {
+    sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({
       compiled: true,
       success: false,
-      logs: undefined,
       diagnostic: [
         {
           lineNumber: 11,
           columnNumber: 1,
-          compileProblem: '',
-          exceptionMessage: 'problem at runtime',
-          exceptionStackTrace: 'Issue in mock file',
+          compileProblem: 'runtime error',
+          exceptionMessage: 'exception',
+          exceptionStackTrace: 'exception stack',
           className: 'testClass',
         },
       ],
     });
-
-    const result = await new Run([], config).run();
-
-    expect(result).to.deep.equal(runtimeProblem);
-    expect(logStub.calledOnce).to.be.true;
-    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.firstCall.args[0]).to.include('Error: problem at runtime');
-    expect(logStub.firstCall.args[0]).to.include('Error: Issue in mock file');
-    expect(executeServiceStub.args[0]).to.deep.equal([
-      {
-        userInput: true,
-      },
-    ]);
+    try {
+      await new Run(['--json'], config).run();
+    } catch (e) {
+      const err = e as SfError;
+      expect(err.name).to.equal('executeRuntimeFailure');
+      expect(err.data).to.deep.equal({
+        success: false,
+        compiled: true,
+        compileProblem: 'runtime error',
+        exceptionMessage: 'exception',
+        exceptionStackTrace: 'exception stack',
+        line: 11,
+        logs: undefined,
+        column: 1,
+      });
+    }
   });
 });

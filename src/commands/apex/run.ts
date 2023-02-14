@@ -12,11 +12,11 @@ import {
   requiredOrgFlagWithDeprecations,
   SfCommand,
 } from '@salesforce/sf-plugins-core';
-import { Messages } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import RunReporter from '../../reporters/runReporter';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'execute');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'run');
 
 export type ExecuteResult = {
   compiled: boolean;
@@ -59,8 +59,18 @@ export default class Run extends SfCommand<ExecuteResult> {
 
     const result = await exec.executeAnonymous(execAnonOptions);
 
+    const formattedResult = RunReporter.formatJson(result);
+
+    if (!result.compiled || !result.success) {
+      const err = !result.compiled
+        ? new SfError(messages.getMessage('executeCompileFailure'), 'executeCompileFailure')
+        : new SfError(messages.getMessage('executeRuntimeFailure'), 'executeRuntimeFailure');
+      err.setData(formattedResult);
+      throw err;
+    }
+
     this.log(RunReporter.formatDefault(result));
 
-    return RunReporter.formatJson(result);
+    return formattedResult;
   }
 }
