@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/LogListResult",
+  "definitions": {
+    "LogListResult": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LogRecord"
+      }
+    },
+    "LogRecord": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string"
+        },
+        "Application": {
+          "type": "string",
+          "description": "Application type"
+        },
+        "DurationMilliseconds": {
+          "type": "number",
+          "description": "Time to generate log"
+        },
+        "Location": {
+          "type": "string",
+          "description": "Where the log was stored"
+        },
+        "LogLength": {
+          "type": "number",
+          "description": "Length of the debug log"
+        },
+        "LogUser": {
+          "type": "object",
+          "properties": {
+            "attributes": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "Name": {
+              "type": "string"
+            }
+          },
+          "required": ["attributes", "Name"],
+          "additionalProperties": false,
+          "description": "Name of the user who generated the log"
+        },
+        "Operation": {
+          "type": "string",
+          "description": "Type of operation"
+        },
+        "Request": {
+          "type": "string",
+          "description": "Type of request"
+        },
+        "StartTime": {
+          "type": "string",
+          "description": "Time the log was generated"
+        },
+        "Status": {
+          "type": "string",
+          "description": "Status of the operation"
+        }
+      },
+      "required": [
+        "Id",
+        "Application",
+        "DurationMilliseconds",
+        "Location",
+        "LogLength",
+        "LogUser",
+        "Operation",
+        "Request",
+        "StartTime",
+        "Status"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

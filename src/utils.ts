@@ -6,31 +6,11 @@
  */
 
 import * as chalk from 'chalk';
-
 export const FAILURE_EXIT_CODE = 100;
-
 export const colorSuccess = chalk.bold.green;
 export const colorError = chalk.bold.red;
 
 export const resultFormat = ['human', 'tap', 'junit', 'json'];
-export const logLevels = [
-  'trace',
-  'debug',
-  'info',
-  'warn',
-  'error',
-  'fatal',
-  'TRACE',
-  'DEBUG',
-  'INFO',
-  'WARN',
-  'ERROR',
-  'FATAL',
-];
-
-export function buildDescription(shortDescription: string, longDescription: string): string {
-  return `${shortDescription}\n${longDescription}`;
-}
 
 const colorMap = new Map([
   [new RegExp(/\b([\w]+\.)+(\w)+\b/g), chalk.blueBright],
@@ -48,8 +28,7 @@ function replace(regex: RegExp, word: string): string {
   if (!color) {
     throw new Error('Error retrieving colors');
   }
-  const result = word.replace(regex, (match) => `${color(match)}`);
-  return result;
+  return word.replace(regex, (match) => `${color(match)}`);
 }
 
 export function colorLogs(log: string): string {
