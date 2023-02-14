@@ -4,24 +4,23 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-// import { expect, test } from '@salesforce/command/lib/test';
-// import { LogService } from '@salesforce/apex-node';
+
 import { resolve } from 'path';
 import { createSandbox, SinonSandbox } from 'sinon';
 import { LogService } from '@salesforce/apex-node';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { Org } from '@salesforce/core';
-import Tail from '../../../../../src/commands/force/apex/log/tail';
+import Log from '../../../../src/commands/apex/tail/log';
 
-describe('force:apex:log:tail', () => {
+describe('apex:log:tail', () => {
   let sandbox: SinonSandbox;
   const config = new Config({ root: resolve(__dirname, '../../package.json') });
 
   beforeEach(() => {
     sandbox = createSandbox();
 
-    sandbox.stub(Org, 'create').resolves(Org.prototype);
+    sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
     sandbox.stub(LogService.prototype, 'tail').resolves();
   });
 
@@ -31,7 +30,7 @@ describe('force:apex:log:tail', () => {
 
   it('will skip trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    const tail = new Tail(['-o', 'test@username.com'], config);
+    const tail = new Log(['-o', 'test@username.com'], config);
     // @ts-ignore private method
     sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
     const result = await tail.run();
@@ -41,7 +40,7 @@ describe('force:apex:log:tail', () => {
 
   it('will call trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    const tail = new Tail(['-o', 'test@username.com', '--skiptraceflag'], config);
+    const tail = new Log(['-o', 'test@username.com', '--skip-trace-flag'], config);
     // @ts-ignore private method
     sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
     const result = await tail.run();

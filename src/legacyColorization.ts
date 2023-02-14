@@ -10,7 +10,7 @@ import { Logger } from '@salesforce/core';
 
 type ColorMap = Record<'CONSTRUCTOR_' | 'EXCEPTION_' | 'FATAL_' | 'METHOD_' | 'SOQL_' | 'USER_' | 'VARIABLE_', string>;
 
-const DEFAULT_COLOR_MAP: ColorMap  = {
+const DEFAULT_COLOR_MAP: ColorMap = {
   CONSTRUCTOR_: 'magenta',
   EXCEPTION_: 'red',
   FATAL_: 'red',
@@ -59,7 +59,7 @@ export async function colorizeLog(log: string): Promise<string> {
             return logLine;
           }
 
-          const count = (logLine.match(/\|/g)?? []).length;
+          const count = (logLine.match(/\|/g) ?? []).length;
           if (count === 1) {
             return colorFn(logLine);
           }
