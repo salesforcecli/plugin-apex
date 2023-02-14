@@ -40,15 +40,6 @@ Retrieve code coverage results.
 
 Directory in which to store test result files.
 
-# outputDirHint
-
-Test result files written to %s
-
-# testResultProcessErr
-
-Encountered an error when processing test results
-%s
-
 # apexLibErr
 
 Unknown error in Apex Library: %s
