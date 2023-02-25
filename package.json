@@ -8,7 +8,7 @@
   "dependencies": {
     "@oclif/core": "^2.1.4",
     "@salesforce/apex-node": "^1.6.0",
-    "@salesforce/core": "^3.33.1",
+    "@salesforce/core": "^3.33.4",
     "@salesforce/sf-plugins-core": "^2.1.2",
     "chalk": "^4.1.0",
     "tslib": "^2"
