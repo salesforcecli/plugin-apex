@@ -1,3 +1,16 @@
+# -- CLEAN
+
+# use yarn by default, so ignore npm
+package-lock.json
+
+# never checkin npm config
+.npmrc
+
+# debug logs
+npm-error.log
+yarn-error.log
+lerna-debug.log
+
 # TypeScript generated files
 dist/
 out/
@@ -15,8 +28,6 @@ node_modules/
 *.sig
 package.json.bak
 
-# MacOS folder atttribute tracking
-**/.DS_Store
 
 # test results
 test-results.xml
@@ -43,3 +54,16 @@ GitIgnoreTest2/
 # Coverage directory used by tools like istanbul
 coverage
 coverage.lcov
+
+# -- CLEAN ALL
+*.tsbuildinfo
+.eslintcache
+.wireit
+node_modules
+
+# --
+# put files here you don't want cleaned with sf-clean
+
+# os specific files
+.DS_Store
+.idea
