@@ -185,6 +185,9 @@
     },
     "test:only": {
       "command": "nyc mocha \"test/**/*.test.ts\" --color",
+      "env": {
+        "FORCE_COLOR": "2"
+      },
       "files": [
         "test/**/*.ts",
         "src/**/*.ts",
