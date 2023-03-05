@@ -18,7 +18,7 @@
     "@oclif/plugin-help": "^5",
     "@salesforce/dev-config": "3.1.0",
     "@salesforce/dev-scripts": "^4.1.2",
-    "@salesforce/plugin-command-reference": "^2.3.1",
+    "@salesforce/plugin-command-reference": "^2.4.1",
     "@salesforce/prettier-config": "^0.0.2",
     "@salesforce/ts-sinon": "^1.4.4",
     "@salesforce/ts-types": "1.7.3",
