@@ -42,6 +42,7 @@ $ NODE_OPTIONS=--inspect-brk bin/dev force:apex:log:list -u myOrg@example.com
 ```
 
 <br />
+
 ### Running the Test Suite
 
 Test the test suite locally by building the project first and then running the tests.
