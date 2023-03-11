@@ -9,7 +9,7 @@
     "@oclif/core": "^2.4.0",
     "@salesforce/apex-node": "^1.6.0",
     "@salesforce/core": "^3.33.5",
-    "@salesforce/sf-plugins-core": "^2.2.3",
+    "@salesforce/sf-plugins-core": "^2.2.4",
     "chalk": "^4.1.0",
     "tslib": "^2"
   },
