@@ -40,6 +40,7 @@ export default class Test extends SfCommand<RunCommandResult> {
       deprecateAliases: true,
       char: 'c',
       summary: messages.getMessage('flags.code-coverage.summary'),
+      dependsOn: ['result-format'],
     }),
     'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
@@ -68,6 +69,7 @@ export default class Test extends SfCommand<RunCommandResult> {
       char: 'r',
       summary: messages.getMessage('flags.result-format.summary'),
       options: resultFormat,
+      default: 'human',
     }),
     'suite-names': Flags.string({
       deprecateAliases: true,
@@ -174,10 +176,6 @@ export default class Test extends SfCommand<RunCommandResult> {
     synchronous?: boolean,
     testLevel?: TestLevel
   ): Promise<TestLevel> {
-    if (codeCoverage && !resultFormatFlag) {
-      return Promise.reject(new Error(messages.getMessage('missingReporterErr')));
-    }
-
     if ((classNames && (suiteNames || tests)) || (suiteNames && tests)) {
       return Promise.reject(new Error(messages.getMessage('classSuiteTestErr')));
     }
