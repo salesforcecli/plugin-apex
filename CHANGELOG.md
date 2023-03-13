@@ -1,3 +1,12 @@
+## [2.2.4](https://github.com/salesforcecli/plugin-apex/compare/2.2.3...2.2.4) (2023-03-13)
+
+
+### Bug Fixes
+
+* default result format human + coverage depends on result format ([b9f8567](https://github.com/salesforcecli/plugin-apex/commit/b9f8567d589bd0604534b542b272c8b0fc3f65a9))
+
+
+
 ## [2.2.3](https://github.com/salesforcecli/plugin-apex/compare/2.2.2...2.2.3) (2023-03-12)
 
 
