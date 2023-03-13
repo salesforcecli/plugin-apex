@@ -368,14 +368,6 @@ describe('apex:test:run', () => {
   });
 
   describe('validateFlags', () => {
-    // it('rejects codecoverage without resultformat', async () => {
-    //   try {
-    //     await new Test(['--code-coverage'], config).run();
-    //   } catch (e) {
-    //     expect((e as Error).message).to.include('following must be provided when using --code-coverage: --result-format');
-    //   }
-    // });
-    //
     it('rejects tests/classnames/suitenames and testlevels', async () => {
       try {
         await new Test(['--tests', 'mytest', '--test-level', 'RunAllTestsInOrg'], config).run();
