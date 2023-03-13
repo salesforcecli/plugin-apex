@@ -91,10 +91,6 @@ Runs test methods from a single Apex class synchronously; if not specified, test
 
 Display detailed code coverage per test.
 
-# missingReporterErr
-
-Select a result format when specifying code coverage
-
 # runTestReportCommand
 
 Run "%s apex get test -i %s -o %s" to retrieve test results

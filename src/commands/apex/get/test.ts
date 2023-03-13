@@ -57,6 +57,7 @@ export default class Test extends SfCommand<RunResult> {
       char: 'r',
       summary: messages.getMessage('flags.result-format.summary'),
       options: resultFormat,
+      default: 'human',
     }),
   };
 
