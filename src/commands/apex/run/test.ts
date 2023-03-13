@@ -40,7 +40,6 @@ export default class Test extends SfCommand<RunCommandResult> {
       deprecateAliases: true,
       char: 'c',
       summary: messages.getMessage('flags.code-coverage.summary'),
-      dependsOn: ['result-format'],
     }),
     'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
