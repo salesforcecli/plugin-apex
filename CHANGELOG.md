@@ -1,3 +1,12 @@
+## [2.2.5](https://github.com/salesforcecli/plugin-apex/compare/2.2.4...2.2.5) (2023-03-15)
+
+
+### Bug Fixes
+
+* correct examples on run ([b6d8b28](https://github.com/salesforcecli/plugin-apex/commit/b6d8b289efe80f7c1b9295e63e8cb3fa036edff3))
+
+
+
 ## [2.2.4](https://github.com/salesforcecli/plugin-apex/compare/2.2.3...2.2.4) (2023-03-13)
 
 
