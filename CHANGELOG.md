@@ -1,3 +1,12 @@
+## [2.2.6](https://github.com/salesforcecli/plugin-apex/compare/2.2.5...2.2.6) (2023-03-19)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/core from 3.33.6 to 3.34.1 ([7b96102](https://github.com/salesforcecli/plugin-apex/commit/7b9610292a368694105f08059294c1e4465fef10))
+
+
+
 ## [2.2.5](https://github.com/salesforcecli/plugin-apex/compare/2.2.4...2.2.5) (2023-03-15)
 
 
