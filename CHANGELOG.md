@@ -1,3 +1,12 @@
+## [2.2.7](https://github.com/salesforcecli/plugin-apex/compare/2.2.6...2.2.7) (2023-03-21)
+
+
+### Bug Fixes
+
+* remove log:get number default ([1151dc2](https://github.com/salesforcecli/plugin-apex/commit/1151dc2ce29c50233e17875d951c3c37b85da196))
+
+
+
 ## [2.2.6](https://github.com/salesforcecli/plugin-apex/compare/2.2.5...2.2.6) (2023-03-19)
 
 
