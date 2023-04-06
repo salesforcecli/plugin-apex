@@ -148,16 +148,7 @@ export default class Test extends SfCommand<RunCommandResult> {
 
     if ('summary' in result) {
       const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
-
-      return testReporter.report(result, {
-        wait: flags.wait,
-        'output-dir': flags['output-dir'],
-        'result-format': flags['result-format'],
-        'detailed-coverage': flags['detailed-coverage'],
-        synchronous: flags.synchronous,
-        json: flags.json,
-        codeCoverage: flags['code-coverage'],
-      });
+      return testReporter.report(result, flags);
     } else {
       // async test run
       this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));

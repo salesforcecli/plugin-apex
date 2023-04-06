@@ -44,7 +44,7 @@ export class TestReporter {
       'detailed-coverage'?: boolean;
       synchronous?: boolean;
       json?: boolean;
-      codeCoverage?: boolean;
+      'code-coverage'?: boolean;
     }
   ): Promise<RunResult> {
     if (options['output-dir']) {
@@ -54,13 +54,13 @@ export class TestReporter {
         jsonOutput,
         options['output-dir'],
         options['result-format'] as Optional<ResultFormat>,
-        options['detailed-coverage'] as boolean,
+        Boolean(options['detailed-coverage']),
         options.synchronous
       );
 
       const testService = new TestService(this.connection);
 
-      await testService.writeResultFiles(result, outputDirConfig, options.codeCoverage);
+      await testService.writeResultFiles(result, outputDirConfig, options['code-coverage']);
     }
 
     try {

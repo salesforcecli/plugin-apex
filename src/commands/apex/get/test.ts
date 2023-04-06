@@ -80,7 +80,7 @@ export default class Test extends SfCommand<RunResult> {
       'output-dir': flags['output-dir'],
       'result-format': flags['result-format'],
       json: flags.json,
-      codeCoverage: flags['code-coverage'],
+      'code-coverage': flags['code-coverage'],
     });
   }
 }
