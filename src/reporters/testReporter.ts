@@ -60,7 +60,7 @@ export class TestReporter {
 
       const testService = new TestService(this.connection);
 
-      await testService.writeResultFiles(result, outputDirConfig, options['code-coverage'] as boolean);
+      await testService.writeResultFiles(result, outputDirConfig, options.codeCoverage);
     }
 
     try {
