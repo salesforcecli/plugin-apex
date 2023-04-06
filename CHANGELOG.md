@@ -1,3 +1,14 @@
+## [2.2.10](https://github.com/salesforcecli/plugin-apex/compare/2.2.9...2.2.10) (2023-04-06)
+
+
+### Bug Fixes
+
+* bug found by strict ([993cced](https://github.com/salesforcecli/plugin-apex/commit/993cced565e1fa3478b61e63df5223fea35e49a9))
+* handle wait 0 ([fba17be](https://github.com/salesforcecli/plugin-apex/commit/fba17be4b3f8334acf33f4f76db6c8ae82ee74ff))
+* restore run tests async by default ([8e75bba](https://github.com/salesforcecli/plugin-apex/commit/8e75bbafc5a4289243bce22a1de0280994af0749))
+
+
+
 ## [2.2.9](https://github.com/salesforcecli/plugin-apex/compare/2.2.8...2.2.9) (2023-03-26)
 
 
