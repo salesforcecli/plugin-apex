@@ -239,7 +239,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     return testService.runTestAsynchronous(
       payload,
       flags['code-coverage'],
-      flags.wait ? false : !(flags.synchronous && !this.jsonEnabled()),
+      flags.wait && flags.wait.minutes > 0 ? false : !(flags.synchronous && !this.jsonEnabled()),
       undefined,
       this.cancellationTokenSource.token
     ) as Promise<TestRunIdResult>;
