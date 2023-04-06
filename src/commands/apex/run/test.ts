@@ -242,31 +242,9 @@ export default class Test extends SfCommand<RunCommandResult> {
     return (await testService.runTestAsynchronous(
       payload,
       flags['code-coverage'],
-      shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
+      flags.wait ? false : !(flags.synchronous && !this.jsonEnabled()),
       undefined,
       this.cancellationTokenSource.token
     )) as TestRunIdResult;
   }
 }
-/**
- * Handles special exceptions where we don't want to return early
- * with the testRunId.
- **/
-const shouldImmediatelyReturn = (
-  synchronous?: boolean,
-  resultFormatFlag?: string,
-  json?: boolean,
-  wait?: Duration
-): boolean => {
-  if (resultFormatFlag !== undefined) {
-    return false;
-  }
-
-  // when the user has explictly asked to wait for results, but didn't give a format
-  if (wait) {
-    return false;
-  }
-
-  // historical expectation to wait for results from a synchronous test run
-  return !(synchronous && !json);
-};
