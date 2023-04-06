@@ -148,16 +148,7 @@ export default class Test extends SfCommand<RunCommandResult> {
 
     if ('summary' in result) {
       const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
-
-      return testReporter.report(result, {
-        wait: flags.wait,
-        'output-dir': flags['output-dir'],
-        'result-format': flags['result-format'],
-        'detailed-coverage': flags['detailed-coverage'],
-        synchronous: flags.synchronous,
-        json: flags.json,
-        codeCoverage: flags['code-coverage'],
-      });
+      return testReporter.report(result, flags);
     } else {
       // async test run
       this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
@@ -165,7 +156,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this,complexity
+  // eslint-disable-next-line class-methods-use-this
   public async validateFlags(
     codeCoverage?: boolean,
     resultFormatFlag?: string,
@@ -187,16 +178,13 @@ export default class Test extends SfCommand<RunCommandResult> {
       return Promise.reject(new Error(messages.getMessage('testLevelErr')));
     }
 
-    let test: TestLevel;
     if (testLevel) {
-      test = testLevel;
-    } else if (classNames || suiteNames || tests) {
-      test = TestLevel.RunSpecifiedTests;
-    } else {
-      test = TestLevel.RunLocalTests;
+      return testLevel;
     }
-
-    return test;
+    if (classNames || suiteNames || tests) {
+      return TestLevel.RunSpecifiedTests;
+    }
+    return TestLevel.RunLocalTests;
   }
 
   private async runTest(
@@ -212,11 +200,11 @@ export default class Test extends SfCommand<RunCommandResult> {
       ...(await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names'])),
       skipCodeCoverage: !flags['code-coverage'],
     };
-    return (await testService.runTestSynchronous(
+    return testService.runTestSynchronous(
       payload,
       flags['code-coverage'],
       this.cancellationTokenSource.token
-    )) as TestResult;
+    ) as Promise<TestResult>;
   }
 
   private async runTestAsynchronous(
@@ -239,34 +227,12 @@ export default class Test extends SfCommand<RunCommandResult> {
     };
 
     // cast as TestRunIdResult because we're building an async payload which will return an async result
-    return (await testService.runTestAsynchronous(
+    return testService.runTestAsynchronous(
       payload,
       flags['code-coverage'],
-      shouldImmediatelyReturn(flags.synchronous, flags['result-format'], flags.json, flags.wait),
+      flags.wait && flags.wait.minutes > 0 ? false : !(flags.synchronous && !this.jsonEnabled()),
       undefined,
       this.cancellationTokenSource.token
-    )) as TestRunIdResult;
+    ) as Promise<TestRunIdResult>;
   }
 }
-/**
- * Handles special exceptions where we don't want to return early
- * with the testRunId.
- **/
-const shouldImmediatelyReturn = (
-  synchronous?: boolean,
-  resultFormatFlag?: string,
-  json?: boolean,
-  wait?: Duration
-): boolean => {
-  if (resultFormatFlag !== undefined) {
-    return false;
-  }
-
-  // when the user has explictly asked to wait for results, but didn't give a format
-  if (wait) {
-    return false;
-  }
-
-  // historical expectation to wait for results from a synchronous test run
-  return !(synchronous && !json);
-};
