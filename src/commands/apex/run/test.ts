@@ -165,7 +165,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this,complexity
+  // eslint-disable-next-line class-methods-use-this
   public async validateFlags(
     codeCoverage?: boolean,
     resultFormatFlag?: string,
@@ -187,16 +187,13 @@ export default class Test extends SfCommand<RunCommandResult> {
       return Promise.reject(new Error(messages.getMessage('testLevelErr')));
     }
 
-    let test: TestLevel;
     if (testLevel) {
-      test = testLevel;
-    } else if (classNames || suiteNames || tests) {
-      test = TestLevel.RunSpecifiedTests;
-    } else {
-      test = TestLevel.RunLocalTests;
+      return testLevel;
     }
-
-    return test;
+    if (classNames || suiteNames || tests) {
+      return TestLevel.RunSpecifiedTests;
+    }
+    return TestLevel.RunLocalTests;
   }
 
   private async runTest(
@@ -212,11 +209,11 @@ export default class Test extends SfCommand<RunCommandResult> {
       ...(await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names'])),
       skipCodeCoverage: !flags['code-coverage'],
     };
-    return (await testService.runTestSynchronous(
+    return testService.runTestSynchronous(
       payload,
       flags['code-coverage'],
       this.cancellationTokenSource.token
-    )) as TestResult;
+    ) as Promise<TestResult>;
   }
 
   private async runTestAsynchronous(
@@ -239,12 +236,12 @@ export default class Test extends SfCommand<RunCommandResult> {
     };
 
     // cast as TestRunIdResult because we're building an async payload which will return an async result
-    return (await testService.runTestAsynchronous(
+    return testService.runTestAsynchronous(
       payload,
       flags['code-coverage'],
       flags.wait ? false : !(flags.synchronous && !this.jsonEnabled()),
       undefined,
       this.cancellationTokenSource.token
-    )) as TestRunIdResult;
+    ) as Promise<TestRunIdResult>;
   }
 }
