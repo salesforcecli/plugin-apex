@@ -1,3 +1,12 @@
+## [2.2.12](https://github.com/salesforcecli/plugin-apex/compare/2.2.11...2.2.12) (2023-04-10)
+
+
+### Bug Fixes
+
+* add info about results vs. id ([13a03a0](https://github.com/salesforcecli/plugin-apex/commit/13a03a0558870ca343b671555adc81150f34b4f0))
+
+
+
 ## [2.2.11](https://github.com/salesforcecli/plugin-apex/compare/2.2.10...2.2.11) (2023-04-09)
 
 
