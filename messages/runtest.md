@@ -5,7 +5,10 @@ Invoke Apex tests in an org.
 # description
 
 Specify which tests to run by using the --class-names, --suite-names, or --tests flags. Alternatively, use the --test-level flag to run all the tests in your org, local tests, or specified tests.
+
 To see code coverage results, use the --code-coverage flag with --result-format. The output displays a high-level summary of the test run and the code coverage values for classes in your org. If you specify human-readable result format, use the --detailed-coverage flag to see detailed coverage results for each test method run.
+
+Apex tests run asynchronously by default. The command waits for 1 minute (default), or for the value of the --wait flag; if the tests have finished, the command displays the results. If the tests haven't finished by the end of the wait time, the command displays a test run ID; use the "<%= config.bin %> apex get test --test-run-id" command to get the results.
 
 NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines from all the Apex classes evaluated by the tests in this run.
 
