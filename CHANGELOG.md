@@ -1,3 +1,12 @@
+## [2.2.13](https://github.com/salesforcecli/plugin-apex/compare/2.2.12...2.2.13) (2023-04-16)
+
+
+### Bug Fixes
+
+* **deps:** bump @oclif/core from 2.8.0 to 2.8.2 ([c4533c7](https://github.com/salesforcecli/plugin-apex/commit/c4533c7b0f23481080b557def148ddf8918ea9dd))
+
+
+
 ## [2.2.12](https://github.com/salesforcecli/plugin-apex/compare/2.2.11...2.2.12) (2023-04-10)
 
 
