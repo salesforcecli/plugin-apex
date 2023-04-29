@@ -873,13 +873,13 @@
   dependencies:
     "@octokit/openapi-types" "^12.11.0"
 
-"@salesforce/apex-node@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-1.6.0.tgz#cb474347fca7448f75bb9348ffb52b559ed4d8bb"
-  integrity sha512-ujdPy32U3pMpfko6egXpm4NO3cNg+eEHeAUIh1ZLGuli2mBT1skyCjxZ1WHkIHJlIpXOaWwWaka+rblFgGxY+Q==
+"@salesforce/apex-node@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-1.6.1.tgz#ca01b974e3ee87f31f100c15e9185b1655be87db"
+  integrity sha512-Jx+mD9l8/OpcsVxmgcIPVtN+41RMlGzNehZCwC0irucKFpAi7kKbwMyFo4LXdYZUFg28lFw1WlghfzEwfuJ3aA==
   dependencies:
     "@commitlint/config-conventional" "^17.2.0"
-    "@salesforce/core" "^3.32.12"
+    "@salesforce/core" "^3.34.6"
     "@types/istanbul-reports" "^3.0.1"
     commitlint "^17.2.0"
     faye "1.4.0"
