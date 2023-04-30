@@ -1,3 +1,12 @@
+## [2.2.15](https://github.com/salesforcecli/plugin-apex/compare/2.2.14...2.2.15) (2023-04-30)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/apex-node from 1.6.0 to 1.6.1 ([92d049d](https://github.com/salesforcecli/plugin-apex/commit/92d049dfce293a77f58fc7e293da79d6a732b819))
+
+
+
 ## [2.2.14](https://github.com/salesforcecli/plugin-apex/compare/2.2.13...2.2.14) (2023-04-23)
 
 
