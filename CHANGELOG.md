@@ -1,3 +1,13 @@
+## [2.2.16](https://github.com/salesforcecli/plugin-apex/compare/2.2.15...2.2.16) (2023-05-04)
+
+
+### Bug Fixes
+
+* min duration for --wait on apex test run ([18bcdf1](https://github.com/salesforcecli/plugin-apex/commit/18bcdf1232c5cfcbf148f56acc828ecc7b17c51e))
+* min duration for --wait on apex test run (prevent -1) ([20d9fc5](https://github.com/salesforcecli/plugin-apex/commit/20d9fc5c6c7b075fb8cbd6a734412d4d93828422))
+
+
+
 ## [2.2.15](https://github.com/salesforcecli/plugin-apex/compare/2.2.14...2.2.15) (2023-04-30)
 
 
