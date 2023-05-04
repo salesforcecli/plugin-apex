@@ -82,10 +82,13 @@ export default class Test extends SfCommand<RunCommandResult> {
       summary: messages.getMessage('flags.tests.summary'),
       description: messages.getMessage('flags.tests.description'),
     }),
+    // we want to pass `undefined` to the API
+    // eslint-disable-next-line sf-plugin/flag-min-max-default
     wait: Flags.duration({
       unit: 'minutes',
       char: 'w',
       summary: messages.getMessage('flags.wait.summary'),
+      min: 0,
     }),
     synchronous: Flags.boolean({
       char: 'y',
