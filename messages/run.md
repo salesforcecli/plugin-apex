@@ -37,11 +37,15 @@ Executed successfully.
 
 # executeRuntimeFailure
 
-Execution failed.
+Execution failed at this code:
+
+%s
 
 # executeCompileFailure
 
-Compilation failed.
+Compilation failed at Line %s column %s with the error:
+
+%s
 
 # executeRuntimeSuccess
 
