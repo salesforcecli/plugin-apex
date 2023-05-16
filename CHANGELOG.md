@@ -1,3 +1,12 @@
+## [2.2.19](https://github.com/salesforcecli/plugin-apex/compare/2.2.18...2.2.19) (2023-05-16)
+
+
+### Bug Fixes
+
+* better apex run output ([1a68f83](https://github.com/salesforcecli/plugin-apex/commit/1a68f83a51fdccc0e99ef9837f286efc5fcc7cb4))
+
+
+
 ## [2.2.18](https://github.com/salesforcecli/plugin-apex/compare/2.2.17...2.2.18) (2023-05-14)
 
 
