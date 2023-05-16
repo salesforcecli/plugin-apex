@@ -33,7 +33,7 @@ export default class Run extends SfCommand<ExecuteResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
-  public static aliases = ['force:apex:execute'];
+  public static readonly aliases = ['force:apex:execute'];
   public static deprecateAliases = true;
 
   public static readonly flags = {
@@ -63,8 +63,19 @@ export default class Run extends SfCommand<ExecuteResult> {
 
     if (!result.compiled || !result.success) {
       const err = !result.compiled
-        ? new SfError(messages.getMessage('executeCompileFailure'), 'executeCompileFailure')
-        : new SfError(messages.getMessage('executeRuntimeFailure'), 'executeRuntimeFailure');
+        ? new SfError(
+            messages.getMessage('executeCompileFailure', [
+              formattedResult.line,
+              formattedResult.column,
+              formattedResult.compileProblem,
+            ]),
+            'executeCompileFailure'
+          )
+        : new SfError(
+            messages.getMessage('executeRuntimeFailure', [formattedResult.exceptionMessage]),
+            'executeRuntimeFailure',
+            []
+          );
       err.setData(formattedResult);
       throw err;
     }
