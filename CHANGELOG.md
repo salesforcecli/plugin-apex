@@ -1,3 +1,12 @@
+## [2.2.20](https://github.com/salesforcecli/plugin-apex/compare/2.2.19...2.2.20) (2023-05-21)
+
+
+### Bug Fixes
+
+* **deps:** bump tslib from 2.5.0 to 2.5.2 ([600420a](https://github.com/salesforcecli/plugin-apex/commit/600420a0aafbca039eec24a60a05635184d7b32f))
+
+
+
 ## [2.2.19](https://github.com/salesforcecli/plugin-apex/compare/2.2.18...2.2.19) (2023-05-16)
 
 
