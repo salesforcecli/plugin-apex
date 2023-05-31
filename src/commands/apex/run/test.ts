@@ -6,6 +6,7 @@
  */
 import { CancellationTokenSource, TestLevel, TestResult, TestRunIdResult, TestService } from '@salesforce/apex-node';
 import {
+  arrayWithDeprecation,
   Flags,
   loglevel,
   orgApiVersionFlagWithDeprecations,
@@ -24,6 +25,7 @@ const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
 export type RunCommandResult = RunResult | TestRunIdResult;
+const exclusiveTestSpecifiers = ['class-names', 'suite-names', 'tests'];
 export default class Test extends SfCommand<RunCommandResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
@@ -55,12 +57,13 @@ export default class Test extends SfCommand<RunCommandResult> {
       description: messages.getMessage('flags.test-level.description'),
       options: TestLevelValues,
     }),
-    'class-names': Flags.string({
+    'class-names': arrayWithDeprecation({
       deprecateAliases: true,
       aliases: ['classnames'],
       char: 'n',
       summary: messages.getMessage('flags.class-names.summary'),
       description: messages.getMessage('flags.class-names.description'),
+      exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'class-names'),
     }),
     'result-format': Flags.string({
       deprecateAliases: true,
@@ -70,17 +73,19 @@ export default class Test extends SfCommand<RunCommandResult> {
       options: resultFormat,
       default: 'human',
     }),
-    'suite-names': Flags.string({
+    'suite-names': arrayWithDeprecation({
       deprecateAliases: true,
       aliases: ['suitenames'],
       char: 's',
       summary: messages.getMessage('flags.suite-names.summary'),
       description: messages.getMessage('flags.suite-names.description'),
+      exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'suite-names'),
     }),
-    tests: Flags.string({
+    tests: arrayWithDeprecation({
       char: 't',
       summary: messages.getMessage('flags.tests.summary'),
       description: messages.getMessage('flags.tests.description'),
+      exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'tests'),
     }),
     // we want to pass `undefined` to the API
     // eslint-disable-next-line sf-plugin/flag-min-max-default
@@ -108,9 +113,7 @@ export default class Test extends SfCommand<RunCommandResult> {
   public async run(): Promise<RunCommandResult> {
     const { flags } = await this.parse(Test);
 
-    const testLevel = await this.validateFlags(
-      flags['code-coverage'],
-      flags['result-format'],
+    const testLevel = await validateFlags(
       flags['class-names'],
       flags['suite-names'],
       flags.tests,
@@ -159,48 +162,17 @@ export default class Test extends SfCommand<RunCommandResult> {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public async validateFlags(
-    codeCoverage?: boolean,
-    resultFormatFlag?: string,
-    classNames?: string,
-    suiteNames?: string,
-    tests?: string,
-    synchronous?: boolean,
-    testLevel?: TestLevel
-  ): Promise<TestLevel> {
-    if ((classNames && (suiteNames || tests)) || (suiteNames && tests)) {
-      return Promise.reject(new Error(messages.getMessage('classSuiteTestErr')));
-    }
-
-    if (synchronous && (suiteNames || (classNames && classNames.split(',').length > 1))) {
-      return Promise.reject(new Error(messages.getMessage('syncClassErr')));
-    }
-
-    if ((tests || classNames || suiteNames) && testLevel && testLevel !== 'RunSpecifiedTests') {
-      return Promise.reject(new Error(messages.getMessage('testLevelErr')));
-    }
-
-    if (testLevel) {
-      return testLevel;
-    }
-    if (classNames || suiteNames || tests) {
-      return TestLevel.RunSpecifiedTests;
-    }
-    return TestLevel.RunLocalTests;
-  }
-
   private async runTest(
     testService: TestService,
     flags: {
-      tests?: string;
-      'class-names'?: string;
+      tests?: string[];
+      'class-names'?: string[];
       'code-coverage'?: boolean;
     },
     testLevel: TestLevel
   ): Promise<TestResult> {
     const payload = {
-      ...(await testService.buildSyncPayload(testLevel, flags.tests, flags['class-names'])),
+      ...(await testService.buildSyncPayload(testLevel, flags.tests?.join(','), flags['class-names']?.join(','))),
       skipCodeCoverage: !flags['code-coverage'],
     };
     return testService.runTestSynchronous(
@@ -213,9 +185,9 @@ export default class Test extends SfCommand<RunCommandResult> {
   private async runTestAsynchronous(
     testService: TestService,
     flags: {
-      tests?: string;
-      'class-names'?: string;
-      'suite-names'?: string;
+      tests?: string[];
+      'class-names'?: string[];
+      'suite-names'?: string[];
       'code-coverage'?: boolean;
       synchronous?: boolean;
       'result-format'?: string;
@@ -225,7 +197,12 @@ export default class Test extends SfCommand<RunCommandResult> {
     testLevel: TestLevel
   ): Promise<TestRunIdResult> {
     const payload = {
-      ...(await testService.buildAsyncPayload(testLevel, flags.tests, flags['class-names'], flags['suite-names'])),
+      ...(await testService.buildAsyncPayload(
+        testLevel,
+        flags.tests?.join(','),
+        flags['class-names']?.join(','),
+        flags['suite-names']?.join(',')
+      )),
       skipCodeCoverage: !flags['code-coverage'],
     };
 
@@ -239,3 +216,28 @@ export default class Test extends SfCommand<RunCommandResult> {
     ) as Promise<TestRunIdResult>;
   }
 }
+
+// eslint-disable-next-line class-methods-use-this
+const validateFlags = async (
+  classNames?: string[],
+  suiteNames?: string[],
+  tests?: string[],
+  synchronous?: boolean,
+  testLevel?: TestLevel
+): Promise<TestLevel> => {
+  if (synchronous && (suiteNames || (classNames?.length && classNames.length > 1))) {
+    return Promise.reject(new Error(messages.getMessage('syncClassErr')));
+  }
+
+  if ((tests || classNames || suiteNames) && testLevel && testLevel !== 'RunSpecifiedTests') {
+    return Promise.reject(new Error(messages.getMessage('testLevelErr')));
+  }
+
+  if (testLevel) {
+    return testLevel;
+  }
+  if (classNames || suiteNames || tests) {
+    return TestLevel.RunSpecifiedTests;
+  }
+  return TestLevel.RunLocalTests;
+};

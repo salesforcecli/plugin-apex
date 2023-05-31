@@ -10,7 +10,7 @@ import { Messages, Org } from '@salesforce/core';
 import { createSandbox, SinonSandbox } from 'sinon';
 import { Ux } from '@salesforce/sf-plugins-core';
 import { Config } from '@oclif/core';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
 import Test from '../../../../src/commands/apex/run/test';
 import {
@@ -401,22 +401,26 @@ describe('apex:test:run', () => {
     });
 
     it('rejects classname/suitnames/test variations', async () => {
+      // uses oclif exclusive now
       try {
         await new Test(['--class-names', 'myApex', '--suite-names', 'testsuite'], config).run();
       } catch (e) {
-        expect((e as Error).message).to.equal(messages.getMessage('classSuiteTestErr'));
+        assert(e instanceof Error);
+        expect(e.message).to.include('cannot also be provided when using');
       }
 
       try {
         await new Test(['--class-names', 'myApex', '--tests', 'testsuite'], config).run();
       } catch (e) {
-        expect((e as Error).message).to.equal(messages.getMessage('classSuiteTestErr'));
+        assert(e instanceof Error);
+        expect(e.message).to.include('cannot also be provided when using');
       }
 
       try {
         await new Test(['--suite-names', 'myApex', '--tests', 'testsuite'], config).run();
       } catch (e) {
-        expect((e as Error).message).to.equal(messages.getMessage('classSuiteTestErr'));
+        assert(e instanceof Error);
+        expect(e.message).to.include('cannot also be provided when using');
       }
     });
   });
