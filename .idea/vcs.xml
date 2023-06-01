@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/test_session_1685632871242da54af40122803c6/dreamhouse-lwc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/test_session_1685633195462af31309b0d0dce18/dreamhouse-lwc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/test_session_1685633506758a69875dab15c3b30/dreamhouse-lwc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/test_session_1685634169295c3cb04a680fec6f6/dreamhouse-lwc" vcs="Git" />
   </component>
 </project>

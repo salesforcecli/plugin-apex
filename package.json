@@ -16,9 +16,11 @@
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^3.3.13",
     "@oclif/plugin-help": "^5",
+    "@salesforce/cli-plugins-testkit": "^4.0.1",
     "@salesforce/dev-config": "^4.0.1",
     "@salesforce/dev-scripts": "^5.1.0",
     "@salesforce/plugin-command-reference": "^2.4.5",
+    "@salesforce/plugin-deploy-retrieve": "^1.11.0",
     "@salesforce/prettier-config": "^0.0.3",
     "@salesforce/ts-sinon": "^1.4.4",
     "@salesforce/ts-types": "^2.0.1",
@@ -97,7 +99,8 @@
     "devPlugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-command-snapshot",
-      "@salesforce/plugin-command-reference"
+      "@salesforce/plugin-command-reference",
+      "@salesforce/plugin-deploy-retrieve"
     ]
   },
   "repository": "salesforcecli/plugin-apex",
