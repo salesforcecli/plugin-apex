@@ -148,6 +148,10 @@ export default class Test extends SfCommand<RunCommandResult> {
         ? await this.runTest(testService, flags, testLevel)
         : await this.runTestAsynchronous(testService, flags, testLevel);
 
+    //
+
+    //
+
     if (this.cancellationTokenSource.token.isCancellationRequested) {
       throw new SfError('Cancelled');
     }

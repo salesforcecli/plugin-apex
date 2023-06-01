@@ -4,11 +4,7 @@
     "outDir": "lib",
     "rootDir": "src",
     "skipLibCheck": true,
-    "strictNullChecks": true,
-    "paths": {
-      "@salesforce/core": ["./node_modules/@salesforce/core"],
-      "@salesforce/kit": ["./node_modules/@salesforce/kit"]
-    }
+    "strictNullChecks": true
   },
   "include": ["./src/**/*.ts"]
 }
