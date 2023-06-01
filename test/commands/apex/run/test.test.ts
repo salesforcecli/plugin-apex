@@ -10,7 +10,7 @@ import { Messages, Org } from '@salesforce/core';
 import { createSandbox, SinonSandbox } from 'sinon';
 import { Ux } from '@salesforce/sf-plugins-core';
 import { Config } from '@oclif/core';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
 import Test from '../../../../src/commands/apex/run/test';
 import {
@@ -224,6 +224,100 @@ describe('apex:test:run', () => {
       expect(logStub.firstCall.args[0]).to.include('MyApexTests.testConfig  Pass              53');
     });
 
+    it('should parse tests flags correctly comma separated', async () => {
+      const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
+
+      await new Test(['--tests', 'MyApexTests,MySecondTest', '--result-format', 'human'], config).run();
+      expect(apexStub.firstCall.args[0]).to.deep.equal({
+        skipCodeCoverage: true,
+        testLevel: 'RunSpecifiedTests',
+        tests: [
+          {
+            className: 'MyApexTests',
+          },
+          {
+            className: 'MySecondTest',
+          },
+        ],
+      });
+    });
+
+    it('should parse tests flags correctly multi-flag', async () => {
+      const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
+
+      await new Test(['--tests', 'MyApexTests', '--tests', 'MySecondTest', '--result-format', 'human'], config).run();
+      expect(apexStub.firstCall.args[0]).to.deep.equal({
+        skipCodeCoverage: true,
+        testLevel: 'RunSpecifiedTests',
+        tests: [
+          {
+            className: 'MyApexTests',
+          },
+          {
+            className: 'MySecondTest',
+          },
+        ],
+      });
+    });
+
+    it('should parse class-names flags correctly comma separated', async () => {
+      const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
+
+      await new Test(['--class-names', 'MyApexTests,MySecondTest', '--result-format', 'human'], config).run();
+      expect(apexStub.firstCall.args[0]).to.deep.equal({
+        skipCodeCoverage: true,
+        testLevel: 'RunSpecifiedTests',
+        tests: [
+          {
+            className: 'MyApexTests',
+          },
+          {
+            className: 'MySecondTest',
+          },
+        ],
+      });
+    });
+
+    it('should parse class-names (-n) flags correctly multi-flag', async () => {
+      const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
+
+      await new Test(['-n', 'MyApexTests', '-n', 'MySecondTest', '--result-format', 'human'], config).run();
+      expect(apexStub.firstCall.args[0]).to.deep.equal({
+        skipCodeCoverage: true,
+        testLevel: 'RunSpecifiedTests',
+        tests: [
+          {
+            className: 'MyApexTests',
+          },
+          {
+            className: 'MySecondTest',
+          },
+        ],
+      });
+    });
+
+    it('should parse suite-names flags correctly comma separated', async () => {
+      const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
+
+      await new Test(['--suite-names', 'MyApexTests,MySecondTest', '--result-format', 'human'], config).run();
+      expect(apexStub.firstCall.args[0]).to.deep.equal({
+        skipCodeCoverage: true,
+        testLevel: 'RunSpecifiedTests',
+        suiteNames: 'MyApexTests,MySecondTest',
+      });
+    });
+
+    it('should parse suite-names (-s) flags correctly multi-flag', async () => {
+      const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
+
+      await new Test(['-s', 'MyApexTests', '-s', 'MySecondTest', '--result-format', 'human'], config).run();
+      expect(apexStub.firstCall.args[0]).to.deep.equal({
+        skipCodeCoverage: true,
+        testLevel: 'RunSpecifiedTests',
+        suiteNames: 'MyApexTests,MySecondTest',
+      });
+    });
+
     it('should return a success tap format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
@@ -401,22 +495,26 @@ describe('apex:test:run', () => {
     });
 
     it('rejects classname/suitnames/test variations', async () => {
+      // uses oclif exclusive now
       try {
         await new Test(['--class-names', 'myApex', '--suite-names', 'testsuite'], config).run();
       } catch (e) {
-        expect((e as Error).message).to.equal(messages.getMessage('classSuiteTestErr'));
+        assert(e instanceof Error);
+        expect(e.message).to.include('cannot also be provided when using');
       }
 
       try {
         await new Test(['--class-names', 'myApex', '--tests', 'testsuite'], config).run();
       } catch (e) {
-        expect((e as Error).message).to.equal(messages.getMessage('classSuiteTestErr'));
+        assert(e instanceof Error);
+        expect(e.message).to.include('cannot also be provided when using');
       }
 
       try {
         await new Test(['--suite-names', 'myApex', '--tests', 'testsuite'], config).run();
       } catch (e) {
-        expect((e as Error).message).to.equal(messages.getMessage('classSuiteTestErr'));
+        assert(e instanceof Error);
+        expect(e.message).to.include('cannot also be provided when using');
       }
     });
   });

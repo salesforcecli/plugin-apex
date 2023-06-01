@@ -20,15 +20,15 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
 
 - Run the specified Apex test classes in your default org and display results in human-readable form:
 
-  <%= config.bin %> <%= command.id %> --class-names "MyClassTest,MyOtherClassTest" --result-format human
+  <%= config.bin %> <%= command.id %> --class-names MyClassTest --class-names MyOtherClassTest --result-format human
 
 - Run the specified Apex test suites in your default org and include code coverage results and additional details:
 
-  <%= config.bin %> <%= command.id %> --suite-names "MySuite,MyOtherSuite" --code-coverage --detailed-coverage
+  <%= config.bin %> <%= command.id %> --suite-names MySuite --suite-names MyOtherSuite --code-coverage --detailed-coverage
 
 - Run the specified Apex tests in your default org and display results in human-readable output:
 
-  <%= config.bin %> <%= command.id %> --tests "MyClassTest.testCoolFeature,MyClassTest.testAwesomeFeature,AnotherClassTest,namespace.TheirClassTest.testThis" --result-format human
+  <%= config.bin %> <%= command.id %> --tests MyClassTest.testCoolFeature --tests MyClassTest.testAwesomeFeature --tests AnotherClassTest --tests namespace.TheirClassTest.testThis --result-format human
 
 - Run all tests in the org with the specified username with the specified test level; save the output to the specified directory:
 
@@ -40,27 +40,33 @@ Format of the test results.
 
 # flags.class-names.summary
 
-Comma-separated list of Apex test class names to run; default is all classes.
+Apex test class names to run; default is all classes.
 
 # flags.class-names.description
 
 If you select --class-names, you can't specify --suite-names or --tests.
+For multiple classes, repeat the flag for each.
+--class-names Class1 --class-names Class2
 
 # flags.suite-names.summary
 
-Comma-separated list of Apex test suite names to run; default is all suites.
+Apex test suite names to run; default is all suites.
 
 # flags.suite-names.description
 
 If you select --suite-names, you can't specify --class-names or --tests.
+For multiple suites, repeat the flag for each.
+--suite-names Suite1 --suite-names Suite2
 
 # flags.tests.summary
 
-Comma-separated list of Apex test class names or IDs and, if applicable, test methods to run; default is all tests.
+Apex test class names or IDs and, if applicable, test methods to run; default is all tests.
 
 # flags.tests.description
 
 If you specify --tests, you can't specify --class-names or --suite-names
+For multiple tests, repeat the flag for each.
+--tests Test1 --tests Test2
 
 # flags.code-coverage.summary
 
@@ -97,10 +103,6 @@ Display detailed code coverage per test.
 # runTestReportCommand
 
 Run "%s apex get test -i %s -o %s" to retrieve test results
-
-# classSuiteTestErr
-
-Specify either classnames, suitenames, or tests
 
 # syncClassErr
 
