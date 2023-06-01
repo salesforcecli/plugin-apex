@@ -8,7 +8,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
-import { TestRunIdResult } from '@salesforce/apex-node/lib/src/tests/types';
 import { RunResult } from '../../../../src/reporters';
 
 describe('apex get test', () => {
