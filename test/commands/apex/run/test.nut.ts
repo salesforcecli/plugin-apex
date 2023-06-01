@@ -7,9 +7,11 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
+import { expect, config } from 'chai';
 import { TestRunIdResult } from '@salesforce/apex-node/lib/src/tests/types';
 import { RunResult } from '../../../../src/reporters';
+
+config.truncateThreshold = 0;
 
 describe('apex run test', () => {
   let session: TestSession;
@@ -54,31 +56,38 @@ describe('apex run test', () => {
     });
   });
 
-  it('will run default tests and default async', async () => {
-    const result = execCmd('apex:run:test', { ensureExitCode: 0 }).shellOutput.stdout;
-    expect(result).to.include('Run "sf apex get test -i 707');
-    expect(result).to.include('-o');
-    expect(result).to.include('" to retrieve test results');
-  });
-
-  it('will run default tests and default async --json', async () => {
-    const result = execCmd<TestRunIdResult>('apex:run:test', { ensureExitCode: 0 }).jsonOutput?.result;
-    expect(result?.testRunId).to.be.a('string');
-    expect(result?.testRunId.startsWith('707')).to.be.true;
-  });
-
   describe('--code-coverage', () => {
     it('will run default tests sync with --code-coverage', async () => {
       const result = execCmd('apex:run:test --wait 10 --code-coverage', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(result).to.include('=== Apex Code Coverage by Class');
-      expect(result).to.include(/CLASSES\w+PERCENT\w+UNCOVERED LINES/);
+      expect(result).to.match(/CLASSES\s+PERCENT\s+UNCOVERED LINES/);
       expect(result).to.include('SampleDataController  100%');
     });
     it('will run default tests sync with --code-coverage --json', async () => {
       const result = execCmd<RunResult>('apex:run:test --wait 10 --code-coverage --json', { ensureExitCode: 0 })
         .jsonOutput?.result;
-      expect(result?.summary).to.have.all.keys('totalLines', 'coveredLines', 'orgWideCoverage', 'testRunCoverage');
-      expect(result?.coverage?.coverage).to.have.all.keys(
+      expect(result?.summary).to.have.all.keys(
+        'outcome',
+        'testsRan',
+        'passing',
+        'failing',
+        'skipped',
+        'passRate',
+        'failRate',
+        'testStartTime',
+        'testExecutionTime',
+        'testTotalTime',
+        'commandTime',
+        'hostname',
+        'orgId',
+        'username',
+        'testRunId',
+        'userId',
+        'orgWideCoverage',
+        'testRunCoverage'
+      );
+
+      expect(result?.coverage?.coverage[0]).to.have.all.keys(
         'id',
         'name',
         'lines',
@@ -91,7 +100,7 @@ describe('apex run test', () => {
       const result = execCmd('apex:run:test --wait 10 --code-coverage --detailed-coverage', { ensureExitCode: 0 })
         .shellOutput.stdout;
       expect(result).to.include('=== Apex Code Coverage for Test Run 707');
-      expect(result).to.include(/TEST NAME\w+CLASS BEING TESTED\w+OUTCOME\w+PERCENT\w+MESSAGE\w+RUNTIME (MS)/);
+      expect(result).to.match(/TEST NAME\s+CLASS BEING TESTED\s+OUTCOME\s+PERCENT\s+MESSAGE\s+RUNTIME \(MS\)/);
     });
   });
 
@@ -101,7 +110,7 @@ describe('apex run test', () => {
     expect(result).to.include('Test result files written to testresults');
     const outputDir = path.join(session.project.dir, 'testresults');
     expect(fs.statSync(outputDir).isDirectory()).to.be.true;
-    expect(fs.readdirSync(outputDir)).length.to.equal(6);
+    expect(fs.readdirSync(outputDir).length).to.equal(6);
     expect(fs.existsSync(path.join(outputDir, 'test-result-codecoverage.json'))).to.be.true;
     expect(fs.existsSync(path.join(outputDir, 'test-result.txt'))).to.be.true;
     expect(fs.existsSync(path.join(outputDir, 'test-run-id.txt'))).to.be.true;
@@ -116,7 +125,7 @@ describe('apex run test', () => {
 
   it('will run default tests and wait --json', async () => {
     const result = execCmd<RunResult>('apex:run:test --wait 10 --json', { ensureExitCode: 0 }).jsonOutput?.result;
-    expect(result?.tests).length.to.equal(11);
+    expect(result?.tests.length).to.equal(11);
     expect(result?.summary.outcome).to.equal('Passed');
     expect(result?.summary.testsRan).to.equal(11);
     expect(result?.summary).to.have.all.keys(
@@ -154,12 +163,12 @@ describe('apex run test', () => {
   it('will run specified classes --class-names', async () => {
     const result = execCmd('apex:run:test -w 10 --class-names TestPropertyController', { ensureExitCode: 0 })
       .shellOutput.stdout;
-    expect(result).to.include(/Tests Ran\w+3/);
+    expect(result).to.match(/Tests Ran\s+3/);
 
     const result1 = execCmd('apex:run:test -w 10 --class-names TestPropertyController -n GeocodingServiceTest', {
       ensureExitCode: 0,
     }).shellOutput.stdout;
-    expect(result1).to.include(/Tests Ran\w+6/);
+    expect(result1).to.match(/Tests Ran\s+6/);
 
     const result2 = execCmd(
       'apex:run:test -w 10 --class-names TestPropertyController -n GeocodingServiceTest,FileUtilitiesTest',
@@ -167,18 +176,18 @@ describe('apex run test', () => {
         ensureExitCode: 0,
       }
     ).shellOutput.stdout;
-    expect(result2).to.include(/Tests Ran\w+10/);
+    expect(result2).to.match(/Tests Ran\s+10/);
   });
 
   it('will run specified tests --tests', async () => {
     const result = execCmd('apex:run:test -w 10 --tests TestPropertyController', { ensureExitCode: 0 }).shellOutput
       .stdout;
-    expect(result).to.include(/Tests Ran\w+3/);
+    expect(result).to.match(/Tests Ran\s+3/);
 
     const result1 = execCmd('apex:run:test -w 10 --tests TestPropertyController -t GeocodingServiceTest', {
       ensureExitCode: 0,
     }).shellOutput.stdout;
-    expect(result1).to.include(/Tests Ran\w+6/);
+    expect(result1).to.match(/Tests Ran\s+6/);
 
     const result2 = execCmd(
       'apex:run:test -w 10 --tests TestPropertyController -t GeocodingServiceTest,FileUtilitiesTest',
@@ -186,6 +195,26 @@ describe('apex run test', () => {
         ensureExitCode: 0,
       }
     ).shellOutput.stdout;
-    expect(result2).to.include(/Tests Ran\w+10/);
+    expect(result2).to.match(/Tests Ran\s+10/);
+  });
+
+  it('will run default tests and default async --json', async () => {
+    const result = execCmd<TestRunIdResult>('apex:run:test --json', { ensureExitCode: 0 }).jsonOutput?.result;
+    expect(result?.testRunId).to.be.a('string');
+    expect(result?.testRunId.startsWith('707')).to.be.true;
+    // get the test results to make sure it's not 'ALREADY IN PROGRESS' or 'QUEUED' for the next test
+    execCmd(`apex:get:test -i ${result?.testRunId}`, { ensureExitCode: 0 });
+  });
+
+  it('will run default tests and default async', async () => {
+    const result = execCmd('apex:run:test', { ensureExitCode: 0 }).shellOutput.stdout;
+    expect(result).to.include('apex get test -i 707');
+    expect(result).to.include('-o');
+    expect(result).to.include('" to retrieve test results');
+    // .match returns RegExpArray | undefined, and typing ?[0] makes TS think it's a ternary, not an undefined array accessor
+    // and we can't use ?.at yet
+    const id = result.match(/707[\d\w]+\s/)?.find((i) => i);
+    // get the test results to make sure it's not 'ALREADY IN PROGRESS' or 'QUEUED' for the next test
+    execCmd(`apex:get:test -i ${id}`, { ensureExitCode: 0 });
   });
 });

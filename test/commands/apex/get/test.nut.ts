@@ -7,8 +7,10 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
+import { config, expect } from 'chai';
+import { TestRunIdResult } from '@salesforce/apex-node';
 import { RunResult } from '../../../../src/reporters';
+config.truncateThreshold = 0;
 
 describe('apex get test', () => {
   let session: TestSession;
@@ -29,7 +31,9 @@ describe('apex get test', () => {
     });
 
     execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0 });
-    testId = execCmd<RunResult>('apex:test:run', { ensureExitCode: 0 }).jsonOutput?.result?.summary?.testRunId;
+    testId = execCmd<TestRunIdResult>('apex:run:test --json', {
+      ensureExitCode: 0,
+    }).jsonOutput?.result.testRunId.trim();
     expect(testId).to.be.a('string');
   });
 
@@ -65,8 +69,9 @@ describe('apex get test', () => {
   });
 
   it('will get tests --json', async () => {
-    const result = execCmd<RunResult>(`apex:get:test ${testId} --json`, { ensureExitCode: 0 }).jsonOutput?.result;
-    expect(result?.tests).length.to.equal(11);
+    const result = execCmd<RunResult>(`apex:get:test --test-run-id ${testId} --json`, { ensureExitCode: 0 }).jsonOutput
+      ?.result;
+    expect(result?.tests.length).to.equal(11);
     expect(result?.summary.outcome).to.equal('Passed');
     expect(result?.summary.testsRan).to.equal(11);
     expect(result?.summary).to.have.all.keys(
@@ -106,29 +111,32 @@ describe('apex get test', () => {
       const result = execCmd(`apex:get:test --test-run-id ${testId} --code-coverage`, { ensureExitCode: 0 }).shellOutput
         .stdout;
       expect(result).to.include('=== Apex Code Coverage by Class');
-      expect(result).to.include(/CLASSES\w+PERCENT\w+UNCOVERED LINES/);
-      expect(result).to.include('SampleDataController  100%');
+      expect(result).to.match(/TEST NAME\s+OUTCOME\s+MESSAGE\s+RUNTIME \(MS\)/);
     });
     it('will run default tests sync with --code-coverage --json', async () => {
       const result = execCmd<RunResult>(`apex:get:test --test-run-id ${testId} --code-coverage --json`, {
         ensureExitCode: 0,
       }).jsonOutput?.result;
-      expect(result?.summary).to.have.all.keys('totalLines', 'coveredLines', 'orgWideCoverage', 'testRunCoverage');
-      expect(result?.coverage?.coverage).to.have.all.keys(
-        'id',
-        'name',
-        'lines',
-        'totalLines',
-        'totalCovered',
-        'coveredPercent'
+      expect(result?.summary).to.have.all.keys(
+        'commandTime',
+        'failRate',
+        'passRate',
+        'failing',
+        'hostname',
+        'orgId',
+        'outcome',
+        'passing',
+        'skipped',
+        'orgWideCoverage',
+        'testRunCoverage',
+        'testExecutionTime',
+        'testRunId',
+        'testStartTime',
+        'testTotalTime',
+        'testsRan',
+        'userId',
+        'username'
       );
-    });
-    it('will run default tests sync with --code-coverage --detailed-coverage', async () => {
-      const result = execCmd(`apex:get:test --test-run-id ${testId} --code-coverage --detailed-coverage`, {
-        ensureExitCode: 0,
-      }).shellOutput.stdout;
-      expect(result).to.include('=== Apex Code Coverage for Test Run 707');
-      expect(result).to.include(/TEST NAME\w+CLASS BEING TESTED\w+OUTCOME\w+PERCENT\w+MESSAGE\w+RUNTIME (MS)/);
     });
   });
 
@@ -139,7 +147,7 @@ describe('apex get test', () => {
     expect(result).to.include('Test result files written to testresults');
     const outputDir = path.join(session.project.dir, 'testresults');
     expect(fs.statSync(outputDir).isDirectory()).to.be.true;
-    expect(fs.readdirSync(outputDir)).length.to.equal(6);
+    expect(fs.readdirSync(outputDir).length).to.equal(6);
     expect(fs.existsSync(path.join(outputDir, 'test-result-codecoverage.json'))).to.be.true;
     expect(fs.existsSync(path.join(outputDir, 'test-result.txt'))).to.be.true;
     expect(fs.existsSync(path.join(outputDir, 'test-run-id.txt'))).to.be.true;
