@@ -1,3 +1,12 @@
+# [2.3.0](https://github.com/salesforcecli/plugin-apex/compare/2.2.22...2.3.0) (2023-06-01)
+
+
+### Features
+
+* use deprecatedArray for consistency in sf commands and compatibility ([16661d8](https://github.com/salesforcecli/plugin-apex/commit/16661d87f8fb08b13ec2899aae862787dedc89c9))
+
+
+
 ## [2.2.22](https://github.com/salesforcecli/plugin-apex/compare/2.2.21...2.2.22) (2023-05-28)
 
 
