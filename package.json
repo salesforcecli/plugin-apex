@@ -86,7 +86,7 @@
             "description": "List debug logs."
           },
           "run": {
-            "description": "Run Apex tests."
+            "description": "Run Apex code and tests."
           },
           "tail": {
             "description": "Tail debug logs."
