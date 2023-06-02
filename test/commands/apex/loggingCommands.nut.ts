@@ -13,7 +13,7 @@ import { LogListResult } from '../../../src/commands/apex/list/log';
 
 config.truncateThreshold = 0;
 
-describe.only('apex log *', () => {
+describe('apex log *', () => {
   let session: TestSession;
   let logId: string | undefined;
   before(async () => {
