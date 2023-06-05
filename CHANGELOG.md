@@ -1,3 +1,12 @@
+## [2.3.1](https://github.com/salesforcecli/plugin-apex/compare/2.3.0...2.3.1) (2023-06-05)
+
+
+### Bug Fixes
+
+* update `apex run` topic summmary ([#144](https://github.com/salesforcecli/plugin-apex/issues/144)) ([53f43e8](https://github.com/salesforcecli/plugin-apex/commit/53f43e80e2a8af08815af3bd50bdb2aa36362de5))
+
+
+
 # [2.3.0](https://github.com/salesforcecli/plugin-apex/compare/2.2.22...2.3.0) (2023-06-01)
 
 
