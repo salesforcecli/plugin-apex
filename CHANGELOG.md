@@ -1,3 +1,9 @@
+## [2.3.2](https://github.com/salesforcecli/plugin-apex/compare/2.3.1...2.3.2) (2023-06-05)
+
+### Bug Fixes
+
+- **deps:** update library, new snapshot ([b374bfd](https://github.com/salesforcecli/plugin-apex/commit/b374bfd05216e31818a9c0f447adc5a2373ee9cc))
+
 ## [2.3.1](https://github.com/salesforcecli/plugin-apex/compare/2.3.0...2.3.1) (2023-06-05)
 
 ### Bug Fixes
