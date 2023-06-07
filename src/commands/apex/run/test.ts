@@ -156,8 +156,10 @@ export default class Test extends SfCommand<RunCommandResult> {
       const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
       return testReporter.report(result, flags);
     } else {
-      // async test run
+      // Tests were ran asynchronously or the --wait timed out.
+      // Log the proper 'apex get test' command for the user to run later
       this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
+      this.info(messages.getMessage('runTestSyncInstructions'));
       return result;
     }
   }
