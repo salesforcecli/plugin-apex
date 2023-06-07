@@ -8,7 +8,7 @@ Specify which tests to run by using the --class-names, --suite-names, or --tests
 
 To see code coverage results, use the --code-coverage flag with --result-format. The output displays a high-level summary of the test run and the code coverage values for classes in your org. If you specify human-readable result format, use the --detailed-coverage flag to see detailed coverage results for each test method run.
 
-Apex tests run asynchronously by default and will immediately return a test run ID. Alternatively a minute duration can be passed to the --wait flag; if the tests finish in that timeframe, the command displays the results. If the tests haven't finished by the end of the wait time, the command displays a test run ID; use the "<%= config.bin %> apex get test --test-run-id" command to get the results.
+By default, Apex tests run asynchronously and immediately return a test run ID. You can use the --wait flag to specify the number of minutes to wait; if the tests finish in that timeframe, the command displays the results. If the tests haven't finished by the end of the wait time, the command displays a test run ID. Use the "<%= config.bin %> apex get test --test-run-id" command to get the results.
 
 NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines from all the Apex classes evaluated by the tests in this run.
 
