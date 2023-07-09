@@ -1,3 +1,12 @@
+## [2.3.5](https://github.com/salesforcecli/plugin-apex/compare/2.3.4...2.3.5) (2023-07-09)
+
+
+### Bug Fixes
+
+* **deps:** bump tough-cookie from 4.1.2 to 4.1.3 ([1207116](https://github.com/salesforcecli/plugin-apex/commit/1207116eac928e6d9b0d2f1086412eb68e526252))
+
+
+
 ## [2.3.4](https://github.com/salesforcecli/plugin-apex/compare/2.3.3...2.3.4) (2023-07-03)
 
 
