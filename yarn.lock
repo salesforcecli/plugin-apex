@@ -931,10 +931,10 @@
   resolved "https://registry.yarnpkg.com/@salesforce/dev-config/-/dev-config-4.0.1.tgz#662ffaa4409713553aaf68eed93e7d2429c3ff0e"
   integrity sha512-0zMjXG4Vjlu/mB7zbuKSXfXiP7CEZBwsPtYqNgburk/wZIU9KcMspLwVBDUxmUj9ltRksD9o1ubRUblN5M3Z0g==
 
-"@salesforce/dev-scripts@^5.4.2":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/@salesforce/dev-scripts/-/dev-scripts-5.4.2.tgz#77aacf9a4743fe951d9de9cbc9524a70bb46054e"
-  integrity sha512-D54yF+NDDa+50A28YyvG8aO5t3tIMIIZ7Q+ewWmUXdpFhqUfwq1k6/Y2tZy+rE9Z8fwWB2DQSD9dhaZavxOgrw==
+"@salesforce/dev-scripts@^5.4.3":
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/dev-scripts/-/dev-scripts-5.4.3.tgz#e17dba5be40570f7148ee9175e26384eede1a62a"
+  integrity sha512-Qkyht70ZDQGx7zNgZeZep93eG538A7g1J7Ov+ogGCG7a3ds0ehKFscjvR5t0TKQhL8ojWEjKYr44IX4SfBKOyQ==
   dependencies:
     "@commitlint/cli" "^17.1.2"
     "@commitlint/config-conventional" "^17.1.0"
@@ -1072,14 +1072,7 @@
     sinon "^5.1.1"
     tslib "^2.5.3"
 
-"@salesforce/ts-types@^2.0.1", "@salesforce/ts-types@^2.0.2", "@salesforce/ts-types@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@salesforce/ts-types/-/ts-types-2.0.3.tgz#ae944fce71e3fc4c154592f3ee56496d2b6c9d5e"
-  integrity sha512-PWxNB1GhlX045GN6TQ8HRvJudVpm3SE/v3520itBSCXSM+iBSQ09YIxT6EO2XXGwofQBXlQqN5hsXVI5+uFazg==
-  dependencies:
-    tslib "^2.5.3"
-
-"@salesforce/ts-types@^2.0.4":
+"@salesforce/ts-types@^2.0.1", "@salesforce/ts-types@^2.0.2", "@salesforce/ts-types@^2.0.3", "@salesforce/ts-types@^2.0.4":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@salesforce/ts-types/-/ts-types-2.0.5.tgz#5471236522588e08c094fc3fda27761e6ec935fa"
   integrity sha512-X91De9ZK/X86lYcFAzoAt/pPeY6Lf+G7LyAJRx3FuYpdc+nocvniUnnJGXwSmyKMMxW2NifvQgST7FTZLZ5REA==
@@ -1374,12 +1367,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/semver@^7.3.12":
-  version "7.3.13"
-  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.13.tgz#da4bfd73f49bd541d28920ab0e2bf0ee80f71c91"
-  integrity sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==
-
-"@types/semver@^7.5.0":
+"@types/semver@^7.3.12", "@types/semver@^7.5.0":
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.5.0.tgz#591c1ce3a702c45ee15f47a42ade72c2fd78978a"
   integrity sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==
@@ -4907,15 +4895,10 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lru-cache@^7.14.1:
+lru-cache@^7.14.1, lru-cache@^7.7.1:
   version "7.18.3"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.18.3.tgz#f793896e0fd0e954a59dfdd82f0773808df6aa89"
   integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
-
-lru-cache@^7.7.1:
-  version "7.14.1"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.14.1.tgz#8da8d2f5f59827edb388e63e459ac23d6d408fea"
-  integrity sha512-ysxwsnTKdAx96aTRdhDOCQfDgbHnt8SK0KY8SEjO0wHinhWOFTESbjVCMPbU1uGXg/ch4lifqx0wfjOawU2+WA==
 
 lunr@^2.3.9:
   version "2.3.9"
