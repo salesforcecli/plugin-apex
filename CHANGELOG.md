@@ -1,3 +1,12 @@
+## [2.3.6](https://github.com/salesforcecli/plugin-apex/compare/2.3.5...2.3.6) (2023-07-17)
+
+
+### Bug Fixes
+
+* **deps:** bump semver from 5.7.1 to 5.7.2 ([3d98b89](https://github.com/salesforcecli/plugin-apex/commit/3d98b899b3ee0a16a44bee7303745a81970c63ac))
+
+
+
 ## [2.3.5](https://github.com/salesforcecli/plugin-apex/compare/2.3.4...2.3.5) (2023-07-09)
 
 
