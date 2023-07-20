@@ -1,3 +1,12 @@
+## [2.3.7](https://github.com/salesforcecli/plugin-apex/compare/2.3.6...2.3.7) (2023-07-20)
+
+
+### Bug Fixes
+
+* **deps:** bump word-wrap from 1.2.3 to 1.2.4 ([bfd2190](https://github.com/salesforcecli/plugin-apex/commit/bfd21902b5aa25e87a3f233ad41c3a737ab1d16f))
+
+
+
 ## [2.3.6](https://github.com/salesforcecli/plugin-apex/compare/2.3.5...2.3.6) (2023-07-17)
 
 
