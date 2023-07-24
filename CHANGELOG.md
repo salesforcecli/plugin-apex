@@ -1,3 +1,12 @@
+## [2.3.8](https://github.com/salesforcecli/plugin-apex/compare/2.3.7...2.3.8) (2023-07-24)
+
+
+### Bug Fixes
+
+* call testService method to store testRunId ([f606104](https://github.com/salesforcecli/plugin-apex/commit/f606104e49573a3545064a2d1fd84e123fb64174))
+
+
+
 ## [2.3.7](https://github.com/salesforcecli/plugin-apex/compare/2.3.6...2.3.7) (2023-07-20)
 
 
