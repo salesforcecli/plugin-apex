@@ -160,6 +160,13 @@ export default class Test extends SfCommand<RunCommandResult> {
       // Log the proper 'apex get test' command for the user to run later
       this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
       this.info(messages.getMessage('runTestSyncInstructions'));
+
+      if (flags['output-dir']) {
+        // testService writes a file with just the test run id in it to test-run-id.txt
+        // github.com/forcedotcom/salesforcedx-apex/blob/c986abfabee3edf12f396f1d2e43720988fa3911/src/tests/testService.ts#L245-L246
+        await testService.writeResultFiles(result, { dirPath: flags['output-dir'] }, flags['code-coverage']);
+      }
+
       return result;
     }
   }

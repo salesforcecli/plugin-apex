@@ -206,6 +206,20 @@ describe('apex run test', () => {
     execCmd(`apex:get:test -i ${result?.testRunId}`, { ensureExitCode: 0 });
   });
 
+  it('will save test-run-id file for async', async () => {
+    const resultDir = 'asyncResults';
+    const result = execCmd<TestRunIdResult>(`apex:run:test --json --output-dir ${resultDir}`, { ensureExitCode: 0 })
+      .jsonOutput?.result;
+    expect(result?.testRunId).to.be.a('string');
+    expect(result?.testRunId.startsWith('707')).to.be.true;
+    const outputDir = path.join(session.project.dir, resultDir);
+    const testRunIdFile = path.join(outputDir, 'test-run-id.txt');
+    expect(fs.existsSync(testRunIdFile)).to.be.true;
+    expect(await fs.promises.readFile(testRunIdFile, 'utf-8')).equal(result?.testRunId);
+    // get the test results to make sure it's not 'ALREADY IN PROGRESS' or 'QUEUED' for the next test
+    execCmd(`apex:get:test -i ${result?.testRunId}`, { ensureExitCode: 0 });
+  });
+
   it('will run default tests and default async', async () => {
     const result = execCmd('apex:run:test', { ensureExitCode: 0 }).shellOutput.stdout;
     expect(result).to.include('apex get test -i 707');
