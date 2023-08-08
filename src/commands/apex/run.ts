@@ -44,7 +44,7 @@ export default class Run extends SfCommand<ExecuteResult> {
       deprecateAliases: true,
       aliases: ['apexcodefile'],
       char: 'f',
-      summary: messages.getMessage('flags.file'),
+      summary: messages.getMessage('flags.file.summary'),
     }),
   };
 
