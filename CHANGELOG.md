@@ -1,3 +1,12 @@
+## [2.3.10](https://github.com/salesforcecli/plugin-apex/compare/2.3.9...2.3.10) (2023-08-08)
+
+
+### Bug Fixes
+
+* **deps:** core 5 ([92057f3](https://github.com/salesforcecli/plugin-apex/commit/92057f3a2542268f3ce0c45d0aee4bc756511eee))
+
+
+
 ## [2.3.9](https://github.com/salesforcecli/plugin-apex/compare/2.3.8...2.3.9) (2023-07-30)
 
 
