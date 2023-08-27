@@ -986,10 +986,10 @@
     handlebars "^4.7.8"
     tslib "^2"
 
-"@salesforce/plugin-deploy-retrieve@^1.17.5":
-  version "1.17.5"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-1.17.5.tgz#9bd3fd862dfa09abcf3feecb0bd545cbcf83de7f"
-  integrity sha512-TOmg6mFJIvVbA/cL8PRYcFfCFGwhjH4rISUQzjoptIGby3mJlsT2Z3vZxxzR8sG9eampGr//Q2K3/i6nUyjBxw==
+"@salesforce/plugin-deploy-retrieve@^1.17.6":
+  version "1.17.6"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-1.17.6.tgz#1f431f07aa0791c9463c26ef40233311131b89a8"
+  integrity sha512-8wLUwYwb49PDBGpfpoCFA3za8aVSxYOweGRf09dbkai2Ph3yEWsuFvc6Iy+vt753J6Entm1Vv/+UidrEgdvBxA==
   dependencies:
     "@oclif/core" "^2.11.7"
     "@salesforce/apex-node" "^2.1.0"
