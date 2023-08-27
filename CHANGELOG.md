@@ -1,3 +1,12 @@
+## [2.3.12](https://github.com/salesforcecli/plugin-apex/compare/2.3.11...2.3.12) (2023-08-27)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/sf-plugins-core from 3.1.15 to 3.1.18 ([68b7839](https://github.com/salesforcecli/plugin-apex/commit/68b7839c77cd2962a0565f53ed99291026203aae))
+
+
+
 ## [2.3.11](https://github.com/salesforcecli/plugin-apex/compare/2.3.10...2.3.11) (2023-08-20)
 
 
