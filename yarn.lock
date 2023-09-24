@@ -985,17 +985,17 @@
     handlebars "^4.7.8"
     tslib "^2"
 
-"@salesforce/plugin-deploy-retrieve@^1.17.14":
-  version "1.17.14"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-1.17.14.tgz#0fd0bee29db9bdeab83ab830ded4ba2ed474671b"
-  integrity sha512-zDeSd+Qt9EOjCUQ9/y8sXTnI5VlbW3eKqXXRg1lh5srvddvbjX5/sBLBtEL9qfF6J4Jz3rhBHzooVqgTtnKuxQ==
+"@salesforce/plugin-deploy-retrieve@^1.18.0":
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-1.18.0.tgz#b8ca5a6c1b856aa6c8c9bc674adb5072cd595d47"
+  integrity sha512-kcwyYtp+rWMcvh8OlQKPeO+Cybi715nRSGJROiMYCOLENeyYnCWPNrSC0krYVqtCjvVOh5IM4Fxz8RNnqQ6dIA==
   dependencies:
     "@oclif/core" "^2.15.0"
     "@salesforce/apex-node" "^2.1.0"
     "@salesforce/core" "^5.2.7"
     "@salesforce/kit" "^3.0.9"
     "@salesforce/sf-plugins-core" "^3.1.22"
-    "@salesforce/source-deploy-retrieve" "^9.7.13"
+    "@salesforce/source-deploy-retrieve" "^9.7.15"
     "@salesforce/source-tracking" "^4.2.12"
     chalk "^4.1.2"
     shelljs "^0.8.5"
@@ -1023,12 +1023,12 @@
     chalk "^4"
     inquirer "^8.2.5"
 
-"@salesforce/source-deploy-retrieve@^9.7.13":
-  version "9.7.13"
-  resolved "https://registry.yarnpkg.com/@salesforce/source-deploy-retrieve/-/source-deploy-retrieve-9.7.13.tgz#85777222e157a621eb00fcef0487c682b7e3d5f7"
-  integrity sha512-QRhdepll3+ED9w4clI/RvcSLtuSbTzFPZenzrvJ2R7Pg5gXRZQIJrphEkAnY7oteVBBUxPVdYgbeuQxeoi98dg==
+"@salesforce/source-deploy-retrieve@^9.7.13", "@salesforce/source-deploy-retrieve@^9.7.15":
+  version "9.7.15"
+  resolved "https://registry.yarnpkg.com/@salesforce/source-deploy-retrieve/-/source-deploy-retrieve-9.7.15.tgz#a891e95101816a7e33854bc42ba21fafbdb1728e"
+  integrity sha512-av9Ojd9B/uegLNJth41aVPvAVPh8N0CllzfiDG5qbtDXW7WV/bqgWjiiiGc1U6RWnJ9OmQZNL/EjaSX0UPhiLA==
   dependencies:
-    "@salesforce/core" "^5.2.7"
+    "@salesforce/core" "^5.2.9"
     "@salesforce/kit" "^3.0.11"
     "@salesforce/ts-types" "^2.0.7"
     fast-levenshtein "^3.0.0"
