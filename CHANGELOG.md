@@ -1,3 +1,9 @@
+## [2.3.16](https://github.com/salesforcecli/plugin-apex/compare/2.3.15...2.3.16) (2023-09-28)
+
+### Bug Fixes
+
+- **deps:** bump get-func-name from 2.0.0 to 2.0.2 ([f2161fd](https://github.com/salesforcecli/plugin-apex/commit/f2161fdbac8b6eca4d087046bf89ff44fabfc716))
+
 ## [2.3.15](https://github.com/salesforcecli/plugin-apex/compare/2.3.14...2.3.15) (2023-09-17)
 
 ### Bug Fixes

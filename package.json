@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-apex",
   "description": "Apex commands",
-  "version": "2.3.15",
+  "version": "2.3.16",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "main": "lib/index.js",
