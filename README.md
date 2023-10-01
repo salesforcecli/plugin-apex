@@ -145,7 +145,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.16/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.17/src/commands/apex/get/log.ts)_
 
 ## `sfdx apex:get:test`
 
@@ -197,7 +197,7 @@ EXAMPLES
       me@myorg',
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.16/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.17/src/commands/apex/get/test.ts)_
 
 ## `sfdx apex:list:log`
 
@@ -235,7 +235,7 @@ EXAMPLES
     $ sfdx apex:list:log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.16/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.17/src/commands/apex/list/log.ts)_
 
 ## `sfdx apex:run`
 
@@ -280,7 +280,7 @@ EXAMPLES
     $ sfdx apex:run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.16/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.17/src/commands/apex/run.ts)_
 
 ## `sfdx apex:run:test`
 
@@ -386,7 +386,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.16/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.17/src/commands/apex/run/test.ts)_
 
 ## `sfdx apex:tail:log`
 
@@ -428,6 +428,6 @@ EXAMPLES
     $ sfdx apex:tail:log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.16/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.17/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->
