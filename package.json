@@ -19,7 +19,7 @@
     "@salesforce/dev-config": "^4.0.1",
     "@salesforce/dev-scripts": "^5.11.0",
     "@salesforce/plugin-command-reference": "^3.0.41",
-    "@salesforce/plugin-deploy-retrieve": "^1.18.7",
+    "@salesforce/plugin-deploy-retrieve": "^1.19.0",
     "@salesforce/prettier-config": "^0.0.3",
     "@salesforce/ts-sinon": "^1.4.17",
     "@salesforce/ts-types": "^2.0.7",
