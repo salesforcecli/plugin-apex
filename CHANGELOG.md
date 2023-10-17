@@ -1,3 +1,9 @@
+## [2.3.20](https://github.com/salesforcecli/plugin-apex/compare/2.3.19...2.3.20) (2023-10-17)
+
+### Bug Fixes
+
+- **deps:** bump @babel/traverse from 7.20.13 to 7.23.2 ([0ee32f2](https://github.com/salesforcecli/plugin-apex/commit/0ee32f2c493eeca0fe85e0092e538978d88cbc5c))
+
 ## [2.3.19](https://github.com/salesforcecli/plugin-apex/compare/2.3.18...2.3.19) (2023-10-08)
 
 ### Bug Fixes
