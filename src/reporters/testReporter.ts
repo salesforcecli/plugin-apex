@@ -64,7 +64,7 @@ export class TestReporter {
     }
 
     try {
-      if (result.summary && result.summary.outcome === ApexTestRunResultStatus.Failed) {
+      if (result.summary && result.summary.outcome === ApexTestRunResultStatus.Failed.toString()) {
         process.exitCode = FAILURE_EXIT_CODE;
       }
       switch (options['result-format']) {
