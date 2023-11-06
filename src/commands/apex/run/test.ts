@@ -234,18 +234,22 @@ const validateFlags = async (
   synchronous?: boolean,
   testLevel?: TestLevel
 ): Promise<TestLevel> => {
-  if (synchronous && (suiteNames || (classNames?.length && classNames.length > 1))) {
+  if (synchronous && (Boolean(suiteNames) || (classNames?.length && classNames.length > 1))) {
     return Promise.reject(new Error(messages.getMessage('syncClassErr')));
   }
 
-  if ((tests || classNames || suiteNames) && testLevel && testLevel !== 'RunSpecifiedTests') {
+  if (
+    (Boolean(tests) || Boolean(classNames) || suiteNames) &&
+    testLevel &&
+    testLevel.toString() !== 'RunSpecifiedTests'
+  ) {
     return Promise.reject(new Error(messages.getMessage('testLevelErr')));
   }
 
   if (testLevel) {
     return testLevel;
   }
-  if (classNames || suiteNames || tests) {
+  if (Boolean(classNames) || Boolean(suiteNames) || tests) {
     return TestLevel.RunSpecifiedTests;
   }
   return TestLevel.RunLocalTests;
