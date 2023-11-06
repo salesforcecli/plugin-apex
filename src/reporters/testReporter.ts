@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {
-  ApexTestRunResultStatus,
   HumanReporter,
   JUnitReporter,
   OutputDirConfig,
@@ -64,7 +63,7 @@ export class TestReporter {
     }
 
     try {
-      if (result.summary && result.summary.outcome === ApexTestRunResultStatus.Failed.toString()) {
+      if (result.summary && result.summary.outcome === 'Failed') {
         process.exitCode = FAILURE_EXIT_CODE;
       }
       switch (options['result-format']) {
