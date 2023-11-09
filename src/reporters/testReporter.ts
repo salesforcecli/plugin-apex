@@ -4,6 +4,8 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   HumanReporter,
   JUnitReporter,
@@ -14,14 +16,13 @@ import {
   TestRunIdResult,
   TestService,
 } from '@salesforce/apex-node';
-import { AnyJson, Optional } from '@salesforce/ts-types';
 import { Ux } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
-import { FAILURE_EXIT_CODE } from '../utils';
-import { JsonReporter, RunResult } from './jsonReporter';
+import { FAILURE_EXIT_CODE } from '../utils.js';
+import { JsonReporter, RunResult } from './jsonReporter.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
 
 export class TestReporter {
@@ -52,7 +53,7 @@ export class TestReporter {
         result,
         jsonOutput,
         options['output-dir'],
-        options['result-format'] as Optional<ResultFormat>,
+        options['result-format'] as ResultFormat | undefined,
         Boolean(options['detailed-coverage']),
         options.synchronous
       );
@@ -82,7 +83,7 @@ export class TestReporter {
             this.ux.styledJSON({
               status: process.exitCode,
               result: this.formatResultInJson(result),
-            } as AnyJson);
+            });
           }
           break;
         default:

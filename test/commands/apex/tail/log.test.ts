@@ -5,20 +5,21 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { resolve } from 'node:path';
-import { createSandbox, SinonSandbox } from 'sinon';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import sinon from 'sinon';
 import { LogService } from '@salesforce/apex-node';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { Org } from '@salesforce/core';
-import Log from '../../../../src/commands/apex/tail/log';
+import Log from '../../../../src/commands/apex/tail/log.js';
 
 describe('apex:log:tail', () => {
-  let sandbox: SinonSandbox;
-  const config = new Config({ root: resolve(__dirname, '../../package.json') });
+  let sandbox: sinon.SinonSandbox;
+  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
 
   beforeEach(() => {
-    sandbox = createSandbox();
+    sandbox = sinon.createSandbox();
 
     sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
     sandbox.stub(LogService.prototype, 'tail').resolves();

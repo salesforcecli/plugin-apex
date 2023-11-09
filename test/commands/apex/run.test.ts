@@ -4,16 +4,16 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as path from 'node:path';
-import { resolve } from 'node:path';
-import * as fs from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
 import { expect } from 'chai';
 import { ExecuteService } from '@salesforce/apex-node';
-import { createSandbox, SinonSandbox } from 'sinon';
+import sinon from 'sinon';
 import { Org, SfError } from '@salesforce/core';
 import { Config } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import Run from '../../../src/commands/apex/run';
+import Run from '../../../src/commands/apex/run.js';
 
 const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
 
@@ -29,12 +29,12 @@ const expectedSuccessResult = {
 };
 
 describe('apex:execute', () => {
-  let sandboxStub: SinonSandbox;
+  let sandboxStub: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;
-  const config = new Config({ root: resolve(__dirname, '../../package.json') });
+  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
 
   beforeEach(() => {
-    sandboxStub = createSandbox();
+    sandboxStub = sinon.createSandbox();
     logStub = sandboxStub.stub(SfCommand.prototype, 'log');
     sandboxStub.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
   });
@@ -51,7 +51,7 @@ describe('apex:execute', () => {
   });
 
   it('runs command with filepath flag and successful result', async () => {
-    const file = path.join('Users', 'test', 'path', 'to', 'file');
+    const file = join('Users', 'test', 'path', 'to', 'file');
     const executeServiceStub = sandboxStub
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
@@ -72,7 +72,7 @@ describe('apex:execute', () => {
   });
 
   it('runs command with filepath + json flags and successful result', async () => {
-    const file = path.join('Users', 'test', 'path', 'to', 'file');
+    const file = join('Users', 'test', 'path', 'to', 'file');
     const executeServiceStub = sandboxStub
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });

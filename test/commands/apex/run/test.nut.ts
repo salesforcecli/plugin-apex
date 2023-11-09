@@ -4,12 +4,12 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as path from 'node:path';
-import * as fs from 'node:fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect, config } from 'chai';
-import { TestRunIdResult } from '@salesforce/apex-node/lib/src/tests/types';
-import { RunResult } from '../../../../src/reporters';
+import { TestRunIdResult } from '@salesforce/apex-node/lib/src/tests/types.js';
+import { RunResult } from '../../../../src/reporters/index.js';
 
 config.truncateThreshold = 0;
 
@@ -30,7 +30,7 @@ describe('apex run test', () => {
       ],
     });
 
-    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0 });
+    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
   });
 
   after(async () => {

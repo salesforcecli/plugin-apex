@@ -4,12 +4,12 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as path from 'node:path';
+import path from 'node:path';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect, config } from 'chai';
 import { AuthInfo, Connection } from '@salesforce/core';
-import { LogGetResult } from '../../../src/commands/apex/get/log';
-import { LogListResult } from '../../../src/commands/apex/list/log';
+import { LogGetResult } from '../../../src/commands/apex/get/log.js';
+import { LogListResult } from '../../../src/commands/apex/list/log.js';
 
 config.truncateThreshold = 0;
 
@@ -31,7 +31,7 @@ describe('apex log *', () => {
       ],
     });
 
-    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0 });
+    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
   });
 
   after(async () => {

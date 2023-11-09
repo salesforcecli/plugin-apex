@@ -67,3 +67,4 @@ node_modules
 # os specific files
 .DS_Store
 .idea
+oclif.lock
