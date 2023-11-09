@@ -30,7 +30,7 @@ describe('apex get test', () => {
       ],
     });
 
-    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0 });
+    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
     testId = execCmd<TestRunIdResult>('apex:run:test --json', {
       ensureExitCode: 0,
     }).jsonOutput?.result.testRunId.trim();

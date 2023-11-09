@@ -30,7 +30,7 @@ describe('apex run test', () => {
       ],
     });
 
-    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0 });
+    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
   });
 
   after(async () => {
