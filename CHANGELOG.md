@@ -1,3 +1,5 @@
+## [3.0.1](https://github.com/salesforcecli/plugin-apex/compare/2.3.20...3.0.1) (2023-11-09)
+
 ## [2.3.20](https://github.com/salesforcecli/plugin-apex/compare/2.3.19...2.3.20) (2023-10-17)
 
 ### Bug Fixes

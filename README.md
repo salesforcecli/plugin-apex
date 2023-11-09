@@ -87,20 +87,20 @@ Happy debugging!
 
 <!-- commands -->
 
-- [`sfdx apex:get:log`](#sfdx-apexgetlog)
-- [`sfdx apex:get:test`](#sfdx-apexgettest)
-- [`sfdx apex:list:log`](#sfdx-apexlistlog)
-- [`sfdx apex:run`](#sfdx-apexrun)
-- [`sfdx apex:run:test`](#sfdx-apexruntest)
-- [`sfdx apex:tail:log`](#sfdx-apextaillog)
+- [`sf apex get log`](#sf-apex-get-log)
+- [`sf apex get test`](#sf-apex-get-test)
+- [`sf apex list log`](#sf-apex-list-log)
+- [`sf apex run`](#sf-apex-run)
+- [`sf apex run test`](#sf-apex-run-test)
+- [`sf apex tail log`](#sf-apex-tail-log)
 
-## `sfdx apex:get:log`
+## `sf apex get log`
 
 Fetch the specified log or given number of most recent logs from the org.
 
 ```
 USAGE
-  $ sfdx apex:get:log -o <value> [--json] [--api-version <value>] [-i <value>] [-n <value>] [-d <value>]
+  $ sf apex get log -o <value> [--json] [--api-version <value>] [-i <value>] [-n <value>] [-d <value>]
 
 FLAGS
   -d, --output-dir=<value>  Directory for saving the log files.
@@ -115,28 +115,28 @@ GLOBAL FLAGS
 DESCRIPTION
   Fetch the specified log or given number of most recent logs from the org.
 
-  To get the IDs for your debug logs, run "sfdx apex log list". Executing this command without flags returns the most
+  To get the IDs for your debug logs, run "sf apex log list". Executing this command without flags returns the most
   recent log.
 
 ALIASES
-  $ sfdx force:apex:log:get
+  $ sf force apex log get
 
 EXAMPLES
   Fetch the log in your default org using an ID:
 
-    $ sfdx apex:get:log --log-id <log id>
+    $ sf apex get log --log-id <log id>
 
   Fetch the log in the org with the specified username using an ID:
 
-    $ sfdx apex:get:log --log-id <log id> --target-org me@my.org
+    $ sf apex get log --log-id <log id> --target-org me@my.org
 
   Fetch the two most recent logs in your default org:
 
-    $ sfdx apex:get:log --number 2
+    $ sf apex get log --number 2
 
   Similar to previous example, but save the two log files in the specified directory:
 
-    $ sfdx apex:get:log --output-dir /Users/sfdxUser/logs --number 2
+    $ sf apex get log --output-dir /Users/sfdxUser/logs --number 2
 
 FLAG DESCRIPTIONS
   -d, --output-dir=<value>  Directory for saving the log files.
@@ -145,15 +145,15 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.20/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.21/src/commands/apex/get/log.ts)_
 
-## `sfdx apex:get:test`
+## `sf apex get test`
 
 Display test results for a specific asynchronous test run.
 
 ```
 USAGE
-  $ sfdx apex:get:test -o <value> -i <value> [--json] [--api-version <value>] [-c] [-d <value>] [-r
+  $ sf apex get test -o <value> -i <value> [--json] [--api-version <value>] [-c] [-d <value>] [-r
     human|tap|junit|json]
 
 FLAGS
@@ -172,40 +172,40 @@ DESCRIPTION
   Display test results for a specific asynchronous test run.
 
   Provide a test run ID to display test results for an enqueued or completed asynchronous test run. The test run ID is
-  displayed after running the "sfdx apex test run" command.
+  displayed after running the "sf apex test run" command.
 
 ALIASES
-  $ sfdx force:apex:test:report
+  $ sf force apex test report
 
 EXAMPLES
   Display test results for your default org using a test run ID:
 
-    $ sfdx apex:get:test --test-run-id <test run id>
+    $ sf apex get test --test-run-id <test run id>
 
   Similar to previous example, but output the result in JUnit format:
 
-    $ sfdx apex:get:test --test-run-id <test run id> --result-format junit
+    $ sf apex get test --test-run-id <test run id> --result-format junit
 
   Also retrieve code coverage results and output in JSON format:
 
-    $ sfdx apex:get:test --test-run-id <test run id> --code-coverage --json
+    $ sf apex get test --test-run-id <test run id> --code-coverage --json
 
   Specify a directory in which to save the test results from the org with the specified username (rather than your
   default org):
 
-    $ sfdx apex:get:test --test-run-id <test run id> --code-coverage --output-dir <path to outputdir> --target-org \
+    $ sf apex get test --test-run-id <test run id> --code-coverage --output-dir <path to outputdir> --target-org \
       me@myorg',
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.20/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.21/src/commands/apex/get/test.ts)_
 
-## `sfdx apex:list:log`
+## `sf apex list log`
 
 Display a list of IDs and general information about debug logs.
 
 ```
 USAGE
-  $ sfdx apex:list:log -o <value> [--json] [--api-version <value>]
+  $ sf apex list log -o <value> [--json] [--api-version <value>]
 
 FLAGS
   -o, --target-org=<value>  (required) Username or alias of the target org.
@@ -219,31 +219,31 @@ DESCRIPTION
 
   Run this command in a project to list the IDs and general information for all debug logs in your default org.
 
-  To fetch a specific log from your org, obtain the ID from this command's output, then run the “sfdx apex log get”
+  To fetch a specific log from your org, obtain the ID from this command's output, then run the “sf apex log get”
   command.
 
 ALIASES
-  $ sfdx force:apex:log:list
+  $ sf force apex log list
 
 EXAMPLES
   List the IDs and information about the debug logs in your default org:
 
-    $ sfdx apex:list:log
+    $ sf apex list log
 
   Similar to previous example, but use the org with the specified username:
 
-    $ sfdx apex:list:log --target-org me@my.org
+    $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.20/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.21/src/commands/apex/list/log.ts)_
 
-## `sfdx apex:run`
+## `sf apex run`
 
 Execute anonymous Apex code entered on the command line or from a local file.
 
 ```
 USAGE
-  $ sfdx apex:run -o <value> [--json] [--api-version <value>] [-f <value>]
+  $ sf apex run -o <value> [--json] [--api-version <value>] [-f <value>]
 
 FLAGS
   -f, --file=<value>        Path to a local file that contains Apex code.
@@ -263,32 +263,32 @@ DESCRIPTION
   For more information, see "Anonymous Blocks" in the Apex Developer Guide.
 
 ALIASES
-  $ sfdx force:apex:execute
+  $ sf force apex execute
 
 EXAMPLES
   Execute the Apex code that's in the ~/test.apex file in the org with the specified username:
 
-    $ sfdx apex:run --target-org testusername@salesforce.org --file ~/test.apex
+    $ sf apex run --target-org testusername@salesforce.org --file ~/test.apex
 
   Similar to previous example, but execute the code in your default org:
 
-    $ sfdx apex:run --file ~/test.apex
+    $ sf apex run --file ~/test.apex
 
   Run the command with no flags to start interactive mode; the code will execute in your default org when you exit. At
   the prompt, start type Apex code and press the Enter key after each line. Press CTRL+D when finished.
 
-    $ sfdx apex:run
+    $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.20/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.21/src/commands/apex/run.ts)_
 
-## `sfdx apex:run:test`
+## `sf apex run test`
 
 Invoke Apex tests in an org.
 
 ```
 USAGE
-  $ sfdx apex:run:test -o <value> [--json] [--api-version <value>] [-d <value>] [-l
+  $ sf apex run test -o <value> [--json] [--api-version <value>] [-d <value>] [-l
     RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests] [-n <value> | -s <value> | -t <value>] [-r human|tap|junit|json]
     [-w <value>] [-y] [-v -c]
 
@@ -326,37 +326,37 @@ DESCRIPTION
 
   By default, Apex tests run asynchronously and immediately return a test run ID. You can use the --wait flag to specify
   the number of minutes to wait; if the tests finish in that timeframe, the command displays the results. If the tests
-  haven't finished by the end of the wait time, the command displays a test run ID. Use the "sfdx apex get test
+  haven't finished by the end of the wait time, the command displays a test run ID. Use the "sf apex get test
   --test-run-id" command to get the results.
 
   NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines
   from all the Apex classes evaluated by the tests in this run.
 
 ALIASES
-  $ sfdx force:apex:test:run
+  $ sf force apex test run
 
 EXAMPLES
   Run all Apex tests and suites in your default org:
 
-    $ sfdx apex:run:test
+    $ sf apex run test
 
   Run the specified Apex test classes in your default org and display results in human-readable form:
 
-    $ sfdx apex:run:test --class-names MyClassTest --class-names MyOtherClassTest --result-format human
+    $ sf apex run test --class-names MyClassTest --class-names MyOtherClassTest --result-format human
 
   Run the specified Apex test suites in your default org and include code coverage results and additional details:
 
-    $ sfdx apex:run:test --suite-names MySuite --suite-names MyOtherSuite --code-coverage --detailed-coverage
+    $ sf apex run test --suite-names MySuite --suite-names MyOtherSuite --code-coverage --detailed-coverage
 
   Run the specified Apex tests in your default org and display results in human-readable output:
 
-    $ sfdx apex:run:test --tests MyClassTest.testCoolFeature --tests MyClassTest.testAwesomeFeature --tests \
+    $ sf apex run test --tests MyClassTest.testCoolFeature --tests MyClassTest.testAwesomeFeature --tests \
       AnotherClassTest --tests namespace.TheirClassTest.testThis --result-format human
 
   Run all tests in the org with the specified username with the specified test level; save the output to the specified
   directory:
 
-    $ sfdx apex:run:test --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
+    $ sf apex run test --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
 
 FLAG DESCRIPTIONS
   -l, --test-level=RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests  Level of tests to run; default is RunLocalTests.
@@ -386,15 +386,15 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.20/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.21/src/commands/apex/run/test.ts)_
 
-## `sfdx apex:tail:log`
+## `sf apex tail log`
 
 Activate debug logging and display logs in the terminal.
 
 ```
 USAGE
-  $ sfdx apex:tail:log -o <value> [--json] [--api-version <value>] [-c] [-d <value> | -s]
+  $ sf apex tail log -o <value> [--json] [--api-version <value>] [-c] [-d <value> | -s]
 
 FLAGS
   -c, --color                Apply default colors to noteworthy log lines.
@@ -412,22 +412,22 @@ DESCRIPTION
   You can also pipe the logs to a file.
 
 ALIASES
-  $ sfdx force:apex:log:tail
+  $ sf force apex log tail
 
 EXAMPLES
   Activate debug logging:
 
-    $ sfdx apex:tail:log
+    $ sf apex tail log
 
   Specify a debug level:
 
-    $ sfdx apex:tail:log --debug-level MyDebugLevel
+    $ sf apex tail log --debug-level MyDebugLevel
 
   Skip the trace flag setup and apply default colors:
 
-    $ sfdx apex:tail:log --color --skip-trace-flag
+    $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.20/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/2.3.21/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->
