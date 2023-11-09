@@ -6,9 +6,9 @@
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
     "@oclif/core": "^3.10.8",
-    "@salesforce/apex-node": "^2.1.0",
-    "@salesforce/core": "^5.3.5",
-    "@salesforce/sf-plugins-core": "^4.0.1-dev.4",
+    "@salesforce/apex-node": "^2.1.1",
+    "@salesforce/core": "^5.3.19",
+    "@salesforce/sf-plugins-core": "^4.1.0",
     "chalk": "^5.3.0",
     "color-convert": "^2.0.1",
     "color-name": "^2.0.0"
@@ -17,12 +17,9 @@
     "@oclif/plugin-command-snapshot": "^5.0.1",
     "@salesforce/cli-plugins-testkit": "^5.0.2",
     "@salesforce/dev-scripts": "^6.0.3",
-    "@salesforce/plugin-command-reference": "^3.0.45",
-    "@salesforce/plugin-deploy-retrieve": "^1.19.0",
-    "@salesforce/ts-sinon": "^1.4.17",
-    "@salesforce/ts-types": "^2.0.7",
+    "@salesforce/plugin-command-reference": "^3.0.46",
     "@types/color-convert": "^2.0.3",
-    "eslint-plugin-sf-plugin": "^1.16.12",
+    "eslint-plugin-sf-plugin": "^1.16.14",
     "oclif": "^4.0.3",
     "shx": "^0.3.4",
     "ts-node": "^10.9.1",
@@ -79,8 +76,7 @@
     "devPlugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-command-snapshot",
-      "@salesforce/plugin-command-reference",
-      "@salesforce/plugin-deploy-retrieve"
+      "@salesforce/plugin-command-reference"
     ],
     "flexibleTaxonomy": true,
     "topicSeparator": " "

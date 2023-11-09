@@ -16,7 +16,6 @@ import {
   TestRunIdResult,
   TestService,
 } from '@salesforce/apex-node';
-import { AnyJson, Optional } from '@salesforce/ts-types';
 import { Ux } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
@@ -54,7 +53,7 @@ export class TestReporter {
         result,
         jsonOutput,
         options['output-dir'],
-        options['result-format'] as Optional<ResultFormat>,
+        options['result-format'] as ResultFormat | undefined,
         Boolean(options['detailed-coverage']),
         options.synchronous
       );
@@ -84,7 +83,7 @@ export class TestReporter {
             this.ux.styledJSON({
               status: process.exitCode,
               result: this.formatResultInJson(result),
-            } as AnyJson);
+            });
           }
           break;
         default:
