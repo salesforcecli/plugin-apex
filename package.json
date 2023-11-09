@@ -1,35 +1,35 @@
 {
   "name": "@salesforce/plugin-apex",
   "description": "Apex commands",
-  "version": "2.3.20",
+  "version": "3.0.0",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
-  "main": "lib/index.js",
   "dependencies": {
-    "@oclif/core": "^2.15.0",
+    "@oclif/core": "^3.10.8",
     "@salesforce/apex-node": "^2.1.0",
     "@salesforce/core": "^5.3.5",
-    "@salesforce/sf-plugins-core": "^3.1.28",
-    "chalk": "^4.1.0",
-    "tslib": "^2"
+    "@salesforce/sf-plugins-core": "^4.0.1-dev.4",
+    "chalk": "^5.3.0",
+    "color-convert": "^2.0.1",
+    "color-name": "^2.0.0"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^4.0.16",
-    "@salesforce/cli-plugins-testkit": "^4.4.10",
+    "@oclif/plugin-command-snapshot": "^5.0.1",
+    "@salesforce/cli-plugins-testkit": "^5.0.2",
     "@salesforce/dev-scripts": "^6.0.3",
     "@salesforce/plugin-command-reference": "^3.0.45",
     "@salesforce/plugin-deploy-retrieve": "^1.19.0",
     "@salesforce/ts-sinon": "^1.4.17",
     "@salesforce/ts-types": "^2.0.7",
-    "@swc/core": "1.3.30",
+    "@types/color-convert": "^2.0.3",
     "eslint-plugin-sf-plugin": "^1.16.12",
-    "oclif": "^3.17.2",
+    "oclif": "^4.0.3",
     "shx": "^0.3.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
     "yarn.lock",
@@ -37,17 +37,18 @@
     "/lib",
     "/messages",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/oclif.lock"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-apex",
   "keywords": [
+    "apex",
     "force",
     "salesforce",
-    "sfdx",
-    "sfdx-plugin",
+    "sf",
     "sf-plugin",
-    "apex",
-    "sf"
+    "sfdx",
+    "sfdx-plugin"
   ],
   "license": "BSD-3-Clause",
   "oclif": {
@@ -55,7 +56,7 @@
     "additionalHelpFlags": [
       "-h"
     ],
-    "bin": "sfdx",
+    "bin": "sf",
     "topics": {
       "apex": {
         "description": "Use the apex commands to create Apex classes, execute anonymous blocks, view your logs, run Apex tests, and view Apex test results.",
@@ -80,19 +81,21 @@
       "@oclif/plugin-command-snapshot",
       "@salesforce/plugin-command-reference",
       "@salesforce/plugin-deploy-retrieve"
-    ]
+    ],
+    "flexibleTaxonomy": true,
+    "topicSeparator": " "
   },
   "repository": "salesforcecli/plugin-apex",
   "scripts": {
     "build": "wireit",
     "clean": "sf-clean",
     "clean-all": "sf-clean all",
-    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json",
+    "clean:lib": "shx rm -rf lib && shx rm -rf coverage && shx rm -rf .nyc_output && shx rm -f oclif.manifest.json oclif.lock",
     "compile": "wireit",
     "docs": "sf-docs",
     "format": "wireit",
     "lint": "wireit",
-    "postpack": "shx rm -f oclif.manifest.json",
+    "postpack": "shx rm -f oclif.manifest.json oclif.lock",
     "prepack": "sf-prepack",
     "prepare": "sf-install",
     "test": "wireit",
@@ -181,7 +184,7 @@
       "output": []
     },
     "test:command-reference": {
-      "command": "\"./bin/dev\" commandreference:generate --erroronwarnings",
+      "command": "ts-node \"./bin/dev.js\" commandreference:generate --erroronwarnings",
       "files": [
         "src/**/*.ts",
         "messages/**",
@@ -192,7 +195,7 @@
       ]
     },
     "test:deprecation-policy": {
-      "command": "\"./bin/dev\" snapshot:compare",
+      "command": "ts-node \"./bin/dev.js\" snapshot:compare",
       "files": [
         "src/**/*.ts"
       ],
@@ -202,12 +205,14 @@
       ]
     },
     "test:json-schema": {
-      "command": "\"./bin/dev\" schema:compare",
+      "command": "ts-node \"./bin/dev.js\" schema:compare",
       "files": [
         "src/**/*.ts",
         "schemas"
       ],
       "output": []
     }
-  }
+  },
+  "exports": "./lib/index.js",
+  "type": "module"
 }

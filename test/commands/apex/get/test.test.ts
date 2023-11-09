@@ -4,27 +4,28 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { resolve } from 'node:path';
-import * as fs from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
 import { Connection, Org } from '@salesforce/core';
-import { createSandbox, SinonSandbox } from 'sinon';
+import sinon from 'sinon';
 import { Ux } from '@salesforce/sf-plugins-core';
 import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
-import Test from '../../../../src/commands/apex/get/test';
-import { runWithFailures, testRunSimple, testRunSimpleResult, testRunWithFailuresResult } from '../../../testData';
+import Test from '../../../../src/commands/apex/get/test.js';
+import { runWithFailures, testRunSimple, testRunSimpleResult, testRunWithFailuresResult } from '../../../testData.js';
 
 let logStub: sinon.SinonStub;
 let styledJsonStub: sinon.SinonStub;
 
 describe('apex:test:report', () => {
-  let sandbox: SinonSandbox;
-  const config = new Config({ root: resolve(__dirname, '../../package.json') });
+  let sandbox: sinon.SinonSandbox;
+  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
   config.bin = 'sfdx';
 
   beforeEach(async () => {
-    sandbox = createSandbox();
+    sandbox = sinon.createSandbox();
     logStub = sandbox.stub(Ux.prototype, 'log');
     styledJsonStub = sandbox.stub(Ux.prototype, 'styledJSON');
     sandbox.stub(Connection.prototype, 'getUsername').returns('test@example.com');

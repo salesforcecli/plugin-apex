@@ -4,6 +4,8 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { TestService } from '@salesforce/apex-node';
 import {
   Flags,
@@ -14,10 +16,10 @@ import {
   Ux,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { RunResult, TestReporter } from '../../../reporters';
-import { resultFormat } from '../../../utils';
+import { RunResult, TestReporter } from '../../../reporters/index.js';
+import { resultFormat } from '../../../utils.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'report');
 export default class Test extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');

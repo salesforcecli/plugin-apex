@@ -4,23 +4,24 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { resolve } from 'node:path';
-import * as fs from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
 import { Config } from '@oclif/core';
-import { createSandbox } from 'sinon';
+import sinon from 'sinon';
 import { LogService } from '@salesforce/apex-node';
 import { expect } from 'chai';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
-import Log from '../../../../src/commands/apex/get/log';
+import Log from '../../../../src/commands/apex/get/log.js';
 
 describe('apex:log:get', () => {
-  const config = new Config({ root: resolve(__dirname, '../../package.json') });
+  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
   let sandbox: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;
 
   beforeEach(() => {
-    sandbox = createSandbox();
+    sandbox = sinon.createSandbox();
     logStub = sandbox.stub(SfCommand.prototype, 'log');
     sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
   });

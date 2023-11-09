@@ -5,6 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { LogService } from '@salesforce/apex-node';
 import {
   Flags,
@@ -14,9 +16,9 @@ import {
   loglevel,
 } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
-import { colorizeLog } from '../../../legacyColorization';
+import { colorizeLog } from '../../../legacyColorization.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'tail');
 
 export default class Log extends SfCommand<void> {

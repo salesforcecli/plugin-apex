@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 export const FAILURE_EXIT_CODE = 100;
 export const colorSuccess = chalk.bold.green;
 export const colorError = chalk.bold.red;

@@ -4,11 +4,16 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
-import * as chalk from 'chalk';
+import { readFile } from 'node:fs/promises';
+import chalk from 'chalk';
+import convert from 'color-convert';
+import colorName from 'color-name';
 import { Logger } from '@salesforce/core';
 
-type ColorMap = Record<'CONSTRUCTOR_' | 'EXCEPTION_' | 'FATAL_' | 'METHOD_' | 'SOQL_' | 'USER_' | 'VARIABLE_', string>;
+type ColorMap = Record<
+  'CONSTRUCTOR_' | 'EXCEPTION_' | 'FATAL_' | 'METHOD_' | 'SOQL_' | 'USER_' | 'VARIABLE_',
+  keyof typeof colorName
+>;
 
 const DEFAULT_COLOR_MAP: ColorMap = {
   CONSTRUCTOR_: 'magenta',
@@ -32,8 +37,7 @@ export async function colorizeLog(log: string): Promise<string> {
   const localColorMapFile = process.env.SFDX_APEX_LOG_COLOR_MAP;
   if (localColorMapFile) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      colorMap = require(localColorMapFile) as ColorMap;
+      colorMap = JSON.parse(await readFile(localColorMapFile, 'utf-8')) as ColorMap;
     } catch (err) {
       logger.warn(`Color registry not found: ${localColorMapFile}`);
     }
@@ -52,7 +56,8 @@ export async function colorizeLog(log: string): Promise<string> {
     ...logLines.map((logLine) => {
       for (const [key, color] of Object.entries(colorMap)) {
         if (logLine.includes(`|${key}`)) {
-          const colorFn = chalk.keyword(color);
+          const hex = convert.keyword.hex(color);
+          const colorFn = chalk.hex(hex);
 
           if (typeof colorFn !== 'function') {
             logger.warn(`Color ${color} is not supported`);

@@ -4,12 +4,12 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import * as path from 'node:path';
-import * as fs from 'node:fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { config, expect } from 'chai';
 import { TestRunIdResult } from '@salesforce/apex-node';
-import { RunResult } from '../../../../src/reporters';
+import { RunResult } from '../../../../src/reporters/index.js';
 config.truncateThreshold = 0;
 
 describe('apex get test', () => {

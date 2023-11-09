@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { ApexTestResultData, ApexTestResultOutcome, TestResult } from '@salesforce/apex-node';
-import {ApexTestRunResultStatus} from '@salesforce/apex-node/lib/src/tests/types';
+import { ApexTestRunResultStatus } from '@salesforce/apex-node/lib/src/tests/types.js';
 
 export type RunResult = {
   summary: Summary;
@@ -32,7 +32,7 @@ type Summary = {
   userId: string;
   orgWideCoverage?: string;
   testRunCoverage?: string;
-}
+};
 
 type CliTestResult = {
   Id: string;
@@ -51,7 +51,7 @@ type ClassCoverage = {
   id: string;
   name: string;
   totalLines: number;
-  lines: Record<string,number>;
+  lines: Record<string, number>;
   totalCovered: number;
   coveredPercent: number;
 };
@@ -112,7 +112,7 @@ export class JsonReporter {
         value = `${value} ms`;
       }
 
-     return Object.assign(summary, { [key]: value });
+      return Object.assign(summary, { [key]: value });
     });
 
     return summary as Summary;
