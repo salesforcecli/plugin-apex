@@ -1,3 +1,9 @@
+## [3.0.2](https://github.com/salesforcecli/plugin-apex/compare/3.0.1...3.0.2) (2023-11-10)
+
+### Bug Fixes
+
+- add NUT for locale start time ([2bc04dc](https://github.com/salesforcecli/plugin-apex/commit/2bc04dce4d7f4e298537c123684c5529b3ea5fb6))
+
 ## [3.0.1](https://github.com/salesforcecli/plugin-apex/compare/2.3.20...3.0.1) (2023-11-09)
 
 ## [2.3.20](https://github.com/salesforcecli/plugin-apex/compare/2.3.19...2.3.20) (2023-10-17)
