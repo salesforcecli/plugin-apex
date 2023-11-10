@@ -54,6 +54,28 @@ describe('apex run test', () => {
         '<testcase name="testGetPicturesWithResults" classname="TestPropertyController" time="'
       );
     });
+    describe('start time user locale', () => {
+      let langEnvVar: string | undefined;
+      before(() => {
+        langEnvVar = process.env.LANG;
+        process.env.LANG = 'en-CA';
+      });
+      after(() => {
+        process.env.LANG = langEnvVar;
+      });
+      it('will print junit format in user locale', async () => {
+        // If the command returns a 0 exit code this test passes.
+        // This test ensures this GH issue is fixed: https://github.com/forcedotcom/cli/issues/2220
+        const result = execCmd('apex:run:test --result-format junit --wait 10', { ensureExitCode: 0 }).shellOutput
+          .stdout;
+        expect(result).to.include('<?xml version="1.0" encoding="UTF-8"?>');
+        expect(result).to.include('<testsuites>');
+        expect(result).to.include('<testsuite name="force.apex" timestamp="');
+        expect(result).to.include(
+          '<testcase name="testGetPicturesWithResults" classname="TestPropertyController" time="'
+        );
+      });
+    });
   });
 
   describe('--code-coverage', () => {
