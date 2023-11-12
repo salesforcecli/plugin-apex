@@ -1,3 +1,9 @@
+## [3.0.3](https://github.com/salesforcecli/plugin-apex/compare/3.0.2...3.0.3) (2023-11-12)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 4.1.0 to 4.1.1 ([3069e63](https://github.com/salesforcecli/plugin-apex/commit/3069e6302316ae3c2133a65abb29dc6daaf2bf19))
+
 ## [3.0.2](https://github.com/salesforcecli/plugin-apex/compare/3.0.1...3.0.2) (2023-11-10)
 
 ### Bug Fixes
