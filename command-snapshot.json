@@ -87,7 +87,7 @@
   {
     "command": "apex:tail:log",
     "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "color", "debug-level", "json", "loglevel", "skip-trace-flag", "target-org"],
+    "flags": ["api-version", "color", "debug-level", "loglevel", "skip-trace-flag", "target-org"],
     "alias": ["force:apex:log:tail"],
     "flagChars": ["c", "d", "o", "s"],
     "flagAliases": ["apiversion", "debuglevel", "skiptraceflag", "targetusername", "u"]

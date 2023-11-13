@@ -27,7 +27,7 @@ export default class Log extends SfCommand<void> {
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
   public static readonly aliases = ['force:apex:log:tail'];
-
+  public static readonly enableJsonFlag = false;
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
@@ -70,15 +70,8 @@ export default class Log extends SfCommand<void> {
 
   public async logTailer(fullLog: string): Promise<void> {
     if (fullLog) {
-      if (this.jsonEnabled()) {
-        this.styledJSON({
-          status: process.exitCode,
-          result: fullLog,
-        });
-      } else {
-        const output = this.color ? await colorizeLog(fullLog) : fullLog;
-        this.log(output);
-      }
+      const output = this.color ? await colorizeLog(fullLog) : fullLog;
+      this.log(output);
     }
   }
 
