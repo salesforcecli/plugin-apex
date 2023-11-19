@@ -103,11 +103,11 @@ USAGE
   $ sf apex get log -o <value> [--json] [--api-version <value>] [-i <value>] [-n <value>] [-d <value>]
 
 FLAGS
-  -d, --output-dir=<value>  Directory for saving the log files.
-  -i, --log-id=<value>      ID of the specific log to display.
-  -n, --number=<value>      Number of the most recent logs to display.
-  -o, --target-org=<value>  (required) Username or alias of the target org.
-  --api-version=<value>     Override the api version used for api requests made by this command
+  -d, --output-dir=<value>   Directory for saving the log files.
+  -i, --log-id=<value>       ID of the specific log to display.
+  -n, --number=<value>       Number of the most recent logs to display.
+  -o, --target-org=<value>   (required) Username or alias of the target org.
+      --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -145,7 +145,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.4/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.5/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -163,7 +163,7 @@ FLAGS
   -o, --target-org=<value>      (required) Username or alias of the target org.
   -r, --result-format=<option>  [default: human] Format of the results.
                                 <options: human|tap|junit|json>
-  --api-version=<value>         Override the api version used for api requests made by this command
+      --api-version=<value>     Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -197,7 +197,7 @@ EXAMPLES
       me@myorg',
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.4/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.5/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -208,8 +208,8 @@ USAGE
   $ sf apex list log -o <value> [--json] [--api-version <value>]
 
 FLAGS
-  -o, --target-org=<value>  (required) Username or alias of the target org.
-  --api-version=<value>     Override the api version used for api requests made by this command
+  -o, --target-org=<value>   (required) Username or alias of the target org.
+      --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -235,7 +235,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.4/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.5/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -246,9 +246,9 @@ USAGE
   $ sf apex run -o <value> [--json] [--api-version <value>] [-f <value>]
 
 FLAGS
-  -f, --file=<value>        Path to a local file that contains Apex code.
-  -o, --target-org=<value>  (required) Username or alias of the target org.
-  --api-version=<value>     Override the api version used for api requests made by this command
+  -f, --file=<value>         Path to a local file that contains Apex code.
+  -o, --target-org=<value>   (required) Username or alias of the target org.
+      --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -280,7 +280,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.4/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.5/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -309,7 +309,7 @@ FLAGS
                                 timeouts occur frequently.
   -y, --synchronous             Runs test methods from a single Apex class synchronously; if not specified, tests are
                                 run asynchronously.
-  --api-version=<value>         Override the api version used for api requests made by this command
+      --api-version=<value>     Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -386,7 +386,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.4/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.5/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -394,17 +394,14 @@ Activate debug logging and display logs in the terminal.
 
 ```
 USAGE
-  $ sf apex tail log -o <value> [--json] [--api-version <value>] [-c] [-d <value> | -s]
+  $ sf apex tail log -o <value> [--api-version <value>] [-c] [-d <value> | -s]
 
 FLAGS
   -c, --color                Apply default colors to noteworthy log lines.
   -d, --debug-level=<value>  Debug level to set on the DEVELOPER_LOG trace flag for your user.
   -o, --target-org=<value>   (required) Username or alias of the target org.
   -s, --skip-trace-flag      Skip trace flag setup. Assumes that a trace flag and debug level are fully set up.
-  --api-version=<value>      Override the api version used for api requests made by this command
-
-GLOBAL FLAGS
-  --json  Format output as json.
+      --api-version=<value>  Override the api version used for api requests made by this command
 
 DESCRIPTION
   Activate debug logging and display logs in the terminal.
@@ -428,6 +425,6 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.4/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.5/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->
