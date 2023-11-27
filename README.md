@@ -145,7 +145,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.7/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -197,7 +197,7 @@ EXAMPLES
       me@myorg',
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.7/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -235,7 +235,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.7/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -280,7 +280,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.7/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -301,7 +301,7 @@ FLAGS
   -o, --target-org=<value>      (required) Username or alias of the target org.
   -r, --result-format=<option>  [default: human] Format of the test results.
                                 <options: human|tap|junit|json>
-  -s, --suite-names=<value>...  Apex test suite names to run; default is all suites.
+  -s, --suite-names=<value>...  Apex test suite names to run.
   -t, --tests=<value>...        Apex test class names or IDs and, if applicable, test methods to run; default is all
                                 tests.
   -v, --detailed-coverage       Display detailed code coverage per test.
@@ -373,7 +373,7 @@ FLAG DESCRIPTIONS
     For multiple classes, repeat the flag for each.
     --class-names Class1 --class-names Class2
 
-  -s, --suite-names=<value>...  Apex test suite names to run; default is all suites.
+  -s, --suite-names=<value>...  Apex test suite names to run.
 
     If you select --suite-names, you can't specify --class-names or --tests.
     For multiple suites, repeat the flag for each.
@@ -386,7 +386,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.7/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -425,6 +425,6 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.7/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->

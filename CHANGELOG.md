@@ -1,3 +1,9 @@
+## [3.0.8](https://github.com/salesforcecli/plugin-apex/compare/3.0.7...3.0.8) (2023-11-27)
+
+### Bug Fixes
+
+- correct suite-names flag summary ([00ae513](https://github.com/salesforcecli/plugin-apex/commit/00ae513ab4472a71b85a971c44434c4706a46acb))
+
 ## [3.0.7](https://github.com/salesforcecli/plugin-apex/compare/3.0.6...3.0.7) (2023-11-26)
 
 ### Bug Fixes
