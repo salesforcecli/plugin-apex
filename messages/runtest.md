@@ -50,7 +50,7 @@ For multiple classes, repeat the flag for each.
 
 # flags.suite-names.summary
 
-Apex test suite names to run; default is all suites.
+Apex test suite names to run.
 
 # flags.suite-names.description
 
