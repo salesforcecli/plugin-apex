@@ -768,7 +768,7 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^3.0.0", "@oclif/core@^3.0.4", "@oclif/core@^3.10.8", "@oclif/core@^3.12.0", "@oclif/core@^3.3.1":
+"@oclif/core@^3.0.0", "@oclif/core@^3.0.4", "@oclif/core@^3.10.8", "@oclif/core@^3.3.1":
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-3.12.0.tgz#4b38b1b5dab2f7585f89c3927a8a157b258b4bd6"
   integrity sha512-mT1Vpd1E20IJ7P6GDYOivylPdTHq/xVgFjeCDjitFW86UAklFM8BEFyFB7KpsTvpmjRbCoda3yU10lSI1224lw==
@@ -7953,6 +7953,7 @@ workerpool@6.2.1:
   integrity sha512-ILEIE97kDZvF9Wb9f6h5aXK4swSlKGUcOEGiIYb2OOu/IrDU9iwj0fD//SsA6E5ibwJxpEvhullJY4Sl4GcpAw==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
