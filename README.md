@@ -106,7 +106,8 @@ FLAGS
   -d, --output-dir=<value>   Directory for saving the log files.
   -i, --log-id=<value>       ID of the specific log to display.
   -n, --number=<value>       Number of the most recent logs to display.
-  -o, --target-org=<value>   (required) Username or alias of the target org.
+  -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
+                             configuration variable is already set.
       --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
@@ -145,7 +146,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.9/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -160,7 +161,8 @@ FLAGS
   -c, --code-coverage           Retrieve code coverage results.
   -d, --output-dir=<value>      Directory in which to store test result files.
   -i, --test-run-id=<value>     (required) ID of the test run.
-  -o, --target-org=<value>      (required) Username or alias of the target org.
+  -o, --target-org=<value>      (required) Username or alias of the target org. Not required if the `target-org`
+                                configuration variable is already set.
   -r, --result-format=<option>  [default: human] Format of the results.
                                 <options: human|tap|junit|json>
       --api-version=<value>     Override the api version used for api requests made by this command
@@ -197,7 +199,7 @@ EXAMPLES
       me@myorg',
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.9/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -208,7 +210,8 @@ USAGE
   $ sf apex list log -o <value> [--json] [--api-version <value>]
 
 FLAGS
-  -o, --target-org=<value>   (required) Username or alias of the target org.
+  -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
+                             configuration variable is already set.
       --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
@@ -235,7 +238,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.9/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -247,7 +250,8 @@ USAGE
 
 FLAGS
   -f, --file=<value>         Path to a local file that contains Apex code.
-  -o, --target-org=<value>   (required) Username or alias of the target org.
+  -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
+                             configuration variable is already set.
       --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
@@ -280,7 +284,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.9/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -298,7 +302,8 @@ FLAGS
   -l, --test-level=<option>     Level of tests to run; default is RunLocalTests.
                                 <options: RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests>
   -n, --class-names=<value>...  Apex test class names to run; default is all classes.
-  -o, --target-org=<value>      (required) Username or alias of the target org.
+  -o, --target-org=<value>      (required) Username or alias of the target org. Not required if the `target-org`
+                                configuration variable is already set.
   -r, --result-format=<option>  [default: human] Format of the test results.
                                 <options: human|tap|junit|json>
   -s, --suite-names=<value>...  Apex test suite names to run.
@@ -386,7 +391,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.9/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -399,7 +404,8 @@ USAGE
 FLAGS
   -c, --color                Apply default colors to noteworthy log lines.
   -d, --debug-level=<value>  Debug level to set on the DEVELOPER_LOG trace flag for your user.
-  -o, --target-org=<value>   (required) Username or alias of the target org.
+  -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
+                             configuration variable is already set.
   -s, --skip-trace-flag      Skip trace flag setup. Assumes that a trace flag and debug level are fully set up.
       --api-version=<value>  Override the api version used for api requests made by this command
 
@@ -425,6 +431,6 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.8/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.9/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->
