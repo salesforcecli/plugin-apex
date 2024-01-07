@@ -20,7 +20,7 @@
     "@salesforce/dev-scripts": "^8.2.0",
     "@salesforce/plugin-command-reference": "^3.0.59",
     "@types/color-convert": "^2.0.3",
-    "eslint-plugin-sf-plugin": "^1.17.0",
+    "eslint-plugin-sf-plugin": "^1.17.1",
     "oclif": "^4.1.0",
     "shx": "^0.3.4",
     "ts-node": "^10.9.2",
