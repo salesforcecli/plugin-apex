@@ -1,3 +1,9 @@
+## [3.0.18](https://github.com/salesforcecli/plugin-apex/compare/3.0.17...3.0.18) (2024-01-14)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 7.0.0 to 7.1.2 ([1f20b76](https://github.com/salesforcecli/plugin-apex/commit/1f20b768033ff9c7893cb09d5abbf45ccf9cfbcf))
+
 ## [3.0.17](https://github.com/salesforcecli/plugin-apex/compare/3.0.16...3.0.17) (2024-01-08)
 
 ### Bug Fixes
