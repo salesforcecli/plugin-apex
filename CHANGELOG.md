@@ -1,3 +1,9 @@
+## [3.0.19](https://github.com/salesforcecli/plugin-apex/compare/3.0.18...3.0.19) (2024-01-17)
+
+### Bug Fixes
+
+- bump to latest apex lib ([c3281a9](https://github.com/salesforcecli/plugin-apex/commit/c3281a95ccf5ae50cbe2f3d4111a7994079b022d))
+
 ## [3.0.18](https://github.com/salesforcecli/plugin-apex/compare/3.0.17...3.0.18) (2024-01-14)
 
 ### Bug Fixes
