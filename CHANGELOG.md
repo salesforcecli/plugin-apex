@@ -1,3 +1,9 @@
+## [3.0.21](https://github.com/salesforcecli/plugin-apex/compare/3.0.20...3.0.21) (2024-01-28)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 6.4.7 to 6.5.1 ([912b2c5](https://github.com/salesforcecli/plugin-apex/commit/912b2c58dfc933ac2f2baade9a932ea0716ebf97))
+
 ## [3.0.20](https://github.com/salesforcecli/plugin-apex/compare/3.0.19...3.0.20) (2024-01-21)
 
 ### Bug Fixes
