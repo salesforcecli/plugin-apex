@@ -1,3 +1,9 @@
+## [3.0.25](https://github.com/salesforcecli/plugin-apex/compare/3.0.24...3.0.25) (2024-02-21)
+
+### Bug Fixes
+
+- **deps:** bump ip from 2.0.0 to 2.0.1 ([63265a2](https://github.com/salesforcecli/plugin-apex/commit/63265a29b8521c6c8247b888f495c98bdd208dac))
+
 ## [3.0.24](https://github.com/salesforcecli/plugin-apex/compare/3.0.23...3.0.24) (2024-02-18)
 
 ### Bug Fixes
