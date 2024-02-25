@@ -55,6 +55,11 @@ GitIgnoreTest2/
 coverage
 coverage.lcov
 
+
+npm-shrinkwrap.json
+oclif.manifest.json
+oclif.lock
+
 # -- CLEAN ALL
 *.tsbuildinfo
 .eslintcache
@@ -67,4 +72,3 @@ node_modules
 # os specific files
 .DS_Store
 .idea
-oclif.lock
