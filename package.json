@@ -18,7 +18,7 @@
     "@oclif/plugin-command-snapshot": "^5.0.9",
     "@salesforce/cli-plugins-testkit": "^5.1.10",
     "@salesforce/dev-scripts": "^8.4.1",
-    "@salesforce/plugin-command-reference": "^3.0.68",
+    "@salesforce/plugin-command-reference": "^3.0.69",
     "@types/color-convert": "^2.0.3",
     "eslint-plugin-sf-plugin": "^1.17.3",
     "oclif": "^4.4.17",
