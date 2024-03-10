@@ -1,3 +1,9 @@
+## [3.0.28](https://github.com/salesforcecli/plugin-apex/compare/3.0.27...3.0.28) (2024-03-10)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 3.20.0 to 3.23.0 ([e89df65](https://github.com/salesforcecli/plugin-apex/commit/e89df655e848be64280e0b9125a69103bb4d7e4c))
+
 ## [3.0.27](https://github.com/salesforcecli/plugin-apex/compare/3.0.26...3.0.27) (2024-03-03)
 
 ### Bug Fixes
