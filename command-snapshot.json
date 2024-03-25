@@ -1,27 +1,15 @@
 [
   {
-    "command": "apex:get:log",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "log-id", "loglevel", "number", "output-dir", "target-org"],
     "alias": ["force:apex:log:get"],
+    "command": "apex:get:log",
+    "flagAliases": ["apiversion", "logid", "output-directory", "outputdir", "targetusername", "u"],
     "flagChars": ["d", "i", "n", "o"],
-    "flagAliases": ["apiversion", "logid", "output-directory", "outputdir", "targetusername", "u"]
+    "flags": ["api-version", "flags-dir", "json", "log-id", "loglevel", "number", "output-dir", "target-org"],
+    "plugin": "@salesforce/plugin-apex"
   },
   {
-    "command": "apex:get:test",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": [
-      "api-version",
-      "code-coverage",
-      "json",
-      "loglevel",
-      "output-dir",
-      "result-format",
-      "target-org",
-      "test-run-id"
-    ],
     "alias": ["force:apex:test:report"],
-    "flagChars": ["c", "d", "i", "o", "r"],
+    "command": "apex:get:test",
     "flagAliases": [
       "apiversion",
       "codecoverage",
@@ -31,45 +19,40 @@
       "targetusername",
       "testrunid",
       "u"
-    ]
-  },
-  {
-    "command": "apex:list:log",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "json", "loglevel", "target-org"],
-    "alias": ["force:apex:log:list"],
-    "flagChars": ["o"],
-    "flagAliases": ["apiversion", "targetusername", "u"]
-  },
-  {
-    "command": "apex:run",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "file", "json", "loglevel", "target-org"],
-    "alias": ["force:apex:execute"],
-    "flagChars": ["f", "o"],
-    "flagAliases": ["apexcodefile", "apiversion", "targetusername", "u"]
-  },
-  {
-    "command": "apex:run:test",
-    "plugin": "@salesforce/plugin-apex",
+    ],
+    "flagChars": ["c", "d", "i", "o", "r"],
     "flags": [
       "api-version",
-      "class-names",
       "code-coverage",
-      "detailed-coverage",
+      "flags-dir",
       "json",
       "loglevel",
       "output-dir",
       "result-format",
-      "suite-names",
-      "synchronous",
       "target-org",
-      "test-level",
-      "tests",
-      "wait"
+      "test-run-id"
     ],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": ["force:apex:log:list"],
+    "command": "apex:list:log",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["o"],
+    "flags": ["api-version", "flags-dir", "json", "loglevel", "target-org"],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": ["force:apex:execute"],
+    "command": "apex:run",
+    "flagAliases": ["apexcodefile", "apiversion", "targetusername", "u"],
+    "flagChars": ["f", "o"],
+    "flags": ["api-version", "file", "flags-dir", "json", "loglevel", "target-org"],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
     "alias": ["force:apex:test:run"],
-    "flagChars": ["c", "d", "l", "n", "o", "r", "s", "t", "v", "w", "y"],
+    "command": "apex:run:test",
     "flagAliases": [
       "apiversion",
       "classnames",
@@ -82,14 +65,33 @@
       "targetusername",
       "testlevel",
       "u"
-    ]
+    ],
+    "flagChars": ["c", "d", "l", "n", "o", "r", "s", "t", "v", "w", "y"],
+    "flags": [
+      "api-version",
+      "class-names",
+      "code-coverage",
+      "detailed-coverage",
+      "flags-dir",
+      "json",
+      "loglevel",
+      "output-dir",
+      "result-format",
+      "suite-names",
+      "synchronous",
+      "target-org",
+      "test-level",
+      "tests",
+      "wait"
+    ],
+    "plugin": "@salesforce/plugin-apex"
   },
   {
-    "command": "apex:tail:log",
-    "plugin": "@salesforce/plugin-apex",
-    "flags": ["api-version", "color", "debug-level", "loglevel", "skip-trace-flag", "target-org"],
     "alias": ["force:apex:log:tail"],
+    "command": "apex:tail:log",
+    "flagAliases": ["apiversion", "debuglevel", "skiptraceflag", "targetusername", "u"],
     "flagChars": ["c", "d", "o", "s"],
-    "flagAliases": ["apiversion", "debuglevel", "skiptraceflag", "targetusername", "u"]
+    "flags": ["api-version", "color", "debug-level", "flags-dir", "loglevel", "skip-trace-flag", "target-org"],
+    "plugin": "@salesforce/plugin-apex"
   }
 ]
