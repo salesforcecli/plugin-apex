@@ -100,7 +100,8 @@ Fetch the specified log or given number of most recent logs from the org.
 
 ```
 USAGE
-  $ sf apex get log -o <value> [--json] [--api-version <value>] [-i <value>] [-n <value>] [-d <value>]
+  $ sf apex get log -o <value> [--json] [--flags-dir <value>] [--api-version <value>] [-i <value>] [-n <value>]
+    [-d <value>]
 
 FLAGS
   -d, --output-dir=<value>   Directory for saving the log files.
@@ -111,7 +112,8 @@ FLAGS
       --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Fetch the specified log or given number of most recent logs from the org.
@@ -146,7 +148,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.31/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.0/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -154,8 +156,8 @@ Display test results for a specific asynchronous test run.
 
 ```
 USAGE
-  $ sf apex get test -o <value> -i <value> [--json] [--api-version <value>] [-c] [-d <value>] [-r
-    human|tap|junit|json]
+  $ sf apex get test -o <value> -i <value> [--json] [--flags-dir <value>] [--api-version <value>] [-c] [-d <value>]
+    [-r human|tap|junit|json]
 
 FLAGS
   -c, --code-coverage           Retrieve code coverage results.
@@ -168,7 +170,8 @@ FLAGS
       --api-version=<value>     Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Display test results for a specific asynchronous test run.
@@ -199,7 +202,7 @@ EXAMPLES
       me@myorg',
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.31/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.0/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -207,7 +210,7 @@ Display a list of IDs and general information about debug logs.
 
 ```
 USAGE
-  $ sf apex list log -o <value> [--json] [--api-version <value>]
+  $ sf apex list log -o <value> [--json] [--flags-dir <value>] [--api-version <value>]
 
 FLAGS
   -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
@@ -215,7 +218,8 @@ FLAGS
       --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Display a list of IDs and general information about debug logs.
@@ -238,7 +242,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.31/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.0/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -246,7 +250,7 @@ Execute anonymous Apex code entered on the command line or from a local file.
 
 ```
 USAGE
-  $ sf apex run -o <value> [--json] [--api-version <value>] [-f <value>]
+  $ sf apex run -o <value> [--json] [--flags-dir <value>] [--api-version <value>] [-f <value>]
 
 FLAGS
   -f, --file=<value>         Path to a local file that contains Apex code.
@@ -255,7 +259,8 @@ FLAGS
       --api-version=<value>  Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Execute anonymous Apex code entered on the command line or from a local file.
@@ -284,7 +289,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.31/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.0/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -292,7 +297,7 @@ Invoke Apex tests in an org.
 
 ```
 USAGE
-  $ sf apex run test -o <value> [--json] [--api-version <value>] [-d <value>] [-l
+  $ sf apex run test -o <value> [--json] [--flags-dir <value>] [--api-version <value>] [-d <value>] [-l
     RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests] [-n <value> | -s <value> | -t <value>] [-r human|tap|junit|json]
     [-w <value>] [-y] [-v -c]
 
@@ -317,7 +322,8 @@ FLAGS
       --api-version=<value>     Override the api version used for api requests made by this command
 
 GLOBAL FLAGS
-  --json  Format output as json.
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
 
 DESCRIPTION
   Invoke Apex tests in an org.
@@ -391,7 +397,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.31/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.0/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -399,7 +405,7 @@ Activate debug logging and display logs in the terminal.
 
 ```
 USAGE
-  $ sf apex tail log -o <value> [--api-version <value>] [-c] [-d <value> | -s]
+  $ sf apex tail log -o <value> [--flags-dir <value>] [--api-version <value>] [-c] [-d <value> | -s]
 
 FLAGS
   -c, --color                Apply default colors to noteworthy log lines.
@@ -408,6 +414,9 @@ FLAGS
                              configuration variable is already set.
   -s, --skip-trace-flag      Skip trace flag setup. Assumes that a trace flag and debug level are fully set up.
       --api-version=<value>  Override the api version used for api requests made by this command
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
 
 DESCRIPTION
   Activate debug logging and display logs in the terminal.
@@ -431,6 +440,6 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.0.31/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.0/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->
