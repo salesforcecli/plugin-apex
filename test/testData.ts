@@ -298,7 +298,7 @@ export const runWithMixed: TestResult = {
   ],
 };
 
-export const mixedResult = {
+export const mixedResult: RunResult = {
   summary: {
     commandTime: '60 ms',
     failing: 1,
@@ -321,7 +321,9 @@ export const mixedResult = {
     {
       Id: '07Mxx00000ErgiHUAR',
       QueueItemId: '709xx000001IlUMQA0',
+      // @ts-ignore
       StackTrace: null,
+      // @ts-ignore
       Message: null,
       AsyncApexJobId: '707xx0000AUS2gHQQT',
       MethodName: 'testConfig',
@@ -329,8 +331,10 @@ export const mixedResult = {
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
         Name: 'MyApexTests',
+        // @ts-ignore
         NamespacePrefix: null,
       },
+      // @ts-ignore
       RunTime: null,
       FullName: 'MyApexTests.testConfig',
     },
@@ -467,6 +471,7 @@ export const jsonWithCoverage: RunResult = {
     // @ts-ignore
     testsRan: undefined,
     orgId: '00D4xx00000FH4IEAW',
+    orgWideCoverage: '50%',
     outcome: ApexTestRunResultStatus.Passed,
     passRate: '100%',
     testExecutionTime: '53 ms',
@@ -477,6 +482,7 @@ export const jsonWithCoverage: RunResult = {
     passing: 10,
     skipped: 0,
     testTotalTime: '53 ms',
+    testRunCoverage: '80%',
   },
   tests: [
     {

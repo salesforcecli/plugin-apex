@@ -86,7 +86,7 @@ type CliCoverageResult = {
 
 export class JsonReporter {
   public format(result: TestResult): RunResult {
-    return {
+    const returnObject: RunResult = {
       summary: {
         // result.summary contains more information than we want to return, so we'll specify each key we want to return instead of using ...
         failRate: result.summary.failRate,
@@ -128,6 +128,16 @@ export class JsonReporter {
           }
         : {}),
     };
+
+    if (result.summary.orgWideCoverage) {
+      returnObject.summary.orgWideCoverage = result.summary.orgWideCoverage;
+    }
+
+    if (result.summary.testRunCoverage) {
+      returnObject.summary.testRunCoverage = result.summary.testRunCoverage;
+    }
+
+    return returnObject;
   }
 
   // eslint-disable-next-line class-methods-use-this
