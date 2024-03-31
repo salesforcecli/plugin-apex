@@ -1,3 +1,9 @@
+## [3.1.1](https://github.com/salesforcecli/plugin-apex/compare/3.1.0...3.1.1) (2024-03-31)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/kit from 3.0.15 to 3.1.0 ([56bc54f](https://github.com/salesforcecli/plugin-apex/commit/56bc54f9fc4d66c3355ef28289eddb1ca871507f))
+
 # [3.1.0](https://github.com/salesforcecli/plugin-apex/compare/3.0.31...3.1.0) (2024-03-25)
 
 ### Features
