@@ -4,8 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import fs from 'node:fs';
 import { expect } from 'chai';
 import { ExecuteService } from '@salesforce/apex-node';
@@ -31,9 +30,10 @@ const expectedSuccessResult = {
 describe('apex:execute', () => {
   let sandboxStub: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;
-  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
+  let config: Config;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    config = await Config.load(import.meta.url);
     sandboxStub = sinon.createSandbox();
     logStub = sandboxStub.stub(SfCommand.prototype, 'log');
     sandboxStub.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);

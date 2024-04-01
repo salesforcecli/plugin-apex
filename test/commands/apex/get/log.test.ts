@@ -4,8 +4,6 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import fs from 'node:fs';
 import { Config } from '@oclif/core';
 import sinon from 'sinon';
@@ -16,11 +14,12 @@ import { Org } from '@salesforce/core';
 import Log from '../../../../src/commands/apex/get/log.js';
 
 describe('apex:log:get', () => {
-  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
+  let config: Config;
   let sandbox: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    config = await Config.load(import.meta.url);
     sandbox = sinon.createSandbox();
     logStub = sandbox.stub(SfCommand.prototype, 'log');
     sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
@@ -39,7 +38,7 @@ describe('apex:log:get', () => {
 
   it('0 logs to get', async () => {
     sandbox.stub(LogService.prototype, 'getLogs').resolves([]);
-    const result = await new Log([], config).run();
+    const result = await Log.run([], config);
     expect(result).to.deep.equal([]);
     expect(logStub.firstCall.args[0]).to.equal('No results found');
   });
