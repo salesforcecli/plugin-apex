@@ -4,8 +4,6 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { LogService } from '@salesforce/apex-node';
 import { Config } from '@oclif/core';
 import sinon from 'sinon';
@@ -53,12 +51,13 @@ const rawLogResult = {
 const logRecords = [rawLogResult.result[0], rawLogResult.result[1]];
 
 describe('apex:log:list', () => {
-  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
+  let config: Config;
   let sandbox: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;
   let tableStub: sinon.SinonStub;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    config = await Config.load(import.meta.url);
     sandbox = sinon.createSandbox();
     logStub = sandbox.stub(SfCommand.prototype, 'log');
     tableStub = sandbox.stub(SfCommand.prototype, 'table');

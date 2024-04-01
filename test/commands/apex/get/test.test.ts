@@ -4,8 +4,6 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import fs from 'node:fs';
 import { Connection, Org } from '@salesforce/core';
 import sinon from 'sinon';
@@ -21,10 +19,10 @@ let styledJsonStub: sinon.SinonStub;
 
 describe('apex:test:report', () => {
   let sandbox: sinon.SinonSandbox;
-  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
-  config.bin = 'sfdx';
+  let config: Config;
 
   beforeEach(async () => {
+    config = await Config.load(import.meta.url);
     sandbox = sinon.createSandbox();
     logStub = sandbox.stub(Ux.prototype, 'log');
     styledJsonStub = sandbox.stub(Ux.prototype, 'styledJSON');
@@ -65,7 +63,7 @@ describe('apex:test:report', () => {
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
       expect(logStub.firstCall.args[0]).to.include('ok 1 MyApexTests.testConfig');
-      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex get test');
+      expect(logStub.firstCall.args[0]).to.include('# Run "sf apex get test');
     });
 
     it('should return a success junit format message with async', async () => {
@@ -131,7 +129,7 @@ describe('apex:test:report', () => {
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
       expect(logStub.firstCall.args[0]).to.include('ok 1 MyApexTests.testConfig');
-      expect(logStub.firstCall.args[0]).to.include('# Run "sfdx apex get test');
+      expect(logStub.firstCall.args[0]).to.include('# Run "sf apex get test');
     });
 
     it('should return a success junit format message with async', async () => {
