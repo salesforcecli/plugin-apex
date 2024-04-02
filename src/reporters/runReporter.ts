@@ -6,13 +6,12 @@
  */
 import os from 'node:os';
 
-
 import { ExecuteAnonymousResponse } from '@salesforce/apex-node';
 import { Messages } from '@salesforce/core';
 import { colorError, colorSuccess } from '../utils.js';
 import { ExecuteResult } from '../commands/apex/run.js';
 
-Messages.importMessagesDirectoryFromMetaUrl(import.meta.url)
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'run');
 
 export default class RunReporter {

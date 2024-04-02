@@ -5,8 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import sinon from 'sinon';
 import { LogService } from '@salesforce/apex-node';
 import { Config } from '@oclif/core';
@@ -16,9 +14,10 @@ import Log from '../../../../src/commands/apex/tail/log.js';
 
 describe('apex:log:tail', () => {
   let sandbox: sinon.SinonSandbox;
-  const config = new Config({ root: resolve(dirname(fileURLToPath(import.meta.url)), '../../package.json') });
+  let config: Config;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    config = await Config.load(import.meta.url);
     sandbox = sinon.createSandbox();
 
     sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
