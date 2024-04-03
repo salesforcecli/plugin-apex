@@ -1,3 +1,9 @@
+## [3.1.4](https://github.com/salesforcecli/plugin-apex/compare/3.1.3...3.1.4) (2024-04-03)
+
+### Bug Fixes
+
+- **deps:** bump apex-node to v4 ([#405](https://github.com/salesforcecli/plugin-apex/issues/405)) ([8c1db69](https://github.com/salesforcecli/plugin-apex/commit/8c1db69236499db1a2ba76a232fecbb8c1db0b1d))
+
 ## [3.1.3](https://github.com/salesforcecli/plugin-apex/compare/3.1.2...3.1.3) (2024-04-02)
 
 ### Bug Fixes
