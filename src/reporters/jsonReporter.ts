@@ -4,7 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { ApexTestResultData, ApexTestResultOutcome, TestResult } from '@salesforce/apex-node';
+import { ApexTestResultOutcome, TestResult } from '@salesforce/apex-node';
 import { ApexTestRunResultStatus } from '@salesforce/apex-node/lib/src/tests/types.js';
 
 export type RunResult = {
@@ -37,7 +37,9 @@ type Summary = {
 type CliTestResult = {
   Id: string;
   QueueItemId: string;
+  // TODO: in next major version change to string | null
   StackTrace: string;
+  // TODO: in next major version change to string | null
   Message: string;
   AsyncApexJobId: string;
   MethodName: string;
@@ -82,60 +84,60 @@ type CliCoverageResult = {
   };
 };
 
-const skippedProperties = ['skipRate', 'coveredLines', 'totalLines'];
-const timeProperties = ['testExecutionTimeInMs', 'testTotalTimeInMs', 'commandTimeInMs'];
-
 export class JsonReporter {
   public format(result: TestResult): RunResult {
-    return {
-      summary: this.formatSummary(result),
-      tests: this.formatTestResults(result.tests),
+    const returnObject: RunResult = {
+      summary: {
+        // result.summary contains more information than we want to return, so we'll specify each key we want to return instead of using ...
+        failRate: result.summary.failRate,
+        failing: result.summary.failing,
+        hostname: result.summary.hostname,
+        orgId: result.summary.orgId,
+        outcome: result.summary.outcome as ApexTestRunResultStatus,
+        passRate: result.summary.passRate,
+        passing: result.summary.passing,
+        skipped: result.summary.skipped,
+        testRunId: result.summary.testRunId,
+        testStartTime: result.summary.testStartTime,
+        testsRan: result.summary.testsRan,
+        userId: result.summary.userId,
+        username: result.summary.username,
+        commandTime: `${result.summary.commandTimeInMs} ms`,
+        testExecutionTime: `${result.summary.testExecutionTimeInMs} ms`,
+        testTotalTime: `${result.summary.testTotalTimeInMs} ms`,
+      },
+      tests: result.tests.map((test) => ({
+        Id: test.id,
+        QueueItemId: test.queueItemId,
+        StackTrace: test.stackTrace as string,
+        Message: test.message as string,
+        AsyncApexJobId: test.asyncApexJobId,
+        MethodName: test.methodName,
+        Outcome: test.outcome,
+        ApexClass: {
+          Id: test.apexClass.id,
+          Name: test.apexClass.name,
+          NamespacePrefix: test.apexClass.namespacePrefix,
+        },
+        RunTime: test.runTime,
+        FullName: test.fullName,
+      })),
       ...(result.codecoverage
         ? {
             coverage: this.formatCoverage(result),
           }
         : {}),
     };
-  }
 
-  // eslint-disable-next-line class-methods-use-this
-  private formatSummary(testResult: TestResult): Summary {
-    const summary = {};
+    if (result.summary.orgWideCoverage) {
+      returnObject.summary.orgWideCoverage = result.summary.orgWideCoverage;
+    }
 
-    Object.entries(testResult.summary).forEach(([key, value]) => {
-      if (skippedProperties.includes(key)) {
-        return;
-      }
+    if (result.summary.testRunCoverage) {
+      returnObject.summary.testRunCoverage = result.summary.testRunCoverage;
+    }
 
-      if (timeProperties.includes(key)) {
-        key = key.replace('InMs', '');
-        value = `${value} ms`;
-      }
-
-      return Object.assign(summary, { [key]: value });
-    });
-
-    return summary as Summary;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  private formatTestResults(testResults: ApexTestResultData[]): CliTestResult[] {
-    return testResults.map((test) => ({
-      Id: test.id,
-      QueueItemId: test.queueItemId,
-      StackTrace: test.stackTrace,
-      Message: test.message,
-      AsyncApexJobId: test.asyncApexJobId,
-      MethodName: test.methodName,
-      Outcome: test.outcome,
-      ApexClass: {
-        Id: test.apexClass.id,
-        Name: test.apexClass.name,
-        NamespacePrefix: test.apexClass.namespacePrefix,
-      },
-      RunTime: test.runTime,
-      FullName: test.fullName,
-    })) as CliTestResult[];
+    return returnObject;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -164,7 +166,7 @@ export class JsonReporter {
           lines,
           totalCovered: cov.numLinesCovered,
           coveredPercent: parseInt(cov.percentage, 10),
-        } as ClassCoverage;
+        };
       });
 
       testResult.tests.forEach((test) => {
@@ -180,7 +182,7 @@ export class JsonReporter {
                 Name: perClassCov.apexClassOrTriggerName,
               },
               NumLinesUncovered: perClassCov.numLinesUncovered,
-            } as PerClassCoverage);
+            });
           });
         }
       });
