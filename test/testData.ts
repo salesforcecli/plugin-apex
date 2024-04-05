@@ -134,8 +134,7 @@ export const testRunSimple: TestResult = {
 export const runWithCoverage: TestResult = {
   summary: {
     failRate: '0%',
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error for types to change in next major
     numTestsRan: 1,
     orgId: '00D4xx00000FH4IEAW',
     outcome: 'Passed',
@@ -170,8 +169,7 @@ export const runWithCoverage: TestResult = {
       apexClass: {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error for types to change in next major
         namespacePrefix: null,
         fullName: 'MyApexTests',
       },
@@ -239,8 +237,7 @@ export const runWithFailures: TestResult = {
       apexClass: {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error for types to change in next major
         namespacePrefix: null,
         fullName: 'MyApexTests',
       },
@@ -284,13 +281,12 @@ export const runWithMixed: TestResult = {
       apexClass: {
         id: '01pxx00000NWwb3AAD',
         name: 'MyApexTests',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error for types to change in next major
         namespacePrefix: null,
         fullName: 'MyApexTests',
       },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error for types to change in next major
       runTime: null,
       testTimestamp: '2020-08-25T00:48:02.000+0000',
       fullName: 'MyApexTests.testConfig',
@@ -321,20 +317,19 @@ export const mixedResult: RunResult = {
     {
       Id: '07Mxx00000ErgiHUAR',
       QueueItemId: '709xx000001IlUMQA0',
-      // @ts-ignore
+      // @ts-expect-error for types to change in next major
       StackTrace: null,
-      // @ts-ignore
+      // @ts-expect-error for types to change in next major
       Message: null,
       AsyncApexJobId: '707xx0000AUS2gHQQT',
       MethodName: 'testConfig',
       Outcome: ApexTestResultOutcome.Skip,
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
-        Name: 'MyApexTests',
-        // @ts-ignore
+        Name: 'MyApexTests', // @ts-expect-error for types to change in next major
         NamespacePrefix: null,
       },
-      // @ts-ignore
+      // @ts-expect-error for types to change in next major
       RunTime: null,
       FullName: 'MyApexTests.testConfig',
     },
@@ -468,7 +463,7 @@ export const jsonWithCoverage: RunResult = {
     failing: 0,
     hostname: 'https://na139.salesforce.com',
     failRate: '0%',
-    // @ts-ignore
+    // @ts-expect-error for types to change in next major
     testsRan: undefined,
     orgId: '00D4xx00000FH4IEAW',
     orgWideCoverage: '50%',
@@ -488,20 +483,19 @@ export const jsonWithCoverage: RunResult = {
     {
       ApexClass: {
         Id: '01pxx00000NWwb3AAD',
-        Name: 'MyApexTests',
-        // @ts-ignore
+        Name: 'MyApexTests', // @ts-expect-error for types to change in next major
         NamespacePrefix: null,
       },
       AsyncApexJobId: '707xx0000AUS2gHQQT',
       FullName: 'MyApexTests.testConfig',
       Id: '07Mxx00000ErgiHUAR',
-      // @ts-ignore
+      // @ts-expect-error for types to change in next major
       Message: null,
       MethodName: 'testConfig',
       Outcome: ApexTestResultOutcome.Pass,
       QueueItemId: '709xx000001IlUMQA0',
       RunTime: 53,
-      // @ts-ignore
+      // @ts-expect-error for types to change in next major
       StackTrace: null,
     },
   ],
