@@ -21,7 +21,7 @@
     "@salesforce/plugin-command-reference": "^3.0.74",
     "@types/color-convert": "^2.0.3",
     "eslint-plugin-sf-plugin": "^1.17.5",
-    "oclif": "^4.7.5",
+    "oclif": "^4.7.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
   },
