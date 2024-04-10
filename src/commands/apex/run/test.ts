@@ -229,6 +229,7 @@ export default class Test extends SfCommand<RunCommandResult> {
       const pollingClient = await PollingClient.create({
         frequency: Duration.seconds(1),
         timeout: flags.wait,
+        timeoutErrorName: 'ApexRunTestTimeout',
         poll: async () => {
           const poll = await testService.asyncService.checkRunStatus(testRun.testRunId);
 
@@ -247,7 +248,16 @@ export default class Test extends SfCommand<RunCommandResult> {
               };
         },
       });
-      return pollingClient.subscribe();
+      let result: TestRunIdResult;
+      try {
+        result = await pollingClient.subscribe();
+      } catch (e) {
+        if ((e as Error).name === 'ApexRunTestTimeout') {
+          result = testRun;
+        } else throw SfError.wrap(e as Error);
+      }
+
+      return result;
     } else {
       return testRun;
     }
