@@ -1,3 +1,9 @@
+## [3.1.5](https://github.com/salesforcecli/plugin-apex/compare/3.1.4...3.1.5) (2024-04-11)
+
+### Bug Fixes
+
+- **deps:** jsforce-node and core7 ([9cffcd8](https://github.com/salesforcecli/plugin-apex/commit/9cffcd8412d0d8c5d771e1f323a7b416861b8ab8))
+
 ## [3.1.4](https://github.com/salesforcecli/plugin-apex/compare/3.1.3...3.1.4) (2024-04-03)
 
 ### Bug Fixes
