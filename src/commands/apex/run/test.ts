@@ -217,17 +217,17 @@ export default class Test extends SfCommand<RunCommandResult> {
     };
 
     // cast as TestRunIdResult because we're building an async payload which will return an async result
-    return testService.runTestAsynchronous(
+    return (await testService.runTestAsynchronous(
       payload,
       flags['code-coverage'],
       flags.wait && flags.wait.minutes > 0 ? false : !(flags.synchronous && !this.jsonEnabled()),
       undefined,
-      this.cancellationTokenSource.token
-    ) as Promise<TestRunIdResult>;
+      this.cancellationTokenSource.token,
+      flags.wait
+    )) as TestRunIdResult;
   }
 }
 
-// eslint-disable-next-line class-methods-use-this
 const validateFlags = async (
   classNames?: string[],
   suiteNames?: string[],
