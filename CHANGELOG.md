@@ -1,3 +1,9 @@
+## [3.1.6](https://github.com/salesforcecli/plugin-apex/compare/3.1.5...3.1.6) (2024-04-17)
+
+### Bug Fixes
+
+- allow timeouts with --wait ([48b0494](https://github.com/salesforcecli/plugin-apex/commit/48b04940e510b986fdd8bb65e45fa8a2f4b881ed))
+
 ## [3.1.5](https://github.com/salesforcecli/plugin-apex/compare/3.1.4...3.1.5) (2024-04-11)
 
 ### Bug Fixes
