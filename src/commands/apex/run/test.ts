@@ -168,7 +168,6 @@ export default class Test extends SfCommand<RunCommandResult> {
         await testService.writeResultFiles(result, { dirPath: flags['output-dir'] }, flags['code-coverage']);
       }
 
-      process.exitCode = 69;
       return result;
     }
   }
