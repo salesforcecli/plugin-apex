@@ -1,3 +1,9 @@
+## [3.1.10](https://github.com/salesforcecli/plugin-apex/compare/3.1.9...3.1.10) (2024-04-24)
+
+### Bug Fixes
+
+- **deps:** bump core [skip-validate-pr] ([#428](https://github.com/salesforcecli/plugin-apex/issues/428)) ([dd5480c](https://github.com/salesforcecli/plugin-apex/commit/dd5480cdecfa483741d06e7034c7fcc2fd216cc1))
+
 ## [3.1.9](https://github.com/salesforcecli/plugin-apex/compare/3.1.8...3.1.9) (2024-04-21)
 
 ### Bug Fixes
