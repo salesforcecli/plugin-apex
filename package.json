@@ -15,7 +15,7 @@
     "color-name": "^2.0.0"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^5.1.9",
+    "@oclif/plugin-command-snapshot": "^5.2.0",
     "@salesforce/cli-plugins-testkit": "^5.3.7",
     "@salesforce/dev-scripts": "^9.1.2",
     "@salesforce/plugin-command-reference": "^3.0.86",
