@@ -19,7 +19,7 @@ import { RunResult, TestReporter } from '../../../reporters/index.js';
 import { resultFormat } from '../../../utils.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'report');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'gettest');
 export default class Test extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
@@ -63,25 +63,24 @@ export default class Test extends SfCommand<RunResult> {
   };
 
   public async run(): Promise<RunResult> {
-    const { flags } = await this.parse(Test);
+    try {
+      const { flags } = await this.parse(Test);
 
-    // add listener for errors
-    process.on('uncaughtException', (err) => {
-      throw messages.createError('apexLibErr', [err.message]);
-    });
+      const conn = flags['target-org'].getConnection(flags['api-version']);
 
-    const conn = flags['target-org'].getConnection(flags['api-version']);
+      const testService = new TestService(conn);
+      const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
 
-    const testService = new TestService(conn);
-    const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
+      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
 
-    const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
-
-    return testReporter.report(result, {
-      'output-dir': flags['output-dir'],
-      'result-format': flags['result-format'],
-      json: flags.json,
-      'code-coverage': flags['code-coverage'],
-    });
+      return await testReporter.report(result, {
+        'output-dir': flags['output-dir'],
+        'result-format': flags['result-format'],
+        json: flags.json,
+        'code-coverage': flags['code-coverage'],
+      });
+    } catch (e) {
+      throw messages.createError('apexLibErr', [(e as Error).message]);
+    }
   }
 }

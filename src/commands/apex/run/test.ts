@@ -17,7 +17,6 @@ import {
 } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
-
 import { RunResult, TestReporter } from '../../../reporters/index.js';
 import { resultFormat } from '../../../utils.js';
 
@@ -122,11 +121,6 @@ export default class Test extends SfCommand<RunCommandResult> {
       flags['test-level'] as TestLevel
     );
 
-    // add listener for errors
-    process.on('uncaughtException', (err) => {
-      throw messages.createError('apexLibErr', [err.message]);
-    });
-
     // graceful shutdown
     const exitHandler = async (): Promise<void> => {
       await this.cancellationTokenSource.asyncCancel();
@@ -139,36 +133,40 @@ export default class Test extends SfCommand<RunCommandResult> {
     process.on('SIGTERM', exitHandler);
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
-    const testService = new TestService(conn);
+    try {
+      const testService = new TestService(conn);
 
-    // NOTE: This is a *bug*. Synchronous test runs should throw an error when multiple test classes are specified
-    // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
-    // Address with W-9163533
-    const result =
-      flags.synchronous && testLevel === TestLevel.RunSpecifiedTests
-        ? await this.runTest(testService, flags, testLevel)
-        : await this.runTestAsynchronous(testService, flags, testLevel);
+      // NOTE: This is a *bug*. Synchronous test runs should throw an error when multiple test classes are specified
+      // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
+      // Address with W-9163533
+      const result =
+        flags.synchronous && testLevel === TestLevel.RunSpecifiedTests
+          ? await this.runTest(testService, flags, testLevel)
+          : await this.runTestAsynchronous(testService, flags, testLevel);
 
-    if (this.cancellationTokenSource.token.isCancellationRequested) {
-      throw new SfError('Cancelled');
-    }
-
-    if ('summary' in result) {
-      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
-      return testReporter.report(result, flags);
-    } else {
-      // Tests were ran asynchronously or the --wait timed out.
-      // Log the proper 'apex get test' command for the user to run later
-      this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
-      this.info(messages.getMessage('runTestSyncInstructions'));
-
-      if (flags['output-dir']) {
-        // testService writes a file with just the test run id in it to test-run-id.txt
-        // github.com/forcedotcom/salesforcedx-apex/blob/c986abfabee3edf12f396f1d2e43720988fa3911/src/tests/testService.ts#L245-L246
-        await testService.writeResultFiles(result, { dirPath: flags['output-dir'] }, flags['code-coverage']);
+      if (this.cancellationTokenSource.token.isCancellationRequested) {
+        throw new SfError('Cancelled');
       }
 
-      return result;
+      if ('summary' in result) {
+        const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
+        return await testReporter.report(result, flags);
+      } else {
+        // Tests were ran asynchronously or the --wait timed out.
+        // Log the proper 'apex get test' command for the user to run later
+        this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
+        this.info(messages.getMessage('runTestSyncInstructions'));
+
+        if (flags['output-dir']) {
+          // testService writes a file with just the test run id in it to test-run-id.txt
+          // github.com/forcedotcom/salesforcedx-apex/blob/c986abfabee3edf12f396f1d2e43720988fa3911/src/tests/testService.ts#L245-L246
+          await testService.writeResultFiles(result, { dirPath: flags['output-dir'] }, flags['code-coverage']);
+        }
+
+        return result;
+      }
+    } catch (e) {
+      throw messages.createError('apexLibErr', [(e as Error).message]);
     }
   }
 
