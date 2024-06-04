@@ -14,7 +14,7 @@ import {
   SfCommand,
   Ux,
 } from '@salesforce/sf-plugins-core';
-import { Messages } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 import { RunResult, TestReporter } from '../../../reporters/index.js';
 import { resultFormat } from '../../../utils.js';
 
@@ -80,7 +80,14 @@ export default class Test extends SfCommand<RunResult> {
         'code-coverage': flags['code-coverage'],
       });
     } catch (e) {
-      throw messages.createError('apexLibErr', [(e as Error).message]);
+      if (e instanceof SfError) {
+        // something we threw
+        throw e;
+      } else {
+        // what used to be caught by the
+        // process.on('uncaughtException', err => {
+        throw SfError.wrap(messages.createError('apexLibErr', [(e as Error).message]));
+      }
     }
   }
 }

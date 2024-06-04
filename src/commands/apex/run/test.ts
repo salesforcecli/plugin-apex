@@ -166,7 +166,14 @@ export default class Test extends SfCommand<RunCommandResult> {
         return result;
       }
     } catch (e) {
-      throw messages.createError('apexLibErr', [(e as Error).message]);
+      if (e instanceof SfError) {
+        // something we threw
+        throw e;
+      } else {
+        // what used to be caught by the
+        // process.on('uncaughtException', err => {
+        throw SfError.wrap(messages.createError('apexLibErr', [(e as Error).message]));
+      }
     }
   }
 
