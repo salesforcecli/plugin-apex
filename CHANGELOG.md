@@ -1,3 +1,12 @@
+## [3.1.15](https://github.com/salesforcecli/plugin-apex/compare/3.1.14...3.1.15) (2024-06-06)
+
+### Bug Fixes
+
+- bump @salesforce/apex-node to v6.0.1 ([65979e5](https://github.com/salesforcecli/plugin-apex/commit/65979e52048f0cb1404d70eb23d758c5785f9fd8))
+- bump @salesforce/apex-node to v6.1.0 ([e377105](https://github.com/salesforcecli/plugin-apex/commit/e377105a704c056376247b4833b3ddb1cc401d64))
+- bump @salesforce/apex-node to v6.1.1 ([110fcaf](https://github.com/salesforcecli/plugin-apex/commit/110fcaf75726f1bd788e2414eed5b48f48d2a63c))
+- bump @salesforce/apex-node to v6.1.2 ([40ebdf5](https://github.com/salesforcecli/plugin-apex/commit/40ebdf5f76ba82bb39ca5c5b70f7b3318fa18f2e))
+
 ## [3.1.14](https://github.com/salesforcecli/plugin-apex/compare/3.1.13...3.1.14) (2024-06-02)
 
 ### Bug Fixes
