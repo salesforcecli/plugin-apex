@@ -14,7 +14,7 @@ import {
   SfCommand,
   Ux,
 } from '@salesforce/sf-plugins-core';
-import { Messages, SfError } from '@salesforce/core';
+import { Messages } from '@salesforce/core';
 import { RunResult, TestReporter } from '../../../reporters/index.js';
 import { resultFormat } from '../../../utils.js';
 
@@ -63,31 +63,20 @@ export default class Test extends SfCommand<RunResult> {
   };
 
   public async run(): Promise<RunResult> {
-    try {
-      const { flags } = await this.parse(Test);
+    const { flags } = await this.parse(Test);
 
-      const conn = flags['target-org'].getConnection(flags['api-version']);
+    const conn = flags['target-org'].getConnection(flags['api-version']);
 
-      const testService = new TestService(conn);
-      const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
+    const testService = new TestService(conn);
+    const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
 
-      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
+    const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
 
-      return await testReporter.report(result, {
-        'output-dir': flags['output-dir'],
-        'result-format': flags['result-format'],
-        json: flags.json,
-        'code-coverage': flags['code-coverage'],
-      });
-    } catch (e) {
-      if (e instanceof SfError) {
-        // something we threw
-        throw e;
-      } else {
-        // what used to be caught by the
-        // process.on('uncaughtException', err => {
-        throw SfError.wrap(messages.createError('apexLibErr', [(e as Error).message]));
-      }
-    }
+    return testReporter.report(result, {
+      'output-dir': flags['output-dir'],
+      'result-format': flags['result-format'],
+      json: flags.json,
+      'code-coverage': flags['code-coverage'],
+    });
   }
 }
