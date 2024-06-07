@@ -19,7 +19,7 @@ import { RunResult, TestReporter } from '../../../reporters/index.js';
 import { resultFormat } from '../../../utils.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'report');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'gettest');
 export default class Test extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
@@ -64,11 +64,6 @@ export default class Test extends SfCommand<RunResult> {
 
   public async run(): Promise<RunResult> {
     const { flags } = await this.parse(Test);
-
-    // add listener for errors
-    process.on('uncaughtException', (err) => {
-      throw messages.createError('apexLibErr', [err.message]);
-    });
 
     const conn = flags['target-org'].getConnection(flags['api-version']);
 

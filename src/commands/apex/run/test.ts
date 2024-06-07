@@ -17,7 +17,6 @@ import {
 } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
-
 import { RunResult, TestReporter } from '../../../reporters/index.js';
 import { resultFormat } from '../../../utils.js';
 
@@ -121,11 +120,6 @@ export default class Test extends SfCommand<RunCommandResult> {
       flags.synchronous,
       flags['test-level'] as TestLevel
     );
-
-    // add listener for errors
-    process.on('uncaughtException', (err) => {
-      throw messages.createError('apexLibErr', [err.message]);
-    });
 
     // graceful shutdown
     const exitHandler = async (): Promise<void> => {
