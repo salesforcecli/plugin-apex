@@ -1,3 +1,9 @@
+## [3.1.16](https://github.com/salesforcecli/plugin-apex/compare/3.1.15...3.1.16) (2024-06-07)
+
+### Bug Fixes
+
+- remove uncaughtException listner ([#472](https://github.com/salesforcecli/plugin-apex/issues/472)) ([4059333](https://github.com/salesforcecli/plugin-apex/commit/405933356a60d9374a93ef38409a3cbda5550051))
+
 ## [3.1.15](https://github.com/salesforcecli/plugin-apex/compare/3.1.14...3.1.15) (2024-06-06)
 
 ### Bug Fixes
