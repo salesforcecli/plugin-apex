@@ -8,7 +8,7 @@ import os from 'node:os';
 
 import { ExecuteAnonymousResponse } from '@salesforce/apex-node';
 import { Messages } from '@salesforce/core';
-import { colorError, colorSuccess } from '../utils.js';
+import { StandardColors } from '@salesforce/sf-plugins-core';
 import { ExecuteResult } from '../commands/apex/run.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
@@ -19,8 +19,8 @@ export default class RunReporter {
     const outputText: string[] = [];
     if (response.success) {
       outputText.push(
-        colorSuccess(messages.getMessage('executeCompileSuccess')),
-        colorSuccess(messages.getMessage('executeRuntimeSuccess')),
+        StandardColors.success(messages.getMessage('executeCompileSuccess')),
+        StandardColors.success(messages.getMessage('executeRuntimeSuccess')),
         '',
         response.logs ?? ''
       );
@@ -31,14 +31,14 @@ export default class RunReporter {
       const diagnostic = response.diagnostic[0];
       if (!response.compiled) {
         outputText.push(
-          colorError(`Error: Line: ${diagnostic.lineNumber}, Column: ${diagnostic.columnNumber}`),
-          colorError(`Error: ${diagnostic.compileProblem}\n`)
+          StandardColors.error(`Error: Line: ${diagnostic.lineNumber}, Column: ${diagnostic.columnNumber}`),
+          StandardColors.error(`Error: ${diagnostic.compileProblem}\n`)
         );
       } else {
         outputText.push(
-          colorSuccess(messages.getMessage('executeCompileSuccess')),
-          colorError(`Error: ${diagnostic.exceptionMessage}`),
-          colorError(`Error: ${diagnostic.exceptionStackTrace}`),
+          StandardColors.success(messages.getMessage('executeCompileSuccess')),
+          StandardColors.error(`Error: ${diagnostic.exceptionMessage}`),
+          StandardColors.error(`Error: ${diagnostic.exceptionStackTrace}`),
           '',
           response.logs ?? ''
         );
