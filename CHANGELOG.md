@@ -1,3 +1,9 @@
+## [3.1.17](https://github.com/salesforcecli/plugin-apex/compare/3.1.16...3.1.17) (2024-06-09)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 7.3.10 to 7.3.12 ([bbd95de](https://github.com/salesforcecli/plugin-apex/commit/bbd95dedb4242d0aa7221bc42cea8139077c46a7))
+
 ## [3.1.16](https://github.com/salesforcecli/plugin-apex/compare/3.1.15...3.1.16) (2024-06-07)
 
 ### Bug Fixes
