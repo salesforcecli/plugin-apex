@@ -59,7 +59,7 @@ const formatForTable = (logRecord: LogRecord): LogForTable => ({
   User: logRecord.LogUser.Name,
 });
 
-const formatStartTime = (lr: LogRecord): LogRecord => ({ ...lr, StartTime: formatTime(lr.StartTime) });
+export const formatStartTime = (lr: LogRecord): LogRecord => ({ ...lr, StartTime: formatTime(lr.StartTime) });
 
 const formatTime = (time: string): string => {
   const msIndex = time.indexOf('.');

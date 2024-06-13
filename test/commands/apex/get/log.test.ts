@@ -11,7 +11,11 @@ import { LogService } from '@salesforce/apex-node';
 import { expect } from 'chai';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
-import Log from '../../../../src/commands/apex/get/log.js';
+import ansis from 'ansis';
+import Log, { LogGetResult } from '../../../../src/commands/apex/get/log.js';
+
+const strip = new ansis.Ansis().strip;
+const logStripper = (log: LogGetResult[number]) => (typeof log === 'string' ? strip(log) : { log: strip(log.log) });
 
 describe('apex:log:get', () => {
   let config: Config;
@@ -34,6 +38,12 @@ describe('apex:log:get', () => {
     } catch (e) {
       // do nothing
     }
+  });
+
+  it('verify log stripper', () => {
+    expect(strip('\u001b[1mmyLog\u001b[22m\n')).to.equal('myLog\n');
+    expect(logStripper('\u001b[1mmyLog\u001b[22m\n')).to.equal('myLog\n');
+    expect(logStripper({ log: '\u001b[1mmyLog\u001b[22m\n' })).to.deep.equal({ log: 'myLog\n' });
   });
 
   it('0 logs to get', async () => {
@@ -59,17 +69,17 @@ describe('apex:log:get', () => {
 
   it('multiple results', async () => {
     sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }, { log: 'myLog2' }]);
-    const result = await new Log([], config).run();
+    const result = (await new Log([], config).run()).map(logStripper);
     expect(result).to.deep.equal([{ log: 'myLog' }, { log: 'myLog2' }]);
-    expect(logStub.firstCall.args[0]).to.equal('myLog');
-    expect(logStub.secondCall.args[0]).to.equal('myLog2');
+    expect(logStripper(logStub.firstCall.args[0] as string)).to.equal('myLog');
+    expect(logStripper(logStub.secondCall.args[0] as string)).to.equal('myLog2');
   });
 
   it('multiple results --json', async () => {
     sandbox.stub(LogService.prototype, 'getLogs').resolves([{ log: 'myLog' }, { log: 'myLog2' }]);
-    const result = await new Log(['--json'], config).run();
+    const result = (await new Log(['--json'], config).run()).map(logStripper);
     expect(result).to.deep.equal([{ log: 'myLog' }, { log: 'myLog2' }]);
-    expect(logStub.firstCall.args[0]).to.equal('myLog');
-    expect(logStub.secondCall.args[0]).to.equal('myLog2');
+    expect(logStripper(logStub.firstCall.args[0] as string)).to.equal('myLog');
+    expect(logStripper(logStub.secondCall.args[0] as string)).to.equal('myLog2');
   });
 });
