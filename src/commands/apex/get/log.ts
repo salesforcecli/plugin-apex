@@ -14,7 +14,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
-import { colorLogs } from '../../../utils.js';
+import { colorLogs } from '../../../logColorize.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'get');

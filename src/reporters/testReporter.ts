@@ -18,8 +18,9 @@ import {
 import { Ux } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
-import { FAILURE_EXIT_CODE } from '../utils.js';
 import { JsonReporter, RunResult } from './jsonReporter.js';
+
+const FAILURE_EXIT_CODE = 100;
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');

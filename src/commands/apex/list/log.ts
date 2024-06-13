@@ -18,6 +18,7 @@ Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'list');
 
 export type LogListResult = LogRecord[];
+type LogForTable = Omit<LogRecord, 'DurationMilliseconds' | 'User'> & { DurationMilliseconds: string; User: string };
 
 export default class Log extends SfCommand<LogListResult> {
   public static readonly summary = messages.getMessage('summary');
@@ -35,61 +36,45 @@ export default class Log extends SfCommand<LogListResult> {
   public async run(): Promise<LogListResult> {
     const { flags } = await this.parse(Log);
 
-    const conn = flags['target-org'].getConnection(flags['api-version']);
-    const logService = new LogService(conn);
-    const logRecords = await logService.getLogRecords();
+    const logService = new LogService(flags['target-org'].getConnection(flags['api-version']));
+    const logRecords = (await logService.getLogRecords()).map(formatStartTime);
 
     if (logRecords.length === 0) {
       this.log(messages.getMessage('noDebugLogsFound'));
       return [];
     }
 
-    logRecords.map((logRecord) => {
-      logRecord.StartTime = this.formatTime(logRecord.StartTime);
-    });
-
     if (!flags.json) {
       // while not required to prevent table output, save a few iterations if only printing json
-      const cleanLogs = logRecords.map((logRecord) => ({
-        app: logRecord.Application,
-        duration: String(logRecord.DurationMilliseconds),
-        id: logRecord.Id,
-        location: logRecord.Location,
-        size: String(logRecord.LogLength),
-        user: logRecord.LogUser.Name,
-        operation: logRecord.Operation,
-        request: logRecord.Request,
-        time: logRecord.StartTime,
-        status: logRecord.Status,
-      }));
-
-      this.table(
-        cleanLogs,
-        {
-          app: { header: messages.getMessage('appColHeader') },
-          duration: { header: messages.getMessage('durationColHeader') },
-          id: { header: messages.getMessage('idColHeader') },
-          location: { header: messages.getMessage('locationColHeader') },
-          size: { header: messages.getMessage('sizeColHeader') },
-          user: { header: messages.getMessage('userColHeader') },
-          operation: { header: messages.getMessage('operationColHeader') },
-          request: { header: messages.getMessage('requestColHeader') },
-          time: { header: messages.getMessage('timeColHeader') },
-          status: { header: messages.getMessage('statusColHeader') },
-        },
-        { 'no-truncate': true }
-      );
+      this.table(logRecords.map(formatForTable), tableHeaders, { 'no-truncate': true });
     }
 
     return logRecords;
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  private formatTime(time: string): string {
-    const milliIndex = time.indexOf('.');
-    if (milliIndex !== -1) {
-      return time.substring(0, milliIndex) + time.substring(milliIndex + 4);
-    }
-    return time;
-  }
 }
+
+const formatForTable = (logRecord: LogRecord): LogForTable => ({
+  ...logRecord,
+  DurationMilliseconds: String(logRecord.DurationMilliseconds),
+  User: logRecord.LogUser.Name,
+});
+
+const formatStartTime = (lr: LogRecord): LogRecord => ({ ...lr, StartTime: formatTime(lr.StartTime) });
+
+const formatTime = (time: string): string => {
+  const msIndex = time.indexOf('.');
+  return msIndex !== -1 ? time.substring(0, msIndex) + time.substring(msIndex + 4) : time;
+};
+
+const tableHeaders = {
+  Application: { header: 'Application' },
+  DurationMilliseconds: { header: 'Duration (ms)' },
+  Id: { header: 'Id' },
+  Location: { header: 'Location' },
+  LogLength: { header: 'Size (B)' },
+  User: { header: 'Log User' },
+  Operation: { header: 'Operation' },
+  Request: { header: 'Request' },
+  StartTime: { header: 'Start Time' },
+  Status: { header: 'Status' },
+};

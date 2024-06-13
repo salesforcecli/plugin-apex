@@ -7,19 +7,16 @@
   "dependencies": {
     "@oclif/core": "^4",
     "@salesforce/apex-node": "^6.1.2",
-    "@salesforce/core": "^7.3.10",
+    "@salesforce/core": "^7.3.12",
     "@salesforce/kit": "^3.1.2",
-    "@salesforce/sf-plugins-core": "^10.0.0",
-    "chalk": "^5.3.0",
-    "color-convert": "^2.0.1",
-    "color-name": "^2.0.0"
+    "@salesforce/sf-plugins-core": "^10.0.1",
+    "ansis": "^3.2.0"
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^5.2.0",
     "@salesforce/cli-plugins-testkit": "^5.3.9",
     "@salesforce/dev-scripts": "^10.1.0",
     "@salesforce/plugin-command-reference": "^3.0.89",
-    "@types/color-convert": "^2.0.3",
     "eslint-plugin-sf-plugin": "^1.18.5",
     "oclif": "^4.12.1",
     "ts-node": "^10.9.2",
