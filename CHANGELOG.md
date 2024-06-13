@@ -1,3 +1,9 @@
+## [3.1.19](https://github.com/salesforcecli/plugin-apex/compare/3.1.18...3.1.19) (2024-06-13)
+
+### Bug Fixes
+
+- **deps:** bump braces from 3.0.2 to 3.0.3 ([0d8aae6](https://github.com/salesforcecli/plugin-apex/commit/0d8aae6c8a766573521b52269339098f4f71f5ab))
+
 ## [3.1.18](https://github.com/salesforcecli/plugin-apex/compare/3.1.17...3.1.18) (2024-06-09)
 
 ### Bug Fixes
