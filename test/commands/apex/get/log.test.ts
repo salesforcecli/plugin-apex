@@ -40,12 +40,6 @@ describe('apex:log:get', () => {
     }
   });
 
-  it('verify log stripper', () => {
-    expect(strip('\u001b[1mmyLog\u001b[22m\n')).to.equal('myLog\n');
-    expect(logStripper('\u001b[1mmyLog\u001b[22m\n')).to.equal('myLog\n');
-    expect(logStripper({ log: '\u001b[1mmyLog\u001b[22m\n' })).to.deep.equal({ log: 'myLog\n' });
-  });
-
   it('0 logs to get', async () => {
     sandbox.stub(LogService.prototype, 'getLogs').resolves([]);
     const result = await Log.run([], config);

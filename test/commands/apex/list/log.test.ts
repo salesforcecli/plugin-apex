@@ -50,7 +50,7 @@ const rawLogResult = {
 
 const logRecords = [rawLogResult.result[0], rawLogResult.result[1]];
 
-describe.only('apex:log:list', () => {
+describe('apex:log:list', () => {
   let config: Config;
   let sandbox: sinon.SinonSandbox;
   let logStub: sinon.SinonStub;
