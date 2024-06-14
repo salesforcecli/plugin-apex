@@ -1,3 +1,27 @@
+## [3.1.19](https://github.com/salesforcecli/plugin-apex/compare/3.1.18...3.1.19) (2024-06-13)
+
+### Bug Fixes
+
+- **deps:** bump braces from 3.0.2 to 3.0.3 ([0d8aae6](https://github.com/salesforcecli/plugin-apex/commit/0d8aae6c8a766573521b52269339098f4f71f5ab))
+
+## [3.1.18](https://github.com/salesforcecli/plugin-apex/compare/3.1.17...3.1.18) (2024-06-09)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.0.2 to 4.0.3 ([c274a9a](https://github.com/salesforcecli/plugin-apex/commit/c274a9af3b509fd62e9cc1cfe6122d69b128f9fc))
+
+## [3.1.17](https://github.com/salesforcecli/plugin-apex/compare/3.1.16...3.1.17) (2024-06-09)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 7.3.10 to 7.3.12 ([bbd95de](https://github.com/salesforcecli/plugin-apex/commit/bbd95dedb4242d0aa7221bc42cea8139077c46a7))
+
+## [3.1.16](https://github.com/salesforcecli/plugin-apex/compare/3.1.15...3.1.16) (2024-06-07)
+
+### Bug Fixes
+
+- remove uncaughtException listner ([#472](https://github.com/salesforcecli/plugin-apex/issues/472)) ([4059333](https://github.com/salesforcecli/plugin-apex/commit/405933356a60d9374a93ef38409a3cbda5550051))
+
 ## [3.1.15](https://github.com/salesforcecli/plugin-apex/compare/3.1.14...3.1.15) (2024-06-06)
 
 ### Bug Fixes

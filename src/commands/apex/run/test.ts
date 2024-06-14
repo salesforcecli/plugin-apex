@@ -109,11 +109,6 @@ export default class Test extends SfCommand<RunCommandResult> {
       flags['test-level'] as TestLevel
     );
 
-    // add listener for errors
-    process.on('uncaughtException', (err) => {
-      throw messages.createError('apexLibErr', [err.message]);
-    });
-
     // graceful shutdown
     const exitHandler = async (): Promise<void> => {
       await this.cancellationTokenSource.asyncCancel();
