@@ -10,7 +10,7 @@ import sinon from 'sinon';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import { expect } from 'chai';
-import Log from '../../../../src/commands/apex/list/log.js';
+import Log, { formatStartTime } from '../../../../src/commands/apex/list/log.js';
 
 const rawLogResult = {
   status: 0,
@@ -83,66 +83,47 @@ describe('apex:log:list', () => {
   });
 
   it('will list multiple logs', async () => {
-    sandbox.stub(LogService.prototype, 'getLogRecords').resolves(logRecords);
-    const result = await new Log([], config).run();
-    expect(result).to.deep.equal(logRecords);
+    sandbox.stub(LogService.prototype, 'getLogRecords').resolves(structuredClone(logRecords));
+    await new Log([], config).run();
     expect(tableStub.firstCall.args[0]).to.deep.equal([
       {
-        app: 'Unknown',
-        duration: '75',
-        id: '07L5tgg0005PGdTnEAL',
-        location: 'Unknown',
-        operation: 'API',
-        request: 'API',
-        size: '450',
-        status: 'Assertion Failed',
-        time: '2020-10-13T05:39:43+0000',
-        user: 'Test User',
+        Application: 'Unknown',
+        DurationMilliseconds: '75',
+        Id: '07L5tgg0005PGdTnEAL',
+        Location: 'Unknown',
+        Operation: 'API',
+        Request: 'API',
+        LogLength: 450,
+        Status: 'Assertion Failed',
+        StartTime: '2020-10-13T05:39:43+0000',
+        User: 'Test User',
+        LogUser: {
+          Name: 'Test User',
+          attributes: {},
+        },
       },
       {
-        app: 'Unknown',
-        duration: '75',
-        id: '07L5tgg0005PGdTnFPL',
-        location: 'Unknown',
-        operation: 'API',
-        request: 'API',
-        size: '450',
-        status: 'Successful',
-        time: '2020-10-13T05:39:43+0000',
-        user: 'Test User2',
+        Application: 'Unknown',
+        DurationMilliseconds: '75',
+        Id: '07L5tgg0005PGdTnFPL',
+        Location: 'Unknown',
+        Operation: 'API',
+        Request: 'API',
+        LogLength: 450,
+        Status: 'Successful',
+        StartTime: '2020-10-13T05:39:43+0000',
+        User: 'Test User2',
+        LogUser: {
+          Name: 'Test User2',
+          attributes: {},
+        },
       },
     ]);
   });
 
   it('will list multiple logs --json', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves(logRecords);
-    const result = await new Log([], config).run();
-    expect(result).to.deep.equal(logRecords);
-    expect(tableStub.firstCall.args[0]).to.deep.equal([
-      {
-        app: 'Unknown',
-        duration: '75',
-        id: '07L5tgg0005PGdTnEAL',
-        location: 'Unknown',
-        operation: 'API',
-        request: 'API',
-        size: '450',
-        status: 'Assertion Failed',
-        time: '2020-10-13T05:39:43+0000',
-        user: 'Test User',
-      },
-      {
-        app: 'Unknown',
-        duration: '75',
-        id: '07L5tgg0005PGdTnFPL',
-        location: 'Unknown',
-        operation: 'API',
-        request: 'API',
-        size: '450',
-        status: 'Successful',
-        time: '2020-10-13T05:39:43+0000',
-        user: 'Test User2',
-      },
-    ]);
+    const result = await new Log(['--json'], config).run();
+    expect(result).to.deep.equal(logRecords.map(formatStartTime));
   });
 });

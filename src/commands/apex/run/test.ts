@@ -18,7 +18,7 @@ import {
 import { Messages, SfError } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
 import { RunResult, TestReporter } from '../../../reporters/index.js';
-import { resultFormat } from '../../../utils.js';
+import { codeCoverageFlag, resultFormatFlag } from '../../../flags.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
@@ -37,12 +37,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
     loglevel,
-    'code-coverage': Flags.boolean({
-      aliases: ['codecoverage'],
-      deprecateAliases: true,
-      char: 'c',
-      summary: messages.getMessage('flags.code-coverage.summary'),
-    }),
+    'code-coverage': codeCoverageFlag,
     'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
@@ -65,14 +60,7 @@ export default class Test extends SfCommand<RunCommandResult> {
       description: messages.getMessage('flags.class-names.description'),
       exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'class-names'),
     }),
-    'result-format': Flags.string({
-      deprecateAliases: true,
-      aliases: ['resultformat'],
-      char: 'r',
-      summary: messages.getMessage('flags.result-format.summary'),
-      options: resultFormat,
-      default: 'human',
-    }),
+    'result-format': resultFormatFlag,
     'suite-names': arrayWithDeprecation({
       deprecateAliases: true,
       aliases: ['suitenames'],

@@ -16,7 +16,7 @@ import {
 } from '@salesforce/sf-plugins-core';
 import { Messages } from '@salesforce/core';
 import { RunResult, TestReporter } from '../../../reporters/index.js';
-import { resultFormat } from '../../../utils.js';
+import { codeCoverageFlag, resultFormatFlag } from '../../../flags.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'gettest');
@@ -40,26 +40,14 @@ export default class Test extends SfCommand<RunResult> {
       startsWith: '707',
       length: 'both',
     }),
-    'code-coverage': Flags.boolean({
-      aliases: ['codecoverage'],
-      deprecateAliases: true,
-      char: 'c',
-      summary: messages.getMessage('flags.code-coverage.summary'),
-    }),
+    'code-coverage': codeCoverageFlag,
     'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',
       summary: messages.getMessage('flags.output-dir.summary'),
     }),
-    'result-format': Flags.string({
-      deprecateAliases: true,
-      aliases: ['resultformat'],
-      char: 'r',
-      summary: messages.getMessage('flags.result-format.summary'),
-      options: resultFormat,
-      default: 'human',
-    }),
+    'result-format': resultFormatFlag,
   };
 
   public async run(): Promise<RunResult> {

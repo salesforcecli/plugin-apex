@@ -28,14 +28,6 @@ Provide a test run ID to display test results for an enqueued or completed async
 
 ID of the test run.
 
-# flags.result-format.summary
-
-Format of the results.
-
-# flags.code-coverage.summary
-
-Retrieve code coverage results.
-
 # flags.output-dir.summary
 
 Directory in which to store test result files.

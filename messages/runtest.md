@@ -34,10 +34,6 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
 
   <%= config.bin %> <%= command.id %> --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
 
-# flags.result-format.summary
-
-Format of the test results.
-
 # flags.class-names.summary
 
 Apex test class names to run; default is all classes.

@@ -14,7 +14,7 @@ import {
   loglevel,
 } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
-import { colorizeLog } from '../../../legacyColorization.js';
+import { colorLogs } from '../../../logColorize.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'tail');
@@ -66,10 +66,11 @@ export default class Log extends SfCommand<void> {
     this.log(messages.getMessage('finishedTailing'));
   }
 
+  // the colorize function used to be async, but not isn't.  Preserving the public method signature
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async logTailer(fullLog: string): Promise<void> {
     if (fullLog) {
-      const output = this.color ? await colorizeLog(fullLog) : fullLog;
-      this.log(output);
+      this.log(this.color ? colorLogs(fullLog) : fullLog);
     }
   }
 

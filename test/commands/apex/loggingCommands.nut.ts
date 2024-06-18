@@ -85,7 +85,7 @@ describe('apex log *', () => {
   it('will list the debug logs', async () => {
     const result = execCmd('apex:list:log', { ensureExitCode: 0 }).shellOutput.stdout;
     expect(result).to.match(
-      / APPLICATION DURATION \(MS\) ID\s+LOCATION\s+SIZE \(B\) LOG USER\s+OPERATION REQUEST START TIME\s+STATUS /
+      / Application Duration \(ms\) Id\s+Location\s+Size \(B\) Log User\s+Operation Request Start Time\s+Status /
     );
     expect(result).to.match(/User User Api\s+Api\s+\d{4}-\d{2}-.* Success /);
   });
