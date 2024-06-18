@@ -1,3 +1,9 @@
+## [3.1.22](https://github.com/salesforcecli/plugin-apex/compare/3.1.21...3.1.22) (2024-06-18)
+
+### Bug Fixes
+
+- **deps:** bump kit ([#493](https://github.com/salesforcecli/plugin-apex/issues/493)) ([b3f373b](https://github.com/salesforcecli/plugin-apex/commit/b3f373b694c9d4e5317c35e6df08a7e96dc377f2))
+
 ## [3.1.21](https://github.com/salesforcecli/plugin-apex/compare/3.1.20...3.1.21) (2024-06-16)
 
 ### Bug Fixes
