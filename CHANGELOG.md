@@ -1,3 +1,15 @@
+## [3.1.21](https://github.com/salesforcecli/plugin-apex/compare/3.1.20...3.1.21) (2024-06-16)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 10.0.0 to 10.0.1 ([d990783](https://github.com/salesforcecli/plugin-apex/commit/d9907832916d4261ab00435ad20ec41f21b88347))
+
+## [3.1.20](https://github.com/salesforcecli/plugin-apex/compare/3.1.19...3.1.20) (2024-06-16)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/kit from 3.1.2 to 3.1.4 ([e50c853](https://github.com/salesforcecli/plugin-apex/commit/e50c8532bee37e0cb397ea821dd5aec4977de9e6))
+
 ## [3.1.19](https://github.com/salesforcecli/plugin-apex/compare/3.1.18...3.1.19) (2024-06-13)
 
 ### Bug Fixes
