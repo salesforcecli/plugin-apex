@@ -1,3 +1,9 @@
+# [3.2.0](https://github.com/salesforcecli/plugin-apex/compare/3.1.22...3.2.0) (2024-06-18)
+
+### Features
+
+- simplify-log-colorization ([#484](https://github.com/salesforcecli/plugin-apex/issues/484)) ([22071d8](https://github.com/salesforcecli/plugin-apex/commit/22071d8a4465c3f5c56ffed613524bf138d2affd)), closes [#492](https://github.com/salesforcecli/plugin-apex/issues/492)
+
 ## [3.1.22](https://github.com/salesforcecli/plugin-apex/compare/3.1.21...3.1.22) (2024-06-18)
 
 ### Bug Fixes

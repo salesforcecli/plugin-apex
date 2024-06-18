@@ -148,7 +148,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.22/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -165,7 +165,7 @@ FLAGS
   -i, --test-run-id=<value>     (required) ID of the test run.
   -o, --target-org=<value>      (required) Username or alias of the target org. Not required if the `target-org`
                                 configuration variable is already set.
-  -r, --result-format=<option>  [default: human] Format of the results.
+  -r, --result-format=<option>  [default: human] Format of the test results.
                                 <options: human|tap|junit|json>
       --api-version=<value>     Override the api version used for api requests made by this command
 
@@ -202,7 +202,7 @@ EXAMPLES
       me@myorg',
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.22/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -242,7 +242,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.22/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -289,7 +289,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.22/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -399,7 +399,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.22/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -442,6 +442,6 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.1.22/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->
