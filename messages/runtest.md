@@ -98,7 +98,7 @@ Display detailed code coverage per test.
 
 # flags.concise.summary
 
-Only display failed test results for human-readable output.
+Display only failed test results; works with human-readable output only.
 
 # runTestReportCommand
 

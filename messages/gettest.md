@@ -34,7 +34,7 @@ Directory in which to store test result files.
 
 # flags.concise.summary
 
-Only display failed test results for human-readable output.
+Display only failed test results; works with human-readable output only.
 
 # apexLibErr
 
