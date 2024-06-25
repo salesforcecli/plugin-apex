@@ -94,6 +94,9 @@ export default class Test extends SfCommand<RunCommandResult> {
       summary: messages.getMessage('flags.detailed-coverage.summary'),
       dependsOn: ['code-coverage'],
     }),
+    concise: Flags.boolean({
+      summary: messages.getMessage('flags.concise.summary'),
+    }),
   };
 
   protected cancellationTokenSource = new CancellationTokenSource();

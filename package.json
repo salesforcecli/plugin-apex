@@ -6,8 +6,8 @@
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
     "@oclif/core": "^4",
-    "@salesforce/apex-node": "^6.1.2",
-    "@salesforce/core": "^7.4.1",
+    "@salesforce/apex-node": "^6.2.0",
+    "@salesforce/core": "^7.5.0",
     "@salesforce/kit": "^3.1.6",
     "@salesforce/sf-plugins-core": "^11.1.0",
     "ansis": "^3.2.0"

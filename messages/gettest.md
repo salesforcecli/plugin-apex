@@ -32,6 +32,10 @@ ID of the test run.
 
 Directory in which to store test result files.
 
+# flags.concise.summary
+
+Only display failed test results for human-readable output.
+
 # apexLibErr
 
 Unknown error in Apex Library: %s

@@ -12,7 +12,14 @@ import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
 import Test from '../../../../src/commands/apex/get/test.js';
-import { runWithFailures, testRunSimple, testRunSimpleResult, testRunWithFailuresResult } from '../../../testData.js';
+import {
+  runWithCoverage,
+  runWithFailureAndSuccess,
+  runWithFailures,
+  testRunSimple,
+  testRunSimpleResult,
+  testRunWithFailuresResult,
+} from '../../../testData.js';
 
 let logStub: sinon.SinonStub;
 let styledJsonStub: sinon.SinonStub;
@@ -106,6 +113,16 @@ describe('apex:test:report', () => {
       ).run();
       expect(logStub.firstCall.args[0]).to.contain('Test result files written to myDirectory');
     });
+
+    it('should only display failed test with human format with concise flag', async () => {
+      sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithFailureAndSuccess);
+      await new Test(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human', '--concise'], config).run();
+      expect(logStub.firstCall.args[0]).to.contain('Test Summary');
+      expect(logStub.firstCall.args[0]).to.contain('Test Results');
+      expect(logStub.firstCall.args[0]).to.contain('MyFailingTest');
+      expect(logStub.firstCall.args[0]).to.not.contain('MyPassingTest');
+      expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
+    });
   });
 
   describe('test success', () => {
@@ -171,6 +188,17 @@ describe('apex:test:report', () => {
         config
       ).run();
       expect(logStub.firstCall.args[0]).to.contain('Test result files written to myDirectory');
+    });
+
+    it('should only display summary with human format and code coverage and concise parameters', async () => {
+      sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(runWithCoverage);
+      await new Test(
+        ['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human', '--code-coverage', '--concise'],
+        config
+      ).run();
+      expect(logStub.firstCall.args[0]).to.contain('Test Summary');
+      expect(logStub.firstCall.args[0]).to.not.contain('Test Results');
+      expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
     });
   });
 });
