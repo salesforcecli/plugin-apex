@@ -46,7 +46,7 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
 
   <%= config.bin %> <%= command.id %> --test-level RunLocalTests
 
-- Run Apex tests on all the methods a the specified class; output results in Test Anything Protocol (TAP) format, and requests code coverage result:
+- Run Apex tests on all the methods in the specified class; output results in Test Anything Protocol (TAP) format and request code coverage results:
 
   <%= config.bin %> <%= command.id %> --class-names TestA --class-names TestB --result-format tap --code-coverage
 
