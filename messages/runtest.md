@@ -38,7 +38,7 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
   
   <%= config.bin %> <%= command.id %> --target-org myscratch
 
-- Run all tests synchronously. The command waits to display the test results until all tests finish:
+- Run all tests synchronously; the command waits to display the test results until all tests finish:
   
   <%= config.bin %> <%= command.id %> --synchronous
 
