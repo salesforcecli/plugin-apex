@@ -54,7 +54,7 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
   
   <%= config.bin %> <%= command.id %> --tests TestA.excitingMethod --tests TestA.boringMethod --tests TestB
 
-- Run Apex tests on methods specified using the standard Class.method notation with a namespace; if you specify a test class without a method, the command runs all methods in the class:
+- Run Apex tests on methods specified using the standard Class.method notation with a namespace:
   
   <%= config.bin %> <%= command.id %> --tests ns.TestA.excitingMethod --tests ns.TestA.boringMethod --tests ns.TestB
  
