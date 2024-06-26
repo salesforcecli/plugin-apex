@@ -34,6 +34,31 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
 
   <%= config.bin %> <%= command.id %> --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
 
+- Run all tests in the org asynchronously:
+  
+  <%= config.bin %> <%= command.id %> --target-org myscratch
+
+- Run all tests synchronously. The command waits to display the test results until all tests finish:
+  
+  <%= config.bin %> <%= command.id %> --synchronous
+
+- Run specific tests using the --test-level flag:
+
+  <%= config.bin %> <%= command.id %> --test-level RunLocalTests
+
+- Run Apex tests on all the methods a the specified class; output results in Test Anything Protocol (TAP) format, and requests code coverage result:
+
+  <%= config.bin %> <%= command.id %> --class-names TestA --class-names TestB --result-format tap --code-coverage
+
+- Run Apex tests on methods specified using the standard Class.method notation; if you specify a test class without a method, the command runs all methods in the class:
+  
+  <%= config.bin %> <%= command.id %> --tests TestA.excitingMethod --tests TestA.boringMethod --tests TestB
+
+- Run Apex tests on methods specified using the standard Class.method notation with a namespace; if you specify a test class without a method, the command runs all methods in the class:
+  
+  <%= config.bin %> <%= command.id %> --tests ns.TestA.excitingMethod --tests ns.TestA.boringMethod --tests ns.TestB
+ 
+
 # flags.class-names.summary
 
 Apex test class names to run; default is all classes.
