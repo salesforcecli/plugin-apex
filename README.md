@@ -148,7 +148,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.1/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -199,10 +199,10 @@ EXAMPLES
   default org):
 
     $ sf apex get test --test-run-id <test run id> --code-coverage --output-dir <path to outputdir> --target-org \
-      me@myorg',
+      me@myorg'
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.1/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -242,7 +242,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.1/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -289,7 +289,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.1/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -369,14 +369,45 @@ EXAMPLES
 
     $ sf apex run test --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
 
+  Run all tests in the org asynchronously:
+
+    $ sf apex run test --target-org myscratch
+
+  Run all tests synchronously; the command waits to display the test results until all tests finish:
+
+    $ sf apex run test --synchronous
+
+  Run specific tests using the --test-level flag:
+
+    $ sf apex run test --test-level RunLocalTests
+
+  Run Apex tests on all the methods in the specified class; output results in Test Anything Protocol (TAP) format and
+  request code coverage results:
+
+    $ sf apex run test --class-names TestA --class-names TestB --result-format tap --code-coverage
+
+  Run Apex tests on methods specified using the standard Class.method notation; if you specify a test class without a
+  method, the command runs all methods in the class:
+
+    $ sf apex run test --tests TestA.excitingMethod --tests TestA.boringMethod --tests TestB
+
+  Run Apex tests on methods specified using the standard Class.method notation with a namespace:
+
+    $ sf apex run test --tests ns.TestA.excitingMethod --tests ns.TestA.boringMethod --tests ns.TestB
+
 FLAG DESCRIPTIONS
   -l, --test-level=RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests  Level of tests to run; default is RunLocalTests.
 
     Here's what the levels mean:
 
-    - RunSpecifiedTests — Only the tests that you specify are run.
-    - RunLocalTests — All tests in your org are run, except the ones that originate from installed managed packages.
-    - RunAllTestsInOrg — All tests are in your org and in installed managed packages are run
+    - RunSpecifiedTests — Only the tests that you specify in the runTests option are run. Code coverage requirements
+    differ from the default coverage requirements when using this test level. The executed tests must cover each class
+    and trigger in the deployment package for a minimum of 75% code coverage. This coverage is computed for each class
+    and triggers individually, and is different than the overall coverage percentage.
+    - RunLocalTests — All local tests in your org, including tests that originate from no-namespaced unlocked packages,
+    are run. The tests that originate from installed managed packages and namespaced unlocked packages aren't run. This
+    test level is the default for production deployments that include Apex classes or triggers.
+    - RunAllTestsInOrg — All tests are run. The tests include all tests in your org.
 
   -n, --class-names=<value>...  Apex test class names to run; default is all classes.
 
@@ -399,7 +430,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.1/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -442,6 +473,6 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.0/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.2.1/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->

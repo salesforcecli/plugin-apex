@@ -1,3 +1,9 @@
+## [3.2.1](https://github.com/salesforcecli/plugin-apex/compare/3.2.0...3.2.1) (2024-06-27)
+
+### Bug Fixes
+
+- added examples to apex run and apex get ([fb56783](https://github.com/salesforcecli/plugin-apex/commit/fb5678372f63008b2089799f30ac2c1f9158c802))
+
 # [3.2.0](https://github.com/salesforcecli/plugin-apex/compare/3.1.22...3.2.0) (2024-06-18)
 
 ### Features
