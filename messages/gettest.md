@@ -22,7 +22,8 @@ Provide a test run ID to display test results for an enqueued or completed async
 
 - Specify a directory in which to save the test results from the org with the specified username (rather than your default org):
 
-  <%= config.bin %> <%= command.id %> --test-run-id <test run id> --code-coverage --output-dir <path to outputdir> --target-org me@myorg',
+  <%= config.bin %> <%= command.id %> --test-run-id <test run id> --code-coverage --output-dir <path to outputdir> --target-org me@myorg'
+
 
 # flags.test-run-id.summary
 
