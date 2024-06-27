@@ -31,7 +31,11 @@ export default class RunReporter {
       const diagnostic = response.diagnostic[0];
       if (!response.compiled) {
         outputText.push(
-          StandardColors.error(`Error: Line: ${diagnostic.lineNumber}, Column: ${diagnostic.columnNumber}`),
+          StandardColors.error(
+            `Error: Line: ${diagnostic.lineNumber ?? '<not provided>'}, Column: ${
+              diagnostic.columnNumber ?? '<not provided>'
+            }`
+          ),
           StandardColors.error(`Error: ${diagnostic.compileProblem}\n`)
         );
       } else {
