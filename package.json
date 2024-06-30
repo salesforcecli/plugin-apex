@@ -7,16 +7,16 @@
   "dependencies": {
     "@oclif/core": "^4",
     "@salesforce/apex-node": "^6.1.2",
-    "@salesforce/core": "^7.4.1",
+    "@salesforce/core": "^8.0.1",
     "@salesforce/kit": "^3.1.6",
-    "@salesforce/sf-plugins-core": "^11.1.0",
+    "@salesforce/sf-plugins-core": "^11.1.1",
     "ansis": "^3.2.0"
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^5.2.3",
     "@salesforce/cli-plugins-testkit": "^5.3.17",
-    "@salesforce/dev-scripts": "^10.2.0",
-    "@salesforce/plugin-command-reference": "^3.1.2",
+    "@salesforce/dev-scripts": "^10.2.2",
+    "@salesforce/plugin-command-reference": "^3.1.5",
     "eslint-plugin-sf-plugin": "^1.18.9",
     "oclif": "^4.13.10",
     "ts-node": "^10.9.2",
