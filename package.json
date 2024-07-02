@@ -19,10 +19,8 @@
     "@salesforce/plugin-command-reference": "^3.1.8",
     "eslint-plugin-sf-plugin": "^1.18.9",
     "oclif": "^4.13.12",
-    "string-width": "4.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2",
-    "wrap-ansi": "^7"
+    "typescript": "^5.5.2"
   },
   "engines": {
     "node": ">=18.0.0"
