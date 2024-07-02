@@ -1310,18 +1310,18 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@salesforce/apex-node@^7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-7.0.2.tgz#66cacf5b4e48990befd9a069de0d87e7450112a3"
-  integrity sha512-dk7DnbTXXX4s107Qcov+lNk0IwN9+Wr8WnkK1HDvKyNMdoTEcS2kXbdsNJuS4wKHomArfhGOjBUiRJSIxYrQ+A==
+"@salesforce/apex-node@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-7.0.3.tgz#a25cbcd5aa6a3128b0dd0c2606576d5b11786f93"
+  integrity sha512-lUeMmBHWCmV//u6A77Wvv/srp7xJyJuAdy6zZwpayd73a3gB6mh2DP8qCF/KdyuUTZd7IykLHncS+/rRkS8SUQ==
   dependencies:
     "@jsforce/jsforce-node" "^3.2.2"
     "@salesforce/core" "^8.0.3"
     "@salesforce/kit" "^3.1.6"
     "@types/istanbul-reports" "^3.0.4"
     bfj "8.0.0"
+    fast-glob "^3.3.2"
     faye "1.4.0"
-    glob "^10.3.16"
     istanbul-lib-coverage "^3.2.2"
     istanbul-lib-report "^3.0.1"
     istanbul-reports "^3.1.7"
@@ -4105,7 +4105,7 @@ glob@8.1.0, glob@^8.0.3:
     minimatch "^5.0.1"
     once "^1.3.0"
 
-glob@^10.3.10, glob@^10.3.16:
+glob@^10.3.10:
   version "10.4.2"
   resolved "https://registry.yarnpkg.com/glob/-/glob-10.4.2.tgz#bed6b95dade5c1f80b4434daced233aee76160e5"
   integrity sha512-GwMlUF6PkPo3Gk21UxkCohOv0PLcIXVtKyLlpEI28R/cO/4eNOdmLk3CMW1wROV/WR/EsZOWAfBbBOqYvs88/w==
@@ -5032,9 +5032,9 @@ lines-and-columns@^1.1.6:
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
 linkinator@^6.0.5:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/linkinator/-/linkinator-6.1.0.tgz#28ee9c7612f1f6c1b659a86296efcbc396afcdc5"
-  integrity sha512-Snumf1hRc9VycBhjMQS2nkc7NHc7OnBD66zSajSbttv+AvbpqV/HeaDJPxHLJl1TTSmfdjMLOYC8wedowKdpag==
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/linkinator/-/linkinator-6.1.1.tgz#73b01877573af1df9c09eb7355e6d47fdf740210"
+  integrity sha512-VNFhw71A8ORQKdNdUz6MqcdmoCK2SKWI+22dmcN/7KuERTxv9yfezh5MqwetH66DmRPvj9FMtATk+ck2P5XJjw==
   dependencies:
     chalk "^5.0.0"
     escape-html "^1.0.3"

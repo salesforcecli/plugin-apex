@@ -5,7 +5,7 @@
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@salesforce/apex-node": "^7.0.2",
+    "@salesforce/apex-node": "^7.0.3",
     "@salesforce/core": "^8.1.0",
     "@salesforce/kit": "^3.1.6",
     "@salesforce/sf-plugins-core": "^11.1.2",
@@ -19,10 +19,8 @@
     "@salesforce/plugin-command-reference": "^3.1.8",
     "eslint-plugin-sf-plugin": "^1.18.10",
     "oclif": "^4.13.12",
-    "string-width": "^4.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2",
-    "wrap-ansi": "^7.0.0"
+    "typescript": "^5.5.2"
   },
   "engines": {
     "node": ">=18.0.0"
