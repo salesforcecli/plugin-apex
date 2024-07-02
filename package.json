@@ -17,10 +17,12 @@
     "@salesforce/cli-plugins-testkit": "^5.3.17",
     "@salesforce/dev-scripts": "^10.2.2",
     "@salesforce/plugin-command-reference": "^3.1.8",
-    "eslint-plugin-sf-plugin": "^1.18.9",
+    "eslint-plugin-sf-plugin": "^1.18.10",
     "oclif": "^4.13.12",
+    "string-width": "^4.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
+    "wrap-ansi": "^7.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
