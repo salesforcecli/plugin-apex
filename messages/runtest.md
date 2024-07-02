@@ -35,11 +35,11 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
   <%= config.bin %> <%= command.id %> --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
 
 - Run all tests in the org asynchronously:
-  
+
   <%= config.bin %> <%= command.id %> --target-org myscratch
 
 - Run all tests synchronously; the command waits to display the test results until all tests finish:
-  
+
   <%= config.bin %> <%= command.id %> --synchronous
 
 - Run specific tests using the --test-level flag:
@@ -51,13 +51,12 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
   <%= config.bin %> <%= command.id %> --class-names TestA --class-names TestB --result-format tap --code-coverage
 
 - Run Apex tests on methods specified using the standard Class.method notation; if you specify a test class without a method, the command runs all methods in the class:
-  
+
   <%= config.bin %> <%= command.id %> --tests TestA.excitingMethod --tests TestA.boringMethod --tests TestB
 
 - Run Apex tests on methods specified using the standard Class.method notation with a namespace:
-  
+
   <%= config.bin %> <%= command.id %> --tests ns.TestA.excitingMethod --tests ns.TestA.boringMethod --tests ns.TestB
- 
 
 # flags.class-names.summary
 
@@ -144,7 +143,7 @@ Encountered an error when processing test results
 
 # apexTestReportFormatHint
 
-Run "%s apex get test %s --result-format <format>" to retrieve test results in a different format.
+Run "sf apex get test %s --result-format <format>" to retrieve test results in a different format.
 
 # outputDirHint
 

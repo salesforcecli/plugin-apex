@@ -136,7 +136,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     }
 
     if ('summary' in result) {
-      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
+      const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
       return testReporter.report(result, flags);
     } else {
       // Tests were ran asynchronously or the --wait timed out.
