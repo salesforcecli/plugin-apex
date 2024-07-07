@@ -1,3 +1,9 @@
+## [3.2.4](https://github.com/salesforcecli/plugin-apex/compare/3.2.3...3.2.4) (2024-07-07)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/apex-node from 7.0.3 to 7.0.4 ([e885af8](https://github.com/salesforcecli/plugin-apex/commit/e885af885e18ed75cadf556767a3ac494de7520f))
+
 ## [3.2.3](https://github.com/salesforcecli/plugin-apex/compare/3.2.2...3.2.3) (2024-07-02)
 
 ### Bug Fixes
