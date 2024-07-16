@@ -116,10 +116,7 @@ describe('apex:test:run', () => {
 
     it('should only display failed test with human format with concise flag', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailureAndSuccess);
-      await new Test(
-        ['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous', '--concise'],
-        config
-      ).run();
+      await Test.run(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous', '--concise']);
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.contain('Test Results');
       expect(logStub.firstCall.args[0]).to.contain('MyFailingTest');
@@ -476,10 +473,15 @@ describe('apex:test:run', () => {
 
     it('should only display summary with human format and code coverage and concise parameters', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithCoverage);
-      await new Test(
-        ['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous', '--code-coverage', '--concise'],
-        config
-      ).run();
+      await Test.run([
+        '--tests',
+        'MyApexTests',
+        '--result-format',
+        'human',
+        '--synchronous',
+        '--code-coverage',
+        '--concise',
+      ]);
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.not.contain('Test Results');
       expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
