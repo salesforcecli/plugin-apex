@@ -61,7 +61,7 @@ export default class Test extends SfCommand<RunResult> {
     const testService = new TestService(conn);
     const result = await testService.reportAsyncResults(flags['test-run-id'], flags['code-coverage']);
 
-    const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn, this.config.bin);
+    const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
 
     return testReporter.report(result, {
       'output-dir': flags['output-dir'],

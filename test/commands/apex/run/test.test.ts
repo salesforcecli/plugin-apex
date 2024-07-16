@@ -7,8 +7,7 @@
 import fs from 'node:fs';
 import { Messages, Org } from '@salesforce/core';
 import sinon from 'sinon';
-import { Ux } from '@salesforce/sf-plugins-core';
-import { Config } from '@oclif/core';
+import { Ux, stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import { assert, expect } from 'chai';
 import { TestService } from '@salesforce/apex-node';
 import Test from '../../../../src/commands/apex/run/test.js';
@@ -29,13 +28,12 @@ let styledJsonStub: sinon.SinonStub;
 
 describe('apex:test:run', () => {
   let sandbox: sinon.SinonSandbox;
-  let config: Config;
 
   beforeEach(async () => {
-    config = await Config.load(import.meta.url);
     sandbox = sinon.createSandbox();
     logStub = sandbox.stub(Ux.prototype, 'log');
     styledJsonStub = sandbox.stub(Ux.prototype, 'styledJSON');
+    stubSfCommandUx(sandbox);
     sandbox
       .stub(Org, 'create')
       // @ts-ignore
@@ -57,7 +55,7 @@ describe('apex:test:run', () => {
     it('should return a success human format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(runWithFailures);
 
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'human'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'human']);
 
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('=== Test Summary');
@@ -69,7 +67,7 @@ describe('apex:test:run', () => {
     it('should return a success tap format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(runWithFailures);
 
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'tap'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'tap']);
 
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
@@ -79,7 +77,7 @@ describe('apex:test:run', () => {
 
     it('should return a success junit format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(runWithFailures);
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'junit'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'junit']);
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(logStub.firstCall.args[0]).to.include('<property name="failRate" value="50%"/>');
       expect(logStub.firstCall.args[0]).to.include('<property name="outcome" value="Failed"/>');
@@ -88,29 +86,29 @@ describe('apex:test:run', () => {
 
     it('should return a success json format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(runWithFailures);
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'json'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'json']);
       expect(result).to.deep.equal(testRunWithFailuresResult);
       expect(styledJsonStub.firstCall.args[0]).to.deep.equal({ result: testRunWithFailuresResult, status: 100 });
     });
 
     it('should return a success --json format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves({ testRunId: '707xx0000AUS2gH' });
-      const result = await new Test(['--tests', 'MyApexTests', '--json'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--json']);
       expect(result).to.deep.equal({ testRunId: '707xx0000AUS2gH' });
-      expect(styledJsonStub.notCalled).to.be.true;
+      expect(styledJsonStub.callCount).to.equal(0);
     });
 
     it('should return a success --json format message with sync', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailures);
 
-      const result = await new Test(['--tests', 'MyApexTests', '--json', '--synchronous'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--json', '--synchronous']);
       expect(result).to.deep.equal(testRunWithFailuresResult);
-      expect(styledJsonStub.notCalled).to.be.true;
+      expect(styledJsonStub.callCount).to.equal(0);
     });
 
     it('should return a success human format with synchronous', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailures);
-      await new Test(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous'], config).run();
+      await Test.run(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous']);
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.contain('Test Results');
       expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
@@ -132,19 +130,16 @@ describe('apex:test:run', () => {
     it('will build the sync correct payload', async () => {
       const buildPayloadSpy = sandbox.spy(TestService.prototype, 'buildSyncPayload');
       const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailures);
-      await new Test(
-        [
-          '--class-names',
-          'myApex',
-          '--synchronous',
-          '--code-coverage',
-          '--result-format',
-          'human',
-          '--test-level',
-          'RunSpecifiedTests',
-        ],
-        config
-      ).run();
+      await Test.run([
+        '--class-names',
+        'myApex',
+        '--synchronous',
+        '--code-coverage',
+        '--result-format',
+        'human',
+        '--test-level',
+        'RunSpecifiedTests',
+      ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
@@ -164,10 +159,15 @@ describe('apex:test:run', () => {
       const runTestSynchronousSpy = sandbox
         .stub(TestService.prototype, 'runTestAsynchronous')
         .resolves(runWithCoverage);
-      await new Test(
-        ['--class-names', 'myApex', '--code-coverage', '--result-format', 'human', '--test-level', 'RunSpecifiedTests'],
-        config
-      ).run();
+      await Test.run([
+        '--class-names',
+        'myApex',
+        '--code-coverage',
+        '--result-format',
+        'human',
+        '--test-level',
+        'RunSpecifiedTests',
+      ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
@@ -188,7 +188,7 @@ describe('apex:test:run', () => {
       const runTestSynchronousSpy = sandbox
         .stub(TestService.prototype, 'runTestAsynchronous')
         .resolves(runWithFailures);
-      await new Test(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests'], config).run();
+      await Test.run(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
@@ -207,7 +207,7 @@ describe('apex:test:run', () => {
       sandbox.stub(Org.prototype, 'getUsername').resolves('test@example.com');
       const buildPayloadSpy = sandbox.spy(TestService.prototype, 'buildSyncPayload');
       const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailures);
-      await new Test(['--class-names', 'myApex', '--synchronous', '--test-level', 'RunSpecifiedTests'], config).run();
+      await Test.run(['--class-names', 'myApex', '--synchronous', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
@@ -227,7 +227,7 @@ describe('apex:test:run', () => {
     it('should return a success human format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'human'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'human']);
 
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.include('=== Test Summary');
@@ -239,7 +239,7 @@ describe('apex:test:run', () => {
     it('should parse tests flags correctly comma separated', async () => {
       const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      await new Test(['--tests', 'MyApexTests,MySecondTest', '--result-format', 'human'], config).run();
+      await Test.run(['--tests', 'MyApexTests,MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -257,7 +257,7 @@ describe('apex:test:run', () => {
     it('should parse tests flags correctly multi-flag', async () => {
       const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      await new Test(['--tests', 'MyApexTests', '--tests', 'MySecondTest', '--result-format', 'human'], config).run();
+      await Test.run(['--tests', 'MyApexTests', '--tests', 'MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -275,7 +275,7 @@ describe('apex:test:run', () => {
     it('should parse class-names flags correctly comma separated', async () => {
       const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      await new Test(['--class-names', 'MyApexTests,MySecondTest', '--result-format', 'human'], config).run();
+      await Test.run(['--class-names', 'MyApexTests,MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -293,7 +293,7 @@ describe('apex:test:run', () => {
     it('should parse class-names (-n) flags correctly multi-flag', async () => {
       const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      await new Test(['-n', 'MyApexTests', '-n', 'MySecondTest', '--result-format', 'human'], config).run();
+      await Test.run(['-n', 'MyApexTests', '-n', 'MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -311,7 +311,7 @@ describe('apex:test:run', () => {
     it('should parse suite-names flags correctly comma separated', async () => {
       const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      await new Test(['--suite-names', 'MyApexTests,MySecondTest', '--result-format', 'human'], config).run();
+      await Test.run(['--suite-names', 'MyApexTests,MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -322,7 +322,7 @@ describe('apex:test:run', () => {
     it('should parse suite-names (-s) flags correctly multi-flag', async () => {
       const apexStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      await new Test(['-s', 'MyApexTests', '-s', 'MySecondTest', '--result-format', 'human'], config).run();
+      await Test.run(['-s', 'MyApexTests', '-s', 'MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -333,7 +333,7 @@ describe('apex:test:run', () => {
     it('should return a success tap format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
 
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'tap'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'tap']);
 
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.include('1..1');
@@ -343,7 +343,7 @@ describe('apex:test:run', () => {
 
     it('should return a success junit format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'junit'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'junit']);
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(logStub.firstCall.args[0]).to.contain('<testcase name="testConfig" classname="MyApexTests" time="0.05">');
       expect(logStub.firstCall.args[0]).to.contain('<property name="testsRan" value="1"/>');
@@ -352,7 +352,7 @@ describe('apex:test:run', () => {
     it('should return a success json format message with async', async () => {
       process.exitCode = 0;
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
-      const result = await new Test(['--tests', 'MyApexTests', '--result-format', 'json'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--result-format', 'json']);
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(styledJsonStub.firstCall.args[0]).to.deep.equal({ result: testRunSimpleResult, status: 0 });
     });
@@ -360,7 +360,7 @@ describe('apex:test:run', () => {
     it('should return a success --json format message with async', async () => {
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves({ testRunId: '707xx0000AUS2gH' });
       sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
-      const result = await new Test(['--tests', 'MyApexTests', '--json'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--json']);
       expect(result).to.deep.equal({ testRunId: '707xx0000AUS2gH' });
       expect(styledJsonStub.notCalled).to.be.true;
     });
@@ -368,14 +368,14 @@ describe('apex:test:run', () => {
     it('should return a success --json format message with sync', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(testRunSimple);
 
-      const result = await new Test(['--tests', 'MyApexTests', '--json', '--synchronous'], config).run();
+      const result = await Test.run(['--tests', 'MyApexTests', '--json', '--synchronous']);
       expect(result).to.deep.equal(testRunSimpleResult);
       expect(styledJsonStub.notCalled).to.be.true;
     });
 
     it('should return a success human format with synchronous', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(testRunSimple);
-      await new Test(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous'], config).run();
+      await Test.run(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous']);
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.contain('Test Results');
       expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
@@ -384,19 +384,16 @@ describe('apex:test:run', () => {
     it('will build the sync correct payload', async () => {
       const buildPayloadSpy = sandbox.spy(TestService.prototype, 'buildSyncPayload');
       const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithCoverage);
-      await new Test(
-        [
-          '--class-names',
-          'myApex',
-          '--synchronous',
-          '--code-coverage',
-          '--result-format',
-          'human',
-          '--test-level',
-          'RunSpecifiedTests',
-        ],
-        config
-      ).run();
+      await Test.run([
+        '--class-names',
+        'myApex',
+        '--synchronous',
+        '--code-coverage',
+        '--result-format',
+        'human',
+        '--test-level',
+        'RunSpecifiedTests',
+      ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
@@ -416,10 +413,15 @@ describe('apex:test:run', () => {
       const runTestSynchronousSpy = sandbox
         .stub(TestService.prototype, 'runTestAsynchronous')
         .resolves(runWithCoverage);
-      await new Test(
-        ['--class-names', 'myApex', '--code-coverage', '--result-format', 'human', '--test-level', 'RunSpecifiedTests'],
-        config
-      ).run();
+      await Test.run([
+        '--class-names',
+        'myApex',
+        '--code-coverage',
+        '--result-format',
+        'human',
+        '--test-level',
+        'RunSpecifiedTests',
+      ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
@@ -438,7 +440,7 @@ describe('apex:test:run', () => {
       sandbox.stub(Org.prototype, 'getUsername').resolves('test@example.com');
       const buildPayloadSpy = sandbox.spy(TestService.prototype, 'buildAsyncPayload');
       const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(testRunSimple);
-      await new Test(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests'], config).run();
+      await Test.run(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
@@ -457,7 +459,7 @@ describe('apex:test:run', () => {
       sandbox.stub(Org.prototype, 'getUsername').resolves('test@example.com');
       const buildPayloadSpy = sandbox.spy(TestService.prototype, 'buildSyncPayload');
       const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(testRunSimple);
-      await new Test(['--class-names', 'myApex', '--synchronous', '--test-level', 'RunSpecifiedTests'], config).run();
+      await Test.run(['--class-names', 'myApex', '--synchronous', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
@@ -487,17 +489,17 @@ describe('apex:test:run', () => {
   describe('validateFlags', () => {
     it('rejects tests/classnames/suitenames and testlevels', async () => {
       try {
-        await new Test(['--tests', 'mytest', '--test-level', 'RunAllTestsInOrg'], config).run();
+        await Test.run(['--tests', 'mytest', '--test-level', 'RunAllTestsInOrg']);
       } catch (e) {
         expect((e as Error).message).to.equal(messages.getMessage('testLevelErr'));
       }
       try {
-        await new Test(['--class-names', 'mytest', '--test-level', 'RunAllTestsInOrg'], config).run();
+        await Test.run(['--class-names', 'mytest', '--test-level', 'RunAllTestsInOrg']);
       } catch (e) {
         expect((e as Error).message).to.equal(messages.getMessage('testLevelErr'));
       }
       try {
-        await new Test(['--suite-names', 'mytest', '--test-level', 'RunAllTestsInOrg'], config).run();
+        await Test.run(['--suite-names', 'mytest', '--test-level', 'RunAllTestsInOrg']);
       } catch (e) {
         expect((e as Error).message).to.equal(messages.getMessage('testLevelErr'));
       }
@@ -505,13 +507,13 @@ describe('apex:test:run', () => {
 
     it('rejects synchronous and suitenames/classnames', async () => {
       try {
-        await new Test(['--synchronous', '--suite-names', 'mysuite'], config).run();
+        await Test.run(['--synchronous', '--suite-names', 'mysuite']);
       } catch (e) {
         expect((e as Error).message).to.equal(messages.getMessage('syncClassErr'));
       }
 
       try {
-        await new Test(['--synchronous', '--class-names', 'myclass,mysecondclass'], config).run();
+        await Test.run(['--synchronous', '--class-names', 'myclass,mysecondclass']);
       } catch (e) {
         expect((e as Error).message).to.equal(messages.getMessage('syncClassErr'));
       }
@@ -520,21 +522,21 @@ describe('apex:test:run', () => {
     it('rejects classname/suitnames/test variations', async () => {
       // uses oclif exclusive now
       try {
-        await new Test(['--class-names', 'myApex', '--suite-names', 'testsuite'], config).run();
+        await Test.run(['--class-names', 'myApex', '--suite-names', 'testsuite']);
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include('cannot also be provided when using');
       }
 
       try {
-        await new Test(['--class-names', 'myApex', '--tests', 'testsuite'], config).run();
+        await Test.run(['--class-names', 'myApex', '--tests', 'testsuite']);
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include('cannot also be provided when using');
       }
 
       try {
-        await new Test(['--suite-names', 'myApex', '--tests', 'testsuite'], config).run();
+        await Test.run(['--suite-names', 'myApex', '--tests', 'testsuite']);
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include('cannot also be provided when using');

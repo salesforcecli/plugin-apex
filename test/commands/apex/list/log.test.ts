@@ -5,9 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { LogService } from '@salesforce/apex-node';
-import { Config } from '@oclif/core';
 import sinon from 'sinon';
-import { SfCommand } from '@salesforce/sf-plugins-core';
+import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import { expect } from 'chai';
 import Log, { formatStartTime } from '../../../../src/commands/apex/list/log.js';
@@ -51,16 +50,12 @@ const rawLogResult = {
 const logRecords = [rawLogResult.result[0], rawLogResult.result[1]];
 
 describe('apex:log:list', () => {
-  let config: Config;
   let sandbox: sinon.SinonSandbox;
-  let logStub: sinon.SinonStub;
-  let tableStub: sinon.SinonStub;
+  let uxStub: ReturnType<typeof stubSfCommandUx>;
 
   beforeEach(async () => {
-    config = await Config.load(import.meta.url);
     sandbox = sinon.createSandbox();
-    logStub = sandbox.stub(SfCommand.prototype, 'log');
-    tableStub = sandbox.stub(SfCommand.prototype, 'table');
+    uxStub = stubSfCommandUx(sandbox);
     sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
   });
 
@@ -70,22 +65,22 @@ describe('apex:log:list', () => {
 
   it('will list 0 logs', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves([]);
-    const result = await new Log([], config).run();
+    const result = await Log.run([]);
     expect(result).to.deep.equal([]);
-    expect(logStub.firstCall.args[0]).to.equal('No debug logs found in org');
+    expect(uxStub.log.firstCall.args[0]).to.equal('No debug logs found in org');
   });
 
   it('will list 0 logs --json', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves([]);
-    const result = await new Log(['--json'], config).run();
+    const result = await Log.run(['--json']);
     expect(result).to.deep.equal([]);
-    expect(logStub.firstCall.args[0]).to.equal('No debug logs found in org');
+    expect(uxStub.log.firstCall.args[0]).to.equal('No debug logs found in org');
   });
 
   it('will list multiple logs', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves(structuredClone(logRecords));
-    await new Log([], config).run();
-    expect(tableStub.firstCall.args[0]).to.deep.equal([
+    await Log.run([]);
+    expect(uxStub.table.args[0][0]).to.deep.equal([
       {
         Application: 'Unknown',
         DurationMilliseconds: '75',
@@ -123,7 +118,7 @@ describe('apex:log:list', () => {
 
   it('will list multiple logs --json', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves(logRecords);
-    const result = await new Log(['--json'], config).run();
+    const result = await Log.run(['--json']);
     expect(result).to.deep.equal(logRecords.map(formatStartTime));
   });
 });

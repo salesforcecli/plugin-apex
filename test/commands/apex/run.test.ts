@@ -10,8 +10,7 @@ import { expect } from 'chai';
 import { ExecuteService } from '@salesforce/apex-node';
 import sinon from 'sinon';
 import { Org, SfError } from '@salesforce/core';
-import { Config } from '@oclif/core';
-import { SfCommand } from '@salesforce/sf-plugins-core';
+import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import Run from '../../../src/commands/apex/run.js';
 
 const log = '47.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\nExecute Anonymous: System.assert(true);|EXECUTION_FINISHED\n';
@@ -29,13 +28,11 @@ const expectedSuccessResult = {
 
 describe('apex:execute', () => {
   let sandboxStub: sinon.SinonSandbox;
-  let logStub: sinon.SinonStub;
-  let config: Config;
+  let uxStub: ReturnType<typeof stubSfCommandUx>;
 
   beforeEach(async () => {
-    config = await Config.load(import.meta.url);
     sandboxStub = sinon.createSandbox();
-    logStub = sandboxStub.stub(SfCommand.prototype, 'log');
+    uxStub = stubSfCommandUx(sandboxStub);
     sandboxStub.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
   });
 
@@ -56,14 +53,14 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Run(['--file', file], config).run();
+    const result = await Run.run(['--file', file]);
 
     expect(result).to.deep.equal(expectedSuccessResult);
-    expect(logStub.calledOnce).to.be.true;
+    expect(uxStub.log.calledOnce).to.be.true;
 
-    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.firstCall.args[0]).to.include('Executed successfully.');
-    expect(logStub.firstCall.args[0]).to.include(log);
+    expect(uxStub.log.firstCall.args[0]).to.include('Compiled successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include('Executed successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include(log);
     expect(executeServiceStub.args[0]).to.deep.equal([
       {
         apexFilePath: file,
@@ -77,12 +74,12 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Run(['--apexcodefile', file, '--json'], config).run();
+    const result = await Run.run(['--apexcodefile', file, '--json']);
 
     expect(result).to.deep.equal(expectedSuccessResult);
-    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.firstCall.args[0]).to.include('Executed successfully.');
-    expect(logStub.firstCall.args[0]).to.include(log);
+    expect(uxStub.log.firstCall.args[0]).to.include('Compiled successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include('Executed successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include(log);
     expect(executeServiceStub.args[0]).to.deep.equal([
       {
         apexFilePath: file,
@@ -95,13 +92,13 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Run(['--json'], config).run();
+    const result = await Run.run(['--json']);
 
     expect(result).to.deep.equal(expectedSuccessResult);
-    expect(logStub.calledOnce).to.be.true;
-    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.firstCall.args[0]).to.include('Executed successfully.');
-    expect(logStub.firstCall.args[0]).to.include(log);
+    expect(uxStub.log.calledOnce).to.be.true;
+    expect(uxStub.log.firstCall.args[0]).to.include('Compiled successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include('Executed successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include(log);
     expect(executeServiceStub.args[0]).to.deep.equal([
       {
         userInput: true,
@@ -114,13 +111,13 @@ describe('apex:execute', () => {
       .stub(ExecuteService.prototype, 'executeAnonymous')
       .resolves({ compiled: true, success: true, logs: log });
 
-    const result = await new Run([], config).run();
+    const result = await Run.run([]);
 
     expect(result).to.deep.equal(expectedSuccessResult);
-    expect(logStub.calledOnce).to.be.true;
-    expect(logStub.firstCall.args[0]).to.include('Compiled successfully.');
-    expect(logStub.firstCall.args[0]).to.include('Executed successfully.');
-    expect(logStub.firstCall.args[0]).to.include(log);
+    expect(uxStub.log.calledOnce).to.be.true;
+    expect(uxStub.log.firstCall.args[0]).to.include('Compiled successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include('Executed successfully.');
+    expect(uxStub.log.firstCall.args[0]).to.include(log);
     expect(executeServiceStub.args[0]).to.deep.equal([
       {
         userInput: true,
@@ -144,7 +141,7 @@ describe('apex:execute', () => {
       ],
     });
     try {
-      await new Run(['--json'], config).run();
+      await Run.run(['--json']);
     } catch (e) {
       const err = e as SfError;
       expect(err.name).to.equal('executeCompileFailure');
@@ -177,7 +174,7 @@ describe('apex:execute', () => {
       ],
     });
     try {
-      await new Run(['--json'], config).run();
+      await Run.run(['--json']);
     } catch (e) {
       const err = e as SfError;
       expect(err.name).to.equal('executeRuntimeFailure');

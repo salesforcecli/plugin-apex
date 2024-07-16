@@ -31,9 +31,8 @@ export class TestReporter {
    *
    * @param ux a new Ux instance based on if the command is in json mode
    * @param connection a connection to the org the tests are being run against - used for getting username for hints
-   * @param bin the bin of the cli, used for providing suggestions in the users cli
    */
-  public constructor(private readonly ux: Ux, private readonly connection: Connection, private readonly bin: string) {}
+  public constructor(private readonly ux: Ux, private readonly connection: Connection) {}
 
   public async report(
     result: TestResult,
@@ -211,6 +210,6 @@ export class TestReporter {
     if (username) {
       reportArgs += ` -o ${username}`;
     }
-    return messages.getMessage('apexTestReportFormatHint', [this.bin, reportArgs]);
+    return messages.getMessage('apexTestReportFormatHint', [reportArgs]);
   }
 }
