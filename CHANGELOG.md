@@ -1,3 +1,13 @@
+# [3.3.0](https://github.com/salesforcecli/plugin-apex/compare/3.2.5...3.3.0) (2024-07-19)
+
+### Bug Fixes
+
+- avoid `undefined` in output ([4bccdaa](https://github.com/salesforcecli/plugin-apex/commit/4bccdaa8a0ffb3897ca4544255e10f186eb03341))
+
+### Features
+
+- bump apex lib ([bc8802b](https://github.com/salesforcecli/plugin-apex/commit/bc8802b5adaa0b2177a2c5b79f51f817d07cd386))
+
 ## [3.2.5](https://github.com/salesforcecli/plugin-apex/compare/3.2.4...3.2.5) (2024-07-14)
 
 ### Bug Fixes
