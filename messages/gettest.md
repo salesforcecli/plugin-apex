@@ -24,7 +24,6 @@ Provide a test run ID to display test results for an enqueued or completed async
 
   <%= config.bin %> <%= command.id %> --test-run-id <test run id> --code-coverage --output-dir <path to outputdir> --target-org me@myorg'
 
-
 # flags.test-run-id.summary
 
 ID of the test run.
