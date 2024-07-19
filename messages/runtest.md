@@ -34,6 +34,30 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
 
   <%= config.bin %> <%= command.id %> --test-level RunLocalTests --output-dir <path to outputdir> --target-org me@my.org
 
+- Run all tests in the org asynchronously:
+
+  <%= config.bin %> <%= command.id %> --target-org myscratch
+
+- Run all tests synchronously; the command waits to display the test results until all tests finish:
+
+  <%= config.bin %> <%= command.id %> --synchronous
+
+- Run specific tests using the --test-level flag:
+
+  <%= config.bin %> <%= command.id %> --test-level RunLocalTests
+
+- Run Apex tests on all the methods in the specified class; output results in Test Anything Protocol (TAP) format and request code coverage results:
+
+  <%= config.bin %> <%= command.id %> --class-names TestA --class-names TestB --result-format tap --code-coverage
+
+- Run Apex tests on methods specified using the standard Class.method notation; if you specify a test class without a method, the command runs all methods in the class:
+
+  <%= config.bin %> <%= command.id %> --tests TestA.excitingMethod --tests TestA.boringMethod --tests TestB
+
+- Run Apex tests on methods specified using the standard Class.method notation with a namespace:
+
+  <%= config.bin %> <%= command.id %> --tests ns.TestA.excitingMethod --tests ns.TestA.boringMethod --tests ns.TestB
+
 # flags.class-names.summary
 
 Apex test class names to run; default is all classes.
@@ -80,9 +104,9 @@ Level of tests to run; default is RunLocalTests.
 
 Here's what the levels mean:
 
-- RunSpecifiedTests — Only the tests that you specify are run.
-- RunLocalTests — All tests in your org are run, except the ones that originate from installed managed packages.
-- RunAllTestsInOrg — All tests are in your org and in installed managed packages are run
+- RunSpecifiedTests — Only the tests that you specify in the runTests option are run. Code coverage requirements differ from the default coverage requirements when using this test level. The executed tests must cover each class and trigger in the deployment package for a minimum of 75% code coverage. This coverage is computed for each class and triggers individually, and is different than the overall coverage percentage.
+- RunLocalTests — All local tests in your org, including tests that originate from no-namespaced unlocked packages, are run. The tests that originate from installed managed packages and namespaced unlocked packages aren't run. This test level is the default for production deployments that include Apex classes or triggers.
+- RunAllTestsInOrg — All tests are run. The tests include all tests in your org.
 
 # flags.wait.summary
 
@@ -119,7 +143,7 @@ Encountered an error when processing test results
 
 # apexTestReportFormatHint
 
-Run "%s apex get test %s --result-format <format>" to retrieve test results in a different format.
+Run "sf apex get test %s --result-format <format>" to retrieve test results in a different format.
 
 # outputDirHint
 

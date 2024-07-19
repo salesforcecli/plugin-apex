@@ -7,19 +7,17 @@
 
 import sinon from 'sinon';
 import { LogService } from '@salesforce/apex-node';
-import { Config } from '@oclif/core';
 import { expect } from 'chai';
 import { Org } from '@salesforce/core';
+import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import Log from '../../../../src/commands/apex/tail/log.js';
 
 describe('apex:log:tail', () => {
   let sandbox: sinon.SinonSandbox;
-  let config: Config;
 
   beforeEach(async () => {
-    config = await Config.load(import.meta.url);
     sandbox = sinon.createSandbox();
-
+    stubSfCommandUx(sandbox);
     sandbox.stub(Org, 'create').resolves({ getConnection: () => ({}) } as Org);
     sandbox.stub(LogService.prototype, 'tail').resolves();
   });
@@ -30,20 +28,19 @@ describe('apex:log:tail', () => {
 
   it('will skip trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    const tail = new Log(['-o', 'test@username.com'], config);
     // @ts-ignore private method
-    sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
-    const result = await tail.run();
+    sandbox.stub(Log.prototype, 'getLogService').returns(LogService.prototype);
+
+    const result = await Log.run(['-o', 'test@username.com']);
     expect(traceFlagStub.called).to.be.true;
     expect(result).to.deep.equal(undefined);
   });
 
   it('will call trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    const tail = new Log(['-o', 'test@username.com', '--skip-trace-flag'], config);
     // @ts-ignore private method
-    sandbox.stub(tail, 'getLogService').returns(LogService.prototype);
-    const result = await tail.run();
+    sandbox.stub(Log.prototype, 'getLogService').returns(LogService.prototype);
+    const result = await Log.run(['-o', 'test@username.com', '--skip-trace-flag']);
     expect(traceFlagStub.called).to.be.false;
     expect(result).to.deep.equal(undefined);
   });

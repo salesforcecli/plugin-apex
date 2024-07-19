@@ -1,3 +1,33 @@
+## [3.2.5](https://github.com/salesforcecli/plugin-apex/compare/3.2.4...3.2.5) (2024-07-14)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 11.1.2 to 11.1.6 ([0422b2c](https://github.com/salesforcecli/plugin-apex/commit/0422b2cac21f00695c376535ac4b24801afd91b7))
+
+## [3.2.4](https://github.com/salesforcecli/plugin-apex/compare/3.2.3...3.2.4) (2024-07-07)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/apex-node from 7.0.3 to 7.0.4 ([e885af8](https://github.com/salesforcecli/plugin-apex/commit/e885af885e18ed75cadf556767a3ac494de7520f))
+
+## [3.2.3](https://github.com/salesforcecli/plugin-apex/compare/3.2.2...3.2.3) (2024-07-02)
+
+### Bug Fixes
+
+- **deps:** bump apex library ([#513](https://github.com/salesforcecli/plugin-apex/issues/513)) ([edd63e8](https://github.com/salesforcecli/plugin-apex/commit/edd63e8d629fc1976358da58e7cf75006d883159))
+
+## [3.2.2](https://github.com/salesforcecli/plugin-apex/compare/3.2.1...3.2.2) (2024-06-30)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.0.6 to 4.0.7 ([152b032](https://github.com/salesforcecli/plugin-apex/commit/152b03235a83dc7e1d8728afc8a8c4d6f213c51d))
+
+## [3.2.1](https://github.com/salesforcecli/plugin-apex/compare/3.2.0...3.2.1) (2024-06-27)
+
+### Bug Fixes
+
+- added examples to apex run and apex get ([fb56783](https://github.com/salesforcecli/plugin-apex/commit/fb5678372f63008b2089799f30ac2c1f9158c802))
+
 # [3.2.0](https://github.com/salesforcecli/plugin-apex/compare/3.1.22...3.2.0) (2024-06-18)
 
 ### Features
