@@ -1,3 +1,9 @@
+## [3.3.2](https://github.com/salesforcecli/plugin-apex/compare/3.3.1...3.3.2) (2024-07-21)
+
+### Bug Fixes
+
+- **deps:** bump ansis from 3.2.1 to 3.3.1 ([4d0aaf4](https://github.com/salesforcecli/plugin-apex/commit/4d0aaf45aeb812a3a5ba6bd6287ed08fb5d9d92e))
+
 ## [3.3.1](https://github.com/salesforcecli/plugin-apex/compare/3.3.0...3.3.1) (2024-07-21)
 
 ### Bug Fixes
