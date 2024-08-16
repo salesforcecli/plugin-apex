@@ -55,7 +55,7 @@ export class TestReporter {
         options['output-dir'],
         options['result-format'] as ResultFormat | undefined,
         Boolean(options['detailed-coverage']),
-        options['concise'],
+        options.concise,
         options.synchronous
       );
 
