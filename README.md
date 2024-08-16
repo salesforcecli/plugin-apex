@@ -148,7 +148,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.3.4/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.4.0/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -157,7 +157,7 @@ Display test results for a specific asynchronous test run.
 ```
 USAGE
   $ sf apex get test -o <value> -i <value> [--json] [--flags-dir <value>] [--api-version <value>] [-c] [-d <value>]
-    [-r human|tap|junit|json]
+    [-r human|tap|junit|json] [--concise]
 
 FLAGS
   -c, --code-coverage           Retrieve code coverage results.
@@ -168,6 +168,7 @@ FLAGS
   -r, --result-format=<option>  [default: human] Format of the test results.
                                 <options: human|tap|junit|json>
       --api-version=<value>     Override the api version used for api requests made by this command
+      --concise                 Display only failed test results; works with human-readable output only.
 
 GLOBAL FLAGS
   --flags-dir=<value>  Import flag values from a directory.
@@ -202,7 +203,7 @@ EXAMPLES
       me@myorg'
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.3.4/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.4.0/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -242,7 +243,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.3.4/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.4.0/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -289,7 +290,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.3.4/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.4.0/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -299,7 +300,7 @@ Invoke Apex tests in an org.
 USAGE
   $ sf apex run test -o <value> [--json] [--flags-dir <value>] [--api-version <value>] [-d <value>] [-l
     RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests] [-n <value>... | -s <value>... | -t <value>...] [-r
-    human|tap|junit|json] [-w <value>] [-y] [-v -c]
+    human|tap|junit|json] [-w <value>] [-y] [-v -c] [--concise]
 
 FLAGS
   -c, --code-coverage           Retrieve code coverage results.
@@ -320,6 +321,7 @@ FLAGS
   -y, --synchronous             Runs test methods from a single Apex class synchronously; if not specified, tests are
                                 run asynchronously.
       --api-version=<value>     Override the api version used for api requests made by this command
+      --concise                 Display only failed test results; works with human-readable output only.
 
 GLOBAL FLAGS
   --flags-dir=<value>  Import flag values from a directory.
@@ -428,7 +430,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.3.4/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.4.0/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -471,6 +473,6 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.3.4/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.4.0/src/commands/apex/tail/log.ts)_
 
 <!-- commandsstop -->

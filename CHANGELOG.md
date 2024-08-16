@@ -1,3 +1,13 @@
+# [3.4.0](https://github.com/salesforcecli/plugin-apex/compare/3.3.4...3.4.0) (2024-08-16)
+
+### Features
+
+- add concise flag to apex run test and apex get test ([04df5ab](https://github.com/salesforcecli/plugin-apex/commit/04df5ab605b02d64e84dbd19b1abc1b757b23270))
+
+### Reverts
+
+- undo changes to tsconfig ([6012017](https://github.com/salesforcecli/plugin-apex/commit/60120175aac751ff5e88102bae12597868ce2d82))
+
 ## [3.3.4](https://github.com/salesforcecli/plugin-apex/compare/3.3.3...3.3.4) (2024-08-04)
 
 ### Bug Fixes
