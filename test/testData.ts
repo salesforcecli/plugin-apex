@@ -375,6 +375,68 @@ export const failureResult = {
   ],
 };
 
+export const runWithFailureAndSuccess: TestResult = {
+  summary: {
+    failRate: '50%',
+    testsRan: 2,
+    orgId: '00D4xx00000FH4IEAW',
+    outcome: 'Failed',
+    passing: 1,
+    failing: 1,
+    skipped: 0,
+    passRate: '50%',
+    skipRate: '0%',
+    testStartTime: '2020-08-25T00:48:02.000+0000',
+    testExecutionTimeInMs: 53,
+    commandTimeInMs: 60,
+    testTotalTimeInMs: 53,
+    hostname: 'https://na139.salesforce.com',
+    testRunId: '707xx0000AUS2gH',
+    userId: '005xx000000uEgSAAU',
+    username: 'test@example.com',
+  },
+  tests: [
+    {
+      id: '07Mxx00000ErgiHUAR',
+      queueItemId: '709xx000001IlUMQA0',
+      stackTrace: 'Error running test',
+      message: null,
+      asyncApexJobId: '707xx0000AUS2gHQQT',
+      methodName: 'failingTestConfig',
+      outcome: ApexTestResultOutcome.Fail,
+      apexLogId: null,
+      apexClass: {
+        id: '01pxx00000NWwb3AAD',
+        name: 'MyFailingTest',
+        namespacePrefix: '',
+        fullName: 'MyFailingTest',
+      },
+      runTime: 53,
+      testTimestamp: '2020-08-25T00:48:02.000+0000',
+      fullName: 'MyFailingTest.testConfig',
+    },
+    {
+      id: '07Mxx00000ErgiHUAR',
+      queueItemId: '709xx000001IlUMQA0',
+      stackTrace: '',
+      message: '',
+      asyncApexJobId: '707xx0000AUS2gHQQT',
+      methodName: 'passingTestConfig',
+      outcome: ApexTestResultOutcome.Pass,
+      apexLogId: null,
+      apexClass: {
+        id: '01pxx00000NWwb3AAD',
+        name: 'MyPassingTest',
+        namespacePrefix: '',
+        fullName: 'MyPassingTest',
+      },
+      runTime: 53,
+      testTimestamp: '2020-08-25T00:48:02.000+0000',
+      fullName: 'MyPassingTest.testConfig',
+    },
+  ],
+};
+
 export const jsonResult: RunResult = {
   summary: {
     commandTime: '60 ms',

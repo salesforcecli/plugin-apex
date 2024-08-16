@@ -120,6 +120,10 @@ Runs test methods from a single Apex class synchronously; if not specified, test
 
 Display detailed code coverage per test.
 
+# flags.concise.summary
+
+Display only failed test results; works with human-readable output only.
+
 # runTestReportCommand
 
 Run "%s apex get test -i %s -o %s" to retrieve test results

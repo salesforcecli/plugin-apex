@@ -48,6 +48,9 @@ export default class Test extends SfCommand<RunResult> {
       summary: messages.getMessage('flags.output-dir.summary'),
     }),
     'result-format': resultFormatFlag,
+    concise: Flags.boolean({
+      summary: messages.getMessage('flags.concise.summary'),
+    }),
   };
 
   public async run(): Promise<RunResult> {
@@ -65,6 +68,7 @@ export default class Test extends SfCommand<RunResult> {
       'result-format': flags['result-format'],
       json: flags.json,
       'code-coverage': flags['code-coverage'],
+      concise: flags.concise,
     });
   }
 }

@@ -44,6 +44,7 @@ export class TestReporter {
       synchronous?: boolean;
       json?: boolean;
       'code-coverage'?: boolean;
+      concise: boolean;
     }
   ): Promise<RunResult> {
     if (options['output-dir']) {
@@ -54,6 +55,7 @@ export class TestReporter {
         options['output-dir'],
         options['result-format'] as ResultFormat | undefined,
         Boolean(options['detailed-coverage']),
+        options.concise,
         options.synchronous
       );
 
@@ -68,7 +70,7 @@ export class TestReporter {
       }
       switch (options['result-format']) {
         case 'human':
-          this.logHuman(result, options['detailed-coverage'] as boolean, options['output-dir']);
+          this.logHuman(result, options['detailed-coverage'] as boolean, options['concise'], options['output-dir']);
           break;
         case 'tap':
           this.logTap(result);
@@ -86,7 +88,7 @@ export class TestReporter {
           }
           break;
         default:
-          this.logHuman(result, options['detailed-coverage'] as boolean, options['output-dir']);
+          this.logHuman(result, options['detailed-coverage'] as boolean, options['concise'], options['output-dir']);
       }
     } catch (e) {
       this.ux.styledJSON(result);
@@ -113,6 +115,7 @@ export class TestReporter {
     outputDir: string,
     resultFormat: ResultFormat | undefined,
     detailedCoverage: boolean,
+    concise: boolean,
     synchronous = false
   ): OutputDirConfig {
     const outputDirConfig: OutputDirConfig = {
@@ -161,7 +164,7 @@ export class TestReporter {
         case ResultFormat.human:
           outputDirConfig.fileInfos?.push({
             filename: 'test-result.txt',
-            content: new HumanReporter().format(result, detailedCoverage),
+            content: new HumanReporter().format(result, detailedCoverage, concise),
           });
           break;
         default:
@@ -181,12 +184,12 @@ export class TestReporter {
     }
   }
 
-  private logHuman(result: TestResult, detailedCoverage: boolean, outputDir?: string): void {
+  private logHuman(result: TestResult, detailedCoverage: boolean, concise: boolean, outputDir?: string): void {
     if (outputDir) {
       this.ux.log(messages.getMessage('outputDirHint', [outputDir]));
     }
     const humanReporter = new HumanReporter();
-    const output = humanReporter.format(result, detailedCoverage);
+    const output = humanReporter.format(result, detailedCoverage, concise);
     this.ux.log(output);
   }
 

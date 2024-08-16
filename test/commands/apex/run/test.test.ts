@@ -13,6 +13,7 @@ import { TestService } from '@salesforce/apex-node';
 import Test from '../../../../src/commands/apex/run/test.js';
 import {
   runWithCoverage,
+  runWithFailureAndSuccess,
   runWithFailures,
   testRunSimple,
   testRunSimpleResult,
@@ -110,6 +111,16 @@ describe('apex:test:run', () => {
       await Test.run(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous']);
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.contain('Test Results');
+      expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
+    });
+
+    it('should only display failed test with human format with concise flag', async () => {
+      sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailureAndSuccess);
+      await Test.run(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous', '--concise']);
+      expect(logStub.firstCall.args[0]).to.contain('Test Summary');
+      expect(logStub.firstCall.args[0]).to.contain('Test Results');
+      expect(logStub.firstCall.args[0]).to.contain('MyFailingTest');
+      expect(logStub.firstCall.args[0]).to.not.contain('MyPassingTest');
       expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
     });
 
@@ -458,6 +469,22 @@ describe('apex:test:run', () => {
           },
         ],
       });
+    });
+
+    it('should only display summary with human format and code coverage and concise parameters', async () => {
+      sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithCoverage);
+      await Test.run([
+        '--tests',
+        'MyApexTests',
+        '--result-format',
+        'human',
+        '--synchronous',
+        '--code-coverage',
+        '--concise',
+      ]);
+      expect(logStub.firstCall.args[0]).to.contain('Test Summary');
+      expect(logStub.firstCall.args[0]).to.not.contain('Test Results');
+      expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
     });
   });
 
