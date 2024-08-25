@@ -1,3 +1,9 @@
+## [3.4.3](https://github.com/salesforcecli/plugin-apex/compare/3.4.2...3.4.3) (2024-08-25)
+
+### Bug Fixes
+
+- **deps:** bump micromatch from 4.0.7 to 4.0.8 ([5009f8b](https://github.com/salesforcecli/plugin-apex/commit/5009f8bfd5daf6b485349f60f0a077721b3efe91))
+
 ## [3.4.2](https://github.com/salesforcecli/plugin-apex/compare/3.4.1...3.4.2) (2024-08-18)
 
 ### Bug Fixes
