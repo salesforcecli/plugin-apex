@@ -1,3 +1,9 @@
+## [3.4.8](https://github.com/salesforcecli/plugin-apex/compare/3.4.7...3.4.8) (2024-09-01)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 11.3.4 to 11.3.7 ([923ca91](https://github.com/salesforcecli/plugin-apex/commit/923ca913678c140d317a75a394dd5fb50b1a3f0e))
+
 ## [3.4.7](https://github.com/salesforcecli/plugin-apex/compare/3.4.6...3.4.7) (2024-09-01)
 
 ### Bug Fixes
