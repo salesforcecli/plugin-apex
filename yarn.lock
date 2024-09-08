@@ -1286,26 +1286,26 @@
     istanbul-lib-report "^3.0.1"
     istanbul-reports "^3.1.7"
 
-"@salesforce/cli-plugins-testkit@^5.3.27":
-  version "5.3.27"
-  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-5.3.27.tgz#56d33d1f10c8a0352648d3c3fcfcd75c801d4533"
-  integrity sha512-uq+JqRmBnxItVBVgFWAZy7om7D3l+zYw50tAYGRXDTS1sWQoAAeSy0e+1g+56HHYm1oI1r9ASWSNdX55OuLHKA==
+"@salesforce/cli-plugins-testkit@^5.3.30":
+  version "5.3.30"
+  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-5.3.30.tgz#43468c526b054f495e498a5d494ea3b56347b138"
+  integrity sha512-CnmzrN9gzqIg5NnpwmCmxrq7PtrfqivpV/nDXwHQNSru6Ug6OAqNQGHziLnurzH/UxzHUuv1IL2e6E5ZVRjJoQ==
   dependencies:
-    "@salesforce/core" "^8.4.0"
+    "@salesforce/core" "^8.5.4"
     "@salesforce/kit" "^3.2.1"
     "@salesforce/ts-types" "^2.0.11"
     "@types/shelljs" "^0.8.15"
-    debug "^4.3.6"
+    debug "^4.3.7"
     jszip "^3.10.1"
     shelljs "^0.8.4"
     sinon "^17.0.2"
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.3.0", "@salesforce/core@^8.4.0", "@salesforce/core@^8.5.1", "@salesforce/core@^8.5.3":
-  version "8.5.4"
-  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.5.4.tgz#1cdd669462d2c2859b72135d1138a1b790b1fbcc"
-  integrity sha512-dO8tzFxq811qNPeKPPO2OA2KPYW5rO0YRinW/+7zmRJW3EtNpe93dsQVGwBSAAYrSbYeBwiKdliNqNTN7tKJ0A==
+"@salesforce/core@^8.3.0", "@salesforce/core@^8.4.0", "@salesforce/core@^8.5.1", "@salesforce/core@^8.5.3", "@salesforce/core@^8.5.4":
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.5.5.tgz#f91ff7a5648b864f52f08441a394ce42d50c1b3f"
+  integrity sha512-nWvFdaAFbmIWB/WVWveYUkXsaqF38A2zRLDjWjkOAgWeSTyWv9UEKtoGJX1NC84n92lGfXblGlxLK7SmaFFVdA==
   dependencies:
     "@jsforce/jsforce-node" "^3.4.1"
     "@salesforce/kit" "^3.2.2"
@@ -1319,7 +1319,7 @@
     js2xmlparser "^4.0.1"
     jsonwebtoken "9.0.2"
     jszip "3.10.1"
-    pino "^9.3.2"
+    pino "^9.4.0"
     pino-abstract-transport "^1.2.0"
     pino-pretty "^11.2.2"
     proper-lockfile "^4.1.2"
@@ -5957,10 +5957,10 @@ pino-std-serializers@^7.0.0:
   resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-7.0.0.tgz#7c625038b13718dbbd84ab446bd673dc52259e3b"
   integrity sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==
 
-pino@^9.3.2:
-  version "9.3.2"
-  resolved "https://registry.yarnpkg.com/pino/-/pino-9.3.2.tgz#a530d6d28f1d954b6f54416a218cbb616f52f901"
-  integrity sha512-WtARBjgZ7LNEkrGWxMBN/jvlFiE17LTbBoH0konmBU684Kd0uIiDwBXlcTCW7iJnA6HfIKwUssS/2AC6cDEanw==
+pino@^9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/pino/-/pino-9.4.0.tgz#e4600ff199efc744856a5b3b71c53e38998eae5a"
+  integrity sha512-nbkQb5+9YPhQRz/BeQmrWpEknAaqjpAqRK8NwJpmrX/JHu7JuZC5G1CeAwJDJfGes4h+YihC6in3Q2nGb+Y09w==
   dependencies:
     atomic-sleep "^1.0.0"
     fast-redact "^3.1.1"
