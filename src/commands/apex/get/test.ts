@@ -41,6 +41,10 @@ export default class Test extends SfCommand<RunResult> {
       length: 'both',
     }),
     'code-coverage': codeCoverageFlag,
+    'detailed-coverage': Flags.boolean({
+      summary: messages.getMessage('flags.detailed-coverage.summary'),
+      dependsOn: ['code-coverage'],
+    }),
     'output-dir': Flags.directory({
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
@@ -68,6 +72,7 @@ export default class Test extends SfCommand<RunResult> {
       'result-format': flags['result-format'],
       json: flags.json,
       'code-coverage': flags['code-coverage'],
+      'detailed-coverage': flags['detailed-coverage'],
       concise: flags.concise,
     });
   }

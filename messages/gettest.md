@@ -39,3 +39,7 @@ Display only failed test results; works with human-readable output only.
 # apexLibErr
 
 Unknown error in Apex Library: %s
+
+# flags.detailed-coverage.summary
+
+Display detailed code coverage per test.
