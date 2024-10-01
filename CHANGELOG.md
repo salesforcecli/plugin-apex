@@ -1,3 +1,9 @@
+# [3.5.0](https://github.com/salesforcecli/plugin-apex/compare/3.4.10...3.5.0) (2024-10-01)
+
+### Features
+
+- **`apex get test`:** support detailed-coverage ([#597](https://github.com/salesforcecli/plugin-apex/issues/597)) ([1e66e83](https://github.com/salesforcecli/plugin-apex/commit/1e66e839f7da79b9f66d04e70c15e2113559837f))
+
 ## [3.4.10](https://github.com/salesforcecli/plugin-apex/compare/3.4.9...3.4.10) (2024-09-15)
 
 ### Bug Fixes
