@@ -83,11 +83,13 @@ describe('apex log *', () => {
   });
 
   it('will list the debug logs', async () => {
-    const result = execCmd('apex:list:log', { ensureExitCode: 0 }).shellOutput.stdout;
+    const result = execCmd('apex:list:log', { ensureExitCode: 0, env: { ...process.env, SF_NO_TABLE_STYLE: 'true' } })
+      .shellOutput.stdout;
+
     expect(result).to.match(
-      / Application Duration \(ms\) Id\s+Location\s+Size \(B\) Log User\s+Operation Request Start Time\s+Status /
+      /Application\s+Duration \(ms\)\s+Id\s+Location\s+Size \(B\)\s+Log User\s+Operation\s+Request\s+Start Time\s+Status/
     );
-    expect(result).to.match(/User User Api\s+Api\s+\d{4}-\d{2}-.* Success /);
+    expect(result).to.match(/User User\s+Api\s+Api\s+\d{4}-\d{2}-.*\s+Success/);
   });
 
   it('will list the debug logs --json', async () => {
