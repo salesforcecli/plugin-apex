@@ -46,7 +46,22 @@ export default class Log extends SfCommand<LogListResult> {
 
     if (!flags.json) {
       // while not required to prevent table output, save a few iterations if only printing json
-      this.table(logRecords.map(formatForTable), tableHeaders, { 'no-truncate': true });
+      this.table({
+        data: logRecords.map(formatForTable),
+        columns: [
+          'Application',
+          { key: 'DurationMilliseconds', name: 'Duration (ms)' },
+          'Id',
+          'Location',
+          { key: 'LogLength', name: 'Size (B)' },
+          { key: 'User', name: 'Log User' },
+          'Operation',
+          'Request',
+          { key: 'StartTime', name: 'Start Time' },
+          'Status',
+        ],
+        overflow: 'wrap',
+      });
     }
 
     return logRecords;
@@ -64,17 +79,4 @@ export const formatStartTime = (lr: LogRecord): LogRecord => ({ ...lr, StartTime
 const formatTime = (time: string): string => {
   const msIndex = time.indexOf('.');
   return msIndex !== -1 ? time.substring(0, msIndex) + time.substring(msIndex + 4) : time;
-};
-
-const tableHeaders = {
-  Application: { header: 'Application' },
-  DurationMilliseconds: { header: 'Duration (ms)' },
-  Id: { header: 'Id' },
-  Location: { header: 'Location' },
-  LogLength: { header: 'Size (B)' },
-  User: { header: 'Log User' },
-  Operation: { header: 'Operation' },
-  Request: { header: 'Request' },
-  StartTime: { header: 'Start Time' },
-  Status: { header: 'Status' },
 };
