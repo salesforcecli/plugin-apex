@@ -1,3 +1,9 @@
+# [3.6.0](https://github.com/salesforcecli/plugin-apex/compare/3.5.6...3.6.0) (2024-11-08)
+
+### Features
+
+- use new table ([e8c6664](https://github.com/salesforcecli/plugin-apex/commit/e8c66646221d97b96483389acc9b08802b4953b7))
+
 ## [3.5.6](https://github.com/salesforcecli/plugin-apex/compare/3.5.5...3.5.6) (2024-11-03)
 
 ### Bug Fixes
