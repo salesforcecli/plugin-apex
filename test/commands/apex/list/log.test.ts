@@ -80,38 +80,32 @@ describe('apex:log:list', () => {
   it('will list multiple logs', async () => {
     sandbox.stub(LogService.prototype, 'getLogRecords').resolves(structuredClone(logRecords));
     await Log.run([]);
-    expect(uxStub.table.args[0][0]).to.deep.equal([
+    expect(uxStub.table.args[0][0].data).to.deep.equal([
       {
+        Id: '07L5tgg0005PGdTnEAL',
         Application: 'Unknown',
         DurationMilliseconds: '75',
-        Id: '07L5tgg0005PGdTnEAL',
         Location: 'Unknown',
+        LogLength: 450,
+        LogUser: { Name: 'Test User', attributes: {} },
         Operation: 'API',
         Request: 'API',
-        LogLength: 450,
-        Status: 'Assertion Failed',
         StartTime: '2020-10-13T05:39:43+0000',
+        Status: 'Assertion Failed',
         User: 'Test User',
-        LogUser: {
-          Name: 'Test User',
-          attributes: {},
-        },
       },
       {
+        Id: '07L5tgg0005PGdTnFPL',
         Application: 'Unknown',
         DurationMilliseconds: '75',
-        Id: '07L5tgg0005PGdTnFPL',
         Location: 'Unknown',
+        LogLength: 450,
+        LogUser: { Name: 'Test User2', attributes: {} },
         Operation: 'API',
         Request: 'API',
-        LogLength: 450,
-        Status: 'Successful',
         StartTime: '2020-10-13T05:39:43+0000',
+        Status: 'Successful',
         User: 'Test User2',
-        LogUser: {
-          Name: 'Test User2',
-          attributes: {},
-        },
       },
     ]);
   });
