@@ -1,3 +1,9 @@
+## [3.6.2](https://github.com/salesforcecli/plugin-apex/compare/3.6.1...3.6.2) (2024-11-12)
+
+### Bug Fixes
+
+- add VAD perm requirement to "apex run test" ([7b92886](https://github.com/salesforcecli/plugin-apex/commit/7b92886b8a1f88fa164724e6d00b56e57b2887f9))
+
 ## [3.6.1](https://github.com/salesforcecli/plugin-apex/compare/3.6.0...3.6.1) (2024-11-10)
 
 ### Bug Fixes
