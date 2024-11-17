@@ -1,3 +1,9 @@
+## [3.6.3](https://github.com/salesforcecli/plugin-apex/compare/3.6.2...3.6.3) (2024-11-17)
+
+### Bug Fixes
+
+- **deps:** bump cross-spawn from 7.0.3 to 7.0.5 ([6631877](https://github.com/salesforcecli/plugin-apex/commit/66318779ddb6b032acd9fdf7b68f8baefd25ed18))
+
 ## [3.6.2](https://github.com/salesforcecli/plugin-apex/compare/3.6.1...3.6.2) (2024-11-12)
 
 ### Bug Fixes
