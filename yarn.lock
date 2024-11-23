@@ -1367,7 +1367,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.0.31", "@oclif/core@^4.0.32":
+"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.0.32":
   version "4.0.32"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.0.32.tgz#0e8078c53b079549d685798893b9f9534ca69bf6"
   integrity sha512-O3jfIAhqaJxXI2dzF81PLTMhKpFFA0Nyz8kfBnc9WYDJnvdmXK0fVAOSpwpi2mHTow/9FXxY6Kww8+Kbe7/sag==
@@ -1406,10 +1406,10 @@
     semver "^7.6.3"
     ts-json-schema-generator "^1.5.1"
 
-"@oclif/plugin-help@^6.2.16":
-  version "6.2.16"
-  resolved "https://registry.yarnpkg.com/@oclif/plugin-help/-/plugin-help-6.2.16.tgz#3cb6c068739bc934159dc430d4f8ca7f9effa22a"
-  integrity sha512-1x/Bm0LebDouDOfsjkOz+6AXqY6gIZ6JmmU/KuF/GnUmowDvj5i3MFlP9uBTiN8UsOUeT9cdLwnc1kmitHWFTg==
+"@oclif/plugin-help@^6.2.17":
+  version "6.2.18"
+  resolved "https://registry.yarnpkg.com/@oclif/plugin-help/-/plugin-help-6.2.18.tgz#fab8173773bb0afcc7a8e459187021fe65c461df"
+  integrity sha512-mDYOl8RmldLkOg9i9YKgyBlpcyi/bNySoIVHJ2EJd2qCmZaXRKQKRW2Zkx92bwjik8jfs/A3EFI+p4DsrXi57g==
   dependencies:
     "@oclif/core" "^4"
 
@@ -6070,18 +6070,18 @@ object.values@^1.1.7:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-oclif@^4.15.25:
-  version "4.15.25"
-  resolved "https://registry.yarnpkg.com/oclif/-/oclif-4.15.25.tgz#cccf29621005e68198235bea641c54e430e539ba"
-  integrity sha512-MfIapTENv11RQHVjLz/8VFIp8eMJhAzR75AM/vc8MB3FtC7mCW6xXhOeheAVYJxMrhuUXf7Vtuwr0XJ5cuQAEg==
+oclif@^4.15.28:
+  version "4.15.28"
+  resolved "https://registry.yarnpkg.com/oclif/-/oclif-4.15.28.tgz#d05613be10494baf727b7eb212ab661435696ed2"
+  integrity sha512-iyc3ISmnyX20Y8fY6E3U0SCZLIaPiaiI++yIxHXnm5903PAndjVrCK/kkseXZOQ9yRer9e0iLTpBoMMwdBQrnA==
   dependencies:
     "@aws-sdk/client-cloudfront" "^3.687.0"
     "@aws-sdk/client-s3" "^3.693.0"
     "@inquirer/confirm" "^3.1.22"
     "@inquirer/input" "^2.2.4"
     "@inquirer/select" "^2.5.0"
-    "@oclif/core" "^4.0.31"
-    "@oclif/plugin-help" "^6.2.16"
+    "@oclif/core" "^4.0.32"
+    "@oclif/plugin-help" "^6.2.17"
     "@oclif/plugin-not-found" "^3.2.25"
     "@oclif/plugin-warn-if-update-available" "^3.1.21"
     async-retry "^1.3.3"
