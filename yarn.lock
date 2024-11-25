@@ -1477,13 +1477,13 @@
     "@pnpm/network.ca-file" "^1.0.1"
     config-chain "^1.1.11"
 
-"@salesforce/apex-node@^8.1.17":
-  version "8.1.17"
-  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-8.1.17.tgz#d66e71cd9a1b8a22e9da8d012f79146e36862ddf"
-  integrity sha512-HtPVFrTG5XTtAt46k1yMkcsJLXuFrAex5Iz2nH1s0DLjXbNMahdxbvY139P3WXUeLlWRpeDlbjqYKyUXQiNE9w==
+"@salesforce/apex-node@^8.1.18":
+  version "8.1.18"
+  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-8.1.18.tgz#1ee0c95092e76c255092f3a9a7618948f7e0d57a"
+  integrity sha512-sFBT1ZbFDSq8jLO67vKixpIFAueFdLGvhk9acTUszLI2q7UmzrH/q5qNZMhkTvofUqDmFtG479xCd5tJNPh3sA==
   dependencies:
     "@jsforce/jsforce-node" "^3.6.2"
-    "@salesforce/core" "^8.6.4"
+    "@salesforce/core" "^8.8.0"
     "@salesforce/kit" "^3.2.3"
     "@types/istanbul-reports" "^3.0.4"
     bfj "8.0.0"
