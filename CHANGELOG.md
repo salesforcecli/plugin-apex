@@ -1,3 +1,9 @@
+## [3.6.10](https://github.com/salesforcecli/plugin-apex/compare/3.6.9...3.6.10) (2025-03-18)
+
+### Bug Fixes
+
+- improve no tests in org error message, suggest actions W-17866064 ([#706](https://github.com/salesforcecli/plugin-apex/issues/706)) ([e14ab5b](https://github.com/salesforcecli/plugin-apex/commit/e14ab5b0fa5ac2559a1f4ec02b9e18634c022dc0))
+
 ## [3.6.9](https://github.com/salesforcecli/plugin-apex/compare/3.6.8...3.6.9) (2025-03-09)
 
 ### Bug Fixes
