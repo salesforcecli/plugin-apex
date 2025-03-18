@@ -213,8 +213,11 @@ export default class Test extends SfCommand<RunCommandResult> {
       )) as TestRunIdResult;
     } catch (e) {
       const error = SfError.wrap(e);
-      error.message = 'There are no apex tests to run in the org';
-      error.actions = ['Ensure Apex Tests exist in the org'];
+      if (error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
+        error.message = 'There are no apex tests to run in the org';
+        error.actions = ['Ensure Apex Tests exist in the org'];
+      }
+
       throw error;
     }
   }
