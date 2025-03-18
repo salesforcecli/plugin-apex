@@ -201,15 +201,25 @@ export default class Test extends SfCommand<RunCommandResult> {
       skipCodeCoverage: !flags['code-coverage'],
     };
 
-    // cast as TestRunIdResult because we're building an async payload which will return an async result
-    return (await testService.runTestAsynchronous(
-      payload,
-      flags['code-coverage'],
-      flags.wait && flags.wait.minutes > 0 ? false : !(flags.synchronous && !this.jsonEnabled()),
-      undefined,
-      this.cancellationTokenSource.token,
-      flags.wait
-    )) as TestRunIdResult;
+    try {
+      // cast as TestRunIdResult because we're building an async payload which will return an async result
+      return (await testService.runTestAsynchronous(
+        payload,
+        flags['code-coverage'],
+        flags.wait && flags.wait.minutes > 0 ? false : !(flags.synchronous && !this.jsonEnabled()),
+        undefined,
+        this.cancellationTokenSource.token,
+        flags.wait
+      )) as TestRunIdResult;
+    } catch (e) {
+      const error = SfError.wrap(e);
+      if (error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
+        error.message = 'There are no apex tests to run in the org';
+        error.actions = ['Ensure Apex Tests exist in the org'];
+      }
+
+      throw error;
+    }
   }
 }
 
