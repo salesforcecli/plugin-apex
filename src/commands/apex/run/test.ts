@@ -170,11 +170,16 @@ export default class Test extends SfCommand<RunCommandResult> {
       ...(await testService.buildSyncPayload(testLevel, flags.tests?.join(','), flags['class-names']?.join(','))),
       skipCodeCoverage: !flags['code-coverage'],
     };
-    return testService.runTestSynchronous(
-      payload,
-      flags['code-coverage'],
-      this.cancellationTokenSource.token
-    ) as Promise<TestResult>;
+
+    try {
+      return (await testService.runTestSynchronous(
+        payload,
+        flags['code-coverage'],
+        this.cancellationTokenSource.token
+      )) as TestResult;
+    } catch (e) {
+      throw handleTestError(SfError.wrap(e), flags);
+    }
   }
 
   private async runTestAsynchronous(
@@ -212,17 +217,26 @@ export default class Test extends SfCommand<RunCommandResult> {
         flags.wait
       )) as TestRunIdResult;
     } catch (e) {
-      const error = SfError.wrap(e);
-      if (error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
-        error.message = 'There are no apex tests to run in the org';
-        error.actions = ['Ensure Apex Tests exist in the org'];
-      }
-
-      throw error;
+      throw handleTestError(SfError.wrap(e), flags);
     }
   }
 }
 
+function handleTestError(
+  error: SfError,
+  flags: {
+    tests?: string[];
+    'class-names'?: string[];
+    'suite-names'?: string[];
+  }
+): SfError {
+  const hasTests = flags['class-names']?.length ?? flags['suite-names']?.length ?? flags.tests?.length;
+  if (hasTests && error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
+    error.message = 'There are no Apex tests to run in this org.';
+    error.actions = ['Ensure Apex Tests exist in the org, and try again.'];
+  }
+  return error;
+}
 const validateFlags = async (
   classNames?: string[],
   suiteNames?: string[],
