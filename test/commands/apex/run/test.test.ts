@@ -9,7 +9,7 @@ import { Messages, Org } from '@salesforce/core';
 import sinon from 'sinon';
 import { Ux, stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import { assert, expect } from 'chai';
-import { TestService } from '@salesforce/apex-node';
+import { TestLevel, TestService } from '@salesforce/apex-node';
 import Test from '../../../../src/commands/apex/run/test.js';
 import {
   runWithCoverage,
@@ -542,6 +542,30 @@ describe('apex:test:run', () => {
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include('cannot also be provided when using');
+      }
+    });
+
+    it('rejects when no Apex tests are in the org', async () => {
+      const testLevel = TestLevel.RunLocalTests.toString();
+      const serverMessage = 'Always provide a classes, suites, tests, or testLevel property';
+      const expectedMessage = 'There are no Apex tests to run in this org.';
+
+      sandbox.stub(TestService.prototype, 'runTestAsynchronous').throws({ message: serverMessage });
+      try {
+        await Test.run(['--test-level', testLevel, '--concise']);
+        assert.fail('Unexpected successful outcome for async run.');
+      } catch (e) {
+        assert(e instanceof Error);
+        expect(e.message).to.include(expectedMessage);
+      }
+
+      sandbox.stub(TestService.prototype, 'runTestSynchronous').throws({ message: serverMessage });
+      try {
+        await Test.run(['--test-level', testLevel, '--synchronous', '--concise']);
+        assert.fail('Unexpected successful outcome for sync run.');
+      } catch (e) {
+        assert(e instanceof Error);
+        expect(e.message).to.include(expectedMessage);
       }
     });
   });

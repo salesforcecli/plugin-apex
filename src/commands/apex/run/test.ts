@@ -230,11 +230,14 @@ function handleTestError(
     'suite-names'?: string[];
   }
 ): SfError {
-  const hasRequiredTestFlags = flags['class-names']?.length ?? flags['suite-names']?.length ?? flags.tests?.length;
-  if (
-    hasRequiredTestFlags &&
-    error.message.includes('Always provide a classes, suites, tests, or testLevel property')
-  ) {
+  const hasTestNames = !!flags.tests?.length;
+  const hasClassNames = !!flags['class-names']?.length;
+  const hasSuiteNames = !!flags['suite-names']?.length;
+  if (hasTestNames || hasClassNames || hasSuiteNames) {
+    return error;
+  }
+
+  if (error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
     error.message = 'There are no Apex tests to run in this org.';
     error.actions = ['Ensure Apex Tests exist in the org, and try again.'];
   }
