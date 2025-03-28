@@ -545,28 +545,37 @@ describe('apex:test:run', () => {
       }
     });
 
-    it('rejects when no Apex tests are in the org', async () => {
-      const testLevel = TestLevel.RunLocalTests.toString();
-      const serverMessage = 'Always provide a classes, suites, tests, or testLevel property';
+    it('rejects no Apex tests in the org', async () => {
+      const serverError = { message: 'Always provide a classes, suites, tests, or testLevel property' };
       const expectedMessage = 'There are no Apex tests to run in this org.';
 
-      sandbox.stub(TestService.prototype, 'runTestAsynchronous').throws({ message: serverMessage });
+      const runTestAsynchronousSpy = sandbox.stub(TestService.prototype, 'runTestAsynchronous').throws(serverError);
       try {
-        await Test.run(['--test-level', testLevel, '--concise']);
+        await Test.run(['--test-level', TestLevel.RunLocalTests.toString(), '--concise']);
         assert.fail('Unexpected successful outcome for async run.');
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include(expectedMessage);
       }
+      expect(runTestAsynchronousSpy.calledOnce).to.be.true;
 
-      sandbox.stub(TestService.prototype, 'runTestSynchronous').throws({ message: serverMessage });
+      const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestSynchronous').throws(serverError);
       try {
-        await Test.run(['--test-level', testLevel, '--synchronous', '--concise']);
+        await Test.run([
+          '--test-level',
+          TestLevel.RunSpecifiedTests.toString(),
+          '--class-names',
+          'myApex',
+          '--synchronous',
+        ]);
         assert.fail('Unexpected successful outcome for sync run.');
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include(expectedMessage);
       }
+
+      expect(runTestSynchronousSpy.calledOnce).to.be.true;
+      expect(runTestAsynchronousSpy.calledOnce).to.be.true;
     });
   });
 });

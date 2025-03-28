@@ -178,7 +178,7 @@ export default class Test extends SfCommand<RunCommandResult> {
         this.cancellationTokenSource.token
       )) as TestResult;
     } catch (e) {
-      throw handleTestError(SfError.wrap(e), flags);
+      throw handleTestingServerError(SfError.wrap(e), flags);
     }
   }
 
@@ -217,12 +217,12 @@ export default class Test extends SfCommand<RunCommandResult> {
         flags.wait
       )) as TestRunIdResult;
     } catch (e) {
-      throw handleTestError(SfError.wrap(e), flags);
+      throw handleTestingServerError(SfError.wrap(e), flags);
     }
   }
 }
 
-function handleTestError(
+function handleTestingServerError(
   error: SfError,
   flags: {
     tests?: string[];
@@ -230,18 +230,23 @@ function handleTestError(
     'suite-names'?: string[];
   }
 ): SfError {
-  const hasTestNames = !!flags.tests?.length;
-  const hasClassNames = !!flags['class-names']?.length;
-  const hasSuiteNames = !!flags['suite-names']?.length;
-  if (hasTestNames || hasClassNames || hasSuiteNames) {
+  if (!error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
     return error;
   }
 
-  if (error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
-    error.message = 'There are no Apex tests to run in this org.';
-    error.actions = ['Ensure Apex Tests exist in the org, and try again.'];
+  // If error message condition is valid, return the original error.
+  const hasNoTestNames = !!flags.tests?.length;
+  const hasNoClassNames = !!flags['class-names']?.length;
+  const hasNoSuiteNames = !!flags['suite-names']?.length;
+  if (hasNoTestNames && hasNoClassNames && hasNoSuiteNames) {
+    return error;
   }
-  return error;
+
+  // Otherwise, assume there are no Apex tests in the org and return clearer message.
+  return Object.assign(error, {
+    message: 'There are no Apex tests to run in this org.',
+    actions: ['Ensure Apex Tests exist in the org, and try again.'],
+  });
 }
 
 const validateFlags = async (
