@@ -170,11 +170,16 @@ export default class Test extends SfCommand<RunCommandResult> {
       ...(await testService.buildSyncPayload(testLevel, flags.tests?.join(','), flags['class-names']?.join(','))),
       skipCodeCoverage: !flags['code-coverage'],
     };
-    return testService.runTestSynchronous(
-      payload,
-      flags['code-coverage'],
-      this.cancellationTokenSource.token
-    ) as Promise<TestResult>;
+
+    try {
+      return (await testService.runTestSynchronous(
+        payload,
+        flags['code-coverage'],
+        this.cancellationTokenSource.token
+      )) as TestResult;
+    } catch (e) {
+      throw handleTestingServerError(SfError.wrap(e), flags, testLevel);
+    }
   }
 
   private async runTestAsynchronous(
@@ -212,15 +217,38 @@ export default class Test extends SfCommand<RunCommandResult> {
         flags.wait
       )) as TestRunIdResult;
     } catch (e) {
-      const error = SfError.wrap(e);
-      if (error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
-        error.message = 'There are no apex tests to run in the org';
-        error.actions = ['Ensure Apex Tests exist in the org'];
-      }
-
-      throw error;
+      throw handleTestingServerError(SfError.wrap(e), flags, testLevel);
     }
   }
+}
+
+function handleTestingServerError(
+  error: SfError,
+  flags: {
+    tests?: string[];
+    'class-names'?: string[];
+    'suite-names'?: string[];
+  },
+  testLevel: TestLevel
+): SfError {
+  if (!error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
+    return error;
+  }
+
+  // If error message condition is valid, return the original error.
+  const hasSpecifiedTestLevel = testLevel === TestLevel.RunSpecifiedTests;
+  const hasNoTestNames = !flags.tests?.length;
+  const hasNoClassNames = !flags['class-names']?.length;
+  const hasNoSuiteNames = !flags['suite-names']?.length;
+  if (hasSpecifiedTestLevel && hasNoTestNames && hasNoClassNames && hasNoSuiteNames) {
+    return error;
+  }
+
+  // Otherwise, assume there are no Apex tests in the org and return clearer message.
+  return Object.assign(error, {
+    message: 'There are no Apex tests to run in this org.',
+    actions: ['Ensure Apex Tests exist in the org, and try again.'],
+  });
 }
 
 const validateFlags = async (

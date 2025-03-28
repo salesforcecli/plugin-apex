@@ -9,7 +9,7 @@ import { Messages, Org } from '@salesforce/core';
 import sinon from 'sinon';
 import { Ux, stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import { assert, expect } from 'chai';
-import { TestService } from '@salesforce/apex-node';
+import { TestLevel, TestService } from '@salesforce/apex-node';
 import Test from '../../../../src/commands/apex/run/test.js';
 import {
   runWithCoverage,
@@ -543,6 +543,51 @@ describe('apex:test:run', () => {
         assert(e instanceof Error);
         expect(e.message).to.include('cannot also be provided when using');
       }
+    });
+
+    it('rejects no Apex tests in the org', async () => {
+      const serverError = { message: 'Always provide a classes, suites, tests, or testLevel property' };
+      const expectedMessage = 'There are no Apex tests to run in this org.';
+
+      const runTestAsynchronousSpy = sandbox.stub(TestService.prototype, 'runTestAsynchronous').throws(serverError);
+      try {
+        await Test.run(['--test-level', TestLevel.RunSpecifiedTests.toString()]);
+        assert.fail('Unexpected successful outcome for async specified test run without tests.');
+      } catch (e) {
+        assert(e instanceof Error);
+        expect(e.message).to.include(serverError.message);
+      }
+
+      expect(runTestAsynchronousSpy.calledOnce).to.be.true;
+
+      const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestSynchronous').throws(serverError);
+      try {
+        await Test.run([
+          '--test-level',
+          TestLevel.RunSpecifiedTests.toString(),
+          '--class-names',
+          'myApex',
+          '--synchronous',
+        ]);
+        assert.fail('Unexpected successful outcome for sync specified tests run.');
+      } catch (e) {
+        assert(e instanceof Error);
+        expect(e.message).to.include(expectedMessage);
+      }
+
+      expect(runTestSynchronousSpy.calledOnce).to.be.true;
+      expect(runTestAsynchronousSpy.calledOnce).to.be.true;
+
+      try {
+        await Test.run(['--test-level', TestLevel.RunLocalTests.toString(), '--synchronous']);
+        assert.fail('Unexpected successful outcome for sync local test run.');
+      } catch (e) {
+        assert(e instanceof Error);
+        expect(e.message).to.include(expectedMessage);
+      }
+
+      expect(runTestSynchronousSpy.calledOnce).to.be.true;
+      expect(runTestAsynchronousSpy.callCount).to.equal(2);
     });
   });
 });
