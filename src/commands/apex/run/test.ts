@@ -178,7 +178,7 @@ export default class Test extends SfCommand<RunCommandResult> {
         this.cancellationTokenSource.token
       )) as TestResult;
     } catch (e) {
-      throw handleTestingServerError(SfError.wrap(e), flags);
+      throw handleTestingServerError(SfError.wrap(e), flags, testLevel);
     }
   }
 
@@ -217,7 +217,7 @@ export default class Test extends SfCommand<RunCommandResult> {
         flags.wait
       )) as TestRunIdResult;
     } catch (e) {
-      throw handleTestingServerError(SfError.wrap(e), flags);
+      throw handleTestingServerError(SfError.wrap(e), flags, testLevel);
     }
   }
 }
@@ -228,17 +228,19 @@ function handleTestingServerError(
     tests?: string[];
     'class-names'?: string[];
     'suite-names'?: string[];
-  }
+  },
+  testLevel: TestLevel
 ): SfError {
   if (!error.message.includes('Always provide a classes, suites, tests, or testLevel property')) {
     return error;
   }
 
   // If error message condition is valid, return the original error.
-  const hasNoTestNames = !!flags.tests?.length;
-  const hasNoClassNames = !!flags['class-names']?.length;
-  const hasNoSuiteNames = !!flags['suite-names']?.length;
-  if (hasNoTestNames && hasNoClassNames && hasNoSuiteNames) {
+  const hasSpecifiedTestLevel = testLevel === TestLevel.RunSpecifiedTests;
+  const hasNoTestNames = !flags.tests?.length;
+  const hasNoClassNames = !flags['class-names']?.length;
+  const hasNoSuiteNames = !flags['suite-names']?.length;
+  if (hasSpecifiedTestLevel && hasNoTestNames && hasNoClassNames && hasNoSuiteNames) {
     return error;
   }
 

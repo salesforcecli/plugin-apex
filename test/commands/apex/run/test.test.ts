@@ -551,12 +551,13 @@ describe('apex:test:run', () => {
 
       const runTestAsynchronousSpy = sandbox.stub(TestService.prototype, 'runTestAsynchronous').throws(serverError);
       try {
-        await Test.run(['--test-level', TestLevel.RunLocalTests.toString(), '--concise']);
-        assert.fail('Unexpected successful outcome for async run.');
+        await Test.run(['--test-level', TestLevel.RunSpecifiedTests.toString()]);
+        assert.fail('Unexpected successful outcome for async local test run.');
       } catch (e) {
         assert(e instanceof Error);
-        expect(e.message).to.include(expectedMessage);
+        expect(e.message).to.include(serverError.message);
       }
+
       expect(runTestAsynchronousSpy.calledOnce).to.be.true;
 
       const runTestSynchronousSpy = sandbox.stub(TestService.prototype, 'runTestSynchronous').throws(serverError);
@@ -568,7 +569,7 @@ describe('apex:test:run', () => {
           'myApex',
           '--synchronous',
         ]);
-        assert.fail('Unexpected successful outcome for sync run.');
+        assert.fail('Unexpected successful outcome for sync specified tests run.');
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include(expectedMessage);
@@ -576,6 +577,17 @@ describe('apex:test:run', () => {
 
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
       expect(runTestAsynchronousSpy.calledOnce).to.be.true;
+
+      try {
+        await Test.run(['--test-level', TestLevel.RunLocalTests.toString(), '--synchronous']);
+        assert.fail('Unexpected successful outcome for sync local test run.');
+      } catch (e) {
+        assert(e instanceof Error);
+        expect(e.message).to.include(expectedMessage);
+      }
+
+      expect(runTestSynchronousSpy.calledOnce).to.be.true;
+      expect(runTestAsynchronousSpy.callCount).to.equal(2);
     });
   });
 });
