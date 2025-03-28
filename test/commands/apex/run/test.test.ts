@@ -552,7 +552,7 @@ describe('apex:test:run', () => {
       const runTestAsynchronousSpy = sandbox.stub(TestService.prototype, 'runTestAsynchronous').throws(serverError);
       try {
         await Test.run(['--test-level', TestLevel.RunSpecifiedTests.toString()]);
-        assert.fail('Unexpected successful outcome for async local test run.');
+        assert.fail('Unexpected successful outcome for async specified test run without tests.');
       } catch (e) {
         assert(e instanceof Error);
         expect(e.message).to.include(serverError.message);
