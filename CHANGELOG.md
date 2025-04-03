@@ -1,3 +1,9 @@
+## [3.6.12](https://github.com/salesforcecli/plugin-apex/compare/3.6.11...3.6.12) (2025-04-03)
+
+### Bug Fixes
+
+- handle error for sync test runs & check for valid error first ([#710](https://github.com/salesforcecli/plugin-apex/issues/710)) ([48b337e](https://github.com/salesforcecli/plugin-apex/commit/48b337e42b1ce7e02001b290661b12ccd0a18124))
+
 ## [3.6.11](https://github.com/salesforcecli/plugin-apex/compare/3.6.10...3.6.11) (2025-03-23)
 
 ### Bug Fixes
