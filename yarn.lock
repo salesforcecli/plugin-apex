@@ -1601,23 +1601,7 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@jsforce/jsforce-node@^3.6.3":
-  version "3.6.6"
-  resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.6.6.tgz#26fe2fc9f4f3671ca8bfb0c98a728cb8a0219265"
-  integrity sha512-WdIo2lLbrz6nkfiaz2UynyaNiM8o+fEjaRev7zA4KKSaQYB1MJ66xHubeI5Iheq8WgkY9XGwWKAwPDhuV+GROQ==
-  dependencies:
-    "@sindresorhus/is" "^4"
-    base64url "^3.0.1"
-    csv-parse "^5.5.2"
-    csv-stringify "^6.4.4"
-    faye "^1.4.0"
-    form-data "^4.0.0"
-    https-proxy-agent "^5.0.0"
-    multistream "^3.1.0"
-    node-fetch "^2.6.1"
-    xml2js "^0.6.2"
-
-"@jsforce/jsforce-node@^3.7.0":
+"@jsforce/jsforce-node@^3.6.6", "@jsforce/jsforce-node@^3.7.0":
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.7.0.tgz#aaa317eef3207489db90498f79e96c5bd9f53469"
   integrity sha512-v9pc3lPM5RMuB81Gasz5/NKcjktE1LLEACRFopB9LiXRafb4K9bStSMl3nLEHq7+OFdtxfQB3Sx2rYXJGG4DKw==
@@ -1763,13 +1747,13 @@
     "@pnpm/network.ca-file" "^1.0.1"
     config-chain "^1.1.11"
 
-"@salesforce/apex-node@^8.1.19":
-  version "8.1.19"
-  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-8.1.19.tgz#1de67d0e66f2a6d568621eb9b40f4f9ef656cf2e"
-  integrity sha512-zW+C7/NIoNAxLw/CH0pKIu/qD7W0kaxHxFirxmiaXNZ2EoIAG1jPpRTCvDPODs+yeoxd5ls+j4EeJrEbuc2ceQ==
+"@salesforce/apex-node@^8.1.20":
+  version "8.1.20"
+  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-8.1.20.tgz#c5b7b42c9305156a72f9104f73c2772eed5f5ef2"
+  integrity sha512-eSfzjaeN56AoyckfALvkjyMiewVYELp4fNOdsJnTbmR3qzI4RCk168SKXwyCqicG/OKwu2DlsCjBjuhF2WZeNQ==
   dependencies:
-    "@jsforce/jsforce-node" "^3.6.3"
-    "@salesforce/core" "^8.8.0"
+    "@jsforce/jsforce-node" "^3.6.6"
+    "@salesforce/core" "^8.8.6"
     "@salesforce/kit" "^3.2.3"
     "@types/istanbul-reports" "^3.0.4"
     bfj "8.0.0"
@@ -4707,18 +4691,7 @@ fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   resolved "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
 
-fast-glob@^3.2.11, fast-glob@^3.2.9, fast-glob@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.3.2.tgz"
-  integrity sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==
-  dependencies:
-    "@nodelib/fs.stat" "^2.0.2"
-    "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.2"
-    merge2 "^1.3.0"
-    micromatch "^4.0.4"
-
-fast-glob@^3.3.3:
+fast-glob@^3.2.11, fast-glob@^3.2.9, fast-glob@^3.3.2, fast-glob@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.3.3.tgz#d06d585ce8dba90a16b0505c543c3ccfb3aeb818"
   integrity sha512-7MptL8U0cqcFdzIzwOTHoilX9x5BrNqye7Z/LuC7kCMRio1EMSyqRK3BEAUD7sXRq4iT4AzTVuZdhgQ2TCvYLg==
@@ -6346,7 +6319,7 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-micromatch@^4.0.2, micromatch@^4.0.4, micromatch@^4.0.8:
+micromatch@^4.0.2, micromatch@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/micromatch/-/micromatch-4.0.8.tgz"
   integrity sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==
