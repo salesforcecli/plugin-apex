@@ -8,7 +8,7 @@
     "@salesforce/apex-node": "^8.1.27",
     "@salesforce/core": "^8.10.1",
     "@salesforce/kit": "^3.2.3",
-    "@salesforce/sf-plugins-core": "^12.2.1",
+    "@salesforce/sf-plugins-core": "^12.2.2",
     "ansis": "^3.3.1"
   },
   "devDependencies": {
