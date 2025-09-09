@@ -22,16 +22,17 @@ import { codeCoverageFlag, resultFormatFlag } from '../../../flags.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
+const flagMessages = Messages.loadMessages('@salesforce/plugin-apex', 'flags');
 
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
 export type RunCommandResult = RunResult | TestRunIdResult;
-const exclusiveTestSpecifiers = ['class-names', 'suite-names', 'tests'];
+const exclusiveTestSpecifiers = ['class-names', 'suite-names', 'tests', 'test-category'];
 export default class Test extends SfCommand<RunCommandResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:apex:test:run'];
+  public static readonly aliases = ['force:logic:test:run'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
@@ -71,7 +72,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     }),
     tests: arrayWithDeprecation({
       char: 't',
-      summary: messages.getMessage('flags.tests.summary'),
+      summary: messages.getMessage('flags.logicTests.summary'),
       description: messages.getMessage('flags.tests.description'),
       exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'tests'),
     }),
@@ -97,6 +98,12 @@ export default class Test extends SfCommand<RunCommandResult> {
     concise: Flags.boolean({
       summary: messages.getMessage('flags.concise.summary'),
     }),
+    'test-category': arrayWithDeprecation({
+      char: 'g',
+      summary: flagMessages.getMessage('flags.test-category.summary'),
+      description: flagMessages.getMessage('flags.test-category.description'),
+      options: ['Agent', 'Apex', 'Flow'],
+    }),
   };
 
   protected cancellationTokenSource = new CancellationTokenSource();
@@ -109,7 +116,8 @@ export default class Test extends SfCommand<RunCommandResult> {
       flags['suite-names'],
       flags.tests,
       flags.synchronous,
-      flags['test-level'] as TestLevel
+      flags['test-level'] as TestLevel,
+      // flags['test-category']
     );
 
     // graceful shutdown
@@ -129,8 +137,6 @@ export default class Test extends SfCommand<RunCommandResult> {
     // NOTE: This is a *bug*. Synchronous test runs should throw an error when multiple test classes are specified
     // This was re-introduced due to https://github.com/forcedotcom/salesforcedx-vscode/issues/3154
     // Address with W-9163533
-
-
     const result =
       flags.synchronous && testLevel === TestLevel.RunSpecifiedTests
         ? await this.runTest(testService, flags, testLevel)
@@ -142,11 +148,11 @@ export default class Test extends SfCommand<RunCommandResult> {
 
     if ('summary' in result) {
       const testReporter = new TestReporter(new Ux({ jsonEnabled: this.jsonEnabled() }), conn);
-      return testReporter.report(result, flags);
+      return testReporter.report(result, { ...flags, isUnifiedLogic: true });
     } else {
       // Tests were ran asynchronously or the --wait timed out.
       // Log the proper 'apex get test' command for the user to run later
-      this.log(messages.getMessage('runTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
+      this.log(messages.getMessage('runLogicTestReportCommand', [this.config.bin, result.testRunId, conn.getUsername()]));
       this.info(messages.getMessage('runTestSyncInstructions'));
 
       if (flags['output-dir']) {
@@ -165,11 +171,12 @@ export default class Test extends SfCommand<RunCommandResult> {
       tests?: string[];
       'class-names'?: string[];
       'code-coverage'?: boolean;
+      'test-category'?: string[];
     },
     testLevel: TestLevel
   ): Promise<TestResult> {
     const payload = {
-      ...(await testService.buildSyncPayload(testLevel, flags.tests?.join(','), flags['class-names']?.join(','), 'Apex')),
+      ...(await testService.buildSyncPayload(testLevel, flags.tests?.join(','), flags['class-names']?.join(','), flags['test-category']?.join(','))),
       skipCodeCoverage: !flags['code-coverage'],
     };
 
@@ -195,6 +202,7 @@ export default class Test extends SfCommand<RunCommandResult> {
       'result-format'?: string;
       json?: boolean;
       wait?: Duration;
+      'test-category'?: string[];
     },
     testLevel: TestLevel
   ): Promise<TestRunIdResult> {
@@ -204,7 +212,7 @@ export default class Test extends SfCommand<RunCommandResult> {
         flags.tests?.join(','),
         flags['class-names']?.join(','),
         flags['suite-names']?.join(','),
-        'Apex'
+        flags['test-category']?.join(',')
       )),
       skipCodeCoverage: !flags['code-coverage'],
     };
@@ -231,6 +239,7 @@ function handleTestingServerError(
     tests?: string[];
     'class-names'?: string[];
     'suite-names'?: string[];
+    'test-category'?: string[];
   },
   testLevel: TestLevel
 ): SfError {
@@ -259,11 +268,17 @@ const validateFlags = async (
   suiteNames?: string[],
   tests?: string[],
   synchronous?: boolean,
-  testLevel?: TestLevel
+  testLevel?: TestLevel,
+  // testCategory?: string[]
 ): Promise<TestLevel> => {
   if (synchronous && (Boolean(suiteNames) || (classNames?.length && classNames.length > 1))) {
     return Promise.reject(new Error(messages.getMessage('syncClassErr')));
   }
+
+  // Validate that test-level is required when test-category is specified
+  // if (testCategory && testCategory.length > 0 && !testLevel) {
+  //   return Promise.reject(new Error('When using --test-category, you must also specify --test-level.'));
+  // }
 
   if (
     (Boolean(tests) || Boolean(classNames) || suiteNames) &&

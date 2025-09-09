@@ -6,6 +6,7 @@
  */
 
 import { ApexTestResultOutcome, ApexTestRunResultStatus, TestResult } from '@salesforce/apex-node';
+import { TestCategory } from '@salesforce/apex-node/lib/src/tests/types.js';
 import { RunResult } from '../src/reporters/index.js';
 
 // TODO: these should be typed, once the types have been updated in a major bump
@@ -45,6 +46,46 @@ export const testRunWithFailuresResult = {
       QueueItemId: '709xx000001IlUMQA0',
       RunTime: 53,
       StackTrace: 'Error running test',
+    },
+  ],
+};
+
+export const logicTestRunWithFailuresResult = {
+  summary: {
+    failRate: '50%',
+    failing: 1,
+    hostname: 'https://na139.salesforce.com',
+    orgId: '00D4xx00000FH4IEAW',
+    outcome: ApexTestRunResultStatus.Failed,
+    passRate: '50%',
+    passing: 1,
+    skipped: 0,
+    testRunId: '707xx0000AUS2gH',
+    testStartTime: '2020-08-25T00:48:02.000+0000',
+    testsRan: 2,
+    userId: '005xx000000uEgSAAU',
+    username: 'test@example.com',
+    commandTime: '60 ms',
+    testExecutionTime: '53 ms',
+    testTotalTime: '53 ms',
+  },
+  tests: [
+    {
+      Id: '07Mxx00000ErgiHUAR',
+      QueueItemId: '709xx000001IlUMQA0',
+      StackTrace: 'Error running test',
+      Message: null,
+      AsyncApexJobId: '707xx0000AUS2gHQQT',
+      MethodName: 'testConfig',
+      Outcome: ApexTestResultOutcome.Fail,
+      ApexClass: {
+        Id: '01pxx00000NWwb3AAD',
+        Name: 'MyApexTests',
+        NamespacePrefix: null,
+      },
+      RunTime: 53,
+      FullName: 'MyApexTests.testConfig',
+      Category: TestCategory.Apex,
     },
   ],
 };
@@ -130,6 +171,50 @@ export const testRunSimple: TestResult = {
     },
   ],
 };
+
+// export const runWithCategory: TestResult = {
+//   summary: {
+//     failRate: '0%',
+//     testsRan: 1,
+//     orgId: '00D4xx00000FH4IEAW',
+//     outcome: ApexTestRunResultStatus.Passed,
+//     passing: 1,
+//     failing: 0,
+//     skipped: 0,
+//     passRate: '100%',
+//     skipRate: '0%',
+//     testStartTime: '2020-08-25T00:48:02.000+0000',
+//     testExecutionTimeInMs: 53,
+//     commandTimeInMs: 60,
+//     testTotalTimeInMs: 53,
+//     hostname: 'https://na139.salesforce.com',
+//     testRunId: '707xx0000AUS2gH',
+//     userId: '005xx000000uEgSAAU',
+//     username: 'test@example.com',
+//   },
+//   tests: [
+//     {
+//       id: '07Mxx00000ErgiHUAR',
+//       queueItemId: '709xx000001IlUMQA0',
+//       stackTrace: '',
+//       message: '',
+//       asyncApexJobId: '707xx0000AUS2gHQQT',
+//       category: TestCategory.Apex,
+//       methodName: 'testConfig',
+//       outcome: ApexTestResultOutcome.Pass,
+//       apexLogId: null,
+//       apexClass: {
+//         id: '01pxx00000NWwb3AAD',
+//         name: 'MyApexTests',
+//         namespacePrefix: '',
+//         fullName: 'MyApexTests',
+//       },
+//       runTime: 53,
+//       testTimestamp: '2020-08-25T00:48:02.000+0000',
+//       fullName: 'MyApexTests.testConfig',
+//     },
+//   ],
+// };
 
 export const runWithCoverage: TestResult = {
   summary: {
@@ -244,6 +329,51 @@ export const runWithFailures: TestResult = {
       runTime: 53,
       testTimestamp: '2020-08-25T00:48:02.000+0000',
       fullName: 'MyApexTests.testConfig',
+    },
+  ],
+};
+
+export const logicRunWithFailures: TestResult = {
+  summary: {
+    commandTimeInMs: 60,
+    failRate: '50%',
+    failing: 1,
+    hostname: 'https://na139.salesforce.com',
+    orgId: '00D4xx00000FH4IEAW',
+    outcome: 'Failed',
+    passRate: '50%',
+    passing: 1,
+    skipped: 0,
+    testExecutionTimeInMs: 53,
+    testRunId: '707xx0000AUS2gH',
+    testStartTime: '2020-08-25T00:48:02.000+0000',
+    testTotalTimeInMs: 53,
+    testsRan: 2,
+    userId: '005xx000000uEgSAAU',
+    username: 'test@example.com',
+    skipRate: '0%',
+  },
+  tests: [
+    {
+      apexClass: {
+        id: '01pxx00000NWwb3AAD',
+        name: 'MyApexTests',
+        // @ts-expect-error for types to change in next major
+        namespacePrefix: null,
+        fullName: 'MyApexTests',
+      },
+      asyncApexJobId: '707xx0000AUS2gHQQT',
+      category: TestCategory.Apex,
+      fullName: 'MyApexTests.testConfig',
+      id: '07Mxx00000ErgiHUAR',
+      message: null,
+      methodName: 'testConfig',
+      outcome: ApexTestResultOutcome.Fail,
+      queueItemId: '709xx000001IlUMQA0',
+      runTime: 53,
+      stackTrace: 'Error running test',
+      apexLogId: null,
+      testTimestamp: '2020-08-25T00:48:02.000+0000',
     },
   ],
 };

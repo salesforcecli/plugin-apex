@@ -18,13 +18,15 @@ import { codeCoverageFlag, resultFormatFlag } from '../../../flags.js';
 import { TestGetBase } from '../../../shared/TestGetBase.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'gettest');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'logicgettest');
+
 export default class Test extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:apex:test:report'];
+  public static readonly aliases = ['force:logic:test:report'];
+
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
@@ -53,7 +55,7 @@ export default class Test extends SfCommand<RunResult> {
     'result-format': resultFormatFlag,
     concise: Flags.boolean({
       summary: messages.getMessage('flags.concise.summary'),
-    }),
+    })
   };
 
   public async run(): Promise<RunResult> {
@@ -70,7 +72,7 @@ export default class Test extends SfCommand<RunResult> {
       detailedCoverage: flags['detailed-coverage'],
       concise: flags.concise,
       jsonEnabled: this.jsonEnabled(),
-      isUnifiedLogic: false
+      isUnifiedLogic: true
     });
   }
 }

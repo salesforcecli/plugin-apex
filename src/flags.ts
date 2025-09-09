@@ -6,7 +6,7 @@
  */
 
 import { Messages } from '@salesforce/core';
-import { Flags } from '@salesforce/sf-plugins-core';
+import { arrayWithDeprecation, Flags } from '@salesforce/sf-plugins-core';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'flags');
@@ -25,4 +25,11 @@ export const codeCoverageFlag = Flags.boolean({
   deprecateAliases: true,
   char: 'c',
   summary: messages.getMessage('flags.code-coverage.summary'),
+});
+
+export const testCategoryFlag = arrayWithDeprecation({
+  char: 'g',
+  summary: messages.getMessage('flags.test-category.summary'),
+  description: messages.getMessage('flags.test-category.description'),
+  options: ['Agent', 'Apex', 'Flow'],
 });

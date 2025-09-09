@@ -45,10 +45,11 @@ export class TestReporter {
       json?: boolean;
       'code-coverage'?: boolean;
       concise: boolean;
+      isUnifiedLogic?: boolean;
     }
   ): Promise<RunResult> {
     if (options['output-dir']) {
-      const jsonOutput = this.formatResultInJson(result);
+      const jsonOutput = this.formatResultInJson(result, options.isUnifiedLogic);
       const outputDirConfig = this.buildOutputDirConfig(
         result,
         jsonOutput,
@@ -56,7 +57,8 @@ export class TestReporter {
         options['result-format'] as ResultFormat | undefined,
         Boolean(options['detailed-coverage']),
         options.concise,
-        options.synchronous
+        options.synchronous,
+        options.isUnifiedLogic
       );
 
       const testService = new TestService(this.connection);
@@ -70,7 +72,7 @@ export class TestReporter {
       }
       switch (options['result-format']) {
         case 'human':
-          this.logHuman(result, options['detailed-coverage'] as boolean, options['concise'], options['output-dir']);
+          this.logHuman(result, options['detailed-coverage'] as boolean, options['concise'], options['output-dir'], options.isUnifiedLogic);
           break;
         case 'tap':
           this.logTap(result);
@@ -83,7 +85,7 @@ export class TestReporter {
           if (!options.json) {
             this.ux.styledJSON({
               status: process.exitCode,
-              result: this.formatResultInJson(result),
+              result: this.formatResultInJson(result, options.isUnifiedLogic),
             });
           }
           break;
@@ -95,7 +97,7 @@ export class TestReporter {
       throw messages.createError('testResultProcessErr', [(e as Error).message]);
     }
 
-    return this.formatResultInJson(result);
+    return this.formatResultInJson(result, options.isUnifiedLogic);
   }
   /**
    * Builds output directory configuration with CLI format result files
@@ -116,7 +118,8 @@ export class TestReporter {
     resultFormat: ResultFormat | undefined,
     detailedCoverage: boolean,
     concise: boolean,
-    synchronous = false
+    synchronous = false,
+    isUnifiedLogic?: boolean
   ): OutputDirConfig {
     const outputDirConfig: OutputDirConfig = {
       dirPath: outputDir,
@@ -164,7 +167,7 @@ export class TestReporter {
         case ResultFormat.human:
           outputDirConfig.fileInfos?.push({
             filename: 'test-result.txt',
-            content: new HumanReporter().format(result, detailedCoverage, concise),
+            content: new HumanReporter().format(result, detailedCoverage, concise, isUnifiedLogic),
           });
           break;
         default:
@@ -174,22 +177,22 @@ export class TestReporter {
 
     return outputDirConfig;
   }
-  private formatResultInJson(result: TestResult): RunResult {
+  private formatResultInJson(result: TestResult, isUnifiedLogic?: boolean): RunResult {
     try {
       const reporter = new JsonReporter();
-      return reporter.format(result);
+      return reporter.format(result, isUnifiedLogic);
     } catch (e) {
       this.ux.styledJSON(result);
       throw messages.createError('testResultProcessErr', [(e as Error).message]);
     }
   }
 
-  private logHuman(result: TestResult, detailedCoverage: boolean, concise: boolean, outputDir?: string): void {
+  private logHuman(result: TestResult, detailedCoverage: boolean, concise: boolean, outputDir?: string, isUnifiedLogic?: boolean): void {
     if (outputDir) {
       this.ux.log(messages.getMessage('outputDirHint', [outputDir]));
     }
     const humanReporter = new HumanReporter();
-    const output = humanReporter.format(result, detailedCoverage, concise);
+    const output = humanReporter.format(result, detailedCoverage, concise, isUnifiedLogic);
     this.ux.log(output);
   }
 

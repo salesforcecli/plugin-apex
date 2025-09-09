@@ -80,6 +80,10 @@ If you select --suite-names, you can't specify --class-names or --tests.
 For multiple suites, repeat the flag for each.
 --suite-names Suite1 --suite-names Suite2
 
+# flags.logicTests.summary
+
+Comma-separated list of test names to run. Can include Apex classes, Flow tests (FlowTest.<name>), and Agent tests (AgentTest.<name>).
+
 # flags.tests.summary
 
 Apex test class names or IDs and, if applicable, test methods to run; default is all tests.
@@ -129,6 +133,10 @@ Display only failed test results; works with human-readable output only.
 # runTestReportCommand
 
 Run "%s apex get test -i %s -o %s" to retrieve test results
+
+# runLogicTestReportCommand
+
+Run "%s logic get test -i %s -o %s" to retrieve test results
 
 # runTestSyncInstructions
 
