@@ -85,7 +85,7 @@ type CliCoverageResult = {
 };
 
 export class JsonReporter {
-  public format(result: TestResult): RunResult {
+  public format(result: TestResult, includeCategory: boolean = false): RunResult {
     const returnObject: RunResult = {
       summary: {
         // result.summary contains more information than we want to return, so we'll specify each key we want to return instead of using ...
@@ -121,6 +121,7 @@ export class JsonReporter {
         },
         RunTime: test.runTime,
         FullName: test.fullName,
+        ...(includeCategory ? { Category: test.category } : {}),
       })),
       ...(result.codecoverage
         ? {
