@@ -19,11 +19,13 @@ import {
   testRunSimpleResult,
   testRunWithFailuresResult,
 } from '../../../testData.js';
+import { TestReporter } from '../../../../src/reporters/testReporter.js';
 
 config.truncateThreshold = 0;
 
 let logStub: sinon.SinonStub;
 let styledJsonStub: sinon.SinonStub;
+let testReporterReportStub: sinon.SinonStub;
 
 describe('apex:test:report', () => {
   let sandbox: sinon.SinonSandbox;
@@ -192,6 +194,19 @@ describe('apex:test:report', () => {
       expect(logStub.firstCall.args[0]).to.contain('Test Summary');
       expect(logStub.firstCall.args[0]).to.not.contain('Test Results');
       expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
+    });
+  });
+
+  describe('isUnifiedLogic parameter', () => {
+    it('should NOT pass isUnifiedLogic parameter', async () => {
+    testReporterReportStub = sandbox.stub(TestReporter.prototype, 'report');
+    sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
+    testReporterReportStub.resolves({ success: true });
+      await Test.run(['--test-run-id', '7071w00003woTsc', '--target-org', 'test@example.com']);
+
+      expect(testReporterReportStub.calledOnce).to.be.true;      
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      expect(testReporterReportStub.getCall(0).args[1].isUnifiedLogic).to.be.undefined;
     });
   });
 });

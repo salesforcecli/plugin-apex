@@ -69,8 +69,7 @@ export default class Test extends SfCommand<RunResult> {
       json: flags.json,
       detailedCoverage: flags['detailed-coverage'],
       concise: flags.concise,
-      jsonEnabled: this.jsonEnabled(),
-      isUnifiedLogic: false
+      jsonEnabled: this.jsonEnabled()
     });
   }
 }
