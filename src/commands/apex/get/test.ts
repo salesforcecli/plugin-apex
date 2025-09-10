@@ -59,7 +59,6 @@ export default class Test extends SfCommand<RunResult> {
   public async run(): Promise<RunResult> {
     const { flags } = await this.parse(Test);
 
-    // Use shared business logic
     return TestGetBase.execute({
       connection: flags['target-org'].getConnection(flags['api-version']),
       testRunId: flags['test-run-id'],
@@ -69,7 +68,7 @@ export default class Test extends SfCommand<RunResult> {
       json: flags.json,
       detailedCoverage: flags['detailed-coverage'],
       concise: flags.concise,
-      jsonEnabled: this.jsonEnabled()
+      jsonEnabled: this.jsonEnabled(),
     });
   }
 }

@@ -54,13 +54,12 @@ export default class Test extends SfCommand<RunResult> {
     'result-format': resultFormatFlag,
     concise: Flags.boolean({
       summary: messages.getMessage('flags.concise.summary'),
-    })
+    }),
   };
 
   public async run(): Promise<RunResult> {
     const { flags } = await this.parse(Test);
 
-    // Use shared business logic
     return TestGetBase.execute({
       connection: flags['target-org'].getConnection(),
       testRunId: flags['test-run-id'],
@@ -71,7 +70,7 @@ export default class Test extends SfCommand<RunResult> {
       detailedCoverage: false,
       concise: flags.concise,
       jsonEnabled: this.jsonEnabled(),
-      isUnifiedLogic: true
+      isUnifiedLogic: true,
     });
   }
 }
