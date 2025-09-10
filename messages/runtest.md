@@ -130,6 +130,10 @@ Display only failed test results; works with human-readable output only.
 
 Run "%s apex get test -i %s -o %s" to retrieve test results
 
+# runLogicTestReportCommand
+
+Run "%s logic get test -i %s -o %s" to retrieve test results
+
 # runTestSyncInstructions
 
 Run with --synchronous or increase --wait timeout to wait for results.
@@ -137,6 +141,10 @@ Run with --synchronous or increase --wait timeout to wait for results.
 # syncClassErr
 
 Synchronous test runs can include test methods from only one Apex class. Omit the --synchronous flag or include tests from only one class
+
+# syncClassErrForUnifiedLogic
+
+TODO: update message -- Synchronous test runs can include test methods from only one Apex class. Omit the --synchronous flag or include tests from only one class
 
 # testLevelErr
 

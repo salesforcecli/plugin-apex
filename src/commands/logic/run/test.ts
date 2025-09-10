@@ -19,15 +19,16 @@ import { codeCoverageFlag, resultFormatFlag } from '../../../flags.js';
 import { TestRunService, TestLevelValues, RunCommandResult, TestRunConfig } from '../../../shared/TestRunService.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runlogictest');
+const commonFlags = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
 
-const exclusiveTestSpecifiers = ['class-names', 'suite-names', 'tests'];
+const exclusiveTestSpecifiers = ['class-names', 'suite-names', 'tests', 'test-category'];
 export default class Test extends SfCommand<RunCommandResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
   public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:apex:test:run'];
+  public static readonly aliases = ['force:logic:test:run'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
@@ -38,22 +39,22 @@ export default class Test extends SfCommand<RunCommandResult> {
       aliases: ['outputdir', 'output-directory'],
       deprecateAliases: true,
       char: 'd',
-      summary: messages.getMessage('flags.output-dir.summary'),
+      summary: commonFlags.getMessage('flags.output-dir.summary'),
     }),
     'test-level': Flags.string({
       deprecateAliases: true,
       aliases: ['testlevel'],
       char: 'l',
-      summary: messages.getMessage('flags.test-level.summary'),
-      description: messages.getMessage('flags.test-level.description'),
+      summary: commonFlags.getMessage('flags.test-level.summary'),
+      description: commonFlags.getMessage('flags.test-level.description'),
       options: TestLevelValues,
     }),
     'class-names': arrayWithDeprecation({
       deprecateAliases: true,
       aliases: ['classnames'],
       char: 'n',
-      summary: messages.getMessage('flags.class-names.summary'),
-      description: messages.getMessage('flags.class-names.description'),
+      summary: commonFlags.getMessage('flags.class-names.summary'),
+      description: commonFlags.getMessage('flags.class-names.description'),
       exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'class-names'),
     }),
     'result-format': resultFormatFlag,
@@ -61,14 +62,14 @@ export default class Test extends SfCommand<RunCommandResult> {
       deprecateAliases: true,
       aliases: ['suitenames'],
       char: 's',
-      summary: messages.getMessage('flags.suite-names.summary'),
-      description: messages.getMessage('flags.suite-names.description'),
+      summary: commonFlags.getMessage('flags.suite-names.summary'),
+      description: commonFlags.getMessage('flags.suite-names.description'),
       exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'suite-names'),
     }),
     tests: arrayWithDeprecation({
       char: 't',
-      summary: messages.getMessage('flags.tests.summary'),
-      description: messages.getMessage('flags.tests.description'),
+      summary: messages.getMessage('flags.logicTests.summary'),
+      description: commonFlags.getMessage('flags.tests.description'),
       exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'tests'),
     }),
     // we want to pass `undefined` to the API
@@ -76,22 +77,27 @@ export default class Test extends SfCommand<RunCommandResult> {
     wait: Flags.duration({
       unit: 'minutes',
       char: 'w',
-      summary: messages.getMessage('flags.wait.summary'),
+      summary: commonFlags.getMessage('flags.wait.summary'),
       min: 0,
     }),
     synchronous: Flags.boolean({
       char: 'y',
-      summary: messages.getMessage('flags.synchronous.summary'),
+      summary: commonFlags.getMessage('flags.synchronous.summary'),
     }),
     'detailed-coverage': Flags.boolean({
       deprecateAliases: true,
       aliases: ['detailedcoverage'],
       char: 'v',
-      summary: messages.getMessage('flags.detailed-coverage.summary'),
+      summary: commonFlags.getMessage('flags.detailed-coverage.summary'),
       dependsOn: ['code-coverage'],
     }),
     concise: Flags.boolean({
-      summary: messages.getMessage('flags.concise.summary'),
+      summary: commonFlags.getMessage('flags.concise.summary'),
+    }),
+    'test-category': arrayWithDeprecation({
+      summary: messages.getMessage('flags.test-category.summary'),
+      description: messages.getMessage('flags.test-category.description'),
+      options: ['Agent', 'Apex'],
     }),
   };
 
@@ -101,7 +107,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     const { flags } = await this.parse(Test);
 
     const config: TestRunConfig = {
-      commandType: 'apex',
+      commandType: 'logic',
       messages,
       exclusiveTestSpecifiers,
       binName: this.config.bin,
