@@ -13,6 +13,7 @@ import { Org } from '@salesforce/core';
 import ansis from 'ansis';
 import Log, { LogGetResult } from '../../../../src/commands/apex/get/log.js';
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const strip = new ansis.Ansis().strip;
 const logStripper = (log: LogGetResult[number]) => (typeof log === 'string' ? strip(log) : { log: strip(log.log) });
 
