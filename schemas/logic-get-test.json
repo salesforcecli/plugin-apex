@@ -1,0 +1,289 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/RunResult",
+  "definitions": {
+    "RunResult": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "object",
+          "properties": {
+            "outcome": {
+              "$ref": "#/definitions/ApexTestRunResultStatus"
+            },
+            "testsRan": {
+              "type": "number"
+            },
+            "passing": {
+              "type": "number"
+            },
+            "failing": {
+              "type": "number"
+            },
+            "skipped": {
+              "type": "number"
+            },
+            "passRate": {
+              "type": "string"
+            },
+            "failRate": {
+              "type": "string"
+            },
+            "testStartTime": {
+              "type": "string"
+            },
+            "testExecutionTime": {
+              "type": "string"
+            },
+            "testTotalTime": {
+              "type": "string"
+            },
+            "commandTime": {
+              "type": "string"
+            },
+            "hostname": {
+              "type": "string"
+            },
+            "orgId": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "testRunId": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "string"
+            },
+            "orgWideCoverage": {
+              "type": "string"
+            },
+            "testRunCoverage": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "outcome",
+            "testsRan",
+            "passing",
+            "failing",
+            "skipped",
+            "passRate",
+            "failRate",
+            "testStartTime",
+            "testExecutionTime",
+            "testTotalTime",
+            "commandTime",
+            "hostname",
+            "orgId",
+            "username",
+            "testRunId",
+            "userId"
+          ],
+          "additionalProperties": false
+        },
+        "tests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Id": {
+                "type": "string"
+              },
+              "QueueItemId": {
+                "type": "string"
+              },
+              "StackTrace": {
+                "type": "string"
+              },
+              "Message": {
+                "type": "string"
+              },
+              "AsyncApexJobId": {
+                "type": "string"
+              },
+              "MethodName": {
+                "type": "string"
+              },
+              "Outcome": {
+                "$ref": "#/definitions/ApexTestResultOutcome"
+              },
+              "ApexClass": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "string"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "NamespacePrefix": {
+                    "type": "string"
+                  }
+                },
+                "required": ["Id", "Name", "NamespacePrefix"],
+                "additionalProperties": false
+              },
+              "RunTime": {
+                "type": "number"
+              },
+              "FullName": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "Id",
+              "QueueItemId",
+              "StackTrace",
+              "Message",
+              "AsyncApexJobId",
+              "MethodName",
+              "Outcome",
+              "ApexClass",
+              "RunTime",
+              "FullName"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "coverage": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "totalLines": {
+                    "type": "number"
+                  },
+                  "lines": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "number"
+                    }
+                  },
+                  "totalCovered": {
+                    "type": "number"
+                  },
+                  "coveredPercent": {
+                    "type": "number"
+                  }
+                },
+                "required": ["id", "name", "totalLines", "lines", "totalCovered", "coveredPercent"],
+                "additionalProperties": false
+              }
+            },
+            "records": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ApexTestClass": {
+                    "type": "object",
+                    "properties": {
+                      "Id": {
+                        "type": "string"
+                      },
+                      "Name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["Id", "Name"],
+                    "additionalProperties": false
+                  },
+                  "Coverage": {
+                    "type": "object",
+                    "properties": {
+                      "coveredLines": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        }
+                      },
+                      "uncoveredLines": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "required": ["coveredLines", "uncoveredLines"],
+                    "additionalProperties": false
+                  },
+                  "TestMethodName": {
+                    "type": "string"
+                  },
+                  "NumLinesCovered": {
+                    "type": "number"
+                  },
+                  "ApexClassOrTrigger": {
+                    "type": "object",
+                    "properties": {
+                      "Id": {
+                        "type": "string"
+                      },
+                      "Name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["Id", "Name"],
+                    "additionalProperties": false
+                  },
+                  "NumLinesUncovered": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "ApexTestClass",
+                  "TestMethodName",
+                  "NumLinesCovered",
+                  "ApexClassOrTrigger",
+                  "NumLinesUncovered"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "summary": {
+              "type": "object",
+              "properties": {
+                "totalLines": {
+                  "type": "number"
+                },
+                "coveredLines": {
+                  "type": "number"
+                },
+                "testRunCoverage": {
+                  "type": "string"
+                },
+                "orgWideCoverage": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": ["coverage", "records", "summary"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["summary", "tests"],
+      "additionalProperties": false
+    },
+    "ApexTestRunResultStatus": {
+      "type": "string",
+      "enum": ["Queued", "Processing", "Aborted", "Passed", "Failed", "Completed", "Skipped"]
+    },
+    "ApexTestResultOutcome": {
+      "type": "string",
+      "enum": ["Pass", "Fail", "CompileFail", "Skip"]
+    }
+  }
+}
