@@ -96,5 +96,33 @@
     "flagChars": ["c", "d", "o", "s"],
     "flags": ["api-version", "color", "debug-level", "flags-dir", "loglevel", "skip-trace-flag", "target-org"],
     "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "command": "logic:get:test",
+    "flagAliases": [
+      "apiversion",
+      "codecoverage",
+      "output-directory",
+      "outputdir",
+      "resultformat",
+      "targetusername",
+      "testrunid",
+      "u"
+    ],
+    "flagChars": ["c", "d", "i", "o", "r"],
+    "flags": [
+      "api-version",
+      "code-coverage",
+      "concise",
+      "detailed-coverage",
+      "flags-dir",
+      "json",
+      "loglevel",
+      "output-dir",
+      "result-format",
+      "target-org",
+      "test-run-id"
+    ],
+    "plugin": "@salesforce/plugin-apex"
   }
 ]

@@ -5,7 +5,7 @@
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@salesforce/apex-node": "^8.1.27",
+    "@salesforce/apex-node": "^8.3.1",
     "@salesforce/core": "^8.10.1",
     "@salesforce/kit": "^3.2.3",
     "@salesforce/sf-plugins-core": "^12.2.1",
@@ -64,6 +64,14 @@
           },
           "tail": {
             "description": "Tail debug logs."
+          }
+        }
+      },
+      "logic": {
+        "description": "Use the logic commands to run Apex and Flow tests and view the test results.",
+        "subtopics": {
+          "get": {
+            "description": "Get debug logs or test results."
           }
         }
       }
@@ -205,7 +213,7 @@
       "output": []
     },
     "link-check": {
-      "command": "node -e \"process.exit(process.env.CI ? 0 : 1)\" || linkinator \"**/*.md\" --skip \"CHANGELOG.md|node_modules|test/|confluence.internal.salesforce.com|my.salesforce.com|%s\" --markdown --retry --directory-listing --verbosity error",
+      "command": "node -e \"process.exit(process.env.CI ? 0 : 1)\" || linkinator \"**/*.md\" --skip \"CHANGELOG.md|node_modules|test/|confluence.internal.salesforce.com|my.salesforce.com|localhost|%s\" --markdown --retry --directory-listing --verbosity error",
       "files": [
         "./*.md",
         "./!(CHANGELOG).md",

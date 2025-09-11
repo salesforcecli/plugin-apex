@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { expect } from 'chai';
-import { JsonReporter } from '../src/reporters/index.js';
+import { JsonReporter } from '../../src/reporters/index.js';
 import {
   jsonResult,
   testRunSimple,
@@ -15,7 +15,7 @@ import {
   failureResult,
   runWithMixed,
   mixedResult,
-} from './testData.js';
+} from '../testData.js';
 
 describe('JSON Test Reporter', () => {
   it('should report successful test results without code coverage', () => {
