@@ -38,7 +38,3 @@ Category of tests to run. Can be specified multiple times. Valid values are 'Ape
 # runLogicTestReportCommand
 
 Run "%s logic get test -i %s -o %s" to retrieve test results
-
-# runTestSyncInstructions
-
-Run with --synchronous or increase --wait timeout to wait for results.

@@ -102,7 +102,6 @@ export default class Test extends SfCommand<RunCommandResult> {
 
     const config: TestRunConfig = {
       commandType: 'apex',
-      messages,
       exclusiveTestSpecifiers,
       binName: this.config.bin,
     };
