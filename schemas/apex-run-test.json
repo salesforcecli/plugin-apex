@@ -140,6 +140,9 @@
               },
               "FullName": {
                 "type": "string"
+              },
+              "Category": {
+                "$ref": "#/definitions/TestCategory"
               }
             },
             "required": [
@@ -294,6 +297,10 @@
     "ApexTestResultOutcome": {
       "type": "string",
       "enum": ["Pass", "Fail", "CompileFail", "Skip"]
+    },
+    "TestCategory": {
+      "type": "string",
+      "enum": ["Apex", "Flow"]
     },
     "TestRunIdResult": {
       "type": "object",

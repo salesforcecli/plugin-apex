@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { ApexTestResultOutcome, TestResult } from '@salesforce/apex-node';
-import { ApexTestRunResultStatus } from '@salesforce/apex-node/lib/src/tests/types.js';
+import { ApexTestRunResultStatus, TestCategory } from '@salesforce/apex-node/lib/src/tests/types.js';
 
 export type RunResult = {
   summary: Summary;
@@ -47,6 +47,7 @@ type CliTestResult = {
   ApexClass: { Id: string; Name: string; NamespacePrefix: string };
   RunTime: number;
   FullName: string;
+  Category?: TestCategory;
 };
 
 type ClassCoverage = {

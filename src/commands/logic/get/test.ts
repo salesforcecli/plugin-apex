@@ -20,7 +20,7 @@ import { TestGetBase } from '../../../shared/TestGetBase.js';
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'logicgettest');
 
-export default class Test extends SfCommand<RunResult> {
+export default class TestLogic extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -56,7 +56,7 @@ export default class Test extends SfCommand<RunResult> {
   };
 
   public async run(): Promise<RunResult> {
-    const { flags } = await this.parse(Test);
+    const { flags } = await this.parse(TestLogic);
 
     return TestGetBase.execute({
       connection: flags['target-org'].getConnection(flags['api-version']),
