@@ -1,3 +1,15 @@
+# [3.7.0](https://github.com/salesforcecli/plugin-apex/compare/3.6.19...3.7.0) (2025-09-11)
+
+### Bug Fixes
+
+- remove alias ([ad6f663](https://github.com/salesforcecli/plugin-apex/commit/ad6f6638e7a61c748669c1a41a7f42b04e581837))
+- rename className and update schema files ([6ad6649](https://github.com/salesforcecli/plugin-apex/commit/6ad6649f09b0730dc6bb2a66021a2e715269d89b))
+- update schema files ([05fb0c3](https://github.com/salesforcecli/plugin-apex/commit/05fb0c3d36040184b5c8c60757520a8904826426))
+
+### Features
+
+- add new logic get test command ([f067ad3](https://github.com/salesforcecli/plugin-apex/commit/f067ad3d93c067bc0cb5681f8aa2f0e5b469fda8))
+
 ## [3.6.19](https://github.com/salesforcecli/plugin-apex/compare/3.6.18...3.6.19) (2025-05-25)
 
 ### Bug Fixes
