@@ -98,7 +98,6 @@
     "plugin": "@salesforce/plugin-apex"
   },
   {
-    "alias": ["force:logic:test:report"],
     "command": "logic:get:test",
     "flagAliases": [
       "apiversion",

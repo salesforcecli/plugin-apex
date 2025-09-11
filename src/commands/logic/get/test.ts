@@ -24,8 +24,6 @@ export default class Test extends SfCommand<RunResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
-  public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:logic:test:report'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
@@ -61,7 +59,7 @@ export default class Test extends SfCommand<RunResult> {
     const { flags } = await this.parse(Test);
 
     return TestGetBase.execute({
-      connection: flags['target-org'].getConnection(),
+      connection: flags['target-org'].getConnection(flags['api-version']),
       testRunId: flags['test-run-id'],
       codeCoverage: flags['code-coverage'],
       outputDir: flags['output-dir'],
