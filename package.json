@@ -68,7 +68,7 @@
         }
       },
       "logic": {
-        "description": "Use the logic commands to run Apex tests and view Apex test results.",
+        "description": "Use the logic commands to run Apex and Flow tests and view the test results.",
         "subtopics": {
           "get": {
             "description": "Get debug logs or test results."
