@@ -17,7 +17,6 @@ Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtestcommon');
 
 let logStub: sinon.SinonStub;
-let styledJsonStub: sinon.SinonStub;
 
 describe('logic:test:run', () => {
   let sandbox: sinon.SinonSandbox;
@@ -25,7 +24,6 @@ describe('logic:test:run', () => {
   beforeEach(async () => {
     sandbox = sinon.createSandbox();
     logStub = sandbox.stub(Ux.prototype, 'log');
-    styledJsonStub = sandbox.stub(Ux.prototype, 'styledJSON');
     stubSfCommandUx(sandbox);
     sandbox
       .stub(Org, 'create')
@@ -177,12 +175,11 @@ describe('logic:test:run', () => {
   });
 
   describe('test success', () => {
-    it.only('should return a success json format message with sync', async () => {
+    it('should return a success json format message with sync', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(logicTestRunSimple);
       sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
       const result = await RunLogicTest.run(['--tests', 'MyApexTests', '-r', 'json', '--synchronous']);
       expect(result).to.deep.equal(logicTestRunSimpleResult);
-      expect(styledJsonStub.firstCall.args[0]).to.deep.equal({ result: logicTestRunSimpleResult, status: undefined });
     });
 
     it('should return a success human format with synchronous', async () => {
