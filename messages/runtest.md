@@ -10,6 +10,8 @@ To see code coverage results, use the --code-coverage flag with --result-format.
 
 By default, Apex tests run asynchronously and immediately return a test run ID. You can use the --wait flag to specify the number of minutes to wait; if the tests finish in that timeframe, the command displays the results. If the tests haven't finished by the end of the wait time, the command displays a test run ID. Use the "<%= config.bin %> apex get test --test-run-id" command to get the results.
 
+To run both Apex and Flow tests together, run the "sf logic run test" CLI command, which has similar flags as this command, but expands the --tests flag to also include Flow tests.
+
 You must have the "View All Data" system permission to use this command. The permission is disabled by default and can be enabled only by a system administrator.
 
 NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage of the covered lines and total lines from all the Apex classes evaluated by the tests in this run.
@@ -125,3 +127,44 @@ Display detailed code coverage per test.
 # flags.concise.summary
 
 Display only failed test results; works with human-readable output only.
+
+# runTestReportCommand
+
+Run "%s apex get test -i %s -o %s" to retrieve test results
+
+# runLogicTestReportCommand
+
+Run "%s logic get test -i %s -o %s" to retrieve test results
+
+# runTestSyncInstructions
+
+Run with --synchronous or increase --wait timeout to wait for results.
+
+# syncClassErr
+
+Synchronous test runs can include test methods from only one Apex class. Omit the --synchronous flag or include tests from only one class.
+
+# syncClassErrForUnifiedLogic
+
+Synchronous test runs can include test methods from either a single Apex class or a single Flow test. Omit the --synchronous flag or include test methods from only one class or Flow.
+
+# testLevelErr
+
+When specifying classnames, suitenames, or tests, indicate RunSpecifiedTests as the testlevel
+
+# testResultProcessErr
+
+Encountered an error when processing test results
+%s
+
+# apexTestReportFormatHint
+
+Run "sf apex get test %s --result-format <format>" to retrieve test results in a different format.
+
+# outputDirHint
+
+Test result files written to %s
+
+# apexLibErr
+
+Unknown error in Apex Library: %s
