@@ -19,7 +19,7 @@ import { codeCoverageFlag, resultFormatFlag } from '../../../flags.js';
 import { TestRunService, TestLevelValues, RunCommandResult, TestRunConfig } from '../../../shared/TestRunService.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'logicruntest');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runlogictest');
 const commonFlags = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
 
 const exclusiveTestSpecifiers = ['class-names', 'suite-names', 'tests', 'test-category'];
@@ -27,8 +27,6 @@ export default class Test extends SfCommand<RunCommandResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
-  public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:logic:test:run'];
 
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
@@ -96,6 +94,7 @@ export default class Test extends SfCommand<RunCommandResult> {
     }),
     'test-category': arrayWithDeprecation({
       summary: messages.getMessage('flags.test-category.summary'),
+      description: messages.getMessage('flags.test-category.description'),
       options: ['Agent', 'Apex', 'Flow'],
     }),
   };
