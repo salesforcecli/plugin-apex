@@ -16,7 +16,7 @@ Synchronous test runs can include test methods from only one Apex class. Omit th
 
 # syncClassErrForUnifiedLogic
 
-TODO: update message -- Synchronous test runs can include test methods from only one Apex class. Omit the --synchronous flag or include tests from only one class
+-- Synchronous test runs can include test methods from only one Apex class or Flow test. Omit the --synchronous flag or include tests from only one class
 
 # testLevelErr
 
