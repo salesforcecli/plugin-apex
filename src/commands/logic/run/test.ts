@@ -23,7 +23,7 @@ const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runlogictest'
 const commonFlags = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
 
 const exclusiveTestSpecifiers = ['class-names', 'suite-names', 'tests', 'test-category'];
-export default class Test extends SfCommand<RunCommandResult> {
+export default class RunTestLogic extends SfCommand<RunCommandResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -102,7 +102,7 @@ export default class Test extends SfCommand<RunCommandResult> {
   protected cancellationTokenSource = new CancellationTokenSource();
 
   public async run(): Promise<RunCommandResult> {
-    const { flags } = await this.parse(Test);
+    const { flags } = await this.parse(RunTestLogic);
 
     const config: TestRunConfig = {
       commandType: 'logic',
