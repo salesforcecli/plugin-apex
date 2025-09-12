@@ -124,5 +124,43 @@
       "test-run-id"
     ],
     "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": [],
+    "command": "logic:run:test",
+    "flagAliases": [
+      "apiversion",
+      "classnames",
+      "codecoverage",
+      "detailedcoverage",
+      "output-directory",
+      "outputdir",
+      "resultformat",
+      "suitenames",
+      "targetusername",
+      "testlevel",
+      "u"
+    ],
+    "flagChars": ["c", "d", "l", "n", "o", "r", "s", "t", "v", "w", "y"],
+    "flags": [
+      "api-version",
+      "class-names",
+      "code-coverage",
+      "concise",
+      "detailed-coverage",
+      "flags-dir",
+      "json",
+      "loglevel",
+      "output-dir",
+      "result-format",
+      "suite-names",
+      "synchronous",
+      "target-org",
+      "test-category",
+      "test-level",
+      "tests",
+      "wait"
+    ],
+    "plugin": "@salesforce/plugin-apex"
   }
 ]
