@@ -72,6 +72,9 @@
         "subtopics": {
           "get": {
             "description": "Get debug logs or test results."
+          },
+          "run": {
+            "description": "Run Apex and Flow tests."
           }
         }
       }
