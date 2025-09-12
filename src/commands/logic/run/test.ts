@@ -96,7 +96,8 @@ export default class Test extends SfCommand<RunCommandResult> {
     }),
     'test-category': arrayWithDeprecation({
       summary: messages.getMessage('flags.test-category.summary'),
-      options: ['Agent', 'Apex'],
+      description: messages.getMessage('flags.test-category.description'),
+      options: ['Agent', 'Apex', 'Flow'],
     }),
   };
 
@@ -107,7 +108,6 @@ export default class Test extends SfCommand<RunCommandResult> {
 
     const config: TestRunConfig = {
       commandType: 'logic',
-      messages,
       exclusiveTestSpecifiers,
       binName: this.config.bin,
     };

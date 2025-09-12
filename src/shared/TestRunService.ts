@@ -11,6 +11,9 @@ import { Messages, SfError, Connection } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
 import { RunResult, TestReporter } from '../reporters/index.js';
 
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtestcommon');
+
 export const TestLevelValues = ['RunLocalTests', 'RunAllTestsInOrg', 'RunSpecifiedTests'];
 export type RunCommandResult = RunResult | TestRunIdResult;
 
@@ -32,8 +35,6 @@ export type TestRunFlags = {
 
 export type TestRunConfig = {
   commandType: 'apex' | 'logic';
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  messages: Messages<any>;
   exclusiveTestSpecifiers: string[];
   binName: string;
 };
@@ -91,7 +92,7 @@ export class TestRunService {
       // Tests were ran asynchronously or the --wait timed out.
       // Log the proper 'get test' command for the user to run later
       TestRunService.logAsyncTestInstructions(result, connection.getUsername?.() ?? 'unknown', config, context.log);
-      context.info(config.messages.getMessage('runTestSyncInstructions'));
+      context.info(messages.getMessage('runTestSyncInstructions'));
 
       if (flags['output-dir']) {
         // testService writes a file with just the test run id in it to test-run-id.txt
@@ -189,9 +190,9 @@ export class TestRunService {
     log: (message: string) => void
   ): void {
     if (config.commandType === 'logic') {
-      log(config.messages.getMessage('runLogicTestReportCommand', [config.binName, result.testRunId, username]));
+      log(messages.getMessage('runLogicTestReportCommand', [config.binName, result.testRunId, username]));
     } else {
-      log(config.messages.getMessage('runTestReportCommand', [config.binName, result.testRunId, username]));
+      log(messages.getMessage('runTestReportCommand', [config.binName, result.testRunId, username]));
     }
   }
 
@@ -239,8 +240,8 @@ export class TestRunService {
   ): Promise<TestLevel> {
     if (synchronous && (Boolean(suiteNames) || (classNames && classNames.length > 1))) {
       return config?.commandType === 'apex'
-        ? Promise.reject(new Error(config?.messages.getMessage('syncClassErr')))
-        : Promise.reject(new Error(config?.messages.getMessage('syncClassErrForUnifiedLogic')));
+        ? Promise.reject(new Error(messages.getMessage('syncClassErr')))
+        : Promise.reject(new Error(messages.getMessage('syncClassErrForUnifiedLogic')));
     }
 
     // Validate that test-level is required when test-category is specified (logic command only)
@@ -253,7 +254,7 @@ export class TestRunService {
       testLevel &&
       testLevel.toString() !== 'RunSpecifiedTests'
     ) {
-      return Promise.reject(new Error(config?.messages.getMessage('testLevelErr')));
+      return Promise.reject(new Error(messages.getMessage('testLevelErr')));
     }
 
     if (testLevel) {
