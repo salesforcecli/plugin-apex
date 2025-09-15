@@ -43,23 +43,6 @@ describe('logic:test:run', () => {
   });
 
   describe('--test-category flag', () => {
-    it('should accept Agent as test category', async () => {
-      const testServiceStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(logicTestRunSimple);
-      await RunLogicTest.run([
-        '--test-category',
-        'Agent',
-        '--test-level',
-        'RunLocalTests',
-        '--target-org',
-        'test@user.com',
-      ]);
-
-      expect(testServiceStub.calledOnce).to.be.true;
-      const testServiceCall = testServiceStub.getCall(0);
-      const testRunOptions = testServiceCall.args[0];
-      expect(testRunOptions.category).to.deep.equal(['Agent']);
-    });
-
     it('should accept Apex as test category', async () => {
       const testServiceStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(logicTestRunSimple);
       await RunLogicTest.run([
@@ -108,7 +91,7 @@ describe('logic:test:run', () => {
         ]);
         assert.fail('Expected command to throw an error for invalid test category');
       } catch (error) {
-        expect((error as Error).message).to.include('Expected --test-category=Invalid to be one of: Agent, Apex');
+        expect((error as Error).message).to.include('Expected --test-category=Invalid to be one of: Apex, Flow');
       }
     });
 
@@ -129,7 +112,7 @@ describe('logic:test:run', () => {
       try {
         await RunLogicTest.run([
           '--test-category',
-          'Agent',
+          'Flow',
           '--class-names',
           'TestClass',
           '--target-org',
@@ -161,7 +144,7 @@ describe('logic:test:run', () => {
       try {
         await RunLogicTest.run([
           '--test-category',
-          'Agent',
+          'Flow',
           '--tests',
           'TestClass.testMethod',
           '--target-org',
