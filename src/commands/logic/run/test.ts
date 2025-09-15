@@ -94,7 +94,6 @@ export default class RunTestLogic extends SfCommand<RunCommandResult> {
     }),
     'test-category': arrayWithDeprecation({
       summary: messages.getMessage('flags.test-category.summary'),
-      description: messages.getMessage('flags.test-category.description'),
       options: ['Agent', 'Apex', 'Flow'],
     }),
   };
