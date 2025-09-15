@@ -32,7 +32,7 @@ import { JsonReporter, RunResult } from './jsonReporter.js';
 const FAILURE_EXIT_CODE = 100;
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtestcommon');
 
 export class TestReporter {
   /**
@@ -81,7 +81,13 @@ export class TestReporter {
       }
       switch (options['result-format']) {
         case 'human':
-          this.logHuman(result, options['detailed-coverage'] as boolean, options['concise'], options['output-dir'], options.isUnifiedLogic);
+          this.logHuman(
+            result,
+            options['detailed-coverage'] as boolean,
+            options['concise'],
+            options['output-dir'],
+            options.isUnifiedLogic
+          );
           break;
         case 'tap':
           this.logTap(result);
@@ -196,7 +202,13 @@ export class TestReporter {
     }
   }
 
-  private logHuman(result: TestResult, detailedCoverage: boolean, concise: boolean, outputDir?: string, isUnifiedLogic?: boolean): void {
+  private logHuman(
+    result: TestResult,
+    detailedCoverage: boolean,
+    concise: boolean,
+    outputDir?: string,
+    isUnifiedLogic?: boolean
+  ): void {
     if (outputDir) {
       this.ux.log(messages.getMessage('outputDirHint', [outputDir]));
     }

@@ -30,7 +30,7 @@ import {
 } from '../../../testData.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
-const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtest');
+const messages = Messages.loadMessages('@salesforce/plugin-apex', 'runtestcommon');
 
 let logStub: sinon.SinonStub;
 let styledJsonStub: sinon.SinonStub;
@@ -148,7 +148,7 @@ describe('apex:test:run', () => {
       ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', 'Apex']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: false,
         testLevel: 'RunSpecifiedTests',
@@ -176,7 +176,13 @@ describe('apex:test:run', () => {
       ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
+        'RunSpecifiedTests',
+        undefined,
+        'myApex',
+        undefined,
+        'Apex',
+      ]);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: false,
         testLevel: 'RunSpecifiedTests',
@@ -197,7 +203,13 @@ describe('apex:test:run', () => {
       await Test.run(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
+        'RunSpecifiedTests',
+        undefined,
+        'myApex',
+        undefined,
+        'Apex',
+      ]);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -216,7 +228,7 @@ describe('apex:test:run', () => {
       await Test.run(['--class-names', 'myApex', '--synchronous', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', 'Apex']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -319,6 +331,7 @@ describe('apex:test:run', () => {
 
       await Test.run(['--suite-names', 'MyApexTests,MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
+        category: ['Apex'],
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
         suiteNames: 'MyApexTests,MySecondTest',
@@ -330,6 +343,7 @@ describe('apex:test:run', () => {
 
       await Test.run(['-s', 'MyApexTests', '-s', 'MySecondTest', '--result-format', 'human']);
       expect(apexStub.firstCall.args[0]).to.deep.equal({
+        category: ['Apex'],
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
         suiteNames: 'MyApexTests,MySecondTest',
@@ -402,7 +416,7 @@ describe('apex:test:run', () => {
       ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', 'Apex']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: false,
         testLevel: 'RunSpecifiedTests',
@@ -430,7 +444,13 @@ describe('apex:test:run', () => {
       ]);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
+        'RunSpecifiedTests',
+        undefined,
+        'myApex',
+        undefined,
+        'Apex',
+      ]);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: false,
         testLevel: 'RunSpecifiedTests',
@@ -449,7 +469,13 @@ describe('apex:test:run', () => {
       await Test.run(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
+        'RunSpecifiedTests',
+        undefined,
+        'myApex',
+        undefined,
+        'Apex',
+      ]);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -468,7 +494,7 @@ describe('apex:test:run', () => {
       await Test.run(['--class-names', 'myApex', '--synchronous', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex']);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', 'Apex']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
