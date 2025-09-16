@@ -1,8 +1,17 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
- * All rights reserved.
- * Licensed under the BSD 3-Clause license.
- * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Copyright 2025, Salesforce, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import fs from 'node:fs';
 import { Messages, Org } from '@salesforce/core';
@@ -43,6 +52,23 @@ describe('logic:test:run', () => {
   });
 
   describe('--test-category flag', () => {
+    it('should accept Agent as test category', async () => {
+      const testServiceStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(logicTestRunSimple);
+      await RunLogicTest.run([
+        '--test-category',
+        'Agent',
+        '--test-level',
+        'RunLocalTests',
+        '--target-org',
+        'test@user.com',
+      ]);
+
+      expect(testServiceStub.calledOnce).to.be.true;
+      const testServiceCall = testServiceStub.getCall(0);
+      const testRunOptions = testServiceCall.args[0];
+
+      expect(testRunOptions.category).to.deep.equal(['Agent']);
+    });
     it('should accept Apex as test category', async () => {
       const testServiceStub = sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves(logicTestRunSimple);
       await RunLogicTest.run([
@@ -91,7 +117,7 @@ describe('logic:test:run', () => {
         ]);
         assert.fail('Expected command to throw an error for invalid test category');
       } catch (error) {
-        expect((error as Error).message).to.include('Expected --test-category=Invalid to be one of: Apex, Flow');
+        expect((error as Error).message).to.include('Expected --test-category=Invalid to be one of: Agent, Apex, Flow');
       }
     });
 

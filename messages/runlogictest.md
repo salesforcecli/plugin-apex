@@ -1,16 +1,16 @@
 # summary
 
-Invoke tests for Apex and Flows in an org.
+Invoke tests for Apex, Flows and Agentforce agents in an org.
 
 # description
 
-This command provides a single and unified way to run tests for multiple Salesforce features, such as Apex classes and Flows. Running the tests together with a single command ensures seamless interoperability between the features.
+This command provides a single and unified way to run tests for multiple Salesforce features, such as Apex classes, Flows and Agentforce agents. Running the tests together with a single command ensures seamless interoperability between the features.
 
 By default, the command executes asynchronously and returns a test run ID. Then use the "sf logic get test" command to retrieve the results. If you want to wait for the test run to complete and see the results in the command output, use the --synchronous flag.
 
-To run specific tests, use the --tests flag, passing it the Apex test class names or the Flow tests in the form Flowtest.<name>. You can also run specific test methods, although if you run the tests synchronously, the methods must belong to a single Apex class or Flow test. To run all tests of a certain category, use --test-level with --test-category. If neither flag is specified, all local tests for all categories are run by default. You can also use the --class-names and --suite-names flags to run Apex test classes or suites.
+To run specific tests, use the --tests flag, passing it the Apex test class names or the Flow tests in the form FlowTest.<name> or Agentforce agents tests in the form AgentTest.<name>. You can also run specific test methods, although if you run the tests synchronously, the methods must belong to a single Apex class, Flow test or Agentforce agents test. To run all tests of a certain category, use --test-level with --test-category. If neither flag is specified, all local tests for all categories are run by default. You can also use the --class-names and --suite-names flags to run Apex test classes or suites.
 
-To see code coverage results, use the --code-coverage flag with --result-format. The output displays a high-level summary of the test run and the code coverage values for the tested classes or flows. If you specify human-readable result format, use the --detailed-coverage flag to see detailed coverage results for each test method run.
+To see code coverage results, use the --code-coverage flag with --result-format. The output displays a high-level summary of the test run and the code coverage values for the tested classes, flows or Agentforce agents. If you specify human-readable result format, use the --detailed-coverage flag to see detailed coverage results for each test method run.
 
 You must have the "View All Data" org system permission to use this command. The permission is disabled by default and can be enabled only by a system administrator.
 
@@ -18,7 +18,7 @@ You must have the "View All Data" org system permission to use this command. The
 
 - Run a mix of specific Apex and Flow tests asynchronously in your default org:
 
-  <%= config.bin %> <%= command.id %> --tests MyApexClassTest,FlowTest.ProcessOrder
+  <%= config.bin %> <%= command.id %> --tests MyApexClassTest --tests FlowTest.ProcessOrder
 
 - Run all local Apex and Flow tests and wait for the results to complete; run the tests in the org with alias "my-scratch":
 
@@ -34,8 +34,8 @@ You must have the "View All Data" org system permission to use this command. The
 
 # flags.logicTests.summary
 
-Comma-separated list of test names to run. Can include Apex test classes and Flow tests.
+List of test names to run. Can include Apex test classes, Flow tests and Agentforce agent tests.
 
 # flags.test-category.summary
 
-Category of tests to run, such as Apex or Flow.
+Category of tests to run, such as Agent, Apex or Flow.

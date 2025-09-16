@@ -4,7 +4,7 @@ Get the results of a test run.
 
 # description
 
-When you run 'sf logic run test' to test Apex classes and Flows asynchronously, it returns a test run ID. Use that ID with this command to see the results.
+When you run 'sf logic run test' to test Apex classes, Flows and Agentforce agents asynchronously, it returns a test run ID. Use that ID with this command to see the results.
 
 To see code coverage results, use the --code-coverage flag with --result-format. The output displays a high-level summary of the test run and the code coverage values for classes in your org. If you specify human-readable result format, use the --detailed-coverage flag to see detailed coverage results for each test method run.
 
