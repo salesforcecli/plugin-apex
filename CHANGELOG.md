@@ -1,3 +1,15 @@
+# [3.8.0](https://github.com/salesforcecli/plugin-apex/compare/3.7.1...3.8.0) (2025-09-16)
+
+### Bug Fixes
+
+- remove Agent as a valid test-category value ([59e607b](https://github.com/salesforcecli/plugin-apex/commit/59e607b80aa0d13e4019e5d234010b3ded093703))
+- remove alias ([93e15e1](https://github.com/salesforcecli/plugin-apex/commit/93e15e1e02c90ad127d21d9d58339d7bbbf51954))
+- rename class ([6bf342c](https://github.com/salesforcecli/plugin-apex/commit/6bf342c229ddd42f8fa6c57bc9217f296845d049))
+
+### Features
+
+- add logic run test command ([89ff36b](https://github.com/salesforcecli/plugin-apex/commit/89ff36ba5dcca1a357333b62ba414df0afbdfd74))
+
 ## [3.7.1](https://github.com/salesforcecli/plugin-apex/compare/3.7.0...3.7.1) (2025-09-14)
 
 ### Bug Fixes
