@@ -1,11 +1,11 @@
 {
   "name": "@salesforce/plugin-apex",
   "description": "Apex commands",
-  "version": "3.8.0",
+  "version": "3.8.1-beta.1",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@salesforce/apex-node": "^8.3.2",
+    "@salesforce/apex-node": "8.3.4-dev.0",
     "@salesforce/core": "^8.10.1",
     "@salesforce/kit": "^3.2.3",
     "@salesforce/sf-plugins-core": "^12.2.1",
