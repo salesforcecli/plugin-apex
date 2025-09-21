@@ -150,7 +150,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -210,7 +210,7 @@ EXAMPLES
       me@myorg'
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -250,7 +250,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -297,7 +297,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -443,7 +443,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -486,7 +486,7 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/apex/tail/log.ts)_
 
 ## `sf logic get test`
 
@@ -534,7 +534,7 @@ EXAMPLES
     $ sf logic get test --test-run-id <test run id> --result-format junit --target-org my-scratch
 ```
 
-_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/logic/get/test.ts)_
+_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/logic/get/test.ts)_
 
 ## `sf logic run test`
 
@@ -583,11 +583,16 @@ DESCRIPTION
   retrieve the results. If you want to wait for the test run to complete and see the results in the command output, use
   the --synchronous flag.
 
-  To run specific tests, use the --tests flag, passing it the Apex test class names or the Flow tests in the form
-  Flowtest.<name>. You can also run specific test methods, although if you run the tests synchronously, the methods must
-  belong to a single Apex class or Flow test. To run all tests of a certain category, use --test-level with
-  --test-category. If neither flag is specified, all local tests for all categories are run by default. You can also use
-  the --class-names and --suite-names flags to run Apex test classes or suites.
+  To run specific tests, use the --tests flag and pass it the names of Apex and Flow tests. For Apex, simply specify the
+  name of the Apex test class. For Flows, use the format "FlowTesting.<name-of-flow-test>". To find the name of all the
+  flow tests in your org, run this command and specify the Flow category, such as "sf logic run test --synchronous
+  --test-category Flow --test-level RunAllTestsInOrg". The command displays a table of all the flow tests it ran; see
+  the "TEST NAME" column for the full name of all available flow tests in your org.
+
+  You can also run specific test methods, although if you run the tests synchronously, the methods must belong to a
+  single Apex class or Flow test. To run all tests of a certain category, use --test-category and --test-level together.
+  If neither of these flags is specified, all local tests for all categories are run by default. You can also use the
+  --class-names and --suite-names flags to run Apex test classes or suites.
 
   To see code coverage results, use the --code-coverage flag with --result-format. The output displays a high-level
   summary of the test run and the code coverage values for the tested classes or flows. If you specify human-readable
@@ -599,7 +604,8 @@ DESCRIPTION
 EXAMPLES
   Run a mix of specific Apex and Flow tests asynchronously in your default org:
 
-    $ sf logic run test --tests MyApexClassTest,FlowTest.ProcessOrder
+    $ sf logic run test --tests \
+      MyApexClassTest,FlowTesting.Modify_Account_Desc.Modify_Account_Desc_TestAccountDescription
 
   Run all local Apex and Flow tests and wait for the results to complete; run the tests in the org with alias
   "my-scratch":
@@ -650,6 +656,6 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.0/src/commands/logic/run/test.ts)_
+_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.1/src/commands/logic/run/test.ts)_
 
 <!-- commandsstop -->
