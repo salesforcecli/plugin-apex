@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowTest xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flowApiName>Populate_opp_description</flowApiName>
+    <label>Test opportunity updates</label>
+    <testPoints>
+        <elementApiName>Start</elementApiName>
+        <parameters>
+            <leftValueReference>$Record</leftValueReference>
+            <type>InputTriggeringRecordInitial</type>
+            <value>
+                <sobjectValue>{&quot;attributes&quot;:{&quot;type&quot;:&quot;Opportunity&quot;},&quot;AccountId&quot;:&quot;001D300000xpC0lIAE&quot;,&quot;Description&quot;:&quot;Agriculture&quot;,&quot;StageName&quot;:&quot;Prospecting&quot;,&quot;Probability&quot;:10,&quot;CloseDate&quot;:&quot;2026-10-01&quot;,&quot;Name&quot;:&quot;Test opp&quot;,&quot;OwnerId&quot;:&quot;005D3000007DeERIA0&quot;,&quot;ForecastCategoryName&quot;:&quot;Pipeline&quot;,&quot;IsPrivate&quot;:false}</sobjectValue>
+            </value>
+        </parameters>
+    </testPoints>
+    <testPoints>
+        <assertions>
+            <conditions>
+                <leftValueReference>Update_description</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+        </assertions>
+        <assertions>
+            <conditions>
+                <leftValueReference>$Record.Description</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+        </assertions>
+        <elementApiName>Finish</elementApiName>
+    </testPoints>
+</FlowTest>
