@@ -1,3 +1,9 @@
+## [3.8.2](https://github.com/salesforcecli/plugin-apex/compare/3.8.1...3.8.2) (2025-09-29)
+
+### Bug Fixes
+
+- do not include category when running apex test suite ([21617b4](https://github.com/salesforcecli/plugin-apex/commit/21617b4890b5866bff9bb12697ca0d7f94f87922))
+
 ## [3.8.1](https://github.com/salesforcecli/plugin-apex/compare/3.8.0...3.8.1) (2025-09-21)
 
 ### Bug Fixes
