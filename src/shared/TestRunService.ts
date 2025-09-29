@@ -120,7 +120,7 @@ export class TestRunService {
     config: TestRunConfig,
     cancellationToken: CancellationTokenSource
   ): Promise<TestResult> {
-    const testCategory = TestRunService.getTestCategory(flags, config);
+    const testCategory = TestRunService.getTestCategory(flags, config, testLevel);
     const payload = {
       ...(await testService.buildSyncPayload(
         testLevel,
@@ -149,7 +149,7 @@ export class TestRunService {
     config: TestRunConfig,
     cancellationToken: CancellationTokenSource
   ): Promise<TestRunIdResult> {
-    const testCategory = TestRunService.getTestCategory(flags, config);
+    const testCategory = TestRunService.getTestCategory(flags, config, testLevel);
     const payload = {
       ...(await testService.buildAsyncPayload(
         testLevel,
@@ -178,11 +178,14 @@ export class TestRunService {
 
   /**
    * Get test category based on command type and flags
-   * - apex command: always returns 'Apex'
+   * - apex command: returns empty string for RunSpecifiedTests, 'Apex' for other test levels
    * - logic command: returns test-category flag value or defaults to all categories
    */
-  private static getTestCategory(flags: TestRunFlags, config: TestRunConfig): string {
+  private static getTestCategory(flags: TestRunFlags, config: TestRunConfig, testLevel: string): string {
     if (config.commandType === 'apex') {
+      if (testLevel === 'RunSpecifiedTests') {
+        return '';
+      }
       return 'Apex';
     }
     // logic command
