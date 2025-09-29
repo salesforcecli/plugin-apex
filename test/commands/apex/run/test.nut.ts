@@ -38,7 +38,7 @@ describe('apex run test', () => {
         },
       ],
     });
-
+    addTestSuiteFile(session.project.dir);
     execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
   });
 
@@ -210,6 +210,16 @@ describe('apex run test', () => {
     expect(result2).to.match(/Tests Ran\s+10/);
   });
 
+  it('will run specified test suites --class-names', async () => {
+    const result = execCmd('apex:run:test -w 10 --suite-names DreamhouseTestSuite', { ensureExitCode: 0 })
+      .shellOutput.stdout;
+    expect(result).to.match(/Tests Ran\s+10/);
+    expect(result).to.include('FileUtilitiesTest.');
+    expect(result).to.include('TestPropertyController.');
+    expect(result).to.include('GeocodingServiceTest.');
+    expect(result).to.include('GeocodingServiceTest.');
+  });
+
   it('will run specified tests --tests', async () => {
     const result = execCmd('apex:run:test -w 10 --tests TestPropertyController', { ensureExitCode: 0 }).shellOutput
       .stdout;
@@ -263,3 +273,19 @@ describe('apex run test', () => {
     execCmd(`apex:get:test -i ${id}`, { ensureExitCode: 0 });
   });
 });
+
+function addTestSuiteFile(projectDir: string): void {
+  const testSuitesDir = path.join(projectDir, 'force-app', 'main', 'default', 'testSuites');
+  if (!fs.existsSync(testSuitesDir)) {
+    fs.mkdirSync(testSuitesDir, { recursive: true });
+  }
+  
+  const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+                      <ApexTestSuite xmlns="http://soap.sforce.com/2006/04/metadata">
+                        <testClassName>FileUtilitiesTest</testClassName>
+                        <testClassName>GeocodingServiceTest</testClassName>
+                        <testClassName>TestPropertyController</testClassName>
+                      </ApexTestSuite>`;
+  const filePath = path.join(testSuitesDir, 'DreamhouseTestSuite.testSuite-meta.xml');  
+  fs.writeFileSync(filePath, xmlContent, 'utf8');
+}
