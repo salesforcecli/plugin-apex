@@ -1,3 +1,9 @@
+## [3.8.3](https://github.com/salesforcecli/plugin-apex/compare/3.8.2...3.8.3) (2025-09-30)
+
+### Bug Fixes
+
+- implement Willie's suggestions ([f42d603](https://github.com/salesforcecli/plugin-apex/commit/f42d603347f3831a5995d84dd7a8f584164a39a4))
+
 ## [3.8.2](https://github.com/salesforcecli/plugin-apex/compare/3.8.1...3.8.2) (2025-09-29)
 
 ### Bug Fixes
