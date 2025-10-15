@@ -1,7 +1,6 @@
 {
     "orgName": "Easy Spaces",
     "edition": "Developer",
-    "release": "preview",
     "hasSampleData": false,
     "features": ["Walkthroughs", "EnableSetPasswordInApi"],
     "settings": {
