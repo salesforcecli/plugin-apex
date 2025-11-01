@@ -16,7 +16,7 @@
     "@oclif/plugin-command-snapshot": "^5.3.8",
     "@salesforce/cli-plugins-testkit": "^5.3.39",
     "@salesforce/dev-scripts": "^11.0.4",
-    "@salesforce/plugin-command-reference": "^3.1.72",
+    "@salesforce/plugin-command-reference": "^3.1.77",
     "eslint-plugin-sf-plugin": "^1.20.33",
     "oclif": "^4.22.32",
     "ts-node": "^10.9.2",
