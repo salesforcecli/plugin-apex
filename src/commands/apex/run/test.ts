@@ -80,6 +80,12 @@ export default class Test extends SfCommand<RunCommandResult> {
       description: messages.getMessage('flags.tests.description'),
       exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'tests'),
     }),
+    'poll-interval': Flags.duration({
+      unit: 'seconds',
+      char: 'i',
+      summary: messages.getMessage('flags.poll-interval.summary'),
+      min: 1,
+    }),
     // we want to pass `undefined` to the API
     // eslint-disable-next-line sf-plugin/flag-min-max-default
     wait: Flags.duration({
