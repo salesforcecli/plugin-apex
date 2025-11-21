@@ -40,6 +40,7 @@ export type TestRunFlags = {
   'result-format'?: string;
   json?: boolean;
   'test-category'?: string[];
+  'poll-interval'?: Duration;
 };
 
 export type TestRunConfig = {
@@ -169,7 +170,8 @@ export class TestRunService {
         flags.wait && flags.wait.minutes > 0 ? false : !(flags.synchronous && !flags.json),
         undefined,
         cancellationToken.token,
-        flags.wait
+        flags.wait,
+        flags['poll-interval']
       )) as TestRunIdResult;
     } catch (e) {
       throw TestRunService.handleTestingServerError(SfError.wrap(e), flags, testLevel, config);
