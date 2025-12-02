@@ -1,3 +1,9 @@
+## [3.8.10](https://github.com/salesforcecli/plugin-apex/compare/3.8.9...3.8.10) (2025-12-02)
+
+### Bug Fixes
+
+- **deps:** bump mdast-util-to-hast from 13.2.0 to 13.2.1 ([b64533e](https://github.com/salesforcecli/plugin-apex/commit/b64533e097e6ea9b9c4c8bd1d20fad28be878e54))
+
 ## [3.8.9](https://github.com/salesforcecli/plugin-apex/compare/3.8.8...3.8.9) (2025-11-23)
 
 ### Bug Fixes
