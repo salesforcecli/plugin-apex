@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-apex",
   "description": "Apex commands",
-  "version": "3.8.8",
+  "version": "3.8.10",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
@@ -18,7 +18,7 @@
     "@salesforce/dev-scripts": "^11.0.4",
     "@salesforce/plugin-command-reference": "^3.1.78",
     "eslint-plugin-sf-plugin": "^1.20.33",
-    "oclif": "^4.22.44",
+    "oclif": "^4.22.50",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
