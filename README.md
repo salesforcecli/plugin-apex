@@ -150,7 +150,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -210,7 +210,7 @@ EXAMPLES
       me@myorg'
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -250,7 +250,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -297,7 +297,7 @@ EXAMPLES
     $ sf apex run
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -307,11 +307,12 @@ Invoke Apex tests in an org.
 USAGE
   $ sf apex run test -o <value> [--json] [--flags-dir <value>] [--api-version <value>] [-d <value>] [-l
     RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests] [-n <value>... | -s <value>... | -t <value>...] [-r
-    human|tap|junit|json] [-w <value>] [-y] [-v -c] [--concise]
+    human|tap|junit|json] [-i <value>] [-w <value>] [-y] [-v -c] [--concise]
 
 FLAGS
   -c, --code-coverage           Retrieve code coverage results.
   -d, --output-dir=<value>      Directory in which to store test run files.
+  -i, --poll-interval=<value>   Number of seconds to wait between retries.
   -l, --test-level=<option>     Level of tests to run; default is RunLocalTests.
                                 <options: RunLocalTests|RunAllTestsInOrg|RunSpecifiedTests>
   -n, --class-names=<value>...  Apex test class names to run; default is all classes.
@@ -443,7 +444,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -486,7 +487,7 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/apex/tail/log.ts)_
 
 ## `sf logic get test`
 
@@ -534,7 +535,7 @@ EXAMPLES
     $ sf logic get test --test-run-id <test run id> --result-format junit --target-org my-scratch
 ```
 
-_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/logic/get/test.ts)_
+_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/logic/get/test.ts)_
 
 ## `sf logic run test`
 
@@ -656,6 +657,6 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.8.10/src/commands/logic/run/test.ts)_
+_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/3.9.0/src/commands/logic/run/test.ts)_
 
 <!-- commandsstop -->

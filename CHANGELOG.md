@@ -1,3 +1,9 @@
+# [3.9.0](https://github.com/salesforcecli/plugin-apex/compare/3.8.10...3.9.0) (2025-12-04)
+
+### Features
+
+- adds --poll-interval flag to test command @W-20268166@ ([71576db](https://github.com/salesforcecli/plugin-apex/commit/71576db2e9354e0ddcb2e9f660b1ec1641916053))
+
 ## [3.8.10](https://github.com/salesforcecli/plugin-apex/compare/3.8.9...3.8.10) (2025-12-02)
 
 ### Bug Fixes
