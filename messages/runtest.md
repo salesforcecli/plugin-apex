@@ -127,3 +127,7 @@ Display detailed code coverage per test.
 # flags.concise.summary
 
 Display only failed test results; works with human-readable output only.
+
+# flags.poll-interval.summary
+
+Number of seconds to wait between retries.

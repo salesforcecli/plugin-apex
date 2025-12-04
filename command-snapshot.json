@@ -68,7 +68,7 @@
       "testlevel",
       "u"
     ],
-    "flagChars": ["c", "d", "l", "n", "o", "r", "s", "t", "v", "w", "y"],
+    "flagChars": ["c", "d", "i", "l", "n", "o", "r", "s", "t", "v", "w", "y"],
     "flags": [
       "api-version",
       "class-names",
@@ -78,6 +78,7 @@
       "flags-dir",
       "json",
       "loglevel",
+      "poll-interval",
       "output-dir",
       "result-format",
       "suite-names",
