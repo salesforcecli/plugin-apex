@@ -1,3 +1,9 @@
+## [3.9.1](https://github.com/salesforcecli/plugin-apex/compare/3.9.0...3.9.1) (2025-12-05)
+
+### Bug Fixes
+
+- **deps:** bump jws from 3.2.2 to 3.2.3 ([9b316ba](https://github.com/salesforcecli/plugin-apex/commit/9b316bad86e70b3bcdebc0da09e64a6efccf7202))
+
 # [3.9.0](https://github.com/salesforcecli/plugin-apex/compare/3.8.10...3.9.0) (2025-12-04)
 
 ### Features
