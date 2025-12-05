@@ -1,3 +1,9 @@
+## [3.9.2](https://github.com/salesforcecli/plugin-apex/compare/3.9.1...3.9.2) (2025-12-05)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 12.2.5 to 12.2.6 ([a0c5ad9](https://github.com/salesforcecli/plugin-apex/commit/a0c5ad9f97b780a74c0d1e020f6226b05f8557be))
+
 ## [3.9.1](https://github.com/salesforcecli/plugin-apex/compare/3.9.0...3.9.1) (2025-12-05)
 
 ### Bug Fixes
