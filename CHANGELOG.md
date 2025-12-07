@@ -1,3 +1,9 @@
+## [3.9.4](https://github.com/salesforcecli/plugin-apex/compare/3.9.3...3.9.4) (2025-12-07)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.23.4 to 8.24.0 ([7b1b415](https://github.com/salesforcecli/plugin-apex/commit/7b1b4158c90ecfd4f1a1abc25c88269ed89995a6))
+
 ## [3.9.3](https://github.com/salesforcecli/plugin-apex/compare/3.9.2...3.9.3) (2025-12-07)
 
 ### Bug Fixes
