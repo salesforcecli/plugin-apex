@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,28 +36,46 @@ export async function setupUnifiedFrameworkProject(): Promise<TestSession> {
       },
     ],
   });
-  const flowXml = path.join('test', 'nuts', 'unifiedFrameworkProject', 'force-app', 'main', 'default', 'flows', 'Populate_opp_description.flow-meta.xml');
+  const flowXml = path.join(
+    'test',
+    'nuts',
+    'unifiedFrameworkProject',
+    'force-app',
+    'main',
+    'default',
+    'flows',
+    'Populate_opp_description.flow-meta.xml'
+  );
   const flowsDir = path.join(session.project.dir, 'force-app', 'main', 'default', 'flows');
   const targetFile = path.join(flowsDir, 'Populate_opp_description.flow-meta.xml');
-  
+
   if (!fs.existsSync(flowsDir)) {
     fs.mkdirSync(flowsDir, { recursive: true });
   }
-  
+
   fs.copyFileSync(flowXml, targetFile);
-  
-  const flowTestXml = path.join('test', 'nuts', 'unifiedFrameworkProject', 'force-app', 'main', 'default', 'flowtests', 'test_opportunity_updates.flowtest-meta.xml');
+
+  const flowTestXml = path.join(
+    'test',
+    'nuts',
+    'unifiedFrameworkProject',
+    'force-app',
+    'main',
+    'default',
+    'flowtests',
+    'test_opportunity_updates.flowtest-meta.xml'
+  );
   const flowTestsDir = path.join(session.project.dir, 'force-app', 'main', 'default', 'flowtests');
   const targetTestFile = path.join(flowTestsDir, 'test_opportunity_updates.flowtest-meta.xml');
-  
+
   if (!fs.existsSync(flowTestsDir)) {
     fs.mkdirSync(flowTestsDir, { recursive: true });
   }
-  
+
   fs.copyFileSync(flowTestXml, targetTestFile);
-  
+
   const sfdxProjectPath = path.join(session.project.dir, 'sfdx-project.json');
-  
+
   // We need to update the sourceApiVersion to 65.0 because the changes in the api are not supported in 64.0
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const sfdxProject = JSON.parse(fs.readFileSync(sfdxProjectPath, 'utf8'));

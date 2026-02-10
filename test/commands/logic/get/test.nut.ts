@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +28,11 @@ describe('logic get test', () => {
   before(async () => {
     session = await setupUnifiedFrameworkProject();
 
-
     // Run tests to get a test run ID for subsequent get operations
     testRunId = execCmd<TestRunIdResult>('logic:run:test --test-level RunLocalTests --json', {
       ensureExitCode: 0,
     }).jsonOutput?.result.testRunId.trim();
-    
+
     expect(testRunId).to.be.a('string');
     expect(testRunId).to.match(/^707/); // Test run IDs start with 707
   });
@@ -46,7 +45,7 @@ describe('logic get test', () => {
     it('should get test results with default format', async () => {
       const result = execCmd(`logic:get:test --test-run-id ${testRunId}`, { ensureExitCode: 0 });
       const output = result.shellOutput.stdout;
-      
+
       // Verify basic output structure
       expect(output).to.include('Test Results');
       expect(output).to.include('Outcome');
@@ -56,10 +55,10 @@ describe('logic get test', () => {
     });
 
     it('should get test results in JSON format', async () => {
-      const result = execCmd<RunResult>(`logic:get:test --test-run-id ${testRunId} --json`, { 
-        ensureExitCode: 0 
+      const result = execCmd<RunResult>(`logic:get:test --test-run-id ${testRunId} --json`, {
+        ensureExitCode: 0,
       });
-      
+
       const jsonResult = result.jsonOutput?.result;
       expect(jsonResult).to.be.an('object');
       expect(jsonResult).to.have.property('summary');
@@ -72,10 +71,10 @@ describe('logic get test', () => {
     });
 
     it('should get test results with code coverage', async () => {
-      const result = execCmd(`logic:get:test --test-run-id ${testRunId} --code-coverage`, { 
-        ensureExitCode: 0 
+      const result = execCmd(`logic:get:test --test-run-id ${testRunId} --code-coverage`, {
+        ensureExitCode: 0,
       });
-      const output = result.shellOutput.stdout;      
+      const output = result.shellOutput.stdout;
       // Verify code coverage information is included
       expect(output).to.include('Code Coverage');
     });
@@ -83,11 +82,11 @@ describe('logic get test', () => {
 
   describe('result formats', () => {
     it('should output in JSON format', async () => {
-      const result = execCmd(`logic:get:test --test-run-id ${testRunId} --result-format json`, { 
-        ensureExitCode: 0 
+      const result = execCmd(`logic:get:test --test-run-id ${testRunId} --result-format json`, {
+        ensureExitCode: 0,
       });
       const output = result.shellOutput.stdout;
-      
+
       // Should be valid JSON
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
       expect(() => JSON.parse(output)).to.not.throw();
@@ -99,12 +98,11 @@ describe('logic get test', () => {
   });
 
   describe('code coverage options', () => {
-
     it('should include code coverage in JSON format', async () => {
-      const result = execCmd<RunResult>(`logic:get:test --test-run-id ${testRunId} --code-coverage --json`, { 
-        ensureExitCode: 0 
+      const result = execCmd<RunResult>(`logic:get:test --test-run-id ${testRunId} --code-coverage --json`, {
+        ensureExitCode: 0,
       });
-      
+
       const jsonResult = result.jsonOutput?.result;
       expect(jsonResult).to.have.property('coverage');
     });

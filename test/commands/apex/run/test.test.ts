@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -165,22 +165,10 @@ describe('apex:test:run', () => {
       const runTestSynchronousSpy = sandbox
         .stub(TestService.prototype, 'runTestAsynchronous')
         .resolves(runWithCoverage);
-      await Test.run([
-        '--code-coverage',
-        '--result-format',
-        'human',
-        '--test-level',
-        'RunLocalTests',
-      ]);
+      await Test.run(['--code-coverage', '--result-format', 'human', '--test-level', 'RunLocalTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
-        'RunLocalTests',
-        undefined,
-        undefined,
-        undefined,
-        'Apex',
-      ]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunLocalTests', undefined, undefined, undefined, 'Apex']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         category: ['Apex'],
         skipCodeCoverage: false,
@@ -198,13 +186,7 @@ describe('apex:test:run', () => {
       await Test.run(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
-        'RunSpecifiedTests',
-        undefined,
-        'myApex',
-        undefined,
-        '',
-      ]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined, '']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',
@@ -426,27 +408,15 @@ describe('apex:test:run', () => {
       const runTestSynchronousSpy = sandbox
         .stub(TestService.prototype, 'runTestAsynchronous')
         .resolves(runWithCoverage);
-      await Test.run([
-        '--code-coverage',
-        '--result-format',
-        'human',
-        '--test-level',
-        'RunLocalTests',
-      ]);
+      await Test.run(['--code-coverage', '--result-format', 'human', '--test-level', 'RunLocalTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
-        'RunLocalTests',
-        undefined,
-        undefined,
-        undefined,
-        'Apex',
-      ]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunLocalTests', undefined, undefined, undefined, 'Apex']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         category: ['Apex'],
         skipCodeCoverage: false,
         suiteNames: undefined,
-        testLevel: 'RunLocalTests'
+        testLevel: 'RunLocalTests',
       });
     });
 
@@ -457,13 +427,7 @@ describe('apex:test:run', () => {
       await Test.run(['--class-names', 'myApex', '--test-level', 'RunSpecifiedTests']);
       expect(buildPayloadSpy.calledOnce).to.be.true;
       expect(runTestSynchronousSpy.calledOnce).to.be.true;
-      expect(buildPayloadSpy.firstCall.args).to.deep.equal([
-        'RunSpecifiedTests',
-        undefined,
-        'myApex',
-        undefined,
-        '',
-      ]);
+      expect(buildPayloadSpy.firstCall.args).to.deep.equal(['RunSpecifiedTests', undefined, 'myApex', undefined, '']);
       expect(runTestSynchronousSpy.firstCall.args[0]).to.deep.equal({
         skipCodeCoverage: true,
         testLevel: 'RunSpecifiedTests',

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ describe('logic run test', () => {
 
   describe('--test-category', () => {
     it('will run tests with Apex category', async () => {
-      const result = execCmd('logic:run:test --test-category Apex --test-level RunLocalTests --wait 10', { 
-        ensureExitCode: 0 
+      const result = execCmd('logic:run:test --test-category Apex --test-level RunLocalTests --wait 10', {
+        ensureExitCode: 0,
       }).shellOutput.stdout;
       expect(result).to.include('CATEGORY');
       expect(result).to.include('Apex');
@@ -42,8 +42,8 @@ describe('logic run test', () => {
     });
 
     it('will run tests with Flow category', async () => {
-      const result = execCmd('logic:run:test --test-category Flow --test-level RunLocalTests --wait 10', { 
-        ensureExitCode: 0 
+      const result = execCmd('logic:run:test --test-category Flow --test-level RunLocalTests --wait 10', {
+        ensureExitCode: 0,
       }).shellOutput.stdout;
       expect(result).to.include('CATEGORY');
       expect(result).to.include('Flow');
@@ -51,9 +51,12 @@ describe('logic run test', () => {
     });
 
     it('will run tests with multiple categories', async () => {
-      const result = execCmd('logic:run:test --test-category Apex --test-category Flow --test-level RunLocalTests --wait 10', { 
-        ensureExitCode: 0 
-      }).shellOutput.stdout;
+      const result = execCmd(
+        'logic:run:test --test-category Apex --test-category Flow --test-level RunLocalTests --wait 10',
+        {
+          ensureExitCode: 0,
+        }
+      ).shellOutput.stdout;
       expect(result).to.include('CATEGORY');
       expect(result).to.include('Apex');
       expect(result).to.include('Flow');
@@ -62,8 +65,8 @@ describe('logic run test', () => {
 
   describe('--class-names', () => {
     it('will run specified class', async () => {
-      const result = execCmd('logic:run:test --class-names GeocodingServiceTest --wait 10', { 
-        ensureExitCode: 0 
+      const result = execCmd('logic:run:test --class-names GeocodingServiceTest --wait 10', {
+        ensureExitCode: 0,
       }).shellOutput.stdout;
       expect(result).to.match(/Tests Ran\s+3/);
       expect(result).to.include('GeocodingServiceTest');
@@ -73,21 +76,27 @@ describe('logic run test', () => {
     });
 
     it('will run multiple specified classes from different categories', async () => {
-      const result = execCmd('logic:run:test --class-names GeocodingServiceTest --class-names FlowTesting.Populate_opp_description --wait 10', { 
-        ensureExitCode: 0 
-      }).shellOutput.stdout;
+      const result = execCmd(
+        'logic:run:test --class-names GeocodingServiceTest --class-names FlowTesting.Populate_opp_description --wait 10',
+        {
+          ensureExitCode: 0,
+        }
+      ).shellOutput.stdout;
       expect(result).to.match(/Tests Ran\s+4/);
       expect(result).to.include('CATEGORY');
       expect(result).to.include('Apex');
       expect(result).to.include('Flow');
     });
-  });  
+  });
 
   describe('--tests', () => {
     it('will run specified test methods', async () => {
-      const result = execCmd('logic:run:test --tests FlowTesting.Populate_opp_description.test_opportunity_updates --wait 10', { 
-        ensureExitCode: 0 
-      }).shellOutput.stdout;
+      const result = execCmd(
+        'logic:run:test --tests FlowTesting.Populate_opp_description.test_opportunity_updates --wait 10',
+        {
+          ensureExitCode: 0,
+        }
+      ).shellOutput.stdout;
       expect(result).to.match(/Tests Ran\s+1/);
       expect(result).to.include('CATEGORY');
       expect(result).to.include('Flow');
@@ -96,9 +105,12 @@ describe('logic run test', () => {
     });
 
     it('will run multiple test methods from different categories', async () => {
-      const result = execCmd('logic:run:test --tests TestPropertyController.testGetPicturesWithResults --tests FlowTesting.Populate_opp_description.test_opportunity_updates --wait 10', { 
-        ensureExitCode: 0 
-      }).shellOutput.stdout;
+      const result = execCmd(
+        'logic:run:test --tests TestPropertyController.testGetPicturesWithResults --tests FlowTesting.Populate_opp_description.test_opportunity_updates --wait 10',
+        {
+          ensureExitCode: 0,
+        }
+      ).shellOutput.stdout;
       expect(result).to.match(/Tests Ran\s+2/);
       expect(result).to.include('CATEGORY');
       expect(result).to.include('Apex');
@@ -110,8 +122,8 @@ describe('logic run test', () => {
 
   describe('JSON output', () => {
     it('will run tests and return JSON with Category property', async () => {
-      const result = execCmd<RunResult>('logic:run:test --test-level RunLocalTests --wait 10 --json', { 
-        ensureExitCode: 0 
+      const result = execCmd<RunResult>('logic:run:test --test-level RunLocalTests --wait 10 --json', {
+        ensureExitCode: 0,
       }).jsonOutput?.result;
       expect(result?.tests.length).to.be.greaterThan(0);
       expect(result?.summary.outcome).to.equal('Passed');
@@ -151,8 +163,8 @@ describe('logic run test', () => {
 
   describe('async execution', () => {
     it('will run tests async and return test run id', async () => {
-      const result = execCmd<TestRunIdResult>('logic:run:test --test-category Flow --test-level RunLocalTests --json', { 
-        ensureExitCode: 0 
+      const result = execCmd<TestRunIdResult>('logic:run:test --test-category Flow --test-level RunLocalTests --json', {
+        ensureExitCode: 0,
       }).jsonOutput?.result;
       expect(result?.testRunId).to.be.a('string');
       expect(result?.testRunId.startsWith('707')).to.be.true;
@@ -161,8 +173,8 @@ describe('logic run test', () => {
 
   describe('--synchronous', () => {
     it('will run tests synchronously', async () => {
-      const result = execCmd('logic:run:test --test-category Apex --test-level RunLocalTests --synchronous', { 
-        ensureExitCode: 0 
+      const result = execCmd('logic:run:test --test-category Apex --test-level RunLocalTests --synchronous', {
+        ensureExitCode: 0,
       }).shellOutput.stdout;
       expect(result).to.include('Outcome');
       expect(result).to.include('CATEGORY');

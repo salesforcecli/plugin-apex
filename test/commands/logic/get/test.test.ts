@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,23 +65,23 @@ describe('logic:test:report', () => {
     describe('test failures', () => {
       it('should return a success human format message with async and include the test category', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicRunWithFailures);
-  
+
         const result = await LogicTest.run(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human']);
-  
+
         expect(result).to.deep.equal(logicTestRunWithFailuresResult);
         expect(logStub.firstCall.args[0]).to.include('TEST NAME               CATEGORY');
         expect(logStub.firstCall.args[0]).to.include('ApexTests.testConfig  Apex');
         expect(logStub.firstCall.args[0]).to.include('Fail');
         expect(uxStub.log.callCount).to.equal(0);
       });
-  
+
       it('should return a success json format message with async and include the test category', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicRunWithFailures);
         const result = await LogicTest.run(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'json']);
         expect(result).to.deep.equal(logicTestRunWithFailuresResult);
         expect(styledJsonStub.firstCall.args[0]).to.deep.equal({ result: logicTestRunWithFailuresResult, status: 100 });
       });
-  
+
       it('should return a success --json format message with sync and include the test category', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicRunWithFailures);
         sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
@@ -90,7 +90,7 @@ describe('logic:test:report', () => {
         expect(logStub.firstCall.args[0]).to.include('TEST NAME               CATEGORY');
         expect(styledJsonStub.notCalled).to.be.true;
       });
-  
+
       it('should return a success human format with synchronous and include the test categorys', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicRunWithFailures);
         await LogicTest.run(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human']);
@@ -99,7 +99,7 @@ describe('logic:test:report', () => {
         expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
         expect(logStub.firstCall.args[0]).to.include('TEST NAME               CATEGORY');
       });
-  
+
       it('should only display failed test with human format with concise flag and include the test categorys', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicRunWithFailures);
         await LogicTest.run(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human', '--concise']);
@@ -111,13 +111,13 @@ describe('logic:test:report', () => {
         expect(logStub.firstCall.args[0]).to.include('TEST NAME               CATEGORY');
       });
     });
-    
+
     describe('test success', () => {
       it('should return a success human format message with async and include the test categorys', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicTestRunSimple);
-  
+
         const result = await LogicTest.run(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human']);
-  
+
         expect(result).to.deep.equal(logicTestRunSimpleResult);
         expect(logStub.firstCall.args[0]).to.include('=== Test Summary');
         expect(logStub.firstCall.args[0]).to.include('=== Test Results');
@@ -125,7 +125,7 @@ describe('logic:test:report', () => {
         expect(logStub.firstCall.args[0]).to.include('TEST NAME               CATEGORY');
         expect(logStub.firstCall.args[0]).to.include('MyApexTests.testConfig  Apex      Pass              53');
       });
-  
+
       it('should return a success json format message with async and include the test categorys', async () => {
         process.exitCode = 0;
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicTestRunSimple);
@@ -133,7 +133,7 @@ describe('logic:test:report', () => {
         expect(result).to.deep.equal(logicTestRunSimpleResult);
         expect(styledJsonStub.firstCall.args[0]).to.deep.equal({ result: logicTestRunSimpleResult, status: 0 });
       });
-  
+
       it('should return a success --json format message with sync and include the test categorys', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicTestRunSimple);
         sandbox.stub(Org.prototype, 'getUsername').returns('test@user.com');
@@ -141,7 +141,7 @@ describe('logic:test:report', () => {
         expect(result).to.deep.equal(logicTestRunSimpleResult);
         expect(styledJsonStub.notCalled).to.be.true;
       });
-  
+
       it('should return a success human format with synchronous and include the test categorys', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicTestRunSimple);
         await LogicTest.run(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human']);
@@ -151,10 +151,17 @@ describe('logic:test:report', () => {
         expect(logStub.firstCall.args[0]).to.include('TEST NAME               CATEGORY');
         expect(logStub.firstCall.args[0]).to.include('MyApexTests.testConfig  Apex      Pass              53');
       });
-  
+
       it('should only display summary with human format and code coverage and concise parameters', async () => {
         sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(logicRunWithCoverage);
-        await LogicTest.run(['--test-run-id', '707xxxxxxxxxxxx', '--result-format', 'human', '--code-coverage', '--concise']);
+        await LogicTest.run([
+          '--test-run-id',
+          '707xxxxxxxxxxxx',
+          '--result-format',
+          'human',
+          '--code-coverage',
+          '--concise',
+        ]);
         expect(logStub.firstCall.args[0]).to.contain('Test Summary');
         expect(logStub.firstCall.args[0]).to.not.contain('Test Results');
         expect(logStub.firstCall.args[0]).to.not.contain('Apex Code Coverage by Class');
@@ -163,12 +170,11 @@ describe('logic:test:report', () => {
     });
   });
 
-
   describe('isUnifiedLogic parameter', () => {
     it('should pass isUnifiedLogic parameter', async () => {
-    testReporterReportStub = sandbox.stub(TestReporter.prototype, 'report');
-    sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
-    testReporterReportStub.resolves({ success: true });
+      testReporterReportStub = sandbox.stub(TestReporter.prototype, 'report');
+      sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
+      testReporterReportStub.resolves({ success: true });
       await LogicTest.run(['--test-run-id', '7071w00003woTsc', '--target-org', 'test@example.com']);
 
       expect(testReporterReportStub.calledOnce).to.be.true;
