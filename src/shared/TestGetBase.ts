@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ export class TestGetBase {
       detailedCoverage,
       concise,
       jsonEnabled,
-      isUnifiedLogic
+      isUnifiedLogic,
     } = options;
 
     const testService = new TestService(connection);
@@ -64,7 +64,7 @@ export class TestGetBase {
       'code-coverage': codeCoverage,
       'detailed-coverage': detailedCoverage,
       concise: concise ?? false,
-      isUnifiedLogic
+      isUnifiedLogic,
     };
 
     return testReporter.report(result, reportOptions);

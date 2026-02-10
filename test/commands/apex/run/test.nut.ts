@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -211,8 +211,8 @@ describe('apex run test', () => {
   });
 
   it('will run specified test suites --class-names', async () => {
-    const result = execCmd('apex:run:test -w 10 --suite-names DreamhouseTestSuite', { ensureExitCode: 0 })
-      .shellOutput.stdout;
+    const result = execCmd('apex:run:test -w 10 --suite-names DreamhouseTestSuite', { ensureExitCode: 0 }).shellOutput
+      .stdout;
     expect(result).to.match(/Tests Ran\s+10/);
     expect(result).to.include('FileUtilitiesTest.');
     expect(result).to.include('TestPropertyController.');
@@ -279,13 +279,13 @@ function addTestSuiteFile(projectDir: string): void {
   if (!fs.existsSync(testSuitesDir)) {
     fs.mkdirSync(testSuitesDir, { recursive: true });
   }
-  
+
   const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
                       <ApexTestSuite xmlns="http://soap.sforce.com/2006/04/metadata">
                         <testClassName>FileUtilitiesTest</testClassName>
                         <testClassName>GeocodingServiceTest</testClassName>
                         <testClassName>TestPropertyController</testClassName>
                       </ApexTestSuite>`;
-  const filePath = path.join(testSuitesDir, 'DreamhouseTestSuite.testSuite-meta.xml');  
+  const filePath = path.join(testSuitesDir, 'DreamhouseTestSuite.testSuite-meta.xml');
   fs.writeFileSync(filePath, xmlContent, 'utf8');
 }

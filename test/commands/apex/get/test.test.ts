@@ -1,5 +1,5 @@
 /*
- * Copyright 2025, Salesforce, Inc.
+ * Copyright 2026, Salesforce, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -208,12 +208,12 @@ describe('apex:test:report', () => {
 
   describe('isUnifiedLogic parameter', () => {
     it('should NOT pass isUnifiedLogic parameter', async () => {
-    testReporterReportStub = sandbox.stub(TestReporter.prototype, 'report');
-    sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
-    testReporterReportStub.resolves({ success: true });
+      testReporterReportStub = sandbox.stub(TestReporter.prototype, 'report');
+      sandbox.stub(TestService.prototype, 'reportAsyncResults').resolves(testRunSimple);
+      testReporterReportStub.resolves({ success: true });
       await Test.run(['--test-run-id', '7071w00003woTsc', '--target-org', 'test@example.com']);
 
-      expect(testReporterReportStub.calledOnce).to.be.true;      
+      expect(testReporterReportStub.calledOnce).to.be.true;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(testReporterReportStub.getCall(0).args[1].isUnifiedLogic).to.be.undefined;
     });
