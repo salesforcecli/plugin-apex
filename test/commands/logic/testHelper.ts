@@ -80,8 +80,7 @@ export async function setupUnifiedFrameworkProject(): Promise<TestSession> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const sfdxProject = JSON.parse(fs.readFileSync(sfdxProjectPath, 'utf8'));
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-  sfdxProject.sourceApiVersion =
-    parseInt(sfdxProject.sourceApiVersion, 10) < 65 ? '65.0' : sfdxProject.sourceApiVersion;
+  sfdxProject.sourceApiVersion = parseInt(sfdxProject.sourceApiVersion, 10) < 65 ? '65.0' : sfdxProject.sourceApiVersion;
   fs.writeFileSync(sfdxProjectPath, JSON.stringify(sfdxProject, null, 2));
 
   execCmd('project:deploy:start --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
