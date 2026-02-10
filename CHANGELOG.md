@@ -1,3 +1,9 @@
+## [3.9.6](https://github.com/salesforcecli/plugin-apex/compare/3.9.5...3.9.6) (2026-02-10)
+
+### Bug Fixes
+
+- enable PDP events via o11y for PFT ([440c485](https://github.com/salesforcecli/plugin-apex/commit/440c4852a3d4de4c61fc097ed34657bec157e870))
+
 ## [3.9.5](https://github.com/salesforcecli/plugin-apex/compare/3.9.4...3.9.5) (2025-12-14)
 
 ### Bug Fixes
