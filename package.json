@@ -8,7 +8,7 @@
   "o11yUploadEndpoint": "https://794testsite.my.site.com/byolwr/webruntime/log/metrics",
   "dependencies": {
     "@salesforce/apex-node": "^8.4.2",
-    "@salesforce/core": "^8.24.0",
+    "@salesforce/core": "^8.25.1",
     "@salesforce/kit": "^3.2.3",
     "@salesforce/sf-plugins-core": "^12.2.6",
     "ansis": "^3.3.1"
