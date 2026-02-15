@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-apex",
   "description": "Apex commands",
-  "version": "3.9.8",
+  "version": "3.9.9",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "enableO11y": true,
