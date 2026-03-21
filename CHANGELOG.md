@@ -1,3 +1,9 @@
+## [3.9.14](https://github.com/salesforcecli/plugin-apex/compare/3.9.13...3.9.14) (2026-03-21)
+
+### Bug Fixes
+
+- **deps:** bump flatted from 3.3.3 to 3.4.2 ([2615829](https://github.com/salesforcecli/plugin-apex/commit/2615829644fa0619a2312f86ee1b06bc5dcdd1d4))
+
 ## [3.9.13](https://github.com/salesforcecli/plugin-apex/compare/3.9.12...3.9.13) (2026-03-15)
 
 ### Bug Fixes
