@@ -1,3 +1,9 @@
+## [3.9.16](https://github.com/salesforcecli/plugin-apex/compare/3.9.15...3.9.16) (2026-03-27)
+
+### Bug Fixes
+
+- **deps:** bump handlebars from 4.7.8 to 4.7.9 ([160a463](https://github.com/salesforcecli/plugin-apex/commit/160a463c5ac146ac99b9c962d9f01b1e71a047bd))
+
 ## [3.9.15](https://github.com/salesforcecli/plugin-apex/compare/3.9.14...3.9.15) (2026-03-22)
 
 ### Bug Fixes
