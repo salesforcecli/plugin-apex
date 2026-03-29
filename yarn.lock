@@ -1635,19 +1635,19 @@
   dependencies:
     "@salesforce/ts-types" "^2.0.12"
 
-"@salesforce/plugin-command-reference@^3.1.81":
-  version "3.1.81"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.81.tgz#a25c70aa8acf4a088e597ad9057ed0ad5b4b0f87"
-  integrity sha512-+xvOuPraDLVeJ2myqJPOvcQtXQoiDJTE0vCdZTl+DMFTS6cfghfVPIw17MNbRrdnQyca1lGVooFl84333UVspA==
+"@salesforce/plugin-command-reference@^3.1.85":
+  version "3.1.85"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.85.tgz#2a28e6647b60a51313dbe63a396e949d322fc9e5"
+  integrity sha512-H/SFTVrluGJdZZfPzLtix83whOflU2yRYcAX6QrEqOFZPtMklKCiVgBw+G/XhqCW8zrVujkST/78xYDc+91/Bg==
   dependencies:
     "@oclif/core" "^4"
     "@salesforce/core" "^8.23.3"
-    "@salesforce/kit" "^3.2.4"
+    "@salesforce/kit" "^3.2.6"
     "@salesforce/sf-plugins-core" "^11.3.12"
     "@salesforce/ts-types" "^2.0.11"
     chalk "^5.6.2"
     debug "^4.4.3"
-    handlebars "^4.7.8"
+    handlebars "^4.7.9"
 
 "@salesforce/prettier-config@^0.0.3":
   version "0.0.3"
@@ -4813,7 +4813,7 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-handlebars@^4.7.8:
+handlebars@^4.7.9:
   version "4.7.9"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.9.tgz#6f139082ab58dc4e5a0e51efe7db5ae890d56a0f"
   integrity sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==
