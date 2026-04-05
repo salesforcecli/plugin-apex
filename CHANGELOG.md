@@ -1,3 +1,9 @@
+## [3.9.18](https://github.com/salesforcecli/plugin-apex/compare/3.9.17...3.9.18) (2026-04-05)
+
+### Bug Fixes
+
+- **deps:** bump lodash from 4.17.23 to 4.18.1 ([a5c8ec7](https://github.com/salesforcecli/plugin-apex/commit/a5c8ec71ee4b918e680e96295e3b9319009d6e1b))
+
 ## [3.9.17](https://github.com/salesforcecli/plugin-apex/compare/3.9.16...3.9.17) (2026-03-29)
 
 ### Bug Fixes
