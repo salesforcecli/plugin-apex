@@ -1293,12 +1293,12 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@salesforce/apex-node@^8.4.24":
-  version "8.4.24"
-  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-8.4.24.tgz#811b9c6a8351f6b611f5809a09b9f615852d8312"
-  integrity sha512-54UmqLdn/Y82X6u7On4M9Q0TNUt+izIE6JKFX2ydSRpF3jy3za1VAgekugsF0MlfrNu6imqBjwBU1yiMO4dFyw==
+"@salesforce/apex-node@^8.4.26":
+  version "8.4.26"
+  resolved "https://registry.yarnpkg.com/@salesforce/apex-node/-/apex-node-8.4.26.tgz#101563543cc2f7ac0f72b075a66885a103a7127a"
+  integrity sha512-wPMzZrbWaJmPcJub/Q6m89D3+Oq2QvMwXTOTbjwXRZlsJTidZvPuaPcYjsrZWKQjk0npUxQ1/jDlP5eH3Mn4hQ==
   dependencies:
-    "@salesforce/core" "^8.29.0"
+    "@salesforce/core" "^8.30.3"
     "@salesforce/kit" "^3.2.6"
     "@types/istanbul-reports" "^3.0.4"
     fast-glob "^3.3.2"
@@ -1324,7 +1324,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.23.1", "@salesforce/core@^8.28.4", "@salesforce/core@^8.29.0", "@salesforce/core@^8.30.0", "@salesforce/core@^8.5.1":
+"@salesforce/core@^8.23.1", "@salesforce/core@^8.28.4", "@salesforce/core@^8.29.0", "@salesforce/core@^8.30.0", "@salesforce/core@^8.30.3", "@salesforce/core@^8.5.1":
   version "8.30.3"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.30.3.tgz#333315e9c0436abd2247df7b5b31375df4002cd6"
   integrity sha512-E3WPXxAEqvpZXp6nnkkoNRFGQ2c/5Mhnbl9s0ajQiLTpqQ1Una5PlPu0s2rRvu8qGKnT1AI7xT3RDy3pd/dULg==
