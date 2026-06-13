@@ -28,7 +28,7 @@ Directory in which to store test result files.
 
 # flags.concise.summary
 
-Display only failed test results; works with human-readable output only.
+Display only failed test results. For JSON output, trims the tests array only; summary and coverage are unchanged.
 
 # apexLibErr
 

@@ -115,6 +115,19 @@ describe('apex:test:run', () => {
       expect(styledJsonStub.callCount).to.equal(0);
     });
 
+    it('should return only failed tests with --concise --json', async () => {
+      sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailureAndSuccess);
+
+      const result = await Test.run(['--tests', 'MyApexTests', '--concise', '--json', '--synchronous']);
+      assert('tests' in result);
+      expect(result.tests).to.have.length(1);
+      expect(result.tests[0].FullName).to.equal('MyFailingTest.testConfig');
+      expect(result.summary.testsRan).to.equal(2);
+      expect(result.summary.passing).to.equal(1);
+      expect(result.summary.failing).to.equal(1);
+      expect(styledJsonStub.callCount).to.equal(0);
+    });
+
     it('should return a success human format with synchronous', async () => {
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves(runWithFailures);
       await Test.run(['--tests', 'MyApexTests', '--result-format', 'human', '--synchronous']);
