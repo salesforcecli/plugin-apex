@@ -1,3 +1,9 @@
+## [3.9.36](https://github.com/salesforcecli/plugin-apex/compare/3.9.35...3.9.36) (2026-06-17)
+
+### Bug Fixes
+
+- **deps:** bump form-data from 4.0.5 to 4.0.6 ([0b8bba8](https://github.com/salesforcecli/plugin-apex/commit/0b8bba8cf9e131326147823c5e59ea9b21a954fd))
+
 ## [3.9.35](https://github.com/salesforcecli/plugin-apex/compare/3.9.34...3.9.35) (2026-06-17)
 
 ### Bug Fixes
