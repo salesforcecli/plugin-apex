@@ -1,3 +1,9 @@
+## [3.9.37](https://github.com/salesforcecli/plugin-apex/compare/3.9.36...3.9.37) (2026-06-21)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/apex-node from 8.4.27 to 8.4.28 ([13f531d](https://github.com/salesforcecli/plugin-apex/commit/13f531d945f310a343c4a223309ad0bf38459275))
+
 ## [3.9.36](https://github.com/salesforcecli/plugin-apex/compare/3.9.35...3.9.36) (2026-06-17)
 
 ### Bug Fixes
