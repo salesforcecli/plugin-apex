@@ -1,3 +1,9 @@
+## [3.9.39](https://github.com/salesforcecli/plugin-apex/compare/3.9.38...3.9.39) (2026-07-16)
+
+### Bug Fixes
+
+- **deps:** bump websocket-driver from 0.7.4 to 0.7.5 ([bf58810](https://github.com/salesforcecli/plugin-apex/commit/bf5881014cc0548163848cc9880636834e1622f0))
+
 ## [3.9.38](https://github.com/salesforcecli/plugin-apex/compare/3.9.37...3.9.38) (2026-06-21)
 
 ### Bug Fixes
