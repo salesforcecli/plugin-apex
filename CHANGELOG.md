@@ -1,3 +1,11 @@
+# [4.0.0](https://github.com/salesforcecli/plugin-apex/compare/3.9.40...4.0.0) (2026-07-30)
+
+- feat!: require Node >=22, drop EOL Node versions @W-23480655@ ([07b82c0](https://github.com/salesforcecli/plugin-apex/commit/07b82c06f144ad22c5695f4f71dfd65953ec3c5f))
+
+### BREAKING CHANGES
+
+- engines.node raised to >=22.0.0, dropping support for Node 18 and 20
+
 ## [3.9.40](https://github.com/salesforcecli/plugin-apex/compare/3.9.39...3.9.40) (2026-07-25)
 
 ### Bug Fixes
