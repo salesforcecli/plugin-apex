@@ -1,3 +1,9 @@
+## [4.0.1](https://github.com/salesforcecli/plugin-apex/compare/4.0.0...4.0.1) (2026-08-06)
+
+### Bug Fixes
+
+- **deps:** bump fast-uri from 3.1.4 to 3.1.5 ([b6d49f8](https://github.com/salesforcecli/plugin-apex/commit/b6d49f8c7e8a8d97431634f29bb0b2ec0aa893b6))
+
 # [4.0.0](https://github.com/salesforcecli/plugin-apex/compare/3.9.40...4.0.0) (2026-07-30)
 
 - feat!: require Node >=22, drop EOL Node versions @W-23480655@ ([07b82c0](https://github.com/salesforcecli/plugin-apex/commit/07b82c06f144ad22c5695f4f71dfd65953ec3c5f))
