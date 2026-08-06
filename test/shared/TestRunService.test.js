@@ -56,11 +56,11 @@ describe('Common TestRunService behavior', () => {
 
       // Spy on buildSyncPayload to verify the testCategory parameter
       const buildSyncPayloadSpy = sandbox.spy(TestService.prototype, 'buildSyncPayload');
-      
+
       // Stub runTestSynchronous to avoid actual execution
       sandbox.stub(TestService.prototype, 'runTestSynchronous').resolves({
-        summary: { 
-          outcome: 'Passed', 
+        summary: {
+          outcome: 'Passed',
           testsRan: 1,
           failRate: '0%',
           orgId: '00D4xx00000FH4IEAW',
@@ -77,9 +77,9 @@ describe('Common TestRunService behavior', () => {
           username: 'test@example.com',
           hostname: 'https://na139.salesforce.com',
           commandTime: '60 ms',
-          testExecutionTime: '53 ms'
+          testExecutionTime: '53 ms',
         },
-        tests: []
+        tests: [],
       });
 
       await TestRunService.runTestCommand(context);
@@ -113,7 +113,7 @@ describe('Common TestRunService behavior', () => {
 
       // Spy on buildAsyncPayload to verify the testCategory parameter (RunLocalTests uses async by default)
       const buildAsyncPayloadSpy = sandbox.spy(TestService.prototype, 'buildAsyncPayload');
-      
+
       // Stub runTestAsynchronous to avoid actual execution
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves({
         testRunId: '707xx0000AUS2gH',
@@ -152,7 +152,7 @@ describe('Common TestRunService behavior', () => {
 
       // Spy on buildAsyncPayload to verify the testCategory parameter (logic uses async by default)
       const buildAsyncPayloadSpy = sandbox.spy(TestService.prototype, 'buildAsyncPayload');
-      
+
       // Stub runTestAsynchronous to avoid actual execution
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves({
         testRunId: '707xx0000AUS2gH',
@@ -190,7 +190,7 @@ describe('Common TestRunService behavior', () => {
 
       // Spy on buildAsyncPayload to verify the testCategory parameter (logic uses async by default)
       const buildAsyncPayloadSpy = sandbox.spy(TestService.prototype, 'buildAsyncPayload');
-      
+
       // Stub runTestAsynchronous to avoid actual execution
       sandbox.stub(TestService.prototype, 'runTestAsynchronous').resolves({
         testRunId: '707xx0000AUS2gH',

@@ -77,10 +77,11 @@ export async function setupUnifiedFrameworkProject(): Promise<TestSession> {
   const sfdxProjectPath = path.join(session.project.dir, 'sfdx-project.json');
 
   // We need to update the sourceApiVersion to 65.0 because the changes in the api are not supported in 64.0
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const sfdxProject = JSON.parse(fs.readFileSync(sfdxProjectPath, 'utf8'));
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-  sfdxProject.sourceApiVersion = parseInt(sfdxProject.sourceApiVersion, 10) < 65 ? '65.0' : sfdxProject.sourceApiVersion;
+  const sfdxProject = JSON.parse(fs.readFileSync(sfdxProjectPath, 'utf8')) as {
+    sourceApiVersion: string;
+  };
+  sfdxProject.sourceApiVersion =
+    parseInt(sfdxProject.sourceApiVersion, 10) < 65 ? '65.0' : sfdxProject.sourceApiVersion;
   fs.writeFileSync(sfdxProjectPath, JSON.stringify(sfdxProject, null, 2));
 
   execCmd('project:deploy:start --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
