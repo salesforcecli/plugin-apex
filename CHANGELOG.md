@@ -1,3 +1,9 @@
+# [4.1.0](https://github.com/salesforcecli/plugin-apex/compare/4.0.1...4.1.0) (2026-08-07)
+
+### Features
+
+- Add setup[] array to json output- @W-23750625@ ([#958](https://github.com/salesforcecli/plugin-apex/issues/958)) ([7f74014](https://github.com/salesforcecli/plugin-apex/commit/7f74014b848d1c090c93b53d2481a57e197967ac))
+
 ## [4.0.1](https://github.com/salesforcecli/plugin-apex/compare/4.0.0...4.0.1) (2026-08-06)
 
 ### Bug Fixes
