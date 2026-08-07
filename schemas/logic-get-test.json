@@ -147,6 +147,66 @@
             "additionalProperties": false
           }
         },
+        "setup": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Id": {
+                "type": "string"
+              },
+              "StackTrace": {
+                "type": ["string", "null"]
+              },
+              "Message": {
+                "type": ["string", "null"]
+              },
+              "AsyncApexJobId": {
+                "type": "string"
+              },
+              "MethodName": {
+                "type": "string"
+              },
+              "ApexLogId": {
+                "type": ["string", "null"]
+              },
+              "ApexClass": {
+                "type": "object",
+                "properties": {
+                  "Id": {
+                    "type": "string"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "NamespacePrefix": {
+                    "type": "string"
+                  }
+                },
+                "required": ["Id", "Name", "NamespacePrefix"],
+                "additionalProperties": false
+              },
+              "TestSetupTime": {
+                "type": "number"
+              },
+              "FullName": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "Id",
+              "StackTrace",
+              "Message",
+              "AsyncApexJobId",
+              "MethodName",
+              "ApexLogId",
+              "ApexClass",
+              "TestSetupTime",
+              "FullName"
+            ],
+            "additionalProperties": false
+          }
+        },
         "coverage": {
           "type": "object",
           "properties": {

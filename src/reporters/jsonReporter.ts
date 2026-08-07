@@ -19,6 +19,7 @@ import { ApexTestRunResultStatus } from '@salesforce/apex-node/lib/src/tests/typ
 export type RunResult = {
   summary: Summary;
   tests: CliTestResult[];
+  setup?: CliTestSetupResult[];
   coverage?: CliCoverageResult;
 };
 
@@ -82,6 +83,18 @@ type PerClassCoverage = {
   NumLinesUncovered: number;
 };
 
+type CliTestSetupResult = {
+  Id: string;
+  StackTrace: string | null;
+  Message: string | null;
+  AsyncApexJobId: string;
+  MethodName: string;
+  ApexLogId: string | null;
+  ApexClass: { Id: string; Name: string; NamespacePrefix: string };
+  TestSetupTime: number;
+  FullName: string;
+};
+
 type CliCoverageResult = {
   coverage: ClassCoverage[];
   records: PerClassCoverage[];
@@ -132,6 +145,25 @@ export class JsonReporter {
         FullName: test.fullName,
         ...(includeCategory ? { Category: test.category } : {}),
       })),
+      ...(result.setup?.length
+        ? {
+            setup: result.setup.map((s) => ({
+              Id: s.id,
+              StackTrace: s.stackTrace,
+              Message: s.message,
+              AsyncApexJobId: s.asyncApexJobId,
+              MethodName: s.methodName,
+              ApexLogId: s.apexLogId,
+              ApexClass: {
+                Id: s.apexClass.id,
+                Name: s.apexClass.name,
+                NamespacePrefix: s.apexClass.namespacePrefix,
+              },
+              TestSetupTime: s.testSetupTime,
+              FullName: s.fullName,
+            })),
+          }
+        : {}),
       ...(result.codecoverage
         ? {
             coverage: this.formatCoverage(result),

@@ -24,6 +24,8 @@ import {
   failureResult,
   runWithMixed,
   mixedResult,
+  runWithSetup,
+  jsonWithSetup,
 } from '../testData.js';
 
 describe('JSON Test Reporter', () => {
@@ -49,5 +51,11 @@ describe('JSON Test Reporter', () => {
     const reporter = new JsonReporter();
     const formatted = reporter.format(runWithMixed);
     expect(formatted).to.deep.equal(mixedResult);
+  });
+
+  it('should include @testSetup methods in setup array', () => {
+    const reporter = new JsonReporter();
+    const formatted = reporter.format(runWithSetup);
+    expect(formatted).to.deep.equal(jsonWithSetup);
   });
 });
