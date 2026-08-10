@@ -88,9 +88,9 @@ describe('logic get test', () => {
       const output = result.shellOutput.stdout;
 
       // Should be valid JSON
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       expect(() => JSON.parse(output)).to.not.throw();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+       
       const jsonOutput = JSON.parse(output);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(jsonOutput?.result).to.have.property('summary');

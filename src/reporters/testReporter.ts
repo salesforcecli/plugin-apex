@@ -141,7 +141,7 @@ export class TestReporter {
     };
 
     if ('summary' in result) {
-      jsonOutput = jsonOutput as RunResult;
+      jsonOutput = jsonOutput;
 
       if (typeof resultFormat !== 'undefined' || synchronous) {
         outputDirConfig.fileInfos = [
