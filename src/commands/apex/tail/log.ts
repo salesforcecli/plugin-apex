@@ -70,7 +70,7 @@ export default class Log extends SfCommand<void> {
       await logService.prepareTraceFlag(flags['debug-level'] ?? '');
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-misused-promises
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     await logService.tail(flags['target-org'], this.logTailer.bind(this));
     this.log(messages.getMessage('finishedTailing'));
   }
