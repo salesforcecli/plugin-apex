@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unused-vars, @typescript-eslint/ban-ts-comment */
 import fs from 'node:fs';
 import { Messages, Org } from '@salesforce/core';
 import sinon from 'sinon';
@@ -36,7 +37,7 @@ describe('logic:test:run', () => {
     stubSfCommandUx(sandbox);
     sandbox
       .stub(Org, 'create')
-      // @ts-ignore
+      // @ts-expect-error testing invalid input
       .resolves({ getConnection: () => ({ getUsername: () => 'test@user.com' }) });
   });
 

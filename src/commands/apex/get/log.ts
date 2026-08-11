@@ -51,7 +51,6 @@ export default class Log extends SfCommand<LogGetResult> {
     }),
     // Removed default because it will take priority over 'log-id' in the apex library
     // https://github.com/forcedotcom/salesforcedx-apex/blob/main/src/logs/logService.ts#L57-L60
-    // eslint-disable-next-line sf-plugin/flag-min-max-default
     number: Flags.integer({
       char: 'n',
       min: 1,
