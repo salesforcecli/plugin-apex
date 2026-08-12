@@ -243,6 +243,7 @@ export class TestRunService {
   /**
    * Validate flags with command-specific logic
    */
+  // eslint-disable-next-line complexity
   private static async validateFlags(
     classNames?: string[],
     suiteNames?: string[],

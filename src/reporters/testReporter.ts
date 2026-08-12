@@ -76,9 +76,10 @@ export class TestReporter {
     }
 
     try {
-      if (result.summary && result.summary.outcome === 'Failed') {
+      if (result.summary?.outcome === 'Failed') {
         process.exitCode = FAILURE_EXIT_CODE;
       }
+      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
       switch (options['result-format']) {
         case 'human':
           this.logHuman(
@@ -141,19 +142,17 @@ export class TestReporter {
     };
 
     if ('summary' in result) {
-      jsonOutput = jsonOutput as RunResult;
-
       if (typeof resultFormat !== 'undefined' || synchronous) {
         outputDirConfig.fileInfos = [
           {
             filename: result.summary.testRunId ? `test-result-${result.summary.testRunId}.json` : 'test-result.json',
             content: jsonOutput,
           },
-          ...(jsonOutput.coverage
+          ...((jsonOutput as RunResult).coverage
             ? [
                 {
                   filename: 'test-result-codecoverage.json',
-                  content: jsonOutput.coverage?.coverage,
+                  content: (jsonOutput as RunResult).coverage!.coverage,
                 },
               ]
             : []),
@@ -165,6 +164,7 @@ export class TestReporter {
         resultFormat = ResultFormat.human;
       }
 
+      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
       switch (resultFormat) {
         case ResultFormat.tap:
           outputDirConfig.fileInfos?.push({

@@ -81,7 +81,6 @@ export default class RunTestLogic extends SfCommand<RunCommandResult> {
       exclusive: exclusiveTestSpecifiers.filter((specifier) => specifier !== 'tests'),
     }),
     // we want to pass `undefined` to the API
-    // eslint-disable-next-line sf-plugin/flag-min-max-default
     wait: Flags.duration({
       unit: 'minutes',
       char: 'w',
@@ -139,8 +138,8 @@ export default class RunTestLogic extends SfCommand<RunCommandResult> {
       connection,
       jsonEnabled: this.jsonEnabled(),
       cancellationToken: this.cancellationTokenSource,
-      log: (message: string) => this.log(message),
-      info: (message: string) => this.info(message),
+      log: (message: string): void => this.log(message),
+      info: (message: string): void => this.info(message),
     };
 
     return TestRunService.runTestCommand(context);

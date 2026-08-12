@@ -22,7 +22,7 @@ import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
  * Also updates the sourceApiVersion to 65.0
  */
 export async function setupUnifiedFrameworkProject(): Promise<TestSession> {
-  // eslint-disable-next-line no-param-reassign
+   
   const session = await TestSession.create({
     project: {
       gitClone: 'https://github.com/trailheadapps/dreamhouse-lwc.git',

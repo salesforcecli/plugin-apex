@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unused-vars, @typescript-eslint/ban-ts-comment */
 
 import sinon from 'sinon';
 import { LogService } from '@salesforce/apex-node';
@@ -37,7 +38,7 @@ describe('apex:log:tail', () => {
 
   it('will skip trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    // @ts-ignore private method
+    // @ts-expect-error testing private method
     sandbox.stub(Log.prototype, 'getLogService').returns(LogService.prototype);
 
     const result = await Log.run(['-o', 'test@username.com']);
@@ -47,7 +48,7 @@ describe('apex:log:tail', () => {
 
   it('will call trace flag correctly', async () => {
     const traceFlagStub = sandbox.stub(LogService.prototype, 'prepareTraceFlag');
-    // @ts-ignore private method
+    // @ts-expect-error testing private method
     sandbox.stub(Log.prototype, 'getLogService').returns(LogService.prototype);
     const result = await Log.run(['-o', 'test@username.com', '--skip-trace-flag']);
     expect(traceFlagStub.called).to.be.false;
