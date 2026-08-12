@@ -27,7 +27,7 @@ import {
 import { Ux } from '@salesforce/sf-plugins-core';
 import { Connection, Messages } from '@salesforce/core';
 import { Duration } from '@salesforce/kit';
-import { JsonReporter, RunResult } from './jsonReporter.js';
+import { isFailedOutcome, JsonReporter, RunResult } from './jsonReporter.js';
 
 const FAILURE_EXIT_CODE = 100;
 
@@ -100,7 +100,7 @@ export class TestReporter {
           if (!options.json) {
             this.ux.styledJSON({
               status: process.exitCode,
-              result: this.formatResultInJson(result, options.isUnifiedLogic),
+              result: this.applyConcise(this.formatResultInJson(result, options.isUnifiedLogic), options.concise),
             });
           }
           break;
@@ -112,7 +112,7 @@ export class TestReporter {
       throw messages.createError('testResultProcessErr', [(e as Error).message]);
     }
 
-    return this.formatResultInJson(result, options.isUnifiedLogic);
+    return this.applyConcise(this.formatResultInJson(result, options.isUnifiedLogic), options.concise);
   }
   /**
    * Builds output directory configuration with CLI format result files
@@ -200,6 +200,11 @@ export class TestReporter {
       this.ux.styledJSON(result);
       throw messages.createError('testResultProcessErr', [(e as Error).message]);
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private applyConcise(result: RunResult, concise: boolean): RunResult {
+    return concise ? { ...result, tests: result.tests.filter((test) => isFailedOutcome(test.Outcome)) } : result;
   }
 
   private logHuman(

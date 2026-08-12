@@ -16,6 +16,10 @@
 import { ApexTestResultOutcome, TestResult } from '@salesforce/apex-node';
 import { ApexTestRunResultStatus } from '@salesforce/apex-node/lib/src/tests/types.js';
 
+// Keep this aligned with @salesforce/apex-node HumanReporter's concise filter.
+export const isFailedOutcome = (outcome: ApexTestResultOutcome): boolean =>
+  outcome === ApexTestResultOutcome.Fail || outcome === ApexTestResultOutcome.CompileFail;
+
 export type RunResult = {
   summary: Summary;
   tests: CliTestResult[];

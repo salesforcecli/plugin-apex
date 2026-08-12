@@ -19,9 +19,10 @@ import { Connection } from '@salesforce/core';
 import sinon from 'sinon';
 import { Ux } from '@salesforce/sf-plugins-core';
 import { expect, config } from 'chai';
-import { HumanReporter } from '@salesforce/apex-node';
+import { ApexTestResultOutcome, HumanReporter, TestResult } from '@salesforce/apex-node';
 import { TestReporter } from '../../src/reporters/testReporter.js';
-import { testRunSimple } from '../testData.js';
+import { isFailedOutcome } from '../../src/reporters/jsonReporter.js';
+import { runWithCoverage, runWithFailureAndSuccess, testRunSimple } from '../testData.js';
 
 config.truncateThreshold = 0;
 
@@ -188,5 +189,139 @@ describe('TestReporter - isUnifiedLogic parameter', () => {
 
       expect(formatArgs[3]).to.be.undefined; // isUnifiedLogic should be undefined
     });
+  });
+});
+
+describe('TestReporter - concise JSON output', () => {
+  let sandbox: sinon.SinonSandbox;
+  let testReporter: TestReporter;
+  let ux: Ux;
+  let originalExitCode: number | undefined;
+
+  const mixedOutcomes = {
+    ...runWithFailureAndSuccess,
+    summary: {
+      ...runWithFailureAndSuccess.summary,
+      failRate: '50%',
+      testsRan: 4,
+      passing: 1,
+      failing: 2,
+      skipped: 1,
+      passRate: '25%',
+      skipRate: '25%',
+    },
+    tests: [
+      ...runWithFailureAndSuccess.tests,
+      {
+        ...runWithFailureAndSuccess.tests[1],
+        fullName: 'MyCompileFailingTest.testConfig',
+        outcome: ApexTestResultOutcome.CompileFail,
+      },
+      {
+        ...runWithFailureAndSuccess.tests[1],
+        fullName: 'MySkippedTest.testConfig',
+        outcome: ApexTestResultOutcome.Skip,
+      },
+    ],
+  } as TestResult;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+    originalExitCode = process.exitCode;
+    ux = new Ux({ jsonEnabled: false });
+    testReporter = new TestReporter(ux, { getUsername: () => 'test@example.com' } as Connection);
+  });
+
+  afterEach(() => {
+    process.exitCode = originalExitCode;
+    sandbox.restore();
+
+    try {
+      fs.rmSync('test-output-dir', { recursive: true });
+    } catch (e) {
+      // Ignore if directory doesn't exist
+    }
+  });
+
+  it('returns only failures for global JSON while preserving summary and coverage', async () => {
+    const resultWithCoverage = {
+      ...runWithCoverage,
+      tests: [...runWithCoverage.tests, runWithFailureAndSuccess.tests[0]],
+    } as TestResult;
+    const full = await testReporter.report(resultWithCoverage, {
+      'result-format': 'json',
+      concise: false,
+      json: true,
+    });
+    const concise = await testReporter.report(resultWithCoverage, {
+      'result-format': 'json',
+      concise: true,
+      json: true,
+    });
+
+    expect(concise.tests.map((test) => test.Outcome)).to.deep.equal([ApexTestResultOutcome.Fail]);
+    expect(concise.summary).to.deep.equal(full.summary);
+    expect(concise.coverage).to.deep.equal(full.coverage);
+  });
+
+  it('leaves default JSON output unchanged', async () => {
+    const result = await testReporter.report(mixedOutcomes, {
+      'result-format': 'json',
+      concise: false,
+      json: true,
+    });
+
+    expect(result.tests).to.have.length(mixedOutcomes.tests.length);
+  });
+
+  it('passes only failures to styledJSON', async () => {
+    const styledJSON = sandbox.stub(ux, 'styledJSON');
+
+    await testReporter.report(mixedOutcomes, {
+      'result-format': 'json',
+      concise: true,
+      json: false,
+    });
+
+    const output = styledJSON.firstCall.args[0] as { result: { tests: Array<{ Outcome: ApexTestResultOutcome }> } };
+    expect(output.result.tests.map((test) => test.Outcome)).to.deep.equal([
+      ApexTestResultOutcome.Fail,
+      ApexTestResultOutcome.CompileFail,
+    ]);
+  });
+
+  it('returns a stable empty tests array when all tests pass', async () => {
+    const result = await testReporter.report(testRunSimple, {
+      'result-format': 'json',
+      concise: true,
+      json: true,
+    });
+
+    expect(result.tests).to.deep.equal([]);
+    expect(result.summary.failing).to.equal(0);
+  });
+
+  it('matches the HumanReporter failure predicate', () => {
+    expect(
+      [
+        ApexTestResultOutcome.Pass,
+        ApexTestResultOutcome.Fail,
+        ApexTestResultOutcome.CompileFail,
+        ApexTestResultOutcome.Skip,
+      ].filter(isFailedOutcome)
+    ).to.deep.equal([ApexTestResultOutcome.Fail, ApexTestResultOutcome.CompileFail]);
+  });
+
+  it('keeps output-dir JSON files complete', async () => {
+    await testReporter.report(mixedOutcomes, {
+      'output-dir': 'test-output-dir',
+      'result-format': 'json',
+      concise: true,
+      json: true,
+    });
+
+    const fileContent = fs.readFileSync(`test-output-dir/test-result-${mixedOutcomes.summary.testRunId}.json`, 'utf8');
+    const output = JSON.parse(fileContent) as { tests: unknown[] };
+    expect(output.tests).to.have.length(mixedOutcomes.tests.length);
   });
 });
