@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unused-vars, @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect, config } from 'chai';
 import { TestRunIdResult } from '@salesforce/apex-node/lib/src/tests/types.js';
@@ -89,11 +89,11 @@ describe('logic get test', () => {
       const output = result.shellOutput.stdout;
 
       // Should be valid JSON
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
       expect(() => JSON.parse(output)).to.not.throw();
-       
+
       const jsonOutput = JSON.parse(output);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(jsonOutput?.result).to.have.property('summary');
     });
   });

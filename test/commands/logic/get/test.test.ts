@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unused-vars, @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unused-vars */
 import fs from 'node:fs';
 import { Connection, Org } from '@salesforce/core';
 import sinon from 'sinon';
@@ -179,7 +179,7 @@ describe('logic:test:report', () => {
       await LogicTest.run(['--test-run-id', '7071w00003woTsc', '--target-org', 'test@example.com']);
 
       expect(testReporterReportStub.calledOnce).to.be.true;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(testReporterReportStub.getCall(0).args[1].isUnifiedLogic).to.be.true;
     });
   });
