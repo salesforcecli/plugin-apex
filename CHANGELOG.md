@@ -1,3 +1,9 @@
+## [4.1.1](https://github.com/salesforcecli/plugin-apex/compare/4.1.0...4.1.1) (2026-08-20)
+
+### Bug Fixes
+
+- rejiggered eslint.config.mjs (W-23928423) ([#961](https://github.com/salesforcecli/plugin-apex/issues/961)) ([5b5c7d3](https://github.com/salesforcecli/plugin-apex/commit/5b5c7d399bba324447cf3997abea052821902e5f))
+
 # [4.1.0](https://github.com/salesforcecli/plugin-apex/compare/4.0.1...4.1.0) (2026-08-07)
 
 ### Features
