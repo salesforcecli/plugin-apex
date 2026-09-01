@@ -1,3 +1,9 @@
+## [4.1.2](https://github.com/salesforcecli/plugin-apex/compare/4.1.1...4.1.2) (2026-09-01)
+
+### Bug Fixes
+
+- upgrade @oclif/core to v5 @W-23512455@ ([#965](https://github.com/salesforcecli/plugin-apex/issues/965)) ([c75ed95](https://github.com/salesforcecli/plugin-apex/commit/c75ed9505fcb1a068f36c38e8b0b08c9e6d2a067))
+
 ## [4.1.1](https://github.com/salesforcecli/plugin-apex/compare/4.1.0...4.1.1) (2026-08-20)
 
 ### Bug Fixes
