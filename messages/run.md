@@ -55,6 +55,14 @@ Invalid level "%s". Valid levels: %s
 
   <%= config.bin %> <%= command.id %>
 
+- Execute with maximum debug log detail:
+
+  <%= config.bin %> <%= command.id %> --file ~/test.apex --debug-level DETAIL
+
+- Execute with fine-grained control over specific log categories:
+
+  <%= config.bin %> <%= command.id %> --file ~/test.apex --category-level Apex_code=FINEST --category-level Db=FINE
+
 # executeCompileSuccess
 
 Compiled successfully.

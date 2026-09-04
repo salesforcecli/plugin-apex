@@ -203,6 +203,22 @@ describe('apex:execute', () => {
     }
   });
 
+  it('deduplicates category-level entries with last-wins', async () => {
+    const file = join('Users', 'test', 'path', 'to', 'file');
+    const executeServiceStub = sandboxStub
+      .stub(ExecuteService.prototype, 'executeAnonymous')
+      .resolves({ compiled: true, success: true, logs: log });
+
+    await Run.run(['--file', file, '--category-level', 'Apex_code=DEBUG', '--category-level', 'Apex_code=FINEST']);
+
+    expect(executeServiceStub.args[0]).to.deep.equal([
+      {
+        apexFilePath: file,
+        debugCategories: [{ category: 'Apex_code', level: 'FINEST' }],
+      },
+    ]);
+  });
+
   it('throws an error when it fails to compile', async () => {
     sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({
       compiled: false,

@@ -39,7 +39,12 @@ Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'run');
 
 function parseCategoryLevel(input: string): DebugCategory {
-  const [cat, lvl] = input.split('=');
+  const eqIndex = input.indexOf('=');
+  if (eqIndex === -1) {
+    throw new SfError(messages.getMessage('invalidCategoryLevel', [input]));
+  }
+  const cat = input.slice(0, eqIndex).trim();
+  const lvl = input.slice(eqIndex + 1).trim();
   if (!cat || !lvl) {
     throw new SfError(messages.getMessage('invalidCategoryLevel', [input]));
   }
@@ -100,7 +105,12 @@ export default class Run extends SfCommand<ExecuteResult> {
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const exec = new ExecuteService(conn);
 
-    const debugCategories = flags['category-level']?.map(parseCategoryLevel);
+    const debugCategories = flags['category-level']?.map(parseCategoryLevel).reduce<DebugCategory[]>((acc, entry) => {
+      const idx = acc.findIndex((e) => e.category === entry.category);
+      if (idx >= 0) acc[idx] = entry;
+      else acc.push(entry);
+      return acc;
+    }, []);
 
     const execAnonOptions: ApexExecuteOptions = {
       ...(flags.file ? { apexFilePath: flags.file } : { userInput: true }),
