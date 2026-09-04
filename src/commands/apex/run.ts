@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-import { ApexExecuteOptions, ExecuteService } from '@salesforce/apex-node';
+import {
+  ApexExecuteOptions,
+  ExecuteService,
+  LOG_TYPES,
+  LOG_CATEGORIES,
+  LOG_CATEGORY_LEVELS,
+  type DebugCategory,
+  type LogType,
+  type LogCategory,
+  type LogCategoryLevel,
+} from '@salesforce/apex-node';
 import {
   Flags,
   loglevel,
@@ -27,6 +37,20 @@ import RunReporter from '../../reporters/runReporter.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'run');
+
+function parseCategoryLevel(input: string): DebugCategory {
+  const [cat, lvl] = input.split('=');
+  if (!cat || !lvl) {
+    throw new SfError(messages.getMessage('invalidCategoryLevel', [input]));
+  }
+  if (!LOG_CATEGORIES.includes(cat as LogCategory)) {
+    throw new SfError(messages.getMessage('invalidCategory', [cat, LOG_CATEGORIES.join(', ')]));
+  }
+  if (!LOG_CATEGORY_LEVELS.includes(lvl as LogCategoryLevel)) {
+    throw new SfError(messages.getMessage('invalidCategoryLevelValue', [lvl, LOG_CATEGORY_LEVELS.join(', ')]));
+  }
+  return { category: cat as LogCategory, level: lvl as LogCategoryLevel };
+}
 
 export type ExecuteResult = {
   compiled: boolean;
@@ -56,6 +80,19 @@ export default class Run extends SfCommand<ExecuteResult> {
       char: 'f',
       summary: messages.getMessage('flags.file.summary'),
     }),
+    'debug-level': Flags.option({
+      char: 'd',
+      summary: messages.getMessage('flags.debug-level.summary'),
+      description: messages.getMessage('flags.debug-level.description'),
+      options: [...LOG_TYPES] as LogType[],
+      exclusive: ['category-level'],
+    })(),
+    'category-level': Flags.string({
+      summary: messages.getMessage('flags.category-level.summary'),
+      description: messages.getMessage('flags.category-level.description'),
+      multiple: true,
+      exclusive: ['debug-level'],
+    }),
   };
 
   public async run(): Promise<ExecuteResult> {
@@ -63,8 +100,12 @@ export default class Run extends SfCommand<ExecuteResult> {
     const conn = flags['target-org'].getConnection(flags['api-version']);
     const exec = new ExecuteService(conn);
 
+    const debugCategories = flags['category-level']?.map(parseCategoryLevel);
+
     const execAnonOptions: ApexExecuteOptions = {
       ...(flags.file ? { apexFilePath: flags.file } : { userInput: true }),
+      ...(flags['debug-level'] ? { debugLevel: flags['debug-level'] } : {}),
+      ...(debugCategories?.length ? { debugCategories } : {}),
     };
 
     const result = await exec.executeAnonymous(execAnonOptions);

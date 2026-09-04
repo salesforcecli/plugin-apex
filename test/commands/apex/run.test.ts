@@ -135,6 +135,74 @@ describe('apex:execute', () => {
     ]);
   });
 
+  it('passes debug-level flag to executeAnonymous', async () => {
+    const file = join('Users', 'test', 'path', 'to', 'file');
+    const executeServiceStub = sandboxStub
+      .stub(ExecuteService.prototype, 'executeAnonymous')
+      .resolves({ compiled: true, success: true, logs: log });
+
+    await Run.run(['--file', file, '--debug-level', 'DETAIL']);
+
+    expect(executeServiceStub.args[0]).to.deep.equal([
+      {
+        apexFilePath: file,
+        debugLevel: 'DETAIL',
+      },
+    ]);
+  });
+
+  it('passes category-level flags to executeAnonymous', async () => {
+    const file = join('Users', 'test', 'path', 'to', 'file');
+    const executeServiceStub = sandboxStub
+      .stub(ExecuteService.prototype, 'executeAnonymous')
+      .resolves({ compiled: true, success: true, logs: log });
+
+    await Run.run(['--file', file, '--category-level', 'Apex_code=FINEST', '--category-level', 'Db=FINE']);
+
+    expect(executeServiceStub.args[0]).to.deep.equal([
+      {
+        apexFilePath: file,
+        debugCategories: [
+          { category: 'Apex_code', level: 'FINEST' },
+          { category: 'Db', level: 'FINE' },
+        ],
+      },
+    ]);
+  });
+
+  it('throws on invalid category-level format', async () => {
+    sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({ compiled: true, success: true });
+
+    try {
+      await Run.run(['--file', 'test.apex', '--category-level', 'bad-format']);
+      expect.fail('should have thrown');
+    } catch (e) {
+      expect((e as Error).message).to.include('Invalid --category-level format');
+    }
+  });
+
+  it('throws on invalid category name', async () => {
+    sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({ compiled: true, success: true });
+
+    try {
+      await Run.run(['--file', 'test.apex', '--category-level', 'FakeCategory=FINEST']);
+      expect.fail('should have thrown');
+    } catch (e) {
+      expect((e as Error).message).to.include('Invalid category');
+    }
+  });
+
+  it('throws on invalid category level value', async () => {
+    sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({ compiled: true, success: true });
+
+    try {
+      await Run.run(['--file', 'test.apex', '--category-level', 'Apex_code=INVALID']);
+      expect.fail('should have thrown');
+    } catch (e) {
+      expect((e as Error).message).to.include('Invalid level');
+    }
+  });
+
   it('throws an error when it fails to compile', async () => {
     sandboxStub.stub(ExecuteService.prototype, 'executeAnonymous').resolves({
       compiled: false,
