@@ -27,7 +27,7 @@ Set the log level for a specific log category (format: Category=Level). Can be s
 
 # flags.category-level.description
 
-Set individual log category levels for fine-grained control over the debug log. Format: Category=Level (e.g., Apex_code=FINEST). Valid categories: Db, Workflow, Validation, Callout, Apex_code, Apex_profiling, Visualforce, System, Wave, Nba. Valid levels: NONE, ERROR, WARN, INFO, DEBUG, FINE, FINER, FINEST. Can be specified multiple times. Mutually exclusive with --debug-level.
+Set individual log category levels for fine-grained control over the debug log. Format: Category=Level (e.g., Apex_code=FINEST). Valid categories: Db, Workflow, Validation, Callout, Apex_code, Apex_profiling, Visualforce, System, Wave, Nba, All. Valid levels: NONE, ERROR, WARN, INFO, DEBUG, FINE, FINER, FINEST. Can be specified multiple times. Mutually exclusive with --debug-level.
 
 # invalidCategoryLevel
 
