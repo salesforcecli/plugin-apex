@@ -1,3 +1,15 @@
+## [4.1.2](https://github.com/salesforcecli/plugin-apex/compare/4.1.1...4.1.2) (2026-09-01)
+
+### Bug Fixes
+
+- upgrade @oclif/core to v5 @W-23512455@ ([#965](https://github.com/salesforcecli/plugin-apex/issues/965)) ([c75ed95](https://github.com/salesforcecli/plugin-apex/commit/c75ed9505fcb1a068f36c38e8b0b08c9e6d2a067))
+
+## [4.1.1](https://github.com/salesforcecli/plugin-apex/compare/4.1.0...4.1.1) (2026-08-20)
+
+### Bug Fixes
+
+- rejiggered eslint.config.mjs (W-23928423) ([#961](https://github.com/salesforcecli/plugin-apex/issues/961)) ([5b5c7d3](https://github.com/salesforcecli/plugin-apex/commit/5b5c7d399bba324447cf3997abea052821902e5f))
+
 # [4.1.0](https://github.com/salesforcecli/plugin-apex/compare/4.0.1...4.1.0) (2026-08-07)
 
 ### Features
