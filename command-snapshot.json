@@ -48,8 +48,8 @@
     "alias": ["force:apex:execute"],
     "command": "apex:run",
     "flagAliases": ["apexcodefile", "apiversion", "targetusername", "u"],
-    "flagChars": ["f", "o"],
-    "flags": ["api-version", "file", "flags-dir", "json", "loglevel", "target-org"],
+    "flagChars": ["d", "f", "o"],
+    "flags": ["api-version", "category-level", "debug-level", "file", "flags-dir", "json", "loglevel", "target-org"],
     "plugin": "@salesforce/plugin-apex"
   },
   {
@@ -78,8 +78,8 @@
       "flags-dir",
       "json",
       "loglevel",
-      "poll-interval",
       "output-dir",
+      "poll-interval",
       "result-format",
       "suite-names",
       "synchronous",
@@ -99,6 +99,7 @@
     "plugin": "@salesforce/plugin-apex"
   },
   {
+    "alias": [],
     "command": "logic:get:test",
     "flagAliases": [
       "apiversion",
