@@ -58,6 +58,13 @@ describe('apex:create:trace', () => {
     expect(mockToolingCreate.firstCall.args[1]).to.have.property('TracedEntityId', '005000000000001AAA');
     expect(mockToolingCreate.firstCall.args[1]).to.have.property('LogType', 'DEVELOPER_LOG');
     expect(mockToolingCreate.firstCall.args[1]).to.have.property('DebugLevelId', '7dl000000000001AAA');
+    const createPayload = mockToolingCreate.firstCall.args[1] as Record<string, string>;
+    expect(createPayload).to.have.property('StartDate').that.is.a('string');
+    expect(createPayload).to.have.property('ExpirationDate').that.is.a('string');
+    const start = new Date(createPayload.StartDate);
+    const expiration = new Date(createPayload.ExpirationDate);
+    const durationMs = expiration.getTime() - start.getTime();
+    expect(durationMs).to.equal(30 * 60 * 1000);
   });
 
   it('creates a trace flag with custom log type and duration', async () => {

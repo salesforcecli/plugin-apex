@@ -75,21 +75,46 @@ describe('apex:list:trace', () => {
     expect(uxStub.table.args[0][0].data).to.deep.equal([
       {
         Id: '7tf000000000001AAA',
-        'Traced Entity': 'Test User',
-        'Log Type': 'DEVELOPER_LOG',
-        'Debug Level': 'SFDC_DevConsole',
-        'Start Date': '2026-09-21T00:00:00.000+0000',
-        'Expiration Date': '2026-09-21T00:30:00.000+0000',
+        TracedEntity: 'Test User',
+        LogType: 'DEVELOPER_LOG',
+        DebugLevel: 'SFDC_DevConsole',
+        StartDate: '2026-09-21T00:00:00.000+0000',
+        ExpirationDate: '2026-09-21T00:30:00.000+0000',
       },
       {
         Id: '7tf000000000002AAA',
-        'Traced Entity': 'Another User',
-        'Log Type': 'USER_DEBUG',
-        'Debug Level': 'MyDebugLevel',
-        'Start Date': '2026-09-20T12:00:00.000+0000',
-        'Expiration Date': '2026-09-20T12:30:00.000+0000',
+        TracedEntity: 'Another User',
+        LogType: 'USER_DEBUG',
+        DebugLevel: 'MyDebugLevel',
+        StartDate: '2026-09-20T12:00:00.000+0000',
+        ExpirationDate: '2026-09-20T12:30:00.000+0000',
       },
     ]);
+  });
+
+  it('falls back to IDs when relationship fields are null', async () => {
+    const nullRelRecords = [
+      {
+        Id: '7tf000000000003AAA',
+        TracedEntityId: '005000000000003AAA',
+        LogType: 'DEVELOPER_LOG',
+        DebugLevelId: '7dl000000000003AAA',
+        StartDate: '2026-09-21T00:00:00.000+0000',
+        ExpirationDate: '2026-09-21T00:30:00.000+0000',
+        DebugLevel: null,
+        TracedEntity: null,
+      },
+    ];
+    mockToolingQuery.resolves({ totalSize: 1, records: nullRelRecords });
+    await Trace.run([]);
+    expect(uxStub.table.args[0][0].data[0]).to.deep.equal({
+      Id: '7tf000000000003AAA',
+      TracedEntity: '005000000000003AAA',
+      LogType: 'DEVELOPER_LOG',
+      DebugLevel: '7dl000000000003AAA',
+      StartDate: '2026-09-21T00:00:00.000+0000',
+      ExpirationDate: '2026-09-21T00:30:00.000+0000',
+    });
   });
 
   it('lists trace flags with --json', async () => {

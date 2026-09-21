@@ -56,7 +56,7 @@ export default class Trace extends SfCommand<TraceFlagCreateResult> {
     'log-type': Flags.string({
       char: 'l',
       summary: messages.getMessage('flags.log-type.summary'),
-      options: ['DEVELOPER_LOG', 'USER_DEBUG', 'CLASS_TRACING'] as const,
+      options: ['DEVELOPER_LOG', 'USER_DEBUG'] as const,
       default: 'DEVELOPER_LOG',
     }),
     duration: Flags.integer({
@@ -71,7 +71,8 @@ export default class Trace extends SfCommand<TraceFlagCreateResult> {
     const { flags } = await this.parse(Trace);
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
-    const debugLevelQuery = `SELECT Id FROM DebugLevel WHERE DeveloperName = '${flags['debug-level']}'`;
+    const escapedName = flags['debug-level'].replace(/'/g, "\\'");
+    const debugLevelQuery = `SELECT Id FROM DebugLevel WHERE DeveloperName = '${escapedName}'`;
     const debugLevelResult = await conn.tooling.query<{ Id: string }>(debugLevelQuery);
 
     if (!debugLevelResult.records?.length) {

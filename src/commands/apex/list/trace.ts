@@ -32,8 +32,8 @@ export type TraceFlagRecord = {
   DebugLevelId: string;
   StartDate: string;
   ExpirationDate: string;
-  DebugLevel: { DeveloperName: string };
-  TracedEntity: { Name: string };
+  DebugLevel: { DeveloperName: string } | null;
+  TracedEntity: { Name: string } | null;
 };
 
 export type TraceFlagListResult = TraceFlagRecord[];
@@ -67,14 +67,15 @@ export default class Trace extends SfCommand<TraceFlagListResult> {
 
     if (!flags.json) {
       this.table({
-        data: records.map((r) => ({
-          Id: r.Id,
-          'Traced Entity': r.TracedEntity?.Name ?? r.TracedEntityId,
-          'Log Type': r.LogType,
-          'Debug Level': r.DebugLevel?.DeveloperName ?? r.DebugLevelId,
-          'Start Date': r.StartDate,
-          'Expiration Date': r.ExpirationDate,
-        })),
+        data: records.map(formatForTable),
+        columns: [
+          'Id',
+          { key: 'TracedEntity', name: 'Traced Entity' },
+          { key: 'LogType', name: 'Log Type' },
+          { key: 'DebugLevel', name: 'Debug Level' },
+          { key: 'StartDate', name: 'Start Date' },
+          { key: 'ExpirationDate', name: 'Expiration Date' },
+        ],
         overflow: 'wrap',
       });
     }
@@ -82,3 +83,12 @@ export default class Trace extends SfCommand<TraceFlagListResult> {
     return records;
   }
 }
+
+const formatForTable = (r: TraceFlagRecord): Record<string, string> => ({
+  Id: r.Id,
+  TracedEntity: r.TracedEntity?.Name ?? r.TracedEntityId,
+  LogType: r.LogType,
+  DebugLevel: r.DebugLevel?.DeveloperName ?? r.DebugLevelId,
+  StartDate: r.StartDate,
+  ExpirationDate: r.ExpirationDate,
+});

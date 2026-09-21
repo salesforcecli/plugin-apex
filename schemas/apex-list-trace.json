@@ -30,24 +30,38 @@
           "type": "string"
         },
         "DebugLevel": {
-          "type": "object",
-          "properties": {
-            "DeveloperName": {
-              "type": "string"
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "DeveloperName": {
+                  "type": "string"
+                }
+              },
+              "required": ["DeveloperName"],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
             }
-          },
-          "required": ["DeveloperName"],
-          "additionalProperties": false
+          ]
         },
         "TracedEntity": {
-          "type": "object",
-          "properties": {
-            "Name": {
-              "type": "string"
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string"
+                }
+              },
+              "required": ["Name"],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
             }
-          },
-          "required": ["Name"],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
