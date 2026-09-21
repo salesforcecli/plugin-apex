@@ -1,5 +1,31 @@
 [
   {
+    "alias": ["force:apex:trace:create"],
+    "command": "apex:create:trace",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["d", "i", "l", "o"],
+    "flags": [
+      "api-version",
+      "debug-level",
+      "duration",
+      "flags-dir",
+      "json",
+      "log-type",
+      "loglevel",
+      "target-org",
+      "traced-entity-id"
+    ],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": ["force:apex:trace:delete"],
+    "command": "apex:delete:trace",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["i", "o"],
+    "flags": ["api-version", "flags-dir", "json", "loglevel", "target-org", "trace-flag-id"],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
     "alias": ["force:apex:log:get"],
     "command": "apex:get:log",
     "flagAliases": ["apiversion", "logid", "output-directory", "outputdir", "targetusername", "u"],
@@ -39,6 +65,14 @@
   {
     "alias": ["force:apex:log:list"],
     "command": "apex:list:log",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["o"],
+    "flags": ["api-version", "flags-dir", "json", "loglevel", "target-org"],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": ["force:apex:trace:list"],
+    "command": "apex:list:trace",
     "flagAliases": ["apiversion", "targetusername", "u"],
     "flagChars": ["o"],
     "flags": ["api-version", "flags-dir", "json", "loglevel", "target-org"],
