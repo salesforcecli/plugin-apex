@@ -31,7 +31,7 @@ export type TraceFlagDeleteResult = {
   success: boolean;
 };
 
-export default class Trace extends SfCommand<TraceFlagDeleteResult> {
+export default class DeleteTrace extends SfCommand<TraceFlagDeleteResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -51,7 +51,7 @@ export default class Trace extends SfCommand<TraceFlagDeleteResult> {
   };
 
   public async run(): Promise<TraceFlagDeleteResult> {
-    const { flags } = await this.parse(Trace);
+    const { flags } = await this.parse(DeleteTrace);
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
     const traceFlagId = flags['trace-flag-id'];

@@ -31,7 +31,7 @@ export type TraceFlagCreateResult = {
   success: boolean;
 };
 
-export default class Trace extends SfCommand<TraceFlagCreateResult> {
+export default class CreateTrace extends SfCommand<TraceFlagCreateResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -68,7 +68,7 @@ export default class Trace extends SfCommand<TraceFlagCreateResult> {
   };
 
   public async run(): Promise<TraceFlagCreateResult> {
-    const { flags } = await this.parse(Trace);
+    const { flags } = await this.parse(CreateTrace);
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
     const escapedName = flags['debug-level'].replace(/'/g, "\\'");

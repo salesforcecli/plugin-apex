@@ -38,7 +38,7 @@ export type TraceFlagRecord = {
 
 export type TraceFlagListResult = TraceFlagRecord[];
 
-export default class Trace extends SfCommand<TraceFlagListResult> {
+export default class ListTrace extends SfCommand<TraceFlagListResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
@@ -52,7 +52,7 @@ export default class Trace extends SfCommand<TraceFlagListResult> {
   };
 
   public async run(): Promise<TraceFlagListResult> {
-    const { flags } = await this.parse(Trace);
+    const { flags } = await this.parse(ListTrace);
     const conn = flags['target-org'].getConnection(flags['api-version']);
 
     const query =
