@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { CancellationTokenSource } from '@salesforce/apex-node';
 import {
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
@@ -55,18 +54,8 @@ export default class GetInvalidClasses extends SfCommand<CompilationResult> {
     loglevel,
   };
 
-  protected cancellationTokenSource = new CancellationTokenSource();
-
   public async run(): Promise<CompilationResult> {
     const { flags } = await this.parse(GetInvalidClasses);
-
-    const exitHandler = (): void => {
-      void this.cancellationTokenSource.asyncCancel();
-      process.exit();
-    };
-
-    process.on('SIGINT', exitHandler);
-    process.on('SIGTERM', exitHandler);
 
     this.spinner.start('Retrieving invalid Apex classes...');
 
@@ -82,17 +71,17 @@ export default class GetInvalidClasses extends SfCommand<CompilationResult> {
     });
 
     this.spinner.stop();
-    process.removeListener('SIGINT', exitHandler);
-    process.removeListener('SIGTERM', exitHandler);
 
-    if (compilationResult.results.length === 0) {
+    const results = compilationResult.results ?? [];
+
+    if (results.length === 0) {
       this.log(messages.getMessage('noResultsFound'));
       return compilationResult;
     }
 
     if (!flags.json) {
       this.table({
-        data: compilationResult.results.map((r) => ({
+        data: results.map((r) => ({
           ...r,
           problems: r.problems.map((p) => `Line ${String(p.line)}:${String(p.column)} — ${p.message}`).join('\n'),
         })),

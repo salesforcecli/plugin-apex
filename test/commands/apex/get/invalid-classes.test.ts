@@ -17,7 +17,7 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
-import { Org } from '@salesforce/core';
+import { Org, SfError } from '@salesforce/core';
 import GetInvalidClasses from '../../../../src/commands/apex/get/invalid-classes.js';
 import type { CompilationResult } from '../../../../src/commands/apex/get/invalid-classes.js';
 
@@ -140,5 +140,26 @@ describe('apex get invalid-classes', () => {
 
     const result = await GetInvalidClasses.run([]);
     expect(result.results[0].problems).to.have.lengthOf(3);
+  });
+
+  it('throws when the API request fails', async () => {
+    const requestStub = sandbox.stub().rejects(new SfError('INVALID_SESSION_ID'));
+    stubOrg(requestStub);
+
+    try {
+      await GetInvalidClasses.run([]);
+      expect.fail('should have thrown');
+    } catch (err) {
+      expect(err).to.have.property('message').that.includes('INVALID_SESSION_ID');
+    }
+  });
+
+  it('handles missing results array gracefully', async () => {
+    const requestStub = sandbox.stub().resolves({ status: 'success' });
+    stubOrg(requestStub);
+
+    const result = await GetInvalidClasses.run([]);
+    expect(result.results).to.be.undefined;
+    expect(uxStub.log.calledOnce).to.be.true;
   });
 });
