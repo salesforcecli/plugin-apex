@@ -1,5 +1,13 @@
 [
   {
+    "alias": [],
+    "command": "apex:get:invalid-classes",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["o"],
+    "flags": ["api-version", "flags-dir", "json", "loglevel", "target-org"],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
     "alias": ["force:apex:log:get"],
     "command": "apex:get:log",
     "flagAliases": ["apiversion", "logid", "output-directory", "outputdir", "targetusername", "u"],

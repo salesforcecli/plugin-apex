@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/CompilationResult",
+  "definitions": {
+    "CompilationResult": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/InvalidApexClassResult"
+          }
+        }
+      },
+      "required": ["status", "results"],
+      "additionalProperties": false
+    },
+    "InvalidApexClassResult": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "success": {
+          "type": "boolean"
+        },
+        "problems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApexClassProblem"
+          }
+        }
+      },
+      "required": ["name", "namespace", "success", "problems"],
+      "additionalProperties": false
+    },
+    "ApexClassProblem": {
+      "type": "object",
+      "properties": {
+        "line": {
+          "type": "number"
+        },
+        "column": {
+          "type": "number"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": ["line", "column", "message"],
+      "additionalProperties": false
+    }
+  }
+}
