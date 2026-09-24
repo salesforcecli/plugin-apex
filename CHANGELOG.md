@@ -1,3 +1,9 @@
+# [4.2.0](https://github.com/salesforcecli/plugin-apex/compare/4.1.2...4.2.0) (2026-09-16)
+
+### Features
+
+- add --debug-level and --category-level flags to apex run @W-18404446@ ([#967](https://github.com/salesforcecli/plugin-apex/issues/967)) ([1dea12b](https://github.com/salesforcecli/plugin-apex/commit/1dea12bdfbd04aaf47e75039553a4c39cd8a98cf))
+
 ## [4.1.2](https://github.com/salesforcecli/plugin-apex/compare/4.1.1...4.1.2) (2026-09-01)
 
 ### Bug Fixes
