@@ -18,7 +18,7 @@ import sinon from 'sinon';
 import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import { expect } from 'chai';
-import Trace from '../../../../src/commands/apex/list/trace.js';
+import Trace from '../../../../src/commands/apex/trace/list.js';
 
 const traceFlagRecords = [
   {
@@ -43,7 +43,7 @@ const traceFlagRecords = [
   },
 ];
 
-describe('apex:list:trace', () => {
+describe('apex:trace:list', () => {
   let sandbox: sinon.SinonSandbox;
   let uxStub: ReturnType<typeof stubSfCommandUx>;
   let mockToolingQuery: sinon.SinonStub;

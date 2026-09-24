@@ -18,9 +18,9 @@ import sinon from 'sinon';
 import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import { expect } from 'chai';
-import Trace from '../../../../src/commands/apex/delete/trace.js';
+import Trace from '../../../../src/commands/apex/trace/delete.js';
 
-describe('apex:delete:trace', () => {
+describe('apex:trace:delete', () => {
   let sandbox: sinon.SinonSandbox;
   let uxStub: ReturnType<typeof stubSfCommandUx>;
   let mockToolingDelete: sinon.SinonStub;

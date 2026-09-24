@@ -18,9 +18,9 @@ import sinon from 'sinon';
 import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
 import { Org } from '@salesforce/core';
 import { expect } from 'chai';
-import Trace from '../../../../src/commands/apex/create/trace.js';
+import Trace from '../../../../src/commands/apex/trace/create.js';
 
-describe('apex:create:trace', () => {
+describe('apex:trace:create', () => {
   let sandbox: sinon.SinonSandbox;
   let uxStub: ReturnType<typeof stubSfCommandUx>;
   let mockToolingQuery: sinon.SinonStub;

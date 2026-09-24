@@ -18,9 +18,9 @@ import path from 'node:path';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect, config } from 'chai';
 import { AuthInfo, Connection } from '@salesforce/core';
-import { TraceFlagListResult } from '../../../src/commands/apex/list/trace.js';
-import { TraceFlagCreateResult } from '../../../src/commands/apex/create/trace.js';
-import { TraceFlagDeleteResult } from '../../../src/commands/apex/delete/trace.js';
+import { TraceFlagListResult } from '../../../../src/commands/apex/trace/list.js';
+import { TraceFlagCreateResult } from '../../../../src/commands/apex/trace/create.js';
+import { TraceFlagDeleteResult } from '../../../../src/commands/apex/trace/delete.js';
 
 config.truncateThreshold = 0;
 
@@ -80,18 +80,18 @@ describe('apex trace flag lifecycle', () => {
   });
 
   it('lists no trace flags initially', () => {
-    const result = execCmd<TraceFlagListResult>('apex:list:trace --json', { ensureExitCode: 0 }).jsonOutput?.result;
+    const result = execCmd<TraceFlagListResult>('apex:trace:list --json', { ensureExitCode: 0 }).jsonOutput?.result;
     expect(result).to.be.an('array').with.lengthOf(0);
   });
 
   it('lists no trace flags (human output)', () => {
-    const result = execCmd('apex:list:trace', { ensureExitCode: 0 }).shellOutput.stdout;
+    const result = execCmd('apex:trace:list', { ensureExitCode: 0 }).shellOutput.stdout;
     expect(result).to.include('No trace flags found in org');
   });
 
   it('creates a trace flag', () => {
     const result = execCmd<TraceFlagCreateResult>(
-      `apex:create:trace --traced-entity-id ${userId} --debug-level ${debugLevelName} --duration 30 --json`,
+      `apex:trace:create --traced-entity-id ${userId} --debug-level ${debugLevelName} --duration 30 --json`,
       { ensureExitCode: 0 }
     ).jsonOutput?.result;
 
@@ -101,7 +101,7 @@ describe('apex trace flag lifecycle', () => {
   });
 
   it('lists the created trace flag --json', () => {
-    const result = execCmd<TraceFlagListResult>('apex:list:trace --json', { ensureExitCode: 0 }).jsonOutput?.result;
+    const result = execCmd<TraceFlagListResult>('apex:trace:list --json', { ensureExitCode: 0 }).jsonOutput?.result;
     expect(result).to.be.an('array').with.lengthOf.greaterThanOrEqual(1);
 
     const created = result?.find((r) => r.Id === createdTraceFlagId);
@@ -112,7 +112,7 @@ describe('apex trace flag lifecycle', () => {
   });
 
   it('lists the created trace flag (human output)', () => {
-    const result = execCmd('apex:list:trace', {
+    const result = execCmd('apex:trace:list', {
       ensureExitCode: 0,
       env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
     }).shellOutput.stdout;
@@ -124,7 +124,7 @@ describe('apex trace flag lifecycle', () => {
 
   it('fails to create with a nonexistent debug level', () => {
     const result = execCmd(
-      `apex:create:trace --traced-entity-id ${userId} --debug-level NonExistentLevel_12345 --json`,
+      `apex:trace:create --traced-entity-id ${userId} --debug-level NonExistentLevel_12345 --json`,
       { ensureExitCode: 1 }
     ).jsonOutput;
 
@@ -133,7 +133,7 @@ describe('apex trace flag lifecycle', () => {
   });
 
   it('deletes the trace flag', () => {
-    const result = execCmd<TraceFlagDeleteResult>(`apex:delete:trace --trace-flag-id ${createdTraceFlagId} --json`, {
+    const result = execCmd<TraceFlagDeleteResult>(`apex:trace:delete --trace-flag-id ${createdTraceFlagId} --json`, {
       ensureExitCode: 0,
     }).jsonOutput?.result;
 
@@ -142,13 +142,13 @@ describe('apex trace flag lifecycle', () => {
   });
 
   it('lists no trace flags after deletion', () => {
-    const result = execCmd<TraceFlagListResult>('apex:list:trace --json', { ensureExitCode: 0 }).jsonOutput?.result;
+    const result = execCmd<TraceFlagListResult>('apex:trace:list --json', { ensureExitCode: 0 }).jsonOutput?.result;
     const deleted = result?.find((r) => r.Id === createdTraceFlagId);
     expect(deleted).to.be.undefined;
   });
 
   it('fails to delete a nonexistent trace flag', () => {
-    const result = execCmd(`apex:delete:trace --trace-flag-id ${createdTraceFlagId} --json`, {
+    const result = execCmd(`apex:trace:delete --trace-flag-id ${createdTraceFlagId} --json`, {
       ensureExitCode: 1,
     }).jsonOutput;
 
