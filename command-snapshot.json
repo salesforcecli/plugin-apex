@@ -99,7 +99,7 @@
     "plugin": "@salesforce/plugin-apex"
   },
   {
-    "alias": ["force:apex:trace:create"],
+    "alias": [],
     "command": "apex:trace:create",
     "flagAliases": ["apiversion", "targetusername", "u"],
     "flagChars": ["d", "i", "l", "o"],
@@ -117,7 +117,7 @@
     "plugin": "@salesforce/plugin-apex"
   },
   {
-    "alias": ["force:apex:trace:delete"],
+    "alias": [],
     "command": "apex:trace:delete",
     "flagAliases": ["apiversion", "targetusername", "u"],
     "flagChars": ["i", "o"],
@@ -125,7 +125,7 @@
     "plugin": "@salesforce/plugin-apex"
   },
   {
-    "alias": ["force:apex:trace:list"],
+    "alias": [],
     "command": "apex:trace:list",
     "flagAliases": ["apiversion", "targetusername", "u"],
     "flagChars": ["o"],

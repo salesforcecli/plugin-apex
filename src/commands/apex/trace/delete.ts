@@ -35,9 +35,6 @@ export default class DeleteTrace extends SfCommand<TraceFlagDeleteResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
-  public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:apex:trace:delete'];
-
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,

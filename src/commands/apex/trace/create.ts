@@ -35,9 +35,6 @@ export default class CreateTrace extends SfCommand<TraceFlagCreateResult> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
-  public static readonly deprecateAliases = true;
-  public static readonly aliases = ['force:apex:trace:create'];
-
   public static readonly flags = {
     'target-org': requiredOrgFlagWithDeprecations,
     'api-version': orgApiVersionFlagWithDeprecations,
