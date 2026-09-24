@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/TraceFlagListResult",
+  "definitions": {
+    "TraceFlagListResult": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/TraceFlagRecord"
+      }
+    },
+    "TraceFlagRecord": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string"
+        },
+        "TracedEntityId": {
+          "type": "string"
+        },
+        "LogType": {
+          "type": "string"
+        },
+        "DebugLevelId": {
+          "type": "string"
+        },
+        "StartDate": {
+          "type": "string"
+        },
+        "ExpirationDate": {
+          "type": "string"
+        },
+        "DebugLevel": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "DeveloperName": {
+                  "type": "string"
+                }
+              },
+              "required": ["DeveloperName"],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "TracedEntity": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string"
+                }
+              },
+              "required": ["Name"],
+              "additionalProperties": false
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "Id",
+        "TracedEntityId",
+        "LogType",
+        "DebugLevelId",
+        "StartDate",
+        "ExpirationDate",
+        "DebugLevel",
+        "TracedEntity"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
