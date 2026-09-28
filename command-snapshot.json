@@ -100,6 +100,40 @@
   },
   {
     "alias": [],
+    "command": "apex:trace:create",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["d", "i", "l", "o"],
+    "flags": [
+      "api-version",
+      "debug-level",
+      "duration",
+      "flags-dir",
+      "json",
+      "log-type",
+      "loglevel",
+      "target-org",
+      "traced-entity-id"
+    ],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": [],
+    "command": "apex:trace:delete",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["i", "o"],
+    "flags": ["api-version", "flags-dir", "json", "loglevel", "target-org", "trace-flag-id"],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": [],
+    "command": "apex:trace:list",
+    "flagAliases": ["apiversion", "targetusername", "u"],
+    "flagChars": ["o"],
+    "flags": ["api-version", "flags-dir", "json", "loglevel", "target-org"],
+    "plugin": "@salesforce/plugin-apex"
+  },
+  {
+    "alias": [],
     "command": "logic:get:test",
     "flagAliases": [
       "apiversion",
