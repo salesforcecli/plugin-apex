@@ -20,6 +20,10 @@ import { Org } from '@salesforce/core';
 import { expect } from 'chai';
 import Trace from '../../../../src/commands/apex/trace/list.js';
 
+const NOW = new Date('2026-09-21T12:00:00.000Z');
+const ACTIVE_EXPIRATION = '2026-09-21T12:15:00.000+0000';
+const EXPIRED_EXPIRATION = '2026-09-21T11:30:00.000+0000';
+
 const traceFlagRecords = [
   {
     Id: '7tf000000000001AAA',
@@ -27,7 +31,7 @@ const traceFlagRecords = [
     LogType: 'DEVELOPER_LOG',
     DebugLevelId: '7dl000000000001AAA',
     StartDate: '2026-09-21T00:00:00.000+0000',
-    ExpirationDate: '2026-09-21T00:30:00.000+0000',
+    ExpirationDate: ACTIVE_EXPIRATION,
     DebugLevel: { DeveloperName: 'SFDC_DevConsole' },
     TracedEntity: { Name: 'Test User' },
   },
@@ -37,7 +41,7 @@ const traceFlagRecords = [
     LogType: 'USER_DEBUG',
     DebugLevelId: '7dl000000000002AAA',
     StartDate: '2026-09-20T12:00:00.000+0000',
-    ExpirationDate: '2026-09-20T12:30:00.000+0000',
+    ExpirationDate: EXPIRED_EXPIRATION,
     DebugLevel: { DeveloperName: 'MyDebugLevel' },
     TracedEntity: { Name: 'Another User' },
   },
@@ -50,6 +54,7 @@ describe('apex:trace:list', () => {
 
   beforeEach(async () => {
     sandbox = sinon.createSandbox();
+    sandbox.useFakeTimers(NOW);
     uxStub = stubSfCommandUx(sandbox);
     mockToolingQuery = sandbox.stub();
     const mockConnection = { tooling: { query: mockToolingQuery } };
@@ -78,16 +83,16 @@ describe('apex:trace:list', () => {
         TracedEntity: 'Test User',
         LogType: 'DEVELOPER_LOG',
         DebugLevel: 'SFDC_DevConsole',
-        StartDate: '2026-09-21T00:00:00.000+0000',
-        ExpirationDate: '2026-09-21T00:30:00.000+0000',
+        Status: 'Active',
+        ExpirationDate: ACTIVE_EXPIRATION,
       },
       {
         Id: '7tf000000000002AAA',
         TracedEntity: 'Another User',
         LogType: 'USER_DEBUG',
         DebugLevel: 'MyDebugLevel',
-        StartDate: '2026-09-20T12:00:00.000+0000',
-        ExpirationDate: '2026-09-20T12:30:00.000+0000',
+        Status: 'Expired',
+        ExpirationDate: EXPIRED_EXPIRATION,
       },
     ]);
   });
@@ -112,14 +117,17 @@ describe('apex:trace:list', () => {
       TracedEntity: '005000000000003AAA',
       LogType: 'DEVELOPER_LOG',
       DebugLevel: '7dl000000000003AAA',
-      StartDate: '2026-09-21T00:00:00.000+0000',
+      Status: 'Expired',
       ExpirationDate: '2026-09-21T00:30:00.000+0000',
     });
   });
 
   it('lists trace flags with --json', async () => {
-    mockToolingQuery.resolves({ totalSize: 2, records: traceFlagRecords });
+    mockToolingQuery.resolves({ totalSize: 2, records: structuredClone(traceFlagRecords) });
     const result = await Trace.run(['--json']);
-    expect(result).to.deep.equal(traceFlagRecords);
+    expect(result).to.deep.equal([
+      { ...traceFlagRecords[0], Status: 'Active' },
+      { ...traceFlagRecords[1], Status: 'Expired' },
+    ]);
   });
 });

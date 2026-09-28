@@ -32,6 +32,7 @@ export type TraceFlagRecord = {
   DebugLevelId: string;
   StartDate: string;
   ExpirationDate: string;
+  Status: 'Active' | 'Expired';
   DebugLevel: { DeveloperName: string } | null;
   TracedEntity: { Name: string } | null;
 };
@@ -54,8 +55,12 @@ export default class ListTrace extends SfCommand<TraceFlagListResult> {
 
     const query =
       'SELECT Id, TracedEntityId, LogType, DebugLevelId, StartDate, ExpirationDate, DebugLevel.DeveloperName, TracedEntity.Name FROM TraceFlag ORDER BY CreatedDate DESC';
-    const result = await conn.tooling.query<TraceFlagRecord>(query);
-    const records = result.records ?? [];
+    const result = await conn.tooling.query<Omit<TraceFlagRecord, 'Status'>>(query);
+    const now = new Date();
+    const records: TraceFlagRecord[] = (result.records ?? []).map((r) => ({
+      ...r,
+      Status: new Date(r.ExpirationDate) > now ? 'Active' : 'Expired',
+    }));
 
     if (records.length === 0) {
       this.log(messages.getMessage('noTraceFlagsFound'));
@@ -70,7 +75,7 @@ export default class ListTrace extends SfCommand<TraceFlagListResult> {
           { key: 'TracedEntity', name: 'Traced Entity' },
           { key: 'LogType', name: 'Log Type' },
           { key: 'DebugLevel', name: 'Debug Level' },
-          { key: 'StartDate', name: 'Start Date' },
+          'Status',
           { key: 'ExpirationDate', name: 'Expiration Date' },
         ],
         overflow: 'wrap',
@@ -86,6 +91,6 @@ const formatForTable = (r: TraceFlagRecord): Record<string, string> => ({
   TracedEntity: r.TracedEntity?.Name ?? r.TracedEntityId,
   LogType: r.LogType,
   DebugLevel: r.DebugLevel?.DeveloperName ?? r.DebugLevelId,
-  StartDate: r.StartDate,
+  Status: r.Status,
   ExpirationDate: r.ExpirationDate,
 });

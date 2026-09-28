@@ -29,6 +29,10 @@
         "ExpirationDate": {
           "type": "string"
         },
+        "Status": {
+          "type": "string",
+          "enum": ["Active", "Expired"]
+        },
         "DebugLevel": {
           "anyOf": [
             {
@@ -71,6 +75,7 @@
         "DebugLevelId",
         "StartDate",
         "ExpirationDate",
+        "Status",
         "DebugLevel",
         "TracedEntity"
       ],
