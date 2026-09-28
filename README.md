@@ -93,6 +93,9 @@ Happy debugging!
 - [`sf apex run`](#sf-apex-run)
 - [`sf apex run test`](#sf-apex-run-test)
 - [`sf apex tail log`](#sf-apex-tail-log)
+- [`sf apex trace create`](#sf-apex-trace-create)
+- [`sf apex trace delete`](#sf-apex-trace-delete)
+- [`sf apex trace list`](#sf-apex-trace-list)
 - [`sf logic get test`](#sf-logic-get-test)
 - [`sf logic run test`](#sf-logic-run-test)
 
@@ -150,7 +153,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -210,7 +213,7 @@ EXAMPLES
       me@myorg'
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -250,7 +253,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -331,7 +334,7 @@ FLAG DESCRIPTIONS
     Can be specified multiple times. Mutually exclusive with --debug-level.
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -478,7 +481,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -521,7 +524,143 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/tail/log.ts)_
+
+## `sf apex trace create`
+
+Create a trace flag for a user, Apex class, or Apex trigger.
+
+```
+USAGE
+  $ sf apex trace create -o <value> -i <value> -d <value> [--json] [--flags-dir <value>] [--api-version <value>] [-l
+    DEVELOPER_LOG|USER_DEBUG] [--duration <value>]
+
+FLAGS
+  -d, --debug-level=<value>       (required) Developer name of an existing debug level to apply.
+  -i, --traced-entity-id=<value>  (required) ID of the user, Apex class, or Apex trigger to trace.
+  -l, --log-type=<option>         [default: DEVELOPER_LOG] Type of trace flag to create.
+                                  <options: DEVELOPER_LOG|USER_DEBUG>
+  -o, --target-org=<value>        (required) Username or alias of the target org. Not required if the `target-org`
+                                  configuration variable is already set.
+      --api-version=<value>       Override the api version used for api requests made by this command
+      --duration=<value>          [default: 30] Duration, in minutes, before the trace flag expires. Maximum is 1440 (24
+                                  hours).
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
+DESCRIPTION
+  Create a trace flag for a user, Apex class, or Apex trigger.
+
+  Use trace flags to set up debug logging for a specified entity (user, Apex class, or Apex trigger). You must specify
+  an existing debug level and the entity to trace. The trace flag expires after the specified duration (default 30
+  minutes).
+
+  To find the list of existing debug levels, run this Tooling API query on your org using the "data query" CLI command:
+  "sf data query --query "SELECT DeveloperName FROM DebugLevel" --use-tooling-api".  To create a debug level in your
+  org, see "Set Up Debug Logging" (https://help.salesforce.com/s/articleView?id=xcloud.code_add_users_debug_log.htm)
+
+  Use the --log-type flag to specify the type of debug log file to create; you have these two options:
+
+  - DEVELOPER_LOG (default) — captures a full debug log, including Apex execution, SOQL, DML, callouts, and so on.
+  - USER_DEBUG — captures only System.debug() statements and user-generated log lines. Use this option for
+  lighter-weight smaller logs.
+
+  After you create the trace flag, follow these steps to use it:
+
+  1. Perform the action that you want to debug.  For example, if you created a trace flag for an Apex class, run the
+  class.
+  2. Run the "apex log list" CLI command to get a list of the available debug logs in your org.  Make note of the ID of
+  the debug log you're interested in.
+  3. Run the "apex log get" command and specify this ID log with the --log-id flag. You can also use the --number flag
+  to get the most recent debug logs.
+  4. Examine the debug log for information about the entity you created a trace flag for. See "Debug Log"
+  (https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_debugging_debug_log.htm) for more
+  information.
+
+EXAMPLES
+  Create a trace flag for a user (ID starts with 005) with the SFDC_DevConsole debug level in your default org:
+
+    $ sf apex trace create --traced-entity-id 005xx000001Svs8AAC --debug-level SFDC_DevConsole
+
+  Create a USER_DEBUG trace flag that lasts 60 minutes in the org with alias "my-org":
+
+    $ sf apex trace create --traced-entity-id 005xx000001Svs8AAC --debug-level MyDebugLevel --log-type USER_DEBUG \
+      --duration 60 --target-org my-org
+```
+
+_See code: [src/commands/apex/trace/create.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/trace/create.ts)_
+
+## `sf apex trace delete`
+
+Delete a trace flag in your org.
+
+```
+USAGE
+  $ sf apex trace delete -o <value> -i <value> [--json] [--flags-dir <value>] [--api-version <value>]
+
+FLAGS
+  -i, --trace-flag-id=<value>  (required) ID of the trace flag to delete.
+  -o, --target-org=<value>     (required) Username or alias of the target org. Not required if the `target-org`
+                               configuration variable is already set.
+      --api-version=<value>    Override the api version used for api requests made by this command
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
+DESCRIPTION
+  Delete a trace flag in your org.
+
+  Remove a trace flag by its ID. Use "sf apex trace list" to find trace flag IDs in your org.
+
+EXAMPLES
+  Delete a trace flag by ID in your default org:
+
+    $ sf apex trace delete --trace-flag-id 7tf000000000001AAA
+
+  Delete a trace flag by ID in an org with alias "my-org":
+
+    $ sf apex trace delete --trace-flag-id 7tf000000000001AAA --target-org my-org
+```
+
+_See code: [src/commands/apex/trace/delete.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/trace/delete.ts)_
+
+## `sf apex trace list`
+
+List trace flags in your org.
+
+```
+USAGE
+  $ sf apex trace list -o <value> [--json] [--flags-dir <value>] [--api-version <value>]
+
+FLAGS
+  -o, --target-org=<value>   (required) Username or alias of the target org. Not required if the `target-org`
+                             configuration variable is already set.
+      --api-version=<value>  Override the api version used for api requests made by this command
+
+GLOBAL FLAGS
+  --flags-dir=<value>  Import flag values from a directory.
+  --json               Format output as json.
+
+DESCRIPTION
+  List trace flags in your org.
+
+  Display a list of active and recently expired trace flags in your org org. Trace flags control debug logging for a
+  specific user, Apex class, or Apex trigger. Use the "apex trace create" CLI command to create a trace flag.
+
+EXAMPLES
+  List all trace flags in your default org:
+
+    $ sf apex trace list
+
+  List trace flags for an org with alias "my-org":
+
+    $ sf apex trace list --target-org my-org
+```
+
+_See code: [src/commands/apex/trace/list.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/trace/list.ts)_
 
 ## `sf logic get test`
 
@@ -569,7 +708,7 @@ EXAMPLES
     $ sf logic get test --test-run-id <test run id> --result-format junit --target-org my-scratch
 ```
 
-_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/logic/get/test.ts)_
+_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/logic/get/test.ts)_
 
 ## `sf logic run test`
 
@@ -691,6 +830,6 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.2.0/src/commands/logic/run/test.ts)_
+_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/logic/run/test.ts)_
 
 <!-- commandsstop -->

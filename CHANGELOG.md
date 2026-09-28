@@ -1,3 +1,18 @@
+# [4.3.0](https://github.com/salesforcecli/plugin-apex/compare/4.2.0...4.3.0) (2026-09-28)
+
+### Bug Fixes
+
+- address review findings for debug level flags ([d91d434](https://github.com/salesforcecli/plugin-apex/commit/d91d434ea1640d6db4adeab79ce7ce3b5650b0ed))
+- address review findings for trace flag commands ([b50d8cd](https://github.com/salesforcecli/plugin-apex/commit/b50d8cd18bacb5320b81720a2dbed4fb78ae4df3))
+- remove bogus force:apex:trace aliases from new commands @W-24222806@ ([219d0ef](https://github.com/salesforcecli/plugin-apex/commit/219d0ef7f5836f04e936ae0fb24f3ea81799d966))
+- use unique class names so schema generator produces all 3 schemas ([6b53350](https://github.com/salesforcecli/plugin-apex/commit/6b53350af520a919cb9338e59a2055a6114ff7eb))
+
+### Features
+
+- add --debug-level and --category-level flags to apex run @W-18404446@ ([dfbb6c9](https://github.com/salesforcecli/plugin-apex/commit/dfbb6c99f0de5b551c5df939920355bafd5b6db2))
+- add commands to manage Apex debug log trace flags @W-24222806@ ([80b4d3f](https://github.com/salesforcecli/plugin-apex/commit/80b4d3f169fd51f80755db8ff25f585c6d66aa3b))
+- add Status column to apex trace list output @W-24222806@ ([9cc699e](https://github.com/salesforcecli/plugin-apex/commit/9cc699e6c7aed9d3f43eec3b2790602fbb7046c8))
+
 # [4.2.0](https://github.com/salesforcecli/plugin-apex/compare/4.1.2...4.2.0) (2026-09-16)
 
 ### Features
