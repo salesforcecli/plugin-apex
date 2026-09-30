@@ -153,7 +153,7 @@ FLAG DESCRIPTIONS
     directory.
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/get/log.ts)_
 
 ## `sf apex get test`
 
@@ -213,7 +213,7 @@ EXAMPLES
       me@myorg'
 ```
 
-_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/get/test.ts)_
+_See code: [src/commands/apex/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/get/test.ts)_
 
 ## `sf apex list log`
 
@@ -253,7 +253,7 @@ EXAMPLES
     $ sf apex list log --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/list/log.ts)_
+_See code: [src/commands/apex/list/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/list/log.ts)_
 
 ## `sf apex run`
 
@@ -334,7 +334,7 @@ FLAG DESCRIPTIONS
     Can be specified multiple times. Mutually exclusive with --debug-level.
 ```
 
-_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/run.ts)_
+_See code: [src/commands/apex/run.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/run.ts)_
 
 ## `sf apex run test`
 
@@ -481,7 +481,7 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/run/test.ts)_
+_See code: [src/commands/apex/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/run/test.ts)_
 
 ## `sf apex tail log`
 
@@ -524,7 +524,7 @@ EXAMPLES
     $ sf apex tail log --color --skip-trace-flag
 ```
 
-_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/tail/log.ts)_
+_See code: [src/commands/apex/tail/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/tail/log.ts)_
 
 ## `sf apex trace create`
 
@@ -590,7 +590,7 @@ EXAMPLES
       --duration 60 --target-org my-org
 ```
 
-_See code: [src/commands/apex/trace/create.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/trace/create.ts)_
+_See code: [src/commands/apex/trace/create.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/trace/create.ts)_
 
 ## `sf apex trace delete`
 
@@ -625,7 +625,7 @@ EXAMPLES
     $ sf apex trace delete --trace-flag-id 7tf000000000001AAA --target-org my-org
 ```
 
-_See code: [src/commands/apex/trace/delete.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/trace/delete.ts)_
+_See code: [src/commands/apex/trace/delete.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/trace/delete.ts)_
 
 ## `sf apex trace list`
 
@@ -660,7 +660,7 @@ EXAMPLES
     $ sf apex trace list --target-org my-org
 ```
 
-_See code: [src/commands/apex/trace/list.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/trace/list.ts)_
+_See code: [src/commands/apex/trace/list.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/apex/trace/list.ts)_
 
 ## `sf logic get test`
 
@@ -708,7 +708,7 @@ EXAMPLES
     $ sf logic get test --test-run-id <test run id> --result-format junit --target-org my-scratch
 ```
 
-_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/logic/get/test.ts)_
+_See code: [src/commands/logic/get/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/logic/get/test.ts)_
 
 ## `sf logic run test`
 
@@ -830,6 +830,6 @@ FLAG DESCRIPTIONS
     --tests Test1 --tests Test2
 ```
 
-_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/logic/run/test.ts)_
+_See code: [src/commands/logic/run/test.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.1/src/commands/logic/run/test.ts)_
 
 <!-- commandsstop -->

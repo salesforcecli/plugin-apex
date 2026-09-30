@@ -1,3 +1,9 @@
+## [4.3.1](https://github.com/salesforcecli/plugin-apex/compare/4.3.0...4.3.1) (2026-09-30)
+
+### Bug Fixes
+
+- **deps:** bump fast-uri from 3.1.5 to 3.1.7 ([817c23e](https://github.com/salesforcecli/plugin-apex/commit/817c23e035f55867a927a78661f1019c40f889a5))
+
 # [4.3.0](https://github.com/salesforcecli/plugin-apex/compare/4.2.0...4.3.0) (2026-09-28)
 
 ### Bug Fixes
