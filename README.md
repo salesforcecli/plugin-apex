@@ -99,7 +99,7 @@ Happy debugging!
 
 ## `sf apex get compile-status`
 
-Fetches any Apex classes in your org with compilation status issues.
+Fetches any Apex in your org with compilation status issues.
 
 ```
 USAGE
@@ -115,15 +115,15 @@ GLOBAL FLAGS
   --json               Format output as json.
 
 DESCRIPTION
-  Fetches invalid Apex classes, including the problems associated with their current compilation status.
+  Fetches invalid Apex or Apex with compiler warnings, and reports the current compilation status.
 
 
 EXAMPLES
-  Fetches invalid classes in your default org:
+  Fetches invalid Apex or Apex with compilation warnings in your default org:
 
     $ sf apex get compile-status
 
-  Fetch invalid classes in the org with the specified username:
+  Fetch invalid Apex or Apex with compilation warnings in the org with the specified username:
 
     $ sf apex get compile-status --target-org me@my.org
 ```
