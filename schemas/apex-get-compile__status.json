@@ -35,9 +35,15 @@
           "items": {
             "$ref": "#/definitions/ApexClassProblem"
           }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApexClassProblem"
+          }
         }
       },
-      "required": ["name", "namespace", "success", "problems"],
+      "required": ["name", "namespace", "success", "problems", "warnings"],
       "additionalProperties": false
     },
     "ApexClassProblem": {

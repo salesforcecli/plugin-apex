@@ -73,6 +73,7 @@ describe('apex:get:compile-status', () => {
               message: 'Unexpected token: }',
             },
           ],
+          warnings: [],
         },
         {
           name: 'TestClass2',
@@ -90,6 +91,7 @@ describe('apex:get:compile-status', () => {
               message: 'Syntax error',
             },
           ],
+          warnings: [],
         },
       ],
     };
@@ -111,19 +113,33 @@ describe('apex:get:compile-status', () => {
 
     const tableCall = uxStub.table.firstCall;
     expect(tableCall.args[0]).to.deep.include({
-      columns: ['name', 'namespace', 'success', 'problems'],
-      title: 'Invalid Apex Classes:',
+      columns: ['name', 'namespace', 'success', 'problems', 'warnings'],
+      title: 'Compile Status Results:',
     });
 
     const tableData = (tableCall.args[0] as Record<string, unknown>).data as Array<Record<string, unknown>>;
     expect(tableData).to.have.lengthOf(2);
     expect(tableData[0].name).to.equal('TestClass1');
-    expect((tableData[0].problems as string[])[0]).to.be.a('string');
-    expect(JSON.parse((tableData[0].problems as string[])[0])).to.deep.equal({
+    expect(tableData[0].problems).to.be.a('string');
+    expect(JSON.parse(tableData[0].problems as string)).to.deep.equal({
       line: 10,
       column: 5,
       message: 'Unexpected token: }',
     });
+
+    const secondClassProblems = (tableData[1].problems as string).split('\n').map((problem) => JSON.parse(problem));
+    expect(secondClassProblems).to.deep.equal([
+      {
+        line: 25,
+        column: 1,
+        message: 'Invalid class declaration',
+      },
+      {
+        line: 30,
+        column: 10,
+        message: 'Syntax error',
+      },
+    ]);
   });
 
   it('returns compilation result with --json flag without displaying table', async () => {
@@ -134,6 +150,7 @@ describe('apex:get:compile-status', () => {
           name: 'TestClass1',
           namespace: '',
           success: false,
+          warnings: [],
           problems: [
             {
               line: 10,
@@ -220,6 +237,7 @@ describe('apex:get:compile-status', () => {
           name: 'ComplexClass',
           namespace: 'testNamespace',
           success: false,
+          warnings: [],
           problems: [
             {
               line: 5,
@@ -266,6 +284,7 @@ describe('apex:get:compile-status', () => {
           name: 'LocalClass',
           namespace: '',
           success: false,
+          warnings: [],
           problems: [
             {
               line: 1,
@@ -307,6 +326,7 @@ describe('apex:get:compile-status', () => {
               message: 'Test message',
             },
           ],
+          warnings: [],
         },
       ],
     };
@@ -326,7 +346,7 @@ describe('apex:get:compile-status', () => {
 
     const tableCall = uxStub.table.firstCall;
     const tableData = (tableCall.args[0] as Record<string, unknown>).data as Array<Record<string, unknown>>;
-    const problemString = (tableData[0].problems as string[])[0];
+    const problemString = tableData[0].problems as string;
 
     expect(problemString).to.be.a('string');
     const parsedProblem = JSON.parse(problemString);

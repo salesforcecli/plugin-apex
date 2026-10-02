@@ -36,6 +36,7 @@ export type InvalidApexClassResult = {
   namespace: string;
   success: boolean;
   problems: ApexClassProblem[];
+  warnings: ApexClassProblem[];
 };
 
 export type CompilationResult = {
@@ -68,7 +69,7 @@ export default class GetCompileStatus extends SfCommand<CompilationResult> {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     process.on('SIGTERM', exitHandler);
 
-    this.spinner.start('Retrieving invalid Apex classes...');
+    this.spinner.start('Retrieving Apex compilation results');
 
     const connection = flags['target-org'].getConnection(flags['api-version']);
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -86,16 +87,19 @@ export default class GetCompileStatus extends SfCommand<CompilationResult> {
     // so we format the results for everyone else
     if (!this.jsonEnabled() && invalidApexResponse.results.length > 0) {
       if (invalidApexResponse.results.length > 0) {
+        const tableFormatter = (tableItems: ApexClassProblem[]): string =>
+          tableItems.map((tableItem) => JSON.stringify(tableItem)).join('\n');
         this.table({
-          columns: ['name', 'namespace', 'success', 'problems'],
+          columns: ['name', 'namespace', 'success', 'problems', 'warnings'],
           data: invalidApexResponse.results.map((result) => ({
             ...result,
-            problems: result.problems.map((problem) => JSON.stringify(problem)),
+            problems: tableFormatter(result.problems),
+            warnings: tableFormatter(result.warnings),
           })),
-          title: 'Invalid Apex Classes:',
+          title: 'Compile Status Results:',
         });
       } else {
-        this.log('No invalid Apex classes found!');
+        this.log('No Apex compiler issues found!');
       }
     }
 
