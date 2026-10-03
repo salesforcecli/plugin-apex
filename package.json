@@ -62,7 +62,7 @@
         "description": "Use the apex commands to create Apex classes, execute anonymous blocks, view your logs, run Apex tests, and view Apex test results.",
         "subtopics": {
           "get": {
-            "description": "Get debug logs or test results."
+            "description": "Get debug logs, Apex class compile status, or test results."
           },
           "list": {
             "description": "List debug logs."
