@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { CancellationTokenSource } from '@salesforce/apex-node';
 import {
   orgApiVersionFlagWithDeprecations,
   requiredOrgFlagWithDeprecations,
   SfCommand,
 } from '@salesforce/sf-plugins-core';
-import { Messages } from '@salesforce/core';
+import { Messages, SfError } from '@salesforce/core';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'get-compile-status');
@@ -53,25 +51,16 @@ export default class GetCompileStatus extends SfCommand<CompilationResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
 
-  protected cancellationTokenSource = new CancellationTokenSource();
-
   public async run(): Promise<CompilationResult> {
     const { flags } = await this.parse(GetCompileStatus);
-
-    // graceful shutdown
-    const exitHandler = async (): Promise<void> => {
-      await this.cancellationTokenSource.asyncCancel();
-      process.exit();
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    process.on('SIGINT', exitHandler);
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    process.on('SIGTERM', exitHandler);
+    const apiVersion = flags['api-version'];
+    if (apiVersion && Number(apiVersion.replace('.0', '')) < 68) {
+      throw new SfError(messages.getMessage('minimumApiVersionNotMet'));
+    }
 
     this.spinner.start('Retrieving Apex compilation results');
 
-    const connection = flags['target-org'].getConnection(flags['api-version']);
+    const connection = flags['target-org'].getConnection(apiVersion);
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const invalidApexResponse = (await connection.tooling.request({
       // eslint-disable-next-line no-underscore-dangle
@@ -83,9 +72,11 @@ export default class GetCompileStatus extends SfCommand<CompilationResult> {
       body: JSON.stringify({}),
     })) as CompilationResult;
 
+    this.spinner.stop();
+
     // the actual command output is only displayed when --json is passed as a flag
     // so we format the results for everyone else
-    if (!this.jsonEnabled() && invalidApexResponse.results.length > 0) {
+    if (!this.jsonEnabled()) {
       if (invalidApexResponse.results.length > 0) {
         const tableFormatter = (tableItems: ApexClassProblem[]): string =>
           tableItems.map((tableItem) => JSON.stringify(tableItem)).join('\n');
@@ -99,11 +90,10 @@ export default class GetCompileStatus extends SfCommand<CompilationResult> {
           title: 'Compile Status Results:',
         });
       } else {
-        this.log('No Apex compiler issues found!');
+        this.log(messages.getMessage('noResultsFound'));
       }
     }
 
-    this.spinner.stop();
     return invalidApexResponse;
   }
 }

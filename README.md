@@ -128,7 +128,7 @@ EXAMPLES
     $ sf apex get compile-status --target-org me@my.org
 ```
 
-_See code: [src/commands/apex/get/log.ts](https://github.com/salesforcecli/plugin-apex/blob/4.1.0/src/commands/apex/get/log.ts)_
+_See code: [src/commands/apex/get/compile-status.ts](https://github.com/salesforcecli/plugin-apex/blob/4.3.0/src/commands/apex/get/compile-status.ts)_
 
 ## `sf apex get log`
 

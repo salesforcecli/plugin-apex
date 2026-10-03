@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { stubSfCommandUx } from '@salesforce/sf-plugins-core';
-import { Org } from '@salesforce/core';
+import { Org, SfError } from '@salesforce/core';
 import GetCompileStatus from '../../../../src/commands/apex/get/compile-status.js';
 import type { CompilationResult } from '../../../../src/commands/apex/get/compile-status.js';
 
@@ -55,7 +55,32 @@ describe('apex:get:compile-status', () => {
 
     const result = await GetCompileStatus.run([]);
     expect(result).to.deep.equal(mockCompilationResult);
-    expect(uxStub.log.called).to.be.false;
+    expect(uxStub.log.called).to.be.true;
+  });
+
+  it('throws when API version beneath 68', async () => {
+    const mockCompilationResult: CompilationResult = {
+      status: 'success',
+      results: [],
+    };
+
+    const org = {
+      getConnection: sandbox.stub().returns({
+        tooling: {
+          request: sandbox.stub().resolves(mockCompilationResult),
+          _baseUrl: sandbox.stub().returns('/services/data/v68.0/tooling'),
+        },
+      }),
+    };
+
+    sandbox.stub(Org, 'create').resolves(org as unknown as Org);
+
+    try {
+      await GetCompileStatus.run(['--api-version', '67.0']);
+    } catch (err) {
+      expect(err).to.be.instanceOf(SfError, 'Should be SfError');
+      expect((err as SfError).message).to.eq('Apex compile results available in API versions 68.0 and above');
+    }
   });
 
   it('displays invalid classes in table format without --json flag', async () => {

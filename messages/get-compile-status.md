@@ -14,4 +14,8 @@ Return compile results for only Apex classes and triggers with validation errors
 
 # noResultsFound
 
-No results found
+No Apex compiler issues found.
+
+# minimumApiVersionNotMet
+
+Apex compile results available in API versions 68.0 and above
