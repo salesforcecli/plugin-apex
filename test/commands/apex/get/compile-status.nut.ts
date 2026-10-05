@@ -111,10 +111,12 @@ describe('apex get compile-status NUT', () => {
 
       execCmd('project:deploy:start -o org --source-dir force-app/main/default/classes', {
         ensureExitCode: 0,
+        cli: 'sf',
       });
 
       execCmd('project:delete:source -o org -m ApexClass:CompileStatusHelper --no-prompt', {
         ensureExitCode: 0,
+        cli: 'sf',
       });
     });
 
