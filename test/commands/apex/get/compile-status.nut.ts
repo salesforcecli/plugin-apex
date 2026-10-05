@@ -73,15 +73,15 @@ describe('apex get compile-status NUT', () => {
     // TODO(2026-10-10): remove --release preview after GA release
     execCmd(
       'org:create:scratch -f config/project-scratch-def.json --set-default --alias org --release preview --wait 10 --duration-days 1',
-      { ensureExitCode: 0 }
+      { ensureExitCode: 0, cli: 'sf' }
     );
 
-    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0 });
+    execCmd('project:deploy:start -o org --source-dir force-app', { ensureExitCode: 0, cli: 'sf' });
   });
 
   after(async () => {
     try {
-      execCmd('org:delete:scratch -o org --no-prompt');
+      execCmd('org:delete:scratch -o org --no-prompt', { cli: 'sf' });
     } catch {
       // best-effort cleanup
     }
