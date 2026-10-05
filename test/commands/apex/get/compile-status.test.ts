@@ -28,8 +28,6 @@ describe('apex:get:compile-status', () => {
   beforeEach(async () => {
     sandbox = sinon.createSandbox();
     uxStub = stubSfCommandUx(sandbox);
-    sandbox.stub(process, 'on').resolves();
-    sandbox.stub(process, 'exit');
   });
 
   afterEach(() => {
@@ -77,6 +75,7 @@ describe('apex:get:compile-status', () => {
 
     try {
       await GetCompileStatus.run(['--api-version', '67.0']);
+      expect.fail('Expected SfError to be thrown');
     } catch (err) {
       expect(err).to.be.instanceOf(SfError, 'Should be SfError');
       expect((err as SfError).message).to.eq('Apex compile results available in API versions 68.0 and above');
@@ -146,25 +145,10 @@ describe('apex:get:compile-status', () => {
     expect(tableData).to.have.lengthOf(2);
     expect(tableData[0].name).to.equal('TestClass1');
     expect(tableData[0].problems).to.be.a('string');
-    expect(JSON.parse(tableData[0].problems as string)).to.deep.equal({
-      line: 10,
-      column: 5,
-      message: 'Unexpected token: }',
-    });
+    expect(tableData[0].problems).to.equal('L10:C5 - Unexpected token: }');
 
-    const secondClassProblems = (tableData[1].problems as string).split('\n').map((problem) => JSON.parse(problem));
-    expect(secondClassProblems).to.deep.equal([
-      {
-        line: 25,
-        column: 1,
-        message: 'Invalid class declaration',
-      },
-      {
-        line: 30,
-        column: 10,
-        message: 'Syntax error',
-      },
-    ]);
+    const secondClassProblems = (tableData[1].problems as string).split('\n');
+    expect(secondClassProblems).to.deep.equal(['L25:C1 - Invalid class declaration', 'L30:C10 - Syntax error']);
   });
 
   it('returns compilation result with --json flag without displaying table', async () => {
@@ -229,29 +213,6 @@ describe('apex:get:compile-status', () => {
     expect(callArgs.method).to.equal('POST');
     expect(callArgs.headers['Content-Type']).to.equal('application/json');
     expect(callArgs.body).to.equal('{}');
-  });
-
-  it('registers signal handlers for graceful shutdown', async () => {
-    const mockCompilationResult: CompilationResult = {
-      status: 'success',
-      results: [],
-    };
-
-    const org = {
-      getConnection: sandbox.stub().returns({
-        tooling: {
-          request: sandbox.stub().resolves(mockCompilationResult),
-          _baseUrl: sandbox.stub().returns('/services/data/v68.0/tooling'),
-        },
-      }),
-    };
-
-    sandbox.stub(Org, 'create').resolves(org as unknown as Org);
-
-    await GetCompileStatus.run([]);
-
-    expect((process.on as sinon.SinonStub).calledWith('SIGINT')).to.be.true;
-    expect((process.on as sinon.SinonStub).calledWith('SIGTERM')).to.be.true;
   });
 
   it('handles multiple problems per class', async () => {
@@ -336,7 +297,7 @@ describe('apex:get:compile-status', () => {
     expect(result.results[0].namespace).to.equal('');
   });
 
-  it('converts problem objects to JSON strings in table display', async () => {
+  it('formats problem objects as readable strings in table display', async () => {
     const mockCompilationResult: CompilationResult = {
       status: 'success',
       results: [
@@ -373,10 +334,6 @@ describe('apex:get:compile-status', () => {
     const tableData = (tableCall.args[0] as Record<string, unknown>).data as Array<Record<string, unknown>>;
     const problemString = tableData[0].problems as string;
 
-    expect(problemString).to.be.a('string');
-    const parsedProblem = JSON.parse(problemString);
-    expect(parsedProblem.line).to.equal(10);
-    expect(parsedProblem.column).to.equal(5);
-    expect(parsedProblem.message).to.equal('Test message');
+    expect(problemString).to.equal('L10:C5 - Test message');
   });
 });
