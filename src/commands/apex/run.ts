@@ -33,7 +33,7 @@ import {
   SfCommand,
 } from '@salesforce/sf-plugins-core';
 import { Messages, SfError } from '@salesforce/core';
-import RunReporter from '../../reporters/runReporter.js';
+import { RunReporter } from '../../reporters/index.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'run');

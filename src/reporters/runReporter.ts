@@ -23,7 +23,7 @@ import { ExecuteResult } from '../commands/apex/run.js';
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-apex', 'run');
 
-export default class RunReporter {
+export class RunReporter {
   public static formatDefault(response: ExecuteAnonymousResponse): string {
     const outputText: string[] = [];
     if (response.success) {
@@ -41,9 +41,7 @@ export default class RunReporter {
       if (!response.compiled) {
         outputText.push(
           StandardColors.error(
-            `Error: Line: ${diagnostic.lineNumber ?? '<not provided>'}, Column: ${
-              diagnostic.columnNumber ?? '<not provided>'
-            }`
+            `Error: Ln ${diagnostic.lineNumber ?? '<not provided>'}, Col ${diagnostic.columnNumber ?? '<not provided>'}`
           ),
           StandardColors.error(`Error: ${diagnostic.compileProblem}\n`)
         );

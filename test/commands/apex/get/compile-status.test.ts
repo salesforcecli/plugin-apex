@@ -145,10 +145,13 @@ describe('apex:get:compile-status', () => {
     expect(tableData).to.have.lengthOf(2);
     expect(tableData[0].name).to.equal('TestClass1');
     expect(tableData[0].problems).to.be.a('string');
-    expect(tableData[0].problems).to.equal('L10:C5 - Unexpected token: }');
+    expect(tableData[0].problems).to.equal('Ln 10, Col 5 - Unexpected token: }');
 
     const secondClassProblems = (tableData[1].problems as string).split('\n');
-    expect(secondClassProblems).to.deep.equal(['L25:C1 - Invalid class declaration', 'L30:C10 - Syntax error']);
+    expect(secondClassProblems).to.deep.equal([
+      'Ln 25, Col 1 - Invalid class declaration',
+      'Ln 30, Col 10 - Syntax error',
+    ]);
   });
 
   it('returns compilation result with --json flag without displaying table', async () => {
@@ -334,6 +337,6 @@ describe('apex:get:compile-status', () => {
     const tableData = (tableCall.args[0] as Record<string, unknown>).data as Array<Record<string, unknown>>;
     const problemString = tableData[0].problems as string;
 
-    expect(problemString).to.equal('L10:C5 - Test message');
+    expect(problemString).to.equal('Ln 10, Col 5 - Test message');
   });
 });

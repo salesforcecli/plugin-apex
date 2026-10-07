@@ -85,7 +85,7 @@ Execution failed at this code:
 
 # executeCompileFailure
 
-Compilation failed at Line %s column %s with the error:
+Compilation failed at Ln %s, Col %s with the error:
 
 %s
 
