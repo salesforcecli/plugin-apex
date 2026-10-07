@@ -79,7 +79,7 @@ export default class GetCompileStatus extends SfCommand<CompilationResult> {
     if (!this.jsonEnabled()) {
       if (invalidApexResponse.results.length > 0) {
         const tableFormatter = (tableItems: ApexClassProblem[]): string =>
-          tableItems.map((p) => `L${p.line}:C${p.column} - ${p.message}`).join('\n');
+          tableItems.map((p) => `Ln ${p.line}, Col ${p.column} - ${p.message}`).join('\n');
         this.table({
           columns: ['name', 'namespace', 'success', 'problems', 'warnings'],
           data: invalidApexResponse.results.map((result) => ({

@@ -14,4 +14,5 @@
  * limitations under the License.
  */
 export { JsonReporter, RunResult } from './jsonReporter.js';
+export { RunReporter } from './runReporter.js';
 export { TestReporter } from './testReporter.js';
