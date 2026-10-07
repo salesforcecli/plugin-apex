@@ -1,3 +1,9 @@
+# [4.4.0](https://github.com/salesforcecli/plugin-apex/compare/4.3.4...4.4.0) (2026-10-07)
+
+### Features
+
+- clean up line/column formatting to align with VS Code ([#979](https://github.com/salesforcecli/plugin-apex/issues/979)) ([9e76962](https://github.com/salesforcecli/plugin-apex/commit/9e769620bba0ae9e0dc5cc9ed41005615fa40d01))
+
 ## [4.3.4](https://github.com/salesforcecli/plugin-apex/compare/4.3.3...4.3.4) (2026-10-05)
 
 ### Bug Fixes
