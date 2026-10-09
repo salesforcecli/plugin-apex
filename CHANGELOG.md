@@ -1,3 +1,9 @@
+## [4.4.1](https://github.com/salesforcecli/plugin-apex/compare/4.4.0...4.4.1) (2026-10-09)
+
+### Bug Fixes
+
+- **deps:** bump fast-copy from 3.0.2 to 3.1.0 ([941813f](https://github.com/salesforcecli/plugin-apex/commit/941813f754d53cc62c3be3ae7c82e2f6dcefd6ed))
+
 # [4.4.0](https://github.com/salesforcecli/plugin-apex/compare/4.3.4...4.4.0) (2026-10-07)
 
 ### Features
