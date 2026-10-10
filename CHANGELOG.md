@@ -1,3 +1,9 @@
+## [4.4.3](https://github.com/salesforcecli/plugin-apex/compare/4.4.2...4.4.3) (2026-10-10)
+
+### Bug Fixes
+
+- **deps:** bump source-map-js from 1.2.1 to 1.2.2 ([8726305](https://github.com/salesforcecli/plugin-apex/commit/87263057d55035d208352f6559cbdb375aa8efc1))
+
 ## [4.4.2](https://github.com/salesforcecli/plugin-apex/compare/4.4.1...4.4.2) (2026-10-09)
 
 ### Bug Fixes
