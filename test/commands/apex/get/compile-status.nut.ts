@@ -70,9 +70,8 @@ describe('apex get compile-status NUT', () => {
 
     classesDir = path.join(session.project.dir, 'force-app', 'main', 'default', 'classes');
 
-    // TODO(2026-10-10): remove --release preview after GA release
     execCmd(
-      'org:create:scratch -f config/project-scratch-def.json --set-default --alias org --release preview --wait 10 --duration-days 1',
+      'org:create:scratch -f config/project-scratch-def.json --set-default --alias org --wait 10 --duration-days 1',
       { ensureExitCode: 0, cli: 'sf' }
     );
 
