@@ -1,3 +1,9 @@
+## [4.4.4](https://github.com/salesforcecli/plugin-apex/compare/4.4.3...4.4.4) (2026-10-14)
+
+### Bug Fixes
+
+- remove --release preview ([#983](https://github.com/salesforcecli/plugin-apex/issues/983)) ([ed8be99](https://github.com/salesforcecli/plugin-apex/commit/ed8be99c274a07fd9222779df8ce0b00adf88f32))
+
 ## [4.4.3](https://github.com/salesforcecli/plugin-apex/compare/4.4.2...4.4.3) (2026-10-10)
 
 ### Bug Fixes
