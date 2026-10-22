@@ -1,3 +1,9 @@
+## [4.4.5](https://github.com/salesforcecli/plugin-apex/compare/4.4.4...4.4.5) (2026-10-22)
+
+### Bug Fixes
+
+- **deps:** bump markdown-it from 14.3.1 to 14.3.3 ([ed22dff](https://github.com/salesforcecli/plugin-apex/commit/ed22dffe2f2de24803abc003730fd282e69ab980))
+
 ## [4.4.4](https://github.com/salesforcecli/plugin-apex/compare/4.4.3...4.4.4) (2026-10-14)
 
 ### Bug Fixes
