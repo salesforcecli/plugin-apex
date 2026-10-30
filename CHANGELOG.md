@@ -1,3 +1,9 @@
+## [4.4.6](https://github.com/salesforcecli/plugin-apex/compare/4.4.5...4.4.6) (2026-10-30)
+
+### Bug Fixes
+
+- **deps:** bump undici from 8.11.2 to 8.12.3 ([f37d3e7](https://github.com/salesforcecli/plugin-apex/commit/f37d3e7e8b89d53e443c8ba762a17374e1083396))
+
 ## [4.4.5](https://github.com/salesforcecli/plugin-apex/compare/4.4.4...4.4.5) (2026-10-22)
 
 ### Bug Fixes
