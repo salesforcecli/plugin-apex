@@ -24,11 +24,11 @@ git clone git@github.com:salesforcecli/plugin-apex
 yarn && yarn build
 ```
 
-To use your plugin, run using the local `./bin/run.js` file.
+To use your plugin, run using the local `./bin/dev.js` or `./bin/dev.cmd` file.
 
 ```bash
 # Run using local run file.
-./bin/run.js apex list log -o myOrg@example.com
+./bin/dev.js apex list log -o myOrg@example.com
 ```
 
 There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
