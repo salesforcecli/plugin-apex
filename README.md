@@ -12,6 +12,34 @@ This is an oclif plugin that supports the Salesforce Apex commands.
 
 If you're interested in contributing, take a look at the [CONTRIBUTING](CONTRIBUTING.md) guide.
 
+### Build
+
+To build the plugin locally, make sure to have yarn installed and run the following commands:
+
+```bash
+# Clone the repository
+git clone git@github.com:salesforcecli/plugin-apex
+
+# Install the dependencies and compile
+yarn && yarn build
+```
+
+To use your plugin, run using the local `./bin/run.js` file.
+
+```bash
+# Run using local run file.
+./bin/run.js apex list log -o myOrg@example.com
+```
+
+There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
+
+```bash
+# Link your plugin to the sf cli
+sf plugins link .
+# To verify
+sf plugins
+```
+
 # Commands
 
 <!-- commands -->
