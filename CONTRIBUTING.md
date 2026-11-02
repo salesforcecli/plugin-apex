@@ -29,6 +29,39 @@ Agreement. You can do so by going to https://cla.salesforce.com/sign-cla.
   - `feat: my feat message` --> Minor release
 - PRs will be reviewed and merged by the CLI team.
 
+## Local Development
+
+Clone the project and install dependencies:
+
+```bash
+git clone git@github.com:salesforcecli/plugin-apex.git
+cd plugin-apex
+yarn install
+yarn build
+```
+
+### Running Commands
+
+Run modified commands locally without linking:
+
+```bash
+./bin/run.js apex list log -o myOrg@example.com
+```
+
+Or link the plugin to the Salesforce CLI:
+
+```bash
+sf plugins link .
+sf apex list log -o myOrg@example.com
+```
+
+### Running Tests
+
+```bash
+yarn build
+yarn test
+```
+
 ## Testing
 
 All changes must have associated tests. Refer to the [Salesforce CLI Plugin Developer Guide](https://developer.salesforce.com/docs/platform/salesforce-cli-plugin/guide/test-plugin.html) for testing details.
