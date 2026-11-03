@@ -1,3 +1,14 @@
+## [4.4.7](https://github.com/salesforcecli/plugin-apex/compare/4.4.6...4.4.7) (2026-11-03)
+
+### Bug Fixes
+
+- Add instructions for navigating to plugin directory ([58ba270](https://github.com/salesforcecli/plugin-apex/commit/58ba270956fa1db61658747677afe2b21e9e2a9a))
+- update CONTRIBUTING.md ([388b060](https://github.com/salesforcecli/plugin-apex/commit/388b06062f7d0220160fb82d8d8c93342cd1791e))
+- update readme ([dfa8d44](https://github.com/salesforcecli/plugin-apex/commit/dfa8d44a5fff72c12609bf917dc6f7bce8cb16ce))
+- update readme ([8de5f97](https://github.com/salesforcecli/plugin-apex/commit/8de5f97289749092bd8fa5336d7becb63a4dc2b5))
+- update testing section ([ad93821](https://github.com/salesforcecli/plugin-apex/commit/ad93821733b607cfa11574128eb6a338c6de1fb2))
+- update the files ([8445565](https://github.com/salesforcecli/plugin-apex/commit/8445565ce63dacecb81659235f08c4809f19c497))
+
 ## [4.4.6](https://github.com/salesforcecli/plugin-apex/compare/4.4.5...4.4.6) (2026-10-30)
 
 ### Bug Fixes
