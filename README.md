@@ -8,80 +8,38 @@
 
 This is an oclif plugin that supports the Salesforce Apex commands.
 
-### Building the Plugin
+## Contributing
 
-Clone the project and `cd` into it:
+If you're interested in contributing, take a look at the [CONTRIBUTING](CONTRIBUTING.md) guide.
 
-```
-$ git clone git@github.com:salesforcecli/plugin-apex.git
-$ cd plugin-apex
-```
+### Build
 
-Ensure you have [Yarn](https://yarnpkg.com/) installed, then run:
+To build the plugin locally, make sure to have yarn installed and run the following commands:
 
-```
-$ yarn install
-$ yarn build
-```
+```bash
+# Clone the repository
+git clone git@github.com:salesforcecli/plugin-apex
+cd plugin-apex
 
-<br />
-
-### Linking the Plugin
-
-Link the plugin from the `plugin-apex` package directory and then run your command:
-
-```
-$ sfdx plugins:link .
-$ sfdx force:apex:log:list -u myOrg@example.com
+# Install the dependencies and compile
+yarn && yarn build
 ```
 
-Alternatively, you can also run the command from the `plugin-apex` package directory without linking the plugin:
+To use your plugin, run using the local `./bin/dev.js` or `./bin/dev.cmd` file.
 
-```
-$ NODE_OPTIONS=--inspect-brk bin/dev force:apex:log:list -u myOrg@example.com
-```
-
-<br />
-
-### Running the Test Suite
-
-Test the test suite locally by building the project first and then running the tests.
-
-```
-$ yarn build
-$ yarn test
+```bash
+# Run using local run file.
+./bin/dev.js apex list log -o myOrg@example.com
 ```
 
-<br />
+There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
 
-### Debugging the Plugin
-
-We recommend using the Visual Studio Code (VS Code) IDE for your plugin development. Included in the `.vscode` directory of this plugin is a `launch.json` config file, which allows you to attach a debugger to the node process when running your commands. To debug a command:
-
-1. If you linked your plugin to the Salesforce CLI using `yarn plugin:link`, call your command with the `dev-suspend` switch:
-
+```bash
+# Link your plugin to the sf cli
+sf plugins link .
+# To verify
+sf plugins
 ```
-$ sfdx force:apex:log:list -u myOrg@example.com --dev-suspend
-```
-
-Alternatively, replace `sfdx` with `NODE_OPTIONS=--inspect-brk bin/dev` and run your command:
-
-```
-$ NODE_OPTIONS=--inspect-brk bin/dev force:apex:log:list -u myOrg@example.com
-```
-
-2. Set some breakpoints in your code.
-3. Click on the Debug icon in the Activity Bar to open up the Debugger view.
-4. In the upper left hand corner, set the launch configuration to `Attach to Remote`.
-5. Click the green play button on the left of the debugger view. The debugger should now be suspended on the first line of the program.
-6. Click the green play button in the mini toolbar to continue running the program.
-   <br /><br />
-   <img src="./.images/vscodeScreenshot.png" width="480" height="278">
-
-<br />
-Happy debugging!
-
-<br /><br />
 
 # Commands
 
