@@ -50,6 +50,10 @@ NOTE: The testRunCoverage value (JSON and JUnit result formats) is a percentage 
 
   <%= config.bin %> <%= command.id %> --test-level RunLocalTests
 
+- Run local Apex tests and return only failed tests in the JSON tests array:
+
+  <%= config.bin %> <%= command.id %> --test-level RunLocalTests --concise --json
+
 - Run Apex tests on all the methods in the specified class; output results in Test Anything Protocol (TAP) format and request code coverage results:
 
   <%= config.bin %> <%= command.id %> --class-names TestA --class-names TestB --result-format tap --code-coverage
@@ -126,7 +130,7 @@ Display detailed code coverage per test.
 
 # flags.concise.summary
 
-Display only failed test results; works with human-readable output only.
+Display only failed test results. For JSON output, trims the tests array only; summary and coverage are unchanged.
 
 # flags.poll-interval.summary
 
